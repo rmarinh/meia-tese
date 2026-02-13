@@ -31,7 +31,7 @@ all: main.pdf
 # missing file reference and interactively asking you for an alternative.
 
 main.pdf: main.tex
-	latexmk -r latexmk.rc -outdir=build -auxdir=build  -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make main.tex
+	latexmk -outdir=build -auxdir=build  -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make main.tex
 	@-mv ./build/main.pdf ./ 2>/dev/null  
 
 clean:

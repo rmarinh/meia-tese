@@ -1,261 +1,727 @@
-% Chapter 3
+% Chapter 3 - Proposed Architecture
 
-\chapter{Algorithms, Source Code, the Portable Graphics Format and Acronyms} % Main chapter title
-\label{chap:Chapter3} % For referencing the chapter elsewhere, use \ref{chap:Chapter3} 
+\chapter{Proposed Architecture}
+\label{chap:architecture}
+
+This chapter presents the design of a secure multi-agent system architecture for automated software testing. The architecture addresses the security and privacy concerns identified in the literature review while maintaining testing effectiveness. The chapter begins with requirements analysis, followed by high-level architectural design, detailed agent specifications, security-by-design patterns, and LLM integration strategies.
 
 %----------------------------------------------------------------------------------------
-\section{Algorithms}
 
- \LaTeX{}  has several packages for typesetting algorithms in form of ''pseudocode''. In this template, we suggest the use of the \verb|algorithm| environment with the \verb|algpseudocode| package. 
-More information about algorithms can be found at \url{https://en.wikibooks.org/wiki/LaTeX/Algorithms}.
+\section{Requirements Analysis}
+\label{sec:requirements}
 
-Algorithm~\ref{alg:euclid} shows Euclid's algorithm that computes  Greatest Common Divisor (GCD) of two integer numbers.
+The proposed architecture must satisfy functional, non-functional, and regulatory requirements derived from the research questions and literature findings.
 
-\begin{algorithm}[b]
-\caption{Euclid’s algorithm}
-\label{alg:euclid}
-\begin{algorithmic}[1]
-\scriptsize
+\subsection{Functional Requirements}
 
-\State \textbf{Input}: Two integer numbers, $a$ and $b$
-\State \textbf{Output}: GCD of $a$ and $b$
-\State
-\Procedure{Euclid}{$a,b$}\Comment{The GCD of $a$ and $b$}
-\State $r\gets a\bmod b$
-\While{$r\not=0$}\Comment{We have the answer if $r$ is $0$}
-\State $a\gets b$
-\State $b\gets r$
-\State $r\gets a\bmod b$
-\EndWhile
-\State \textbf{return} $b$\Comment{The GCD is $b$}
-\EndProcedure
+The system must support the complete testing workflow from requirements analysis through test validation:
 
-\end{algorithmic}
-\end{algorithm}
+\begin{enumerate}[label=\textbf{FR\arabic*}]
+    \item \textbf{Test Planning}: The system shall analyze testing requirements and decompose them into actionable tasks for specialized agents.
 
-Here it is the \LaTeX{} text for the ''pseudocode'' algorithm presented in  Algorithm~\ref{alg:euclid}.
+    \item \textbf{Code Analysis}: The system shall analyze the system under test to understand code structure, identify testable units, and extract relevant context.
+
+    \item \textbf{Test Generation}: The system shall generate executable test code appropriate for the identified testing objectives, including unit tests, integration tests, and property-based tests.
+
+    \item \textbf{Test Execution}: The system shall execute generated tests in controlled environments and capture execution results.
+
+    \item \textbf{Result Validation}: The system shall validate test quality, assess coverage, and identify potential issues with generated tests.
+
+    \item \textbf{Iterative Refinement}: The system shall iteratively improve test suites based on coverage analysis, mutation testing, and validation feedback.
+
+    \item \textbf{Human Oversight}: The system shall support human review and approval at configurable checkpoints.
+
+    \item \textbf{CI/CD Integration}: The system shall integrate with existing continuous integration and deployment pipelines.
+\end{enumerate}
+
+\subsection{Non-Functional Requirements}
+
+\subsubsection{Security Requirements}
+
+\begin{enumerate}[label=\textbf{SR\arabic*}]
+    \item \textbf{Data Confidentiality}: Source code and test data shall not be transmitted to unauthorized parties. When using external LLM providers, data exposure shall be minimized through context filtering and PII scrubbing.
+
+    \item \textbf{Execution Isolation}: Test execution shall occur in isolated environments preventing impact on production systems or unauthorized resource access.
+
+    \item \textbf{Access Control}: Agent actions shall be governed by explicit permission policies enforcing least-privilege access.
+
+    \item \textbf{Audit Logging}: All agent actions, LLM interactions, and system events shall be logged for security monitoring and forensic analysis.
+
+    \item \textbf{Input Validation}: All inputs from LLMs shall be validated before execution to prevent injection attacks and unsafe operations.
+\end{enumerate}
+
+\subsubsection{Privacy Requirements}
+
+\begin{enumerate}[label=\textbf{PR\arabic*}]
+    \item \textbf{PII Protection}: Personal data shall be identified and scrubbed before transmission to LLM providers.
+
+    \item \textbf{Data Minimization}: Only information necessary for the current task shall be included in LLM context.
+
+    \item \textbf{Purpose Limitation}: Data processed by the system shall be used only for testing purposes.
+
+    \item \textbf{Retention Limits}: Logs and cached data shall be retained only as long as necessary for operational and compliance purposes.
+\end{enumerate}
+
+\subsubsection{Performance Requirements}
+
+\begin{enumerate}[label=\textbf{PER\arabic*}]
+    \item \textbf{Throughput}: The system shall generate tests at a rate suitable for integration into development workflows.
+
+    \item \textbf{Latency}: Interactive operations shall complete within acceptable response times for developer experience.
+
+    \item \textbf{Scalability}: The system shall scale to handle codebases of varying sizes through appropriate context management.
+
+    \item \textbf{Cost Efficiency}: The system shall optimize LLM token usage to balance effectiveness with operational costs.
+\end{enumerate}
+
+\subsection{Regulatory Requirements}
+
+\begin{enumerate}[label=\textbf{RR\arabic*}]
+    \item \textbf{GDPR Compliance}: The system shall comply with GDPR requirements for data minimization, purpose limitation, and data subject rights.
+
+    \item \textbf{AI Act Compliance}: The system shall satisfy applicable EU AI Act requirements for transparency, documentation, and human oversight.
+
+    \item \textbf{Audit Support}: The system shall maintain records sufficient to demonstrate compliance with applicable regulations.
+\end{enumerate}
+
+%----------------------------------------------------------------------------------------
+
+\section{High-Level Architecture}
+\label{sec:high_level_architecture}
+
+\subsection{System Overview}
+
+The proposed architecture employs a layered design with clear separation between orchestration, agent execution, security controls, and external integrations.
+
+The architecture comprises four primary layers:
+
+\begin{enumerate}
+    \item \textbf{Integration Layer}: Interfaces with external systems including code repositories, CI/CD pipelines, and development tools.
+
+    \item \textbf{Orchestration Layer}: Manages workflow execution, task distribution, and agent coordination.
+
+    \item \textbf{Agent Layer}: Contains specialized agents performing testing tasks with LLM assistance.
+
+    \item \textbf{Infrastructure Layer}: Provides execution environments, LLM integration, and security services.
+\end{enumerate}
+
+\subsection{Component Identification}
+
+\subsubsection{Integration Layer Components}
+
+\begin{itemize}
+    \item \textbf{Repository Connector}: Interfaces with Git repositories to access source code and submit generated tests.
+
+    \item \textbf{CI/CD Adapter}: Integrates with pipeline systems (GitHub Actions, Jenkins, GitLab CI) to trigger testing workflows and report results.
+
+    \item \textbf{IDE Plugin}: Provides developer-facing interfaces for interactive test generation and review.
+
+    \item \textbf{API Gateway}: Exposes programmatic interfaces for system integration.
+\end{itemize}
+
+\subsubsection{Orchestration Layer Components}
+
+\begin{itemize}
+    \item \textbf{Workflow Engine}: Manages execution of testing workflows, coordinating agent activities and handling state transitions.
+
+    \item \textbf{Task Queue}: Distributes work items to available agents with priority management and load balancing.
+
+    \item \textbf{State Manager}: Maintains workflow state, agent context, and intermediate results.
+
+    \item \textbf{Human Review Interface}: Presents artifacts for human review and captures approval decisions.
+\end{itemize}
+
+\subsubsection{Agent Layer Components}
+
+\begin{itemize}
+    \item \textbf{Planning Agent}: Analyzes requirements and decomposes testing objectives.
+
+    \item \textbf{Code Analysis Agent}: Examines source code to extract context and identify testing targets.
+
+    \item \textbf{Test Generation Agent}: Produces test code using LLM capabilities.
+
+    \item \textbf{Execution Agent}: Runs tests in sandboxed environments.
+
+    \item \textbf{Validation Agent}: Assesses test quality and coverage.
+
+    \item \textbf{Security Agent}: Scans generated code for vulnerabilities and policy violations.
+\end{itemize}
+
+\subsubsection{Infrastructure Layer Components}
+
+\begin{itemize}
+    \item \textbf{LLM Gateway}: Manages LLM provider interactions with caching, rate limiting, and failover.
+
+    \item \textbf{Sandbox Manager}: Provisions and manages isolated execution environments.
+
+    \item \textbf{Security Services}: Provides PII scrubbing, permission enforcement, and audit logging.
+
+    \item \textbf{Observability Stack}: Collects metrics, traces, and logs for monitoring and debugging.
+\end{itemize}
+
+\subsection{Communication Flows}
+
+The architecture employs asynchronous message passing for inter-component communication, enabling:
+
+\begin{itemize}
+    \item Loose coupling between components
+    \item Scalable distribution of workload
+    \item Resilience through message persistence
+    \item Observability through message tracing
+\end{itemize}
+
+Key communication patterns include:
+
+\begin{itemize}
+    \item \textbf{Request-Response}: Synchronous operations requiring immediate results (e.g., LLM queries).
+
+    \item \textbf{Publish-Subscribe}: Event distribution for workflow state changes and notifications.
+
+    \item \textbf{Task Queue}: Work distribution with acknowledgment and retry semantics.
+\end{itemize}
+
+\subsection{Trust Boundaries}
+
+The architecture defines explicit trust boundaries separating:
+
+\begin{enumerate}
+    \item \textbf{Trusted Zone}: Internal components with verified behavior (orchestration, security services).
+
+    \item \textbf{Semi-Trusted Zone}: Agent components whose outputs require validation (LLM-powered agents).
+
+    \item \textbf{Untrusted Zone}: External systems and user inputs (repositories, LLM providers, CI/CD systems).
+\end{enumerate}
+
+All data crossing trust boundaries undergoes validation and sanitization appropriate to the transition.
+
+%----------------------------------------------------------------------------------------
+
+\section{Agent Architecture and Role Design}
+\label{sec:agent_design}
+
+This section details the design of individual agents, their responsibilities, capabilities, and interaction patterns.
+
+\subsection{Agent Base Architecture}
+
+All agents share a common base architecture providing:
+
+\begin{itemize}
+    \item \textbf{Identity and Configuration}: Unique agent identifier, role specification, and configurable parameters.
+
+    \item \textbf{LLM Interface}: Standardized interface for LLM interactions with prompt management and response parsing.
+
+    \item \textbf{Tool Registry}: Available tools and capabilities the agent can invoke.
+
+    \item \textbf{Memory Management}: Short-term context and long-term knowledge persistence.
+
+    \item \textbf{Action Executor}: Secure execution of agent-generated actions with permission checking.
+
+    \item \textbf{Logging and Metrics}: Instrumentation for observability and audit.
+\end{itemize}
+
+\subsection{Planning Agent}
+
+\subsubsection{Responsibilities}
+
+The Planning Agent initiates testing workflows by:
+\begin{itemize}
+    \item Analyzing testing requirements from user input or CI triggers
+    \item Identifying testing scope and objectives
+    \item Decomposing high-level objectives into specific tasks
+    \item Prioritizing tasks based on risk and coverage considerations
+    \item Assigning tasks to appropriate specialized agents
+\end{itemize}
+
+\subsubsection{Inputs}
+
+\begin{itemize}
+    \item Testing requirements (natural language or structured)
+    \item Repository metadata and project structure
+    \item Existing test coverage information
+    \item Historical testing results and defect patterns
+\end{itemize}
+
+\subsubsection{Outputs}
+
+\begin{itemize}
+    \item Structured test plan with prioritized tasks
+    \item Task assignments for specialized agents
+    \item Success criteria and completion conditions
+\end{itemize}
+
+\subsubsection{LLM Interactions}
+
+The Planning Agent uses LLM capabilities for:
+\begin{itemize}
+    \item Understanding natural language requirements
+    \item Reasoning about testing strategy
+    \item Generating structured task decompositions
+\end{itemize}
+
+\subsection{Code Analysis Agent}
+
+\subsubsection{Responsibilities}
+
+The Code Analysis Agent examines the system under test to:
+\begin{itemize}
+    \item Parse and understand code structure
+    \item Identify testable units (functions, classes, modules)
+    \item Extract relevant context for test generation
+    \item Analyze dependencies and call graphs
+    \item Identify edge cases and boundary conditions
+\end{itemize}
+
+\subsubsection{Tools}
+
+\begin{itemize}
+    \item Abstract Syntax Tree (AST) parsers
+    \item Static analysis tools
+    \item Dependency analyzers
+    \item Code search and navigation utilities
+\end{itemize}
+
+\subsubsection{Outputs}
+
+\begin{itemize}
+    \item Code summaries and documentation
+    \item Identified testing targets with context
+    \item Suggested test scenarios and edge cases
+    \item Dependency graphs and call trees
+\end{itemize}
+
+\subsection{Test Generation Agent}
+
+\subsubsection{Responsibilities}
+
+The Test Generation Agent produces executable test code by:
+\begin{itemize}
+    \item Generating test cases based on planning and analysis outputs
+    \item Producing appropriate assertions for expected behavior
+    \item Creating test fixtures and mock objects
+    \item Ensuring generated code follows project conventions
+\end{itemize}
+
+\subsubsection{Specialization}
+
+Multiple Test Generation Agent instances may be specialized for:
+\begin{itemize}
+    \item Different programming languages (Python, Java, JavaScript)
+    \item Different test types (unit, integration, property-based)
+    \item Different frameworks (pytest, JUnit, Jest)
+\end{itemize}
+
+\subsubsection{Quality Controls}
+
+Generated tests undergo validation including:
+\begin{itemize}
+    \item Syntax verification through compilation/parsing
+    \item Security scanning for vulnerable patterns
+    \item Style checking against project conventions
+    \item Assertion quality assessment
+\end{itemize}
+
+\subsection{Execution Agent}
+
+\subsubsection{Responsibilities}
+
+The Execution Agent runs tests in controlled environments:
+\begin{itemize}
+    \item Provisioning isolated execution environments
+    \item Installing dependencies and configuring test runners
+    \item Executing test suites and capturing results
+    \item Collecting coverage data and execution traces
+    \item Reporting outcomes and artifacts
+\end{itemize}
+
+\subsubsection{Security Constraints}
+
+The Execution Agent operates under strict constraints:
+\begin{itemize}
+    \item Execution only in sandboxed containers
+    \item Network access limited to allowlisted endpoints
+    \item File system access restricted to designated directories
+    \item Resource limits (CPU, memory, time) enforced
+    \item No persistent state between executions
+\end{itemize}
+
+\subsection{Validation Agent}
+
+\subsubsection{Responsibilities}
+
+The Validation Agent assesses test quality:
+\begin{itemize}
+    \item Analyzing test coverage against requirements
+    \item Evaluating assertion quality and meaningfulness
+    \item Identifying flaky or non-deterministic tests
+    \item Detecting test code smells and anti-patterns
+    \item Recommending improvements
+\end{itemize}
+
+\subsubsection{Validation Techniques}
+
+\begin{itemize}
+    \item Coverage analysis (line, branch, mutation)
+    \item Assertion density and quality metrics
+    \item Test isolation verification
+    \item Execution stability assessment
+\end{itemize}
+
+\subsection{Security Agent}
+
+\subsubsection{Responsibilities}
+
+The Security Agent provides security oversight:
+\begin{itemize}
+    \item Scanning generated code for vulnerabilities
+    \item Verifying dependency safety
+    \item Checking for credential exposure
+    \item Validating compliance with security policies
+    \item Blocking unsafe operations
+\end{itemize}
+
+\subsubsection{Integration Points}
+
+The Security Agent integrates at multiple points:
+\begin{itemize}
+    \item Pre-generation: Validating inputs and context
+    \item Post-generation: Scanning generated code
+    \item Pre-execution: Verifying sandbox configuration
+    \item Post-execution: Analyzing execution artifacts
+\end{itemize}
+
+\subsection{Agent Collaboration Protocol}
+
+Agents collaborate through structured message passing:
+
+\begin{enumerate}
+    \item \textbf{Task Assignment}: Orchestrator assigns tasks with context and constraints.
+
+    \item \textbf{Progress Reporting}: Agents report status and intermediate results.
+
+    \item \textbf{Artifact Handoff}: Completed artifacts are passed to downstream agents.
+
+    \item \textbf{Feedback Loops}: Validation results feed back to generation agents for refinement.
+
+    \item \textbf{Escalation}: Agents escalate to human review when confidence is low.
+\end{enumerate}
+
+%----------------------------------------------------------------------------------------
+
+\section{Security-by-Design Implementation}
+\label{sec:security_implementation}
+
+This section details the security controls integrated throughout the architecture.
+
+\subsection{Sandbox Architecture}
+
+\subsubsection{Container Isolation}
+
+Test execution occurs in Docker containers with security configurations:
+
+\begin{itemize}
+    \item \textbf{User namespace isolation}: Containers run as unprivileged users mapped to unique UIDs.
+
+    \item \textbf{Capability dropping}: All unnecessary Linux capabilities removed.
+
+    \item \textbf{Seccomp profiles}: System call filtering restricts dangerous operations.
+
+    \item \textbf{AppArmor/SELinux}: Mandatory access control policies enforce constraints.
+
+    \item \textbf{Read-only root filesystem}: Prevents persistent modifications.
+\end{itemize}
+
+\subsubsection{Network Isolation}
+
+Network access is controlled through:
+
+\begin{itemize}
+    \item \textbf{Network namespace isolation}: Containers have isolated network stacks.
+
+    \item \textbf{Allowlist-based egress}: Only explicitly permitted external connections allowed.
+
+    \item \textbf{Internal DNS}: Name resolution controlled and logged.
+
+    \item \textbf{No inter-container communication}: Sandboxes cannot reach each other.
+\end{itemize}
+
+\subsubsection{Resource Limits}
+
+Containers are constrained by:
+
+\begin{itemize}
+    \item CPU quota limiting execution time
+    \item Memory limits preventing exhaustion
+    \item Disk quota for temporary files
+    \item Process count limits
+    \item Execution timeout with forced termination
+\end{itemize}
+
+\subsection{Data Flow Security}
+
+\subsubsection{PII Scrubbing Pipeline}
+
+Before code reaches LLM providers, a scrubbing pipeline:
+
+\begin{enumerate}
+    \item \textbf{Pattern Detection}: Regular expressions identify emails, phone numbers, API keys, and common credential formats.
+
+    \item \textbf{Named Entity Recognition}: ML models identify names, addresses, and other PII.
+
+    \item \textbf{Secret Scanning}: Tools like truffleHog detect embedded secrets.
+
+    \item \textbf{Redaction}: Identified PII is replaced with placeholder tokens.
+
+    \item \textbf{Logging}: Scrubbing actions are logged for audit purposes.
+\end{enumerate}
+
+\subsubsection{Context Minimization}
+
+Context sent to LLMs is minimized through:
+
+\begin{itemize}
+    \item Including only files relevant to the current task
+    \item Summarizing large files rather than including full content
+    \item Excluding configuration, infrastructure, and deployment code
+    \item Filtering comments and documentation to essential elements
+\end{itemize}
+
+\subsection{ACI Hardening}
+
+\subsubsection{Permission Model}
+
+Agent actions are governed by explicit permissions:
 
 \begin{verbatim}
-\begin{algorithm}
-\caption{Euclid’s algorithm (pseudocode)}
-\label{alg:euclid}
-\begin{algorithmic}[1]
-\scriptsize
-
-\State \textbf{Input}: Two integer numbers, $a$ and $b$
-\State \textbf{Output}:  Greatest Common Divisor (GCD) of $a$ and $b$
-\State
-\Procedure{euclid}{$a,b$}\Comment{The GCD of $a$ and $b$}
-\State $r\gets a\bmod b$
-\While{$r\not=0$}\Comment{We have the answer if $r$ is $0$}
-\State $a\gets b$
-\State $b\gets r$
-\State $r\gets a\bmod b$
-\EndWhile
-\State \textbf{return} $b$\Comment{The GCD is $b$}
-\EndProcedure
-
-\end{algorithmic}
-\end{algorithm}
+permissions:
+  file_system:
+    read:
+      - "/project/src/**"
+      - "/project/tests/**"
+    write:
+      - "/project/tests/generated/**"
+  network:
+    - "https://pypi.org/*"
+    - "https://api.openai.com/*"
+  execute:
+    - "pytest"
+    - "python"
 \end{verbatim}
 
-\verb|\listofalgorithms| command generates a list of all algorithms. This command is called in the \file{frontmatter.tex} file. Therefore, if there is no algorithm in the thesis, this command must be removed (or commented) from such file.
+\subsubsection{Action Validation}
 
-\section{Source Code}
-Sometimes there is the need to present programming source code snippets.
-The \verb|listings| package  is a powerful way to get nice source code highlighting in \LaTeX{}. It supports various programming languages, like Java (selected as the default language in this template), C, and many others.
+Before execution, all actions are validated:
 
-Listing~\ref{lst:euclid_java} and Listing~\ref{lst:euclid_c} show the source code of the Euclid’s algorithm, written in Java and C, respectively.
+\begin{enumerate}
+    \item Parse action into structured representation
+    \item Check against permission policy
+    \item Validate parameters against allowlists
+    \item Log action attempt
+    \item Execute only if all checks pass
+\end{enumerate}
 
-\begin{minipage}{\linewidth}
-\lstinputlisting [caption=Euclid’s algorithm (Java).,
-label=lst:euclid_java]
-{ch3/assets/euclid.java}
-\end{minipage}
+\subsubsection{Rate Limiting}
 
-\begin{center}
-\begin{minipage}{0.7\linewidth}
-\lstinputlisting [language=C, 
-caption=Euclid’s algorithm (C).,
-label=lst:euclid_c,
-numbers=none]
-{ch3/assets/euclid.c}
-\end{minipage}
-\end{center}
+Operations are rate-limited to prevent:
+\begin{itemize}
+    \item Runaway agents consuming excessive resources
+    \item Denial of service against external systems
+    \item Cost overruns from excessive LLM usage
+\end{itemize}
 
-Here it is the \LaTeX{} text for both listings. Note that we encapsulate the listings inside a \verb|\minipage| so that the listing does note break across pages.
-Using the \verb|\lstinputlisting| command, the source code must be written in a separate file. In these two cases, both files are in \path{ch3\assets\} directory.
+\subsection{Audit and Logging}
 
-\begin{verbatim}
-\begin{minipage}{\linewidth}
-\lstinputlisting [caption=Euclid’s algorithm (Java).,
-label=lst:euclid_java]
-{ch3/assets/euclid.java}
-\end{minipage}
+\subsubsection{Comprehensive Logging}
 
-\begin{center}
-\begin{minipage}{0.7\linewidth}
-\lstinputlisting [language=C, 
-caption=Euclid’s algorithm (C).,
-label=lst:euclid_c,
-numbers=none]
-{ch3/assets/euclid.c}
-\end{minipage}
-\end{center}
+The system logs:
 
-\end{verbatim}
-As it can be seen from the text above, there are a lot of parameters that can be specified, like programming language (\verb|language|), numbering, etc.   
-More information about listings can be found at 
-\url{https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings} and 
-\url{http://texdoc.net/texmf-dist/doc/latex/listings/listings.pdf}.
+\begin{itemize}
+    \item All LLM prompts and responses (with PII redacted)
+    \item All agent actions and outcomes
+    \item All file accesses and modifications
+    \item All network communications
+    \item All permission checks and enforcement decisions
+    \item Workflow state transitions
+    \item Human review decisions
+\end{itemize}
 
+\subsubsection{Log Security}
 
-\verb|\listoflisting| command generates a list of all source code listings. This command is called in the \file{frontmatter.tex} file. Therefore, if there are no listings in the thesis, this command must be removed (or commented) from such file.
+Logs are protected through:
 
-\section{The Portable Graphics Format}
-The \gls{PGF} and a number of packages built on top of \gls{PGF} (such as TiKZ and PGFPLOTS) enable producing high quality graphical elements for your document. 
- 
-\subsection{TiKZ}
-TikZ is built on top of PGF and allows you to create sophisticated graphics using \LaTeX{} commands. According to its author, Till Tantau~\footnote{Available online at \url{ftp://ftp.di.uminho.pt/pub/ctan/graphics/pgf/base/doc/pgfmanual.pdf}},  "\textit{What is TikZ? Basically, it just defines a number of \TeX{} commands
-that draw graphics.}". With TikZ it is possible to accurately position picture elements, use \LaTeX{} fonts, incorporate mathematical typesetting, and use other \LaTeX{} features in your drawings.
+\begin{itemize}
+    \item Cryptographic integrity verification
+    \item Access control limiting who can read logs
+    \item Encryption at rest and in transit
+    \item Retention policies aligned with compliance requirements
+\end{itemize}
 
-The TikZ package defines the \verb|tikzpicture| environment that is required to draw a graphic. 
-This environment must be inserted into a \verb|figure| environment when numbering and caption are required.
-Figure~\ref{fig:tikz} shows a simple use of TiKZ, for which the \LaTeX{} source is as follows.
+\subsubsection{Anomaly Detection}
 
-\begin{verbatim}
-\begin{figure}[t]
+Automated analysis identifies:
+
+\begin{itemize}
+    \item Unusual action patterns suggesting compromise
+    \item Repeated permission denials indicating probing
+    \item Unexpected network connections
+    \item Resource usage anomalies
+\end{itemize}
+
+\subsection{Human-in-the-Loop Controls}
+
+\subsubsection{Approval Gates}
+
+Configurable approval gates require human review for:
+
+\begin{itemize}
+    \item First execution of newly generated tests
+    \item Tests modifying shared resources or state
+    \item Tests exceeding complexity thresholds
+    \item Any operations flagged by security scanning
+\end{itemize}
+
+\subsubsection{Override Mechanisms}
+
+Humans can:
+
+\begin{itemize}
+    \item Approve or reject generated tests
+    \item Modify tests before execution
+    \item Adjust agent parameters
+    \item Terminate workflows
+    \item Update permission policies
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\section{LLM Integration Strategy}
+\label{sec:llm_integration}
+
+\subsection{Model Selection Framework}
+
+Model selection balances multiple factors:
+
+\begin{table}[ht]
+\caption{Model selection criteria and trade-offs}
+\label{tab:model_selection}
 \centering
+\small
+\begin{tabular}{l l l l}
+\toprule
+\tabhead{Criterion} & \tabhead{Proprietary} & \tabhead{Open-Weight} & \tabhead{Recommendation} \\
+\midrule
+Capability & Higher & Lower & Task-dependent \\
+Privacy & Requires transfer & Local deployment & Privacy-sensitive: local \\
+Cost & Per-token & Infrastructure & High volume: local \\
+Control & Limited & Full & Customization: local \\
+Maintenance & Provider & Self-managed & Resources: proprietary \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\begin{tikzpicture}
-% Define four points
-\coordinate (P0) at (1,0);
-\coordinate (P1) at (0,1);
-\coordinate (P2) at (-1,0);
-\coordinate (P3) at (0,-1);
-% Draw the diamond
-\draw (P0)--(P1)--(P2)--(P3)--cycle;
-\end{tikzpicture}
+\subsection{Hybrid Deployment}
 
-\caption{Using TiKZ for drawing pictures.}
-\label{fig:tikz}
-\end{figure}
-\end{verbatim}
+The architecture supports hybrid deployment combining:
 
-\begin{figure}[h]
-\centering
+\begin{itemize}
+    \item \textbf{Local models}: For privacy-sensitive operations and high-volume tasks
+    \item \textbf{Cloud models}: For complex reasoning tasks where capability is critical
+    \item \textbf{Fallback chains}: Automatic failover between providers
+\end{itemize}
 
-\begin{tikzpicture}
-% Define four points
-\coordinate (P0) at (0,0);
-\coordinate (P1) at (1,0);
-\coordinate (P2) at (0,1);
-\coordinate (P3) at (-1,0);
-\coordinate (P4) at (0,-1);
-% Draw the diamond
-\draw (P1)--(P2)--(P3)--(P4)--cycle;
-\end{tikzpicture}
+\subsection{Prompt Engineering Patterns}
 
-\caption{Using TiKZ for drawing pictures.}
-\label{fig:tikz}
-\end{figure}
+\subsubsection{Structured Output}
 
+Prompts request structured JSON output for reliable parsing:
 
-A great amount of examples are available at \url{http://www.texample.net/tikz/examples/}. 
-More information about TiKZ can be found at 
-\url{https://en.wikibooks.org/wiki/LaTeX/PGF/TikZ} and 
-\url{ftp://ftp.di.uminho.pt/pub/ctan/graphics/pgf/base/doc/pgfmanual.pdf}.
-
-\subsection{PGFPLOTS}
-
-PGFPLOTS provides tools to draw high quality plots, and is based on TiKZ. To use PGFPLOTS in the thesis you need to use \verb|\usepackage{pgfplots}| (in \file{main.tex}).
-To guarantee compatibility you need to specify \verb|\pgfplotsset{compat=<version>}|.
-You can choose the \verb|version| ().
-In this case, it is recommended to choose \verb|newest|. The choice \verb|compat=newest| means "I do not care if my old figures change in appearance after the next version upgrade".
-
-Here it is the \LaTeX{} text for create the graph presented in Figure~\ref{fig:pgfplots}.
 \begin{verbatim}
-\begin{tikzpicture} 
-	\begin{axis}[ height=9cm, width=9cm, grid=major, ] 
-		\addplot {-x^5 - 242}; 
-		\addlegendentry{model}
-		\addplot coordinates { 
-			(-4.77778,2027.60977) 
-			(-3.55556,347.84069) 
-			(-2.33333,22.58953) 
-			(-1.11111,-493.50066) 
-			(0.11111,46.66082) 
-			(1.33333,-205.56286) 
-			(2.55556,-341.40638) 
-			(3.77778,-1169.24780) 
-			(5.00000,-3269.56775) 
-		}; 
-		\addlegendentry{estimate} 
-	\end{axis} 
-\end{tikzpicture}
+Generate a test for the following function.
+Respond in JSON format:
+{
+  "test_name": "descriptive name",
+  "test_code": "the test code",
+  "rationale": "why this test is important"
+}
 \end{verbatim}
 
-Figure~\ref{fig:pgfplots} shows an example of a graph created using PGFPLOTS functions.
+\subsubsection{Few-Shot Examples}
 
-\begin{figure}[h]
-\centering
-\begin{tikzpicture} 
-	\begin{axis}[ height=9cm, width=9cm, grid=major, ] 
-		\addplot {-x^5 - 242}; 
-		\addlegendentry{model}
-		\addplot coordinates { 
-			(-4.77778,2027.60977) 
-			(-3.55556,347.84069) 
-			(-2.33333,22.58953) 
-			(-1.11111,-493.50066) 
-			(0.11111,46.66082) 
-			(1.33333,-205.56286) 
-			(2.55556,-341.40638) 
-			(3.77778,-1169.24780) 
-			(5.00000,-3269.56775) 
-		}; 
-		\addlegendentry{estimate} 
-	\end{axis} 
-\end{tikzpicture}
-\caption{Using PGFPLOTS for drawing a graph.}
-\label{fig:pgfplots}
-\end{figure}
+Prompts include examples demonstrating expected output format and quality level.
 
-A great amount of examples are available at \url{http://pgfplots.sourceforge.net/gallery.html}. 
-More information about TiKZ can be found at 
-\url{http://pgfplots.sourceforge.net/pgfplots.pdf}.
+\subsubsection{Chain-of-Thought}
 
+Complex reasoning tasks use chain-of-thought prompting:
 
-\section{Handling Acronyms Automatically}
-When writing a thesis you need to define acronyms.
-According to Wikipedia~\footnote{Accessed in 16 of December of 2015} \textit{"An acronym is an abbreviation used as a word which is formed from the initial components in a phrase or a word."} and
-\textit{"Acronyms are used most often to abbreviate names of organizations and long or frequently referenced terms."}.
-Typically, an acronym is a pronounceable word, which may already exist or it can be an invented word. 
-
-The use of acronyms imposes two rules: (i) an acronym must be defined in the text during the first appearance of the phrase or word and (ii) the document must have a list of all acronyms alphabetically sorted. In \LaTeX{} this is provided by a package called \verb|\usepackage{glossaries}| that simplifies the use of acronyms. 
-
-Included in this thesis template there is a file called \file{glossary.tex} (in folder \file{frontmatter}), where all acronyms must be written in the form:
 \begin{verbatim}
-\newacronym{label}{abbrv}{full}
-\end{verbatim}
-where \verb|label| is the unique label identifying the acronym, \verb|abbrv| is the abbreviated form of the acronym and \verb|full| is the expanded text (word or phrase). This is an example of defining three acronyms:
-\begin{verbatim}
-\newacronym{RTS}{RTS}{Real-Time System}
-\newacronym{GPOS}{GPOS}{General Purpose Operating System}
-\newacronym{RTOS}{RTOS}{Real-Time Operating System}
+Analyze this function step by step:
+1. Identify the function's purpose
+2. List input parameters and their constraints
+3. Identify edge cases
+4. Generate test cases for each edge case
 \end{verbatim}
 
-In order to use the features of the \verb|\usepackage{glossaries}|, you have only to use \verb|\gls{label}| command in the text. 
-Using this command the acronym will be defined in the first appearance in the text and it will be listed in a list.
-For instance, writing this \LaTeX{} text:
-\begin{verbatim}
-Linux is not a \gls{RTOS} but it is a \gls{GPOS}. 
-VxWorks is a \gls{RTOS}, so it is not a \gls{GPOS}.
-\end{verbatim}
+\subsection{Context Management}
 
-outputs the following text: 
+\subsubsection{Retrieval-Augmented Generation}
 
-Linux is not a \gls{RTOS} but it is a \gls{GPOS}. VxWorks is a \gls{RTOS}, so it is not a \gls{GPOS}.
+RAG retrieves relevant code snippets based on the current task:
 
-More information about acronyms can be found at 
-\url{https://en.wikibooks.org/wiki/LaTeX/Glossary}.
+\begin{enumerate}
+    \item Index codebase with embeddings
+    \item Query index with task description
+    \item Retrieve top-k relevant snippets
+    \item Include snippets in LLM context
+\end{enumerate}
+
+\subsubsection{Hierarchical Summarization}
+
+Large codebases are summarized hierarchically:
+
+\begin{itemize}
+    \item Function-level summaries
+    \item Class-level summaries aggregating functions
+    \item Module-level summaries aggregating classes
+    \item Project-level overview
+\end{itemize}
+
+\subsection{Error Handling and Recovery}
+
+\subsubsection{LLM Failure Modes}
+
+The system handles:
+
+\begin{itemize}
+    \item API errors and timeouts with retry logic
+    \item Rate limiting with backoff and queue management
+    \item Malformed responses with re-prompting
+    \item Refusals with alternative prompting strategies
+\end{itemize}
+
+\subsubsection{Output Validation}
+
+LLM outputs are validated before use:
+
+\begin{itemize}
+    \item JSON parsing with error handling
+    \item Schema validation for required fields
+    \item Syntax checking for generated code
+    \item Security scanning for unsafe patterns
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\section{Summary}
+\label{sec:architecture_summary}
+
+This chapter has presented a comprehensive architecture for secure, privacy-preserving multi-agent testing. Key design decisions include:
+
+\begin{itemize}
+    \item Layered architecture with clear separation of concerns
+    \item Specialized agents with well-defined roles and responsibilities
+    \item Defense-in-depth security with sandboxing, permission controls, and audit logging
+    \item Privacy-by-design through PII scrubbing and context minimization
+    \item Flexible LLM integration supporting both local and cloud deployment
+    \item Human-in-the-loop controls for oversight and compliance
+\end{itemize}
+
+The following chapter details the implementation of this architecture as a functional prototype.

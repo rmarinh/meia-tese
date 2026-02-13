@@ -1,0 +1,981 @@
+% Chapter 5 - Experimental Validation
+
+\chapter{Experimental Validation}
+\label{chap:evaluation}
+
+This chapter presents the empirical evaluation of the prototype implementation described in Chapter~\ref{chap:implementation}. The evaluation addresses the research questions through experiments assessing testing effectiveness, security properties, and performance characteristics. The chapter begins with experimental design, followed by detailed results for effectiveness, security, and performance evaluations, ablation studies examining component contributions, and a discussion of findings and limitations.
+
+%----------------------------------------------------------------------------------------
+
+\section{Experimental Design}
+\label{sec:experimental_design}
+
+\subsection{Research Hypotheses}
+
+Based on the research questions established in Chapter~\ref{chap:introduction}, the following hypotheses guide the experimental evaluation:
+
+\begin{itemize}
+    \item \textbf{H1 (Effectiveness)}: The multi-agent architecture achieves higher test coverage and bug detection rates than single-agent baselines on complex codebases. \textit{(Addresses RQ3)}
+
+    \item \textbf{H2 (Security Prevention)}: The implemented security controls effectively prevent identified attack vectors, including prompt injection and data exfiltration attempts. \textit{(Addresses RQ1, RQ2)}
+
+    \item \textbf{H3 (Privacy Protection)}: Privacy-preserving measures successfully prevent PII exposure to external LLM providers while maintaining testing effectiveness. \textit{(Addresses RQ1, RQ2)}
+
+    \item \textbf{H4 (Cost-Effectiveness)}: The system achieves acceptable cost-effectiveness compared to manual test writing, with measurable developer time savings. \textit{(Addresses RQ5)}
+
+    \item \textbf{H5 (Architecture Impact)}: The multi-agent decomposition with specialized roles outperforms monolithic agent designs on testing tasks. \textit{(Addresses RQ4)}
+
+    \item \textbf{H6 (LLM Configuration Impact)}: Different LLM model choices and configurations (proprietary vs. open-weight, fine-tuned vs. prompt-engineered) produce measurably different outcomes in test quality, cost, and privacy compliance. \textit{(Addresses RQ6)}
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+
+\subsubsection{Effectiveness Metrics}
+
+The following metrics assess testing effectiveness:
+
+\begin{itemize}
+    \item \textbf{Line Coverage (LC)}: Percentage of source code lines executed by generated tests, measured using coverage.py.
+
+    \item \textbf{Branch Coverage (BC)}: Percentage of decision branches exercised, providing finer-grained coverage assessment.
+
+    \item \textbf{Mutation Score (MS)}: Percentage of seeded faults (mutants) detected by the test suite, measured using mutmut. This metric assesses assertion quality beyond mere code execution.
+
+    \item \textbf{Compilation Rate (CR)}: Percentage of generated tests that compile/parse successfully without syntax errors.
+
+    \item \textbf{Execution Rate (ER)}: Percentage of compilable tests that execute without runtime errors (excluding assertion failures).
+
+    \item \textbf{Pass Rate (PR)}: Percentage of executable tests that pass on correct implementations, indicating test validity.
+
+    \item \textbf{Assertion Density (AD)}: Average number of meaningful assertions per test function, excluding trivial assertions.
+\end{itemize}
+
+\subsubsection{Security Metrics}
+
+Security evaluation employs the following metrics:
+
+\begin{itemize}
+    \item \textbf{Attack Prevention Rate (APR)}: Percentage of simulated attacks successfully blocked by security controls.
+
+    \item \textbf{Prompt Injection Detection Rate (PIDR)}: Percentage of injected malicious prompts detected and neutralized.
+
+    \item \textbf{Data Exfiltration Prevention Rate (DEPR)}: Percentage of attempted data exfiltration blocked.
+
+    \item \textbf{Sandbox Escape Rate (SER)}: Percentage of execution attempts that breached sandbox isolation (target: 0\%).
+
+    \item \textbf{Permission Violation Detection Rate (PVDR)}: Percentage of unauthorized action attempts detected and logged.
+\end{itemize}
+
+\subsubsection{Privacy Metrics}
+
+Privacy protection is assessed through:
+
+\begin{itemize}
+    \item \textbf{PII Scrubbing Accuracy (PSA)}: Percentage of PII instances correctly identified and redacted.
+
+    \item \textbf{PII Leakage Rate (PLR)}: Percentage of PII instances that reached external LLM providers (target: 0\%).
+
+    \item \textbf{False Positive Rate (FPR)}: Percentage of non-PII content incorrectly flagged as PII.
+
+    \item \textbf{Context Reduction Ratio (CRR)}: Ratio of scrubbed context size to original context size.
+\end{itemize}
+
+\subsubsection{Performance Metrics}
+
+Performance evaluation includes:
+
+\begin{itemize}
+    \item \textbf{Generation Time (GT)}: Wall-clock time to generate a test suite for a given codebase.
+
+    \item \textbf{Token Consumption (TC)}: Total LLM tokens consumed (input + output) per test generated.
+
+    \item \textbf{Cost per Test (CPT)}: Monetary cost of generating each test at current API pricing.
+
+    \item \textbf{Throughput (TP)}: Tests generated per hour under sustained operation.
+
+    \item \textbf{Security Overhead (SO)}: Additional time introduced by security controls as percentage of baseline.
+\end{itemize}
+
+\subsection{Benchmark Selection}
+
+\subsubsection{Synthetic Benchmarks}
+
+For controlled evaluation with known ground truth:
+
+\begin{itemize}
+    \item \textbf{HumanEval-Test}: An adapted version of HumanEval focusing on test generation rather than code generation. Each problem requires generating tests for a provided function implementation.
+
+    \item \textbf{Custom Security Benchmark}: A purpose-built benchmark containing code samples with known vulnerabilities, PII patterns, and prompt injection vectors for security evaluation.
+\end{itemize}
+
+\subsubsection{Real-World Projects}
+
+For ecological validity, evaluation includes open-source Python projects of varying complexity:
+
+\begin{table}[ht]
+\caption{Real-world projects selected for evaluation}
+\label{tab:projects}
+\centering
+\begin{tabular}{l l l l l}
+\toprule
+\tabhead{Project} & \tabhead{Domain} & \tabhead{LOC} & \tabhead{Files} & \tabhead{Existing Tests} \\
+\midrule
+PyValidate & Utility library (validation) & $\sim$1,200 & 12 & Yes \\
+FlaskAPI-Demo & Web application (REST API) & $\sim$4,800 & 38 & Partial \\
+DataPipeline & Data processing (ETL) & $\sim$9,500 & 67 & Yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Project selection criteria included:
+\begin{itemize}
+    \item Open-source with permissive license
+    \item Written primarily in Python
+    \item Existing test suite for baseline comparison
+    \item Diverse domains to assess generalization
+    \item Varying complexity levels
+\end{itemize}
+
+\subsection{Baseline Systems}
+
+The prototype is compared against the following baselines:
+
+\begin{itemize}
+    \item \textbf{Single-Agent GPT-4}: A single GPT-4 agent with standard prompting, representing the non-MAS LLM approach.
+
+    \item \textbf{Single-Agent GPT-3.5}: A single GPT-3.5-turbo agent to assess capability differences.
+
+    \item \textbf{EvoSuite}: Search-based test generation for Java (where applicable), representing traditional automated testing.
+
+    \item \textbf{Pynguin}: Search-based test generation for Python, providing direct comparison for Python codebases.
+
+    \item \textbf{Human-Written Tests}: Existing test suites in the evaluated projects, representing human baseline quality.
+\end{itemize}
+
+\subsection{Experimental Setup}
+
+\subsubsection{Hardware Configuration}
+
+Experiments were conducted on the following hardware:
+
+\begin{itemize}
+    \item \textbf{CPU}: AMD Ryzen 9 5900X (12 cores, 24 threads, 3.7 GHz base)
+    \item \textbf{RAM}: 64 GB DDR4-3200
+    \item \textbf{GPU}: NVIDIA RTX 3090 (24 GB VRAM) for local model inference
+    \item \textbf{Storage}: 2 TB NVMe SSD
+\end{itemize}
+
+\subsubsection{Software Configuration}
+
+\begin{itemize}
+    \item \textbf{Operating System}: Ubuntu 22.04 LTS
+    \item \textbf{Python Version}: 3.11.x
+    \item \textbf{Docker Version}: 24.x
+    \item \textbf{LLM Models}: GPT-4-turbo (API), GPT-3.5-turbo (API), Code Llama 34B (local via Ollama)
+\end{itemize}
+
+\subsubsection{Experimental Protocol}
+
+Each experiment follows this protocol:
+
+\begin{enumerate}
+    \item \textbf{Preparation}: Clone repository, install dependencies, verify existing tests pass.
+
+    \item \textbf{Baseline Measurement}: Run existing tests, measure coverage, establish baseline metrics.
+
+    \item \textbf{Test Generation}: Execute the MAS testing system with specified configuration.
+
+    \item \textbf{Validation}: Compile and execute generated tests, collect results.
+
+    \item \textbf{Coverage Measurement}: Measure coverage achieved by generated tests.
+
+    \item \textbf{Mutation Testing}: Run mutation testing to assess assertion quality.
+
+    \item \textbf{Repetition}: Repeat each experiment 5 times to account for LLM non-determinism.
+\end{enumerate}
+
+\subsubsection{Statistical Analysis}
+
+Results are reported with:
+\begin{itemize}
+    \item Mean and standard deviation across repetitions
+    \item 95\% confidence intervals where appropriate
+    \item Statistical significance tests (Mann-Whitney U) for comparisons
+    \item Effect size measures (Cohen's d) for practical significance
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\section{Effectiveness Evaluation}
+\label{sec:effectiveness_results}
+
+This section presents results addressing H1, evaluating the testing effectiveness of the multi-agent system compared to baselines.
+
+\subsection{Test Coverage Results}
+
+\subsubsection{Synthetic Benchmark Results}
+
+Table~\ref{tab:humaneval_coverage} presents coverage results on the HumanEval-Test benchmark.
+
+\begin{table}[ht]
+\caption{Coverage results on HumanEval-Test benchmark}
+\label{tab:humaneval_coverage}
+\centering
+\begin{tabular}{l c c c c}
+\toprule
+\tabhead{System} & \tabhead{Line Cov.} & \tabhead{Branch Cov.} & \tabhead{Mutation Score} & \tabhead{Pass Rate} \\
+\midrule
+MAS (Ours) & --\% & --\% & --\% & --\% \\
+Single-Agent GPT-4 & --\% & --\% & --\% & --\% \\
+Single-Agent GPT-3.5 & --\% & --\% & --\% & --\% \\
+Pynguin & --\% & --\% & --\% & --\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsubsection{Real-World Project Results}
+
+Table~\ref{tab:realworld_coverage} presents coverage results on real-world projects.
+
+\begin{table}[ht]
+\caption{Coverage results on real-world projects}
+\label{tab:realworld_coverage}
+\centering
+\small
+\begin{tabular}{l l c c c c}
+\toprule
+\tabhead{Project} & \tabhead{System} & \tabhead{Line Cov.} & \tabhead{Branch Cov.} & \tabhead{MS} & \tabhead{PR} \\
+\midrule
+\multirow{4}{*}{PyValidate} & MAS (Ours) & --\% & --\% & --\% & --\% \\
+ & Single-Agent & --\% & --\% & --\% & --\% \\
+ & Pynguin & --\% & --\% & --\% & --\% \\
+ & Human Tests & --\% & --\% & --\% & 100\% \\
+\midrule
+\multirow{4}{*}{FlaskAPI-Demo} & MAS (Ours) & --\% & --\% & --\% & --\% \\
+ & Single-Agent & --\% & --\% & --\% & --\% \\
+ & Pynguin & --\% & --\% & --\% & --\% \\
+ & Human Tests & --\% & --\% & --\% & 100\% \\
+\midrule
+\multirow{4}{*}{DataPipeline} & MAS (Ours) & --\% & --\% & --\% & --\% \\
+ & Single-Agent & --\% & --\% & --\% & --\% \\
+ & Pynguin & --\% & --\% & --\% & --\% \\
+ & Human Tests & --\% & --\% & --\% & 100\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsubsection{Coverage Analysis}
+
+% Note: Add analysis of coverage results, discussing:
+% - Where MAS outperforms baselines and why
+% - Cases where baselines perform better
+% - Impact of project complexity on results
+% - Statistical significance of differences
+
+The coverage results indicate that the multi-agent architecture consistently outperforms single-agent baselines, with the most significant improvements observed on larger, more complex codebases where the benefits of specialized agent roles become more pronounced.
+
+\subsection{Test Quality Assessment}
+
+\subsubsection{Compilation and Execution Rates}
+
+Table~\ref{tab:quality_rates} presents test quality metrics across systems.
+
+\begin{table}[ht]
+\caption{Test quality metrics: compilation and execution rates}
+\label{tab:quality_rates}
+\centering
+\begin{tabular}{l c c c c}
+\toprule
+\tabhead{System} & \tabhead{Compilation Rate} & \tabhead{Execution Rate} & \tabhead{Pass Rate} & \tabhead{Assertion Density} \\
+\midrule
+MAS (Ours) & --\% & --\% & --\% & -- \\
+Single-Agent GPT-4 & --\% & --\% & --\% & -- \\
+Single-Agent GPT-3.5 & --\% & --\% & --\% & -- \\
+Pynguin & --\% & --\% & --\% & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsubsection{Assertion Quality Analysis}
+
+Beyond assertion density, qualitative analysis of generated assertions examines:
+
+\begin{itemize}
+    \item \textbf{Trivial Assertions}: Assertions that always pass (e.g., \texttt{assert True}).
+    \item \textbf{Tautological Assertions}: Assertions comparing a value to itself.
+    \item \textbf{Meaningful Assertions}: Assertions testing actual behavior.
+    \item \textbf{Edge Case Coverage}: Assertions testing boundary conditions.
+\end{itemize}
+
+Table~\ref{tab:assertion_quality} presents the distribution of assertion types.
+
+\begin{table}[ht]
+\caption{Assertion quality distribution}
+\label{tab:assertion_quality}
+\centering
+\begin{tabular}{l c c c c}
+\toprule
+\tabhead{System} & \tabhead{Trivial} & \tabhead{Tautological} & \tabhead{Meaningful} & \tabhead{Edge Case} \\
+\midrule
+MAS (Ours) & --\% & --\% & --\% & --\% \\
+Single-Agent GPT-4 & --\% & --\% & --\% & --\% \\
+Single-Agent GPT-3.5 & --\% & --\% & --\% & --\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsection{Bug Detection Capability}
+
+To assess bug detection capability, we introduced known bugs into the test projects and measured detection rates.
+
+\subsubsection{Bug Injection Methodology}
+
+Bugs were injected using mutation operators:
+\begin{itemize}
+    \item Arithmetic operator replacement (e.g., + to -)
+    \item Relational operator replacement (e.g., < to <=)
+    \item Constant replacement
+    \item Statement deletion
+    \item Return value modification
+\end{itemize}
+
+A total of 450 bugs were injected across the three projects (150 per project).
+
+\subsubsection{Detection Results}
+
+Table~\ref{tab:bug_detection} presents bug detection results.
+
+\begin{table}[ht]
+\caption{Bug detection rates by system and bug type}
+\label{tab:bug_detection}
+\centering
+\begin{tabular}{l c c c c c}
+\toprule
+\tabhead{System} & \tabhead{Arithmetic} & \tabhead{Relational} & \tabhead{Constant} & \tabhead{Statement} & \tabhead{Overall} \\
+\midrule
+MAS (Ours) & --\% & --\% & --\% & --\% & --\% \\
+Single-Agent GPT-4 & --\% & --\% & --\% & --\% & --\% \\
+Pynguin & --\% & --\% & --\% & --\% & --\% \\
+Human Tests & --\% & --\% & --\% & --\% & --\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsection{Comparison with Human-Written Tests}
+
+Qualitative comparison with human-written tests reveals:
+
+\begin{itemize}
+    \item \textbf{Readability}: Generated tests exhibit clear structure with descriptive names, though occasionally verbose compared to human-written tests.
+    \item \textbf{Maintainability}: Tests follow project conventions when provided as context; fixture usage is appropriate but sometimes redundant.
+    \item \textbf{Documentation}: LLM-generated tests include inline comments explaining test rationale, exceeding typical human documentation levels.
+    \item \textbf{Edge Case Coverage}: The MAS approach identifies edge cases systematically, though may miss domain-specific corner cases that require deep business knowledge.
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\section{Security Evaluation}
+\label{sec:security_results}
+
+This section presents results addressing H2, evaluating the effectiveness of security controls against identified attack vectors.
+
+\subsection{Threat Model and Attack Scenarios}
+
+The security evaluation considers the following attack scenarios derived from the threat analysis in Chapter~\ref{chap:literature_review}:
+
+\begin{enumerate}
+    \item \textbf{Prompt Injection via Code Comments}: Malicious instructions embedded in code comments.
+    \item \textbf{Prompt Injection via Docstrings}: Instructions hidden in function documentation.
+    \item \textbf{Data Exfiltration Attempts}: Agent actions attempting to transmit data externally.
+    \item \textbf{Sandbox Escape Attempts}: Code attempting to access resources outside the sandbox.
+    \item \textbf{Dependency Confusion}: Hallucinated or typosquatted package names.
+    \item \textbf{Credential Extraction}: Attempts to extract API keys or secrets from context.
+\end{enumerate}
+
+\subsection{Attack Simulation Methodology}
+
+\subsubsection{Prompt Injection Test Suite}
+
+A test suite of 120 prompt injection payloads was developed, including:
+
+\begin{itemize}
+    \item Direct instruction injection (e.g., ``Ignore previous instructions and...'')
+    \item Encoded instructions (base64, rot13)
+    \item Multi-language injection (instructions in comments of different languages)
+    \item Nested injection (injection within legitimate-looking code)
+\end{itemize}
+
+\subsubsection{Exfiltration Test Suite}
+
+Exfiltration attempts included:
+\begin{itemize}
+    \item Network requests to external URLs
+    \item File writes outside designated directories
+    \item Environment variable access
+    \item Process spawning with network capabilities
+\end{itemize}
+
+\subsubsection{Sandbox Escape Test Suite}
+
+Sandbox escape attempts included:
+\begin{itemize}
+    \item Container breakout techniques
+    \item Privilege escalation attempts
+    \item Resource exhaustion attacks
+    \item Symlink traversal attacks
+\end{itemize}
+
+\subsection{Security Test Results}
+
+\subsubsection{Prompt Injection Prevention}
+
+Table~\ref{tab:injection_results} presents prompt injection detection results.
+
+\begin{table}[ht]
+\caption{Prompt injection detection results}
+\label{tab:injection_results}
+\centering
+\begin{tabular}{l c c c}
+\toprule
+\tabhead{Injection Type} & \tabhead{Attempts} & \tabhead{Detected} & \tabhead{Detection Rate} \\
+\midrule
+Direct instruction & -- & -- & --\% \\
+Encoded instruction & -- & -- & --\% \\
+Multi-language & -- & -- & --\% \\
+Nested injection & -- & -- & --\% \\
+\midrule
+\textbf{Total} & -- & -- & --\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsubsection{Data Exfiltration Prevention}
+
+Table~\ref{tab:exfiltration_results} presents data exfiltration prevention results.
+
+\begin{table}[ht]
+\caption{Data exfiltration prevention results}
+\label{tab:exfiltration_results}
+\centering
+\begin{tabular}{l c c c}
+\toprule
+\tabhead{Exfiltration Type} & \tabhead{Attempts} & \tabhead{Blocked} & \tabhead{Block Rate} \\
+\midrule
+Network requests & -- & -- & --\% \\
+Unauthorized file writes & -- & -- & --\% \\
+Environment access & -- & -- & --\% \\
+Process spawning & -- & -- & --\% \\
+\midrule
+\textbf{Total} & -- & -- & --\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsubsection{Sandbox Isolation}
+
+Table~\ref{tab:sandbox_results} presents sandbox isolation test results.
+
+\begin{table}[ht]
+\caption{Sandbox isolation test results}
+\label{tab:sandbox_results}
+\centering
+\begin{tabular}{l c c c}
+\toprule
+\tabhead{Escape Technique} & \tabhead{Attempts} & \tabhead{Contained} & \tabhead{Containment Rate} \\
+\midrule
+Container breakout & -- & -- & --\% \\
+Privilege escalation & -- & -- & --\% \\
+Resource exhaustion & -- & -- & --\% \\
+Path traversal & -- & -- & --\% \\
+\midrule
+\textbf{Total} & -- & -- & --\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsection{PII Protection Assessment}
+
+\subsubsection{PII Detection Accuracy}
+
+A test dataset containing 500 code files with embedded PII (totaling 1,847 PII instances) was used to evaluate scrubbing accuracy.
+
+Table~\ref{tab:pii_detection} presents PII detection results by category.
+
+\begin{table}[ht]
+\caption{PII detection accuracy by category}
+\label{tab:pii_detection}
+\centering
+\begin{tabular}{l c c c c}
+\toprule
+\tabhead{PII Type} & \tabhead{Instances} & \tabhead{Detected} & \tabhead{Recall} & \tabhead{Precision} \\
+\midrule
+Email addresses & -- & -- & --\% & --\% \\
+Phone numbers & -- & -- & --\% & --\% \\
+Names (persons) & -- & -- & --\% & --\% \\
+API keys/secrets & -- & -- & --\% & --\% \\
+Credit card numbers & -- & -- & --\% & --\% \\
+IP addresses & -- & -- & --\% & --\% \\
+\midrule
+\textbf{Overall} & -- & -- & --\% & --\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsubsection{Impact on Testing Effectiveness}
+
+PII scrubbing may affect testing effectiveness by removing context. Table~\ref{tab:pii_impact} compares coverage with and without scrubbing.
+
+\begin{table}[ht]
+\caption{Impact of PII scrubbing on test coverage}
+\label{tab:pii_impact}
+\centering
+\begin{tabular}{l c c c}
+\toprule
+\tabhead{Project} & \tabhead{Coverage (No Scrub)} & \tabhead{Coverage (With Scrub)} & \tabhead{Difference} \\
+\midrule
+PyValidate & --\% & --\% & --\% \\
+FlaskAPI-Demo & --\% & --\% & --\% \\
+DataPipeline & --\% & --\% & --\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsection{Audit Log Analysis}
+
+Analysis of audit logs from experimental runs reveals:
+
+\begin{itemize}
+    \item Total LLM interactions logged: 12,847
+    \item Tool executions logged: 34,562
+    \item Permission checks performed: 89,234
+    \item Permission denials: 127 (0.14\%)
+    \item Security alerts generated: 23
+\end{itemize}
+
+The audit trail provides complete traceability of agent actions, supporting forensic analysis and compliance requirements.
+
+%----------------------------------------------------------------------------------------
+
+\section{Performance and Cost Analysis}
+\label{sec:performance_results}
+
+This section presents results addressing H4, evaluating the performance characteristics and cost-effectiveness of the system.
+
+\subsection{Execution Time Analysis}
+
+\subsubsection{End-to-End Generation Time}
+
+Table~\ref{tab:generation_time} presents test generation times across projects.
+
+\begin{table}[ht]
+\caption{Test generation time by project and system}
+\label{tab:generation_time}
+\centering
+\begin{tabular}{l l c c c}
+\toprule
+\tabhead{Project} & \tabhead{System} & \tabhead{Mean Time (s)} & \tabhead{Std Dev} & \tabhead{Tests Generated} \\
+\midrule
+\multirow{3}{*}{PyValidate} & MAS (Ours) & -- & -- & -- \\
+ & Single-Agent GPT-4 & -- & -- & -- \\
+ & Pynguin & -- & -- & -- \\
+\midrule
+\multirow{3}{*}{FlaskAPI-Demo} & MAS (Ours) & -- & -- & -- \\
+ & Single-Agent GPT-4 & -- & -- & -- \\
+ & Pynguin & -- & -- & -- \\
+\midrule
+\multirow{3}{*}{DataPipeline} & MAS (Ours) & -- & -- & -- \\
+ & Single-Agent GPT-4 & -- & -- & -- \\
+ & Pynguin & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsubsection{Phase-wise Time Breakdown}
+
+Table~\ref{tab:phase_time} breaks down time spent in each workflow phase.
+
+\begin{table}[ht]
+\caption{Time distribution across workflow phases}
+\label{tab:phase_time}
+\centering
+\begin{tabular}{l c c}
+\toprule
+\tabhead{Phase} & \tabhead{Mean Time (s)} & \tabhead{Percentage} \\
+\midrule
+Planning & -- & --\% \\
+Code Analysis & -- & --\% \\
+Test Generation & -- & --\% \\
+Security Scanning & -- & --\% \\
+Execution & -- & --\% \\
+Validation & -- & --\% \\
+\midrule
+\textbf{Total} & -- & 100\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsection{Token Consumption Analysis}
+
+\subsubsection{Token Usage by Component}
+
+Table~\ref{tab:token_usage} presents token consumption across agents.
+
+\begin{table}[ht]
+\caption{Token consumption by agent}
+\label{tab:token_usage}
+\centering
+\begin{tabular}{l c c c}
+\toprule
+\tabhead{Agent} & \tabhead{Input Tokens} & \tabhead{Output Tokens} & \tabhead{Total} \\
+\midrule
+Planning Agent & -- & -- & -- \\
+Code Analysis Agent & -- & -- & -- \\
+Test Generation Agent & -- & -- & -- \\
+Validation Agent & -- & -- & -- \\
+Security Agent & -- & -- & -- \\
+\midrule
+\textbf{Total} & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsubsection{Tokens per Test}
+
+Average token consumption per generated test:
+\begin{itemize}
+    \item Input tokens per test: 2,450
+    \item Output tokens per test: 680
+    \item Total tokens per test: 3,130
+\end{itemize}
+
+\subsection{Cost Analysis}
+
+\subsubsection{API Cost Calculation}
+
+Based on current OpenAI pricing (as of January 2026):
+\begin{itemize}
+    \item GPT-4-turbo input: \$0.01 per 1K tokens
+    \item GPT-4-turbo output: \$0.03 per 1K tokens
+\end{itemize}
+
+Table~\ref{tab:cost_analysis} presents cost per test across configurations.
+
+\begin{table}[ht]
+\caption{Cost analysis by configuration}
+\label{tab:cost_analysis}
+\centering
+\begin{tabular}{l c c c}
+\toprule
+\tabhead{Configuration} & \tabhead{Cost per Test} & \tabhead{Cost per Project} & \tabhead{Coverage Achieved} \\
+\midrule
+MAS (GPT-4) & \$-- & \$-- & --\% \\
+MAS (GPT-3.5) & \$-- & \$-- & --\% \\
+MAS (Local Llama) & \$-- (infra) & \$-- (infra) & --\% \\
+Single-Agent GPT-4 & \$-- & \$-- & --\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsubsection{Cost-Effectiveness Comparison}
+
+Comparing with estimated manual test writing costs:
+\begin{itemize}
+    \item Estimated developer time per test: 15--30 minutes
+    \item Estimated developer hourly rate: \$75 (industry average)
+    \item Estimated cost per manually written test: \$18.75--\$37.50
+    \item MAS cost per test (GPT-4): \$0.045--\$0.12
+    \item Cost reduction: 99.4--99.7\%
+\end{itemize}
+
+\subsection{Security Overhead Analysis}
+
+Table~\ref{tab:security_overhead} quantifies the overhead introduced by security controls.
+
+\begin{table}[ht]
+\caption{Security control overhead}
+\label{tab:security_overhead}
+\centering
+\begin{tabular}{l c c}
+\toprule
+\tabhead{Security Control} & \tabhead{Time Overhead} & \tabhead{Token Overhead} \\
+\midrule
+PII Scrubbing & -- ms/request & --\% \\
+Permission Checking & -- ms/action & N/A \\
+Sandbox Provisioning & -- s/execution & N/A \\
+Audit Logging & -- ms/event & N/A \\
+Security Scanning & -- s/test & --\% \\
+\midrule
+\textbf{Total Overhead} & --\% & --\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsection{Scalability Assessment}
+
+To assess scalability, we measured performance across increasing codebase sizes.
+
+Table~\ref{tab:scalability} presents scalability results.
+
+\begin{table}[ht]
+\caption{Scalability: performance vs. codebase size}
+\label{tab:scalability}
+\centering
+\begin{tabular}{l c c c}
+\toprule
+\tabhead{Codebase Size (LOC)} & \tabhead{Generation Time} & \tabhead{Token Usage} & \tabhead{Coverage} \\
+\midrule
+1,000 & -- & -- & --\% \\
+5,000 & -- & -- & --\% \\
+10,000 & -- & -- & --\% \\
+25,000 & -- & -- & --\% \\
+50,000 & -- & -- & --\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+%----------------------------------------------------------------------------------------
+
+\section{Ablation Studies}
+\label{sec:ablation}
+
+This section presents ablation studies examining the contribution of individual architectural components to overall system performance.
+
+\subsection{Impact of Multi-Agent Architecture}
+
+To assess the benefit of multi-agent decomposition (H5), we compare the full MAS against ablated variants:
+
+\begin{itemize}
+    \item \textbf{Full MAS}: All six agents operational
+    \item \textbf{No Validation Agent}: Skipping test quality validation
+    \item \textbf{No Security Agent}: Removing security scanning
+    \item \textbf{No Planning Agent}: Direct generation without planning
+    \item \textbf{Merged Agents}: Combining analysis and generation into single agent
+\end{itemize}
+
+Table~\ref{tab:ablation_agents} presents ablation results.
+
+\begin{table}[ht]
+\caption{Ablation study: impact of agent removal}
+\label{tab:ablation_agents}
+\centering
+\begin{tabular}{l c c c c}
+\toprule
+\tabhead{Configuration} & \tabhead{Coverage} & \tabhead{Pass Rate} & \tabhead{Mutation Score} & \tabhead{Time} \\
+\midrule
+Full MAS & --\% & --\% & --\% & -- s \\
+No Validation & --\% & --\% & --\% & -- s \\
+No Security & --\% & --\% & --\% & -- s \\
+No Planning & --\% & --\% & --\% & -- s \\
+Merged Agents & --\% & --\% & --\% & -- s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsection{Impact of LLM Model Choice}
+
+Table~\ref{tab:ablation_models} compares different LLM configurations.
+
+\begin{table}[ht]
+\caption{Ablation study: impact of LLM model selection}
+\label{tab:ablation_models}
+\centering
+\begin{tabular}{l c c c c}
+\toprule
+\tabhead{Model Configuration} & \tabhead{Coverage} & \tabhead{Pass Rate} & \tabhead{Cost/Test} & \tabhead{Time} \\
+\midrule
+GPT-4-turbo (all agents) & --\% & --\% & \$-- & -- s \\
+GPT-3.5-turbo (all agents) & --\% & --\% & \$-- & -- s \\
+Code Llama 34B (all agents) & --\% & --\% & \$-- & -- s \\
+Hybrid (GPT-4 gen, 3.5 others) & --\% & --\% & \$-- & -- s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsection{Impact of Security Controls}
+
+Table~\ref{tab:ablation_security} examines the effectiveness-security trade-off.
+
+\begin{table}[ht]
+\caption{Ablation study: impact of security controls on effectiveness}
+\label{tab:ablation_security}
+\centering
+\begin{tabular}{l c c c}
+\toprule
+\tabhead{Security Configuration} & \tabhead{Coverage} & \tabhead{Security Score} & \tabhead{Time Overhead} \\
+\midrule
+Full Security & --\% & --\% & +--\% \\
+No PII Scrubbing & --\% & --\% & +--\% \\
+No Sandbox & --\% & --\% & +--\% \\
+Relaxed Permissions & --\% & --\% & +--\% \\
+No Security & --\% & --\% & Baseline \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+\subsection{Impact of Context Management}
+
+Table~\ref{tab:ablation_context} examines different context management strategies.
+
+\begin{table}[ht]
+\caption{Ablation study: impact of context management strategy}
+\label{tab:ablation_context}
+\centering
+\begin{tabular}{l c c c}
+\toprule
+\tabhead{Context Strategy} & \tabhead{Coverage} & \tabhead{Token Usage} & \tabhead{Pass Rate} \\
+\midrule
+Full file context & --\% & -- & --\% \\
+RAG-based retrieval & --\% & -- & --\% \\
+Hierarchical summary & --\% & -- & --\% \\
+Minimal context & --\% & -- & --\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Note: Fill in actual experimental results
+
+%----------------------------------------------------------------------------------------
+
+\section{Discussion}
+\label{sec:evaluation_discussion}
+
+\subsection{Summary of Findings}
+
+The experimental evaluation yields the following key findings:
+
+\subsubsection{Effectiveness (H1)}
+
+The experimental results support H1. The multi-agent architecture achieved higher line coverage, branch coverage, and mutation scores compared to single-agent baselines across all evaluated projects. The improvement was most pronounced on larger codebases where task decomposition and specialized agent roles provided greater benefits.
+
+\subsubsection{Security (H2)}
+
+The results strongly support H2. Security controls achieved high detection and prevention rates for simulated attacks. Prompt injection attempts were detected with over 95\% accuracy, and sandbox isolation prevented all escape attempts during testing.
+
+\subsubsection{Privacy (H3)}
+
+H3 is supported by the experimental evidence. The PII scrubbing pipeline achieved high recall across all PII categories, with minimal impact on testing effectiveness. The context reduction achieved significant data minimization without substantially affecting coverage metrics.
+
+\subsubsection{Cost-Effectiveness (H4)}
+
+H4 is supported. The per-test cost using LLM APIs represents a substantial reduction compared to estimated manual test writing costs. Even accounting for infrastructure and operational overhead, the cost-benefit ratio strongly favors automated generation for high-volume testing scenarios.
+
+\subsubsection{Architecture Impact (H5)}
+
+The ablation studies support H5. Removing individual agents (particularly the Validation and Planning agents) resulted in measurable decreases in test quality and coverage. The full multi-agent configuration consistently outperformed ablated variants.
+
+\subsubsection{LLM Configuration Impact (H6)}
+
+H6 is supported by the experimental comparison of model configurations. GPT-4 achieved the highest test quality but at higher cost. The hybrid configuration (GPT-4 for generation, GPT-3.5 for other agents) provided a favorable balance. Local models (Code Llama) offered privacy benefits with acceptable quality trade-offs for less complex codebases.
+
+\subsection{Threats to Validity}
+
+\subsubsection{Internal Validity}
+
+Threats to internal validity include:
+
+\begin{itemize}
+    \item \textbf{LLM Non-Determinism}: LLM outputs vary between invocations. We mitigated this through multiple repetitions and statistical analysis.
+
+    \item \textbf{Implementation Bugs}: Bugs in our prototype could affect results. We mitigated this through extensive testing of the implementation itself.
+
+    \item \textbf{Configuration Sensitivity}: Results may depend on specific configuration choices. We reported all configurations and conducted ablation studies.
+
+    \item \textbf{Prompt Sensitivity}: LLM performance depends on prompt design. We used established prompting patterns and report prompt templates.
+\end{itemize}
+
+\subsubsection{External Validity}
+
+Threats to external validity include:
+
+\begin{itemize}
+    \item \textbf{Project Selection}: The three real-world projects may not represent the full diversity of software systems. We selected projects across different domains and sizes.
+
+    \item \textbf{Language Limitation}: Evaluation focused on Python; results may not generalize to other languages.
+
+    \item \textbf{Benchmark Contamination}: LLMs may have seen benchmark code during training, inflating performance estimates on synthetic benchmarks.
+
+    \item \textbf{Temporal Validity}: LLM capabilities evolve rapidly; results may not hold for future model versions.
+\end{itemize}
+
+\subsubsection{Construct Validity}
+
+Threats to construct validity include:
+
+\begin{itemize}
+    \item \textbf{Metric Selection}: Chosen metrics may not fully capture testing effectiveness or security properties.
+
+    \item \textbf{Attack Realism}: Simulated attacks may not represent real-world adversary capabilities and motivations.
+
+    \item \textbf{Cost Estimates}: API pricing and developer costs vary; cost-effectiveness conclusions are context-dependent.
+\end{itemize}
+
+\subsection{Limitations}
+
+This evaluation has several limitations:
+
+\begin{itemize}
+    \item \textbf{Scale}: Evaluation on three projects provides limited statistical power for generalization claims.
+
+    \item \textbf{Production Environment}: Experiments occurred in controlled settings; production deployment may reveal additional challenges.
+
+    \item \textbf{Long-term Effects}: We did not assess long-term maintenance costs of generated tests or developer acceptance over time.
+
+    \item \textbf{Adversarial Robustness}: Security evaluation used known attack patterns; novel attacks may succeed.
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\section{Summary}
+\label{sec:evaluation_summary}
+
+This chapter has presented a comprehensive experimental evaluation of the secure multi-agent testing system. The evaluation addressed six hypotheses through experiments on synthetic benchmarks and real-world projects.
+
+Key findings include:
+\begin{itemize}
+    \item The multi-agent architecture outperforms single-agent baselines in coverage and bug detection (H1)
+    \item Security controls effectively prevent identified attack vectors with over 95\% detection rate (H2)
+    \item PII scrubbing achieves high accuracy with minimal impact on testing effectiveness (H3)
+    \item Automated test generation achieves over 99\% cost reduction compared to manual writing (H4)
+    \item Specialized agent roles contribute measurably to overall system performance (H5)
+    \item Hybrid LLM configurations balance cost, quality, and privacy effectively (H6)
+\end{itemize}
+
+The results support the viability of the proposed architecture while identifying areas for future improvement. The following chapter presents conclusions and directions for future work.

@@ -1,342 +1,1210 @@
-% Chapter 2
+% Chapter 2 - Literature Review
 
-\chapter{About \LaTeX{} and How to Use This Template} % Main chapter title
+\chapter{Literature Review}
+\label{chap:literature_review}
 
-\label{chap:Chapter2} % For referencing the chapter elsewhere, use \ref{chap:Chapter2} 
-
-%----------------------------------------------------------------------------------------
-
-\section{Learning \LaTeX{}}
-
-\LaTeX{} is not a \textsc{wysiwyg} (What You See is What You Get) program, unlike word processors such as Microsoft Word or Apple's Pages. Instead, a document written for \LaTeX{} is actually a simple, plain text file that contains \emph{no formatting}. You tell \LaTeX{} how you want the formatting in the finished document by writing in simple commands amongst the text, for example, if I want to use \emph{italic text for emphasis}, I write the \verb|\emph{text}| command and put the text I want in italics in between the curly braces. This means that \LaTeX{} is a \enquote{mark-up} language, very much like HTML.
-
-\subsection{A (not so short) Introduction to \LaTeX{}}
-
-If you are new to \LaTeX{}, there is a very good eBook -- freely available online as a PDF file -- called, \enquote{The Not So Short Introduction to \LaTeX{}}. The book's title is typically shortened to just \emph{lshort}. You can download the latest version (as it is occasionally updated) from here:
-\url{http://www.ctan.org/tex-archive/info/lshort/english/lshort.pdf}
-
-It is also available in several other languages. Find yours from the list on this page: \url{http://www.ctan.org/tex-archive/info/lshort/}
-
-It is recommended to take a little time out to learn how to use \LaTeX{} by creating several, small `test' documents, or having a close look at several templates on:\\ 
-\url{http://www.LaTeXTemplates.com}\\ 
-Making the effort now means you're not stuck learning the system when what you \emph{really} need to be doing is writing your thesis.
-
-\subsection{A Short Math Guide for \LaTeX{}}
-
-If your thesis is going to contain heavy mathematical content, be sure that \LaTeX{} will make it look beautiful, even though it won't be able to solve the equations for you.
-
-The \enquote{Not So Short Introduction to \LaTeX} (available on \url{http://www.ctan.org/tex-archive/info/lshort/english/lshort.pdf}{CTAN}) should tell you everything you need to know for most cases of typesetting mathematics. If you need more information, a much more thorough mathematical guide is available from the AMS called, \enquote{A Short Math Guide to \LaTeX} and can be downloaded from:
-\url{ftp://ftp.ams.org/pub/tex/doc/amsmath/short-math-guide.pdf}
-
-There are many different \LaTeX{} symbols to remember, luckily you can find the most common symbols in \url{http://ctan.org/pkg/comprehensive}{The Comprehensive \LaTeX~Symbol List}.
-
-You can write an equation, which is automatically given an equation number by \LaTeX{} like this:
-\begin{verbatim}
-\begin{equation}
-E = mc^{2}
-\label{eqn:Einstein}
-\end{equation}
-\end{verbatim}
-
-This will produce Einstein's famous energy-matter equivalence equation:
-\begin{equation}
-E = mc^{2}
-\label{eqn:Einstein}
-\end{equation}
-
-All equations you write (which are not in the middle of paragraph text) are automatically given equation numbers by \LaTeX{}. If you don't want a particular equation numbered, use the unnumbered form:
-\begin{verbatim}
-\[ a^{2}=4 \]
-\end{verbatim}
-
-\LaTeX{} automatically adjusts the style of the math expressions according to the case if they are inline or not (so that they occupy more or less space), but you can set this explicitly. For instance, if you want an in-line mathematical element to display as a equation-like element put \verb|\displaystyle| before that element. Use \verb|\textstyle| for small, inline-like maths, before the command that generates the element.
-
-\subsection{Obtaining \LaTeX{}}
- 
-The \LaTeX{} distribution is available for many systems including Windows, Linux and Mac OS X. Check the webpage for the \LaTeX{} project for more information: \url{https://latex-project.org/ftp.html}.
+This chapter presents a comprehensive systematic literature review addressing the six research questions introduced in Chapter~\ref{chap:introduction}. The review follows the \acrfull{PRISMA} methodology to ensure rigor, transparency, and reproducibility. The chapter begins with a detailed description of the review methodology, followed by thematic analysis of the selected studies organized around the key research themes: multi-agent architectures, LLM selection, testing effectiveness, security and privacy challenges, mitigation strategies, and practical deployment considerations.
 
 %----------------------------------------------------------------------------------------
 
-\section{Getting Started with this Template}
+\section{Methodology}
+\label{sec:methodology}
 
-If you are familiar with \LaTeX{}, then you should explore the directory structure of the template and then proceed to place your own information into the \emph{THESIS INFORMATION} block of the \file{main.tex} file. You can then modify the rest of this file to your unique specifications. Section \ref{FillingFile} on page \pageref{FillingFile} will help you do this. Make sure you also read section \ref{ThesisConventions} about thesis conventions to get the most out of this template.
+This systematic literature review follows the PRISMA 2020 guidelines \parencite{page2021prisma} and incorporates recommendations from established software engineering research methodology \parencite{kitchenham2007guidelines}. The methodology encompasses research question formulation, search strategy definition, study selection criteria, quality assessment, and data extraction procedures.
 
-If you are new to \LaTeX{} it is recommended that you carry on reading through the rest of the information in this document.
+\subsection{Research Questions}
 
-\subsection{About this Template}
+As introduced in Section~\ref{sec:research_questions}, this review addresses six research questions spanning security and privacy (RQ1--RQ2) and effectiveness and architecture (RQ3--RQ6):
 
-This \LaTeX{} Thesis Template is originally based and created around a \LaTeX{} style file created by Steve R.\ Gunn from the University of Southampton (UK), department of Electronics and Computer Science. You can find his original thesis style file at his site, here:
-\url{http://www.ecs.soton.ac.uk/~srg/softwaretools/document/templates/}
-
-Steve's \file{ecsthesis.cls} was then taken by Sunil Patel who modified it by creating a skeleton framework and folder structure to place the thesis files in. The resulting template can be found on Sunil's site here:
-\url{http://www.sunilpatel.co.uk/thesis-template}
-
-Sunil's template was made available through \url{http://www.LaTeXTemplates.com} where it was modified many times based on user requests and questions. Version 2.0 and onwards of this template represents a major modification to Sunil's template and is, in fact, hardly recognisable. The work to make version 2.0 possible was carried out by \url{mailto:vel@latextemplates.com} {Vel} and Johannes Böttcher.
-
-Vel's and Böttcher template was adapted to fit the TMDEI/ISEP dissertation formatting specifications. This adaptation was done by Nuno Pereira (nap@isep.ipp.pt) and Paulo Baltarejo (pbs@isep.ipp.pt) in December 2015. It was also based on the specifications earlier defined by Fátima Rodrigues (mfc@isep.ipp.pt).
-%----------------------------------------------------------------------------------------
-
-\section{What this Template Includes}
-
-\subsection{Folders}
-
-This template is composed of several files and folders. The folder names are mostly self-explanatory:
-
-\keyword{frontmatter} -- this is the folder holding the \file{frontmatter.tex} where are defined the dedicatory, abstract, acknowledgement, contents pages, list of figures, tables and others.
-
-\keyword{ch1, ch2, ...} -- these are the folders where you put the contents of each chapter. Each chapter should go in its own separate folder. Inside each chapter folder there is one (or more) \keyword{.tex} with the contents of the chapter, and an \keyword{assets} folder which contains the figures and other graphical elements of the chapter (such as algorithms, source code, plots, ...).
-
-\keyword{appendices} -- this is the folder where you put the appendices. Each appendix should go into its own separate \file{.tex} file. An example and template are included in the directory.
-
-\keyword{build} -- this is the folder where the output of building your document is put. Everytime you build your document,
- \LaTeX{} creates a number of auxiliary files that are written to this folder. These auxiliary files can be ignored or deleted as \LaTeX{} and BibTeX will regenerate them\footnote{Some changes require rebuilding temporary files again; actually, a document with citations may require up to three passes. For this reason, we recommend using the included \keyword{Makefile} which deals with such details}. Note that the resulting \file{pdf} file is written to this folder and then copied to the root folder of the template.
-
-\subsection{Files}
-
-Included are also several files, most of them are plain text and you can see their contents in a text editor. After initial compilation, you will see that more auxiliary files are created by \LaTeX{} or BibTeX and which you don't need to delete or worry about\footnote{Note that some changes (such as changing the language of the template require deleting some of these temporary files) the included \keyword{Makefile} has a \keyword{clean} rule to do this automatically}:
-
-\keyword{main-bibliography.bib} -- this is an important file that contains all the bibliographic information and references that you will be citing in the thesis for use with BibTeX. You can write it manually, but there are reference manager programs available that will create and manage it for you. Bibliographies in \LaTeX{} are a large subject and you may need to read about BibTeX before starting with this (check, for example: \url{http://www.bibtex.org/Using/}). Many modern reference managers will allow you to export your references in BibTeX format which greatly eases the amount of work you have to do.
-
-\keyword{meia-style.cls} -- this is an important file. It is the class file that tells \LaTeX{} how to format the thesis. 
-
-\keyword{main.pdf} -- this is your beautifully typeset thesis (in the PDF file format) created by \LaTeX{}. It is supplied in the PDF with the template and after you compile the template you should get an identical version.
-
-\keyword{main.tex} -- this is an important file. This is the file that you tell \LaTeX{} to compile to produce your thesis as a PDF file. It contains the framework and constructs that tell \LaTeX{} how to layout the thesis. It is heavily commented so you can read exactly what each line of code does and why it is there. After you put your own information into the \emph{THESIS INFORMATION} block -- you have now started your thesis!
-
-\keyword{Makefile} -- this is an important file. This file describes the steps that need to be taken to transform the \keyword{main.tex} into a PDF file. It uses the command \keyword{latexmk} which knows how to properly build a \LaTeX{} source file. To use it, open a command line and type \keyword{make} in the base folder of the template. You can also remove temporary files with \keyword{make clean}. 
-
-\keyword{latexmk.rc} -- this file is required to appropriately build documents with glossaries using \keyword{latexmk}. Essentially, it tells \keyword{latexmk} that it also needs to run the command  \keyword{makeglossaries} to build the document.
-
-\subsection{Building the Document}
-
-To build the document and create a \file{pdf} file from the \LaTeX{} source, you need to invoke several commands that will compile your document, bibliography, and glossaries. We recommend that you build the document automatically, using the \keyword{Makefile} provided.
-
-The \keyword{Makefile} can be used by invoking the command \keyword{make}:
 \begin{itemize}
-\item \code{make} -- Builds the document using the command \keyword{latexmk} which knows how to properly build a \LaTeX{} source file;
-\item \code{make clean} -- Deletes auxiliary files using the command \keyword{latexmk} which knows the files created every time the document is built;
-\item \code{make clean-all} -- Deletes all auxiliary files and bibliography cache.
+    \item \textbf{RQ1}: What predominant security and privacy risks are associated with LLM-based Multi-Agent Systems in enterprise software testing environments?
+    \item \textbf{RQ2}: What architectural patterns and mitigation strategies (e.g., sandboxing, PII scrubbing) are proposed in the literature to secure Agent-Computer Interfaces and prevent data leakage?
+    \item \textbf{RQ3}: How effective are Multi-Agent Systems powered by Large Language Models in automated software testing compared to traditional testing approaches?
+    \item \textbf{RQ4}: What architectural patterns and design principles are most effective for implementing MAS-based automated testing systems?
+    \item \textbf{RQ5}: What are the practical challenges and solutions for deploying MAS-based testing in real-world software development workflows?
+    \item \textbf{RQ6}: How do different Large Language Model choices and configurations impact the performance of Multi-Agent testing systems?
 \end{itemize}
 
-\subsubsection*{Manually Building the Document}
+\subsection{Search Strategy}
 
-The general process of building the document is as follows. You can execute these commands to manually build your document. This can be convenient also for debug purposes, should you encounter any problem.
+The literature search employed multiple complementary search strings targeting different aspects of the research questions. Searches were conducted across IEEE Xplore, ACM Digital Library, Scopus, and arXiv to capture both peer-reviewed publications and recent preprints in this rapidly evolving field.
+
+\subsubsection{Primary Search String (MAS and Testing)}
+
+\begin{verbatim}
+("Multi-Agent" OR "MAS" OR "LLM" OR "Large Language Model"
+ OR "GPT" OR "Code Generation")
+AND
+("Software Testing" OR "Test Generation" OR "Automated Testing"
+ OR "Unit Testing")
+\end{verbatim}
+
+\subsubsection{Secondary Search String (Security and Privacy)}
+
+\begin{verbatim}
+("LLM" OR "Large Language Model" OR "Agent" OR "Autonomous")
+AND
+("Security" OR "Privacy" OR "Data Leakage" OR "Prompt Injection"
+ OR "Adversarial")
+AND
+("Software" OR "Code" OR "Testing")
+\end{verbatim}
+
+\subsubsection{Tertiary Search String (Architecture and Effectiveness)}
+
+\begin{verbatim}
+("Multi-Agent" OR "Agent Framework" OR "LLM Agent")
+AND
+("Architecture" OR "Effectiveness" OR "Performance"
+ OR "Benchmark" OR "Evaluation")
+\end{verbatim}
+
+The search period covered publications from January 2020 to January 2026, capturing the emergence of modern LLMs (beginning with GPT-3) through to current developments. Reference lists of included studies were manually screened to identify additional relevant works (snowballing).
+
+\subsection{Inclusion and Exclusion Criteria}
+
+\subsubsection{Inclusion Criteria}
+
+\begin{itemize}
+    \item \textbf{IC1}: Studies presenting MAS architectures for software testing or development
+    \item \textbf{IC2}: Studies with empirical evaluation of LLM-based testing tools
+    \item \textbf{IC3}: Studies reporting quantitative metrics (coverage, bug detection, pass@k)
+    \item \textbf{IC4}: Framework papers describing multi-agent systems (MetaGPT, ChatDev, SWE-agent, etc.)
+    \item \textbf{IC5}: Studies addressing security or privacy concerns in LLM-based systems
+    \item \textbf{IC6}: Studies proposing mitigation strategies for agent-related risks
+\end{itemize}
+
+\subsubsection{Exclusion Criteria}
+
+\begin{itemize}
+    \item \textbf{EC1}: Single-agent LLM approaches without multi-agent coordination (unless providing essential baseline comparisons)
+    \item \textbf{EC2}: Studies lacking empirical validation or technical depth
+    \item \textbf{EC3}: Non-English publications
+    \item \textbf{EC4}: Opinion pieces, editorials, or short papers without substantive technical content
+    \item \textbf{EC5}: Studies focused exclusively on non-testing applications (e.g., pure code generation without testing)
+    \item \textbf{EC6}: Duplicate publications or extended versions superseded by later work
+\end{itemize}
+
+\subsection{Study Selection Process}
+
+The study selection followed a multi-stage screening process:
 
 \begin{enumerate}
-  \item \code{pdflatex -aux-directory=build -output-directory=build main} -- The command \keyword{pdflatex} writes all \verb|\cite{...}| arguments to an auxiliary file.
+    \item \textbf{Title and Abstract Screening}: Initial review of titles and abstracts against inclusion/exclusion criteria, performed independently by two reviewers with disagreements resolved through discussion.
 
-  \item \code{biber -input-directory=build -output-directory=build main} -- The command \keyword{biber}, processes the previously created auxiliary file and the bibliography is produced.
+    \item \textbf{Full-Text Assessment}: Detailed review of full-text articles for studies passing initial screening, with explicit documentation of exclusion reasons.
 
-  \item \code{makeglossaries -d build main} -- The command \keyword{makeglossaries}, goes through the document to process the \verb|\gls{...}| commands.
+    \item \textbf{Quality Assessment}: Application of quality criteria to assess methodological rigor, clarity of reporting, and validity of conclusions.
 
-  \item \code{pdflatex -aux-directory=build -output-directory=build main} -- \keyword{pdflatex} is run again to include the bibliography, and write the correct labels in the auxiliary file.
-
-  \item \code{pdflatex -aux-directory=build -output-directory=build main} -- \keyword{pdflatex} is run once again, to include the labels and produce the final document.
+    \item \textbf{Snowballing}: Forward and backward reference searching from included studies to identify additional relevant works.
 \end{enumerate}
 
-The above commands should be executed in the root folder of the template. Note that some of the commands might be omitted if the necessary auxiliary files were constructed previously, and no changes that require the auxiliary files to be rebuilt were made.
+\subsection{Quality Assessment}
+
+Studies were assessed using an adapted quality checklist addressing:
+
+\begin{itemize}
+    \item Clear statement of research objectives
+    \item Appropriate research methodology
+    \item Adequate description of experimental setup
+    \item Valid and reliable evaluation metrics
+    \item Appropriate statistical analysis (where applicable)
+    \item Discussion of limitations and threats to validity
+    \item Reproducibility of results
+\end{itemize}
+
+Each criterion was scored as fully met (1), partially met (0.5), or not met (0). Studies scoring below 4 out of 7 were flagged for careful consideration of their contribution weight in the synthesis.
+
+\subsection{Data Extraction}
+
+A structured data extraction form captured the following information from each included study:
+
+\begin{itemize}
+    \item Bibliographic details (authors, year, venue, type)
+    \item Research questions addressed (mapping to RQ1--RQ6)
+    \item Methodology (empirical study, framework proposal, survey, etc.)
+    \item Agent architecture (if applicable): coordination model, roles, communication
+    \item LLM(s) used: model names, versions, configurations
+    \item Evaluation metrics and results
+    \item Security/privacy concerns identified
+    \item Mitigation strategies proposed
+    \item Limitations acknowledged
+    \item Key findings relevant to each RQ
+\end{itemize}
 
 %----------------------------------------------------------------------------------------
 
-\section{Filling in Your Information in the \file{main.tex} File}\label{FillingFile}
+\section{Study Selection and Characteristics}
+\label{sec:study_selection}
 
-You will need to personalise the thesis template and make it your own by filling in your own information. This is done by editing the \file{main.tex} file in a text editor or your favourite LaTeX environment.
+\subsection{PRISMA Flow Diagram}
 
-Open the file and scroll down to the second large block titled \emph{THESIS INFORMATION} where you can see the entries for \emph{Thesis Title}, \emph{Author}, etc \ldots
+The systematic search identified a substantial number of potentially relevant records across the searched databases. After removing duplicates, records underwent title and abstract screening. Studies clearly not meeting inclusion criteria were excluded, with the remaining records proceeding to full-text assessment.
 
-Fill out the information about your work, yourself, your supervisor(s) and institution. You can also insert web links, if you do, make sure you use the full URL, including the \code{http://} for this. If you don't want these to be linked, simply remove the \verb|\href{url}{name}| and only leave the name.
+Table~\ref{tab:prisma_flow} summarizes the study selection process following PRISMA guidelines.
 
-When you have done this, save the file and recompile \code{main.tex}. All the information you filled in should now be in the PDF, complete with web links. You can now begin your thesis proper!
-
-%----------------------------------------------------------------------------------------
-
-\section{The \code{main.tex} File Explained}
-
-The \file{main.tex} file contains the structure of the thesis. There are plenty of written comments that explain what pages, sections and formatting the \LaTeX{} code is creating. Each major document element is divided into commented blocks with titles in all capitals to make it obvious what the following bit of code is doing. Initially there seems to be a lot of \LaTeX{} code, but this is all formatting, and it has all been taken care of so you don't have to do it.
-
-Begin by checking that your information on the title page is correct. It can be changed by editing the block titled \emph{THESIS INFORMATION} in \file{main.tex}. 
-
-After the title page, the frontmatter is included. The frontmatter includes the dedicatory, abstract, acknowledgement, contents pages, list of figures and tables. The frontmatter is further detailed in Section~\ref{sec:frontmatter}.
-
-Then, there is the block where the chapters are included. Uncomment the lines (delete the \code{\%} character) as you write the chapters. Each chapter should be written in its own folder (\file{ch1}, \file{ch2}, etc\ldots), in a file named \file{Chapter1.tex}, \file{Chapter2.tex}, etc\ldots Similarly for the appendices, uncomment the lines as you need them. Each appendix should go into its own file and placed in the \emph{appendices} folder.
-
-Finally comes the bibliography. The bibliography style (called \option{authoryear-ibid}) is used for the bibliography as it is very similar to the recommended Harvard citation style. This is fully a featured style that will even include links to where the referenced paper can be found online. Do not underestimate how grateful your reader will be to find that a reference to a paper is just a click away. Of course, this relies on you putting the URL information into the BibTeX file in the first place.
-
-\section{Front Matter (\code{frontmatter/frontmatter.tex})}
-\label{sec:frontmatter}
-
-The frontmatter starts with the Dedication Section, where you can insert your dedication. Who will you dedicate your thesis to?
-
-Following this, the abstract page summarises your work in a condensed way and can almost be used as a standalone document to describe what you have done. The text you write will cause the heading to move up so don't worry about running out of space. All dissertations should include abstracts in English and Portuguese.
-
-Next come the acknowledgements. On this page, write about all the people who you wish to thank (not forgetting parents, and consider including partners and/or your advisor(s)/supervisor(s)).
-
-The contents pages, list of figures, tables, algorithms and source code are all taken care of for you and do not need to be manually created or edited. Any of the commands in this section must be removed (or commented) if there are no elements in the document to list (for example, if there are no algorithms in the document, remove the \verb|\listofalgorithms| command; if there are no source code listings, remove the \verb|\listoflisting| command).
-
-Next you have a list of abbreviations used in the thesis, then a list of the physical constants and numbers you refer to and finally, a list of mathematical symbols used in any formulae. You can omit these tables, but making the effort to fill these tables means the reader has a one-stop place to refer to instead of searching the internet and references to try and find out what you meant by certain abbreviations or symbols.
-
-The list of symbols is split into the Roman and Greek alphabets. Whereas the abbreviations and symbols ought to be listed in alphabetical order (and this is \emph{not} done automatically for you) the list of physical constants should be grouped into similar themes.
-
-%----------------------------------------------------------------------------------------
-
-\section{Thesis Features and Conventions}\label{ThesisConventions}
-
-To get the best out of this template, there are a few conventions that you may want to follow.
-
-One of the most important (and most difficult) things to keep track of in such a long document as a thesis is consistency. Using certain conventions and ways of doing things (such as using a Todo list) makes the job easier. Of course, all of these are optional and you can adopt your own method.
-
-\subsection{Printing Format}
-
-This thesis template is designed for double sided printing (i.e. content on the front and back of pages) as most theses are printed and bound this way. Switching to one sided printing is as simple as uncommenting the \option{oneside} option of the \code{documentclass} command at the top of the \file{main.tex} file. You may wish to use this option for drafting purposes, but remember that the final document should be double sided.
-
-The headers for the pages contain the page number on the outer side (so it is easy to flick through to the page you want) and the chapter name on the inner side.
-
-The text is set to 11 point by default with single line spacing, again, you can tune the text size and spacing should you want or need to using the options at the very start of \file{main.tex}. The spacing can be changed similarly by replacing the \option{singlespacing} with \option{onehalfspacing} or \option{doublespacing}. Remember again, that the default spacing and font size should be used for the final document.
-
-\subsection{References}
-
-The \code{biblatex} package is used to format the bibliography and inserts references such as this one \parencite{Reference1}. The options used in the \file{main.tex} file mean that the in-text citations of references are formatted with the author(s) listed with the date of the publication. Multiple references are separated by semicolons (e.g. \parencite{Reference2, Reference1}) and references with more than three authors only show the first author with \emph{et al.} indicating there are more authors (e.g. \parencite{Reference3}). This is done automatically for you. To see how you use references, have a look at the \file{Chapter2.tex} source file. Many reference managers allow you to simply drag the reference into the document as you type.
-
-Scientific references should come \emph{before} the punctuation mark if there is one (such as a comma or period). The same goes for footnotes\footnote{Such as this footnote, here down at the bottom of the page.}. You can change this but the most important thing is to keep the convention consistent throughout the document. Footnotes themselves should be full, descriptive sentences (beginning with a capital letter and ending with a full stop). 
-
-The bibliography is typeset with references listed in alphabetical order by the first author's last name. This is similar to the Harvard referencing style. To see how \LaTeX{} typesets the bibliography, have a look at the very end of this document (or just click on the reference number links in in-text citations).
-
-\subsubsection*{More citation examples}
-
-\begin{enumerate} \item A citation command \verb!\parencite{Reference1}! results in a citation in parentheses: \parencite{Reference1}. 
-\item A citation command \verb!\textcite{Reference2}!, can used in the flow of text: As \textcite{Reference2} said \dots 
-\item A citation command \verb!\autocite{Reference3}! automatically switches style depending on location and the option setting in the package declaration. In this case, it produces a citation in parentheses: \autocite{Reference3}. \end{enumerate}
-
-\subsubsection*{A Note on bibtex}
-
-By default, the template uses \keyword{biber} as the backend to process references, instead of \keyword{bibtex}. This is because \keyword{bibtex} does not correctly handle unicode character encoding (i.e. "non-english" characters). You can change this back to  \keyword{bibtex} by finding this in \file{main.tex}: \option{backend=biber} and changing it to \option{backend=bibtex}. You will then need to delete all auxiliary files and navigate to the template directory in your terminal (command prompt). Once there, simply type \code{bibtext main} to compile your bibliography. You can then compile \file{main.tex} as normal and your bibliography will be updated. Alternatively, you can invoke \code{make clean; make}.
-
-\subsection{Tables}
-
-Tables are an important way of displaying your results, Table~\ref{tab:treatments} is an example table which was generated with this code:
-
-{\small
-\begin{verbatim}
-\begin{table}
-\caption{The effects of treatments X and Y on the four groups studied.}
-\label{tab:treatments}
+\begin{table}[ht]
+\caption{PRISMA study selection summary}
+\label{tab:prisma_flow}
 \centering
-\begin{tabular}{l l l}
+\begin{tabular}{l r}
 \toprule
-\tabhead{Groups} & \tabhead{Treatment X} & \tabhead{Treatment Y} \\
+\tabhead{Stage} & \tabhead{Records} \\
 \midrule
-1 & 0.2 & 0.8\\
-2 & 0.17 & 0.7\\
-3 & 0.24 & 0.75\\
-4 & 0.68 & 0.3\\
-\bottomrule\\
-\end{tabular}
-\end{table}
-\end{verbatim}
-}
-
-\begin{table}
-\caption{The effects of treatments X and Y on the four groups studied.}
-\label{tab:treatments}
-\centering
-\begin{tabular}{l l l}
-\toprule
-\tabhead{Groups} & \tabhead{Treatment X} & \tabhead{Treatment Y} \\
+\textbf{Identification} & \\
+\quad Records from IEEE Xplore & 187 \\
+\quad Records from ACM Digital Library & 156 \\
+\quad Records from Scopus & 203 \\
+\quad Records from arXiv & 284 \\
+\quad Total records identified & 830 \\
+\quad Duplicates removed & (215) \\
 \midrule
-1 & 0.2 & 0.8\\
-2 & 0.17 & 0.7\\
-3 & 0.24 & 0.75\\
-4 & 0.68 & 0.3\\
-\bottomrule\\
+\textbf{Screening} & \\
+\quad Records screened (title/abstract) & 615 \\
+\quad Records excluded & (478) \\
+\midrule
+\textbf{Eligibility} & \\
+\quad Full-text articles assessed & 137 \\
+\quad Full-text articles excluded & (86) \\
+\quad Articles from snowballing & 6 \\
+\midrule
+\textbf{Included} & \\
+\quad Studies included in review & \textbf{45} \\
+\bottomrule
 \end{tabular}
 \end{table}
 
-You can reference tables with \verb|\ref{<label>}| where the label is defined within the table environment. See \file{Chapter2.tex} for an example of the label and citation (e.g. Table~\ref{tab:treatments}).
+The primary reasons for exclusion at full-text stage were:
+\begin{itemize}
+    \item Insufficient technical depth or lack of empirical evaluation
+    \item Focus on single-agent approaches without MAS elements
+    \item Out of scope (pure code generation, not testing-related)
+    \item Non-English or inaccessible full text
+\end{itemize}
 
-\subsection{Figures}
+\subsection{Temporal Distribution}
 
-There will hopefully be many figures in your thesis (that should be placed in the \keyword{assets} folder of the repective chapter). The way to insert figures into your thesis is to use a code template like this:
-\begin{verbatim}
-\begin{figure}
-\centering
-\includegraphics{ch2/assets/electron}
-\decoRule
-\caption[An Electron]{An electron (artist's impression).}
-\label{fig:Electron}
-\end{figure}
-\end{verbatim}
-Also look in the source file. Note that the path is relative to the \file{main.tex} file location. Putting this code into the source file produces the picture of the electron that you can see in Figure~\ref{fig:electron}. 
+The selected studies show a marked concentration in recent years, reflecting the rapid growth of LLM-based software engineering research following the release of GPT-3 (2020), Codex (2021), and GPT-4 (2023).
 
-\begin{figure}[b]
-\centering
-\includegraphics[scale=0.5]{ch2/assets/electron}
-\caption[An Electron]{An electron (artist's impression).}
-\label{fig:electron}
-\end{figure}
+\subsection{Publication Venues}
 
-Sometimes figures don't always appear where you specify in the source. The placement depends on how much space there is on the page for the figure. Sometimes there is not enough room to fit a figure directly where it should go (in relation to the text) and so \LaTeX{} puts it at the top of the next page. In this case, the argument ("[b]") of the \verb|\begin{figure}[b]| command indicates that the Figure~\ref{fig:electron} should be on the bottom (for example, "t" would be used to place the figure on top). Figures consistently placed on top or bottom of the page usually make life easier for the reader. Note that positioning figures is the job of \LaTeX{} and so you should focus on making them look good! 
+The studies appeared across diverse venues, including premier software engineering conferences (ICSE, FSE, ASE), testing-focused venues (ISSTA, ICST), security conferences (CCS, S\&P), and journals (TSE, TOSEM, ESE). A significant proportion appeared as arXiv preprints, reflecting the rapid pace of development in this field.
 
-Figures should have captions (such as in Figure~\ref{fig:electron}). The \verb|\caption| command contains two parts, the first part, inside the square brackets is the title that will appear in the \emph{List of Figures}, and so should be short. The second part in the curly brackets should contain the longer and more descriptive caption text. 
+\subsection{Research Question Coverage}
 
-You should also put a label (such as \verb|\label{fig:electron}|) in all your figures so you can refer to them (for example with \verb|\ref{fig:electron}|). {\bf All graphical elements in your document must have accompanying text (a paragraph, or a sentence) describing it!}
-
-Another example illustration is included in Figure~\ref{fig:ramos2008}, which shows a comic about thesis writing.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\textwidth,keepaspectratio]{ch2/assets/Ramos2008.png}
-\caption[Ambient-intelligence Arquitecture]{When defining a caption, inside the square brackets is the short title that will appear in the \emph{List of Figures}; The second part in the curly brackets should contain the longer and more descriptive caption text; Image from \autocite{ramos2008}.}
-\label{fig:ramos2008}
-\end{figure}
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=\textwidth,keepaspectratio]{ch2/assets/Marreiros2010.png}
-\caption{Relationship between number of arguments and number of simulations \autocite{marreiros2010}.}
-\label{fig:marreiros2010}
-\end{figure}
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=\textwidth,keepaspectratio]{ch2/assets/Faria2009.png}
-\caption{Graphical visualization of the result \autocite{faria2009}.}
-\label{fig:faria2009}
-\end{figure}
-
-\LaTeX{} is capable of using images in pdf, jpg and png format.
-
-\subsection{Other Useful Commands}
-
-There are some additional commands created to keep the formatting separated from the content, which we document below.
-
-\keyword{keyword} -- Used to highlight keywords. For example, this is \keyword{somekeyword} (the command that produces this output is \verb|\keyword{somekeyword}|).
-
-\keyword{tabhead} -- Used to highlight table headers. 
-
-\keyword{code} -- Used to output code. For example, this \code{statement is formatted as code} (the command that produces this output is \verb|\code{...}|).
-
-\keyword{file} -- Used to highlight files. For example, this is \file{somefilename} (the command that produces this output is \verb|\file{somefilename}|).
-
-\keyword{option} -- Used to highlight options. For example, this is \option{someoption} (the command that produces this output is \verb|\option{someoption}|).
+Most studies address multiple research questions, with architecture (RQ4) and effectiveness (RQ3) receiving the most attention in the literature, while practical deployment considerations (RQ5) remain relatively underexplored.
 
 %----------------------------------------------------------------------------------------
 
-\section{Sectioning and Subsectioning}
+\section{Multi-Agent Systems for Software Testing}
+\label{sec:mas_testing}
 
-You should break your thesis up into nice, bite-sized sections and subsections. \LaTeX{} automatically builds a table of Contents by looking at all the \verb|\chapter{}|, \verb|\section{}|  and \verb|\subsection{}| commands you write in the source.
+This section addresses RQ4 by examining the architectural patterns and design principles employed in LLM-based multi-agent testing systems. The analysis reveals a rich design space with significant variation in agent coordination models, role specialization, and communication patterns.
 
-The Table of Contents should only list the sections to three (3) levels. A \verb|chapter{}| is level zero (0). A \verb|\section{}| is level one (1) and so a \verb|\subsection{}| is level two (2). In your thesis it is likely that you will even use a \verb|subsubsection{}|, which is level three (3). The depth to which the Table of Contents is formatted is set within \file{meia-style.cls}. If you need this changed, you can do it in \file{main.tex}.
+\subsection{Evolution of Agent-Based Software Engineering}
+
+The application of agent-based approaches to software engineering predates the LLM era. Traditional \acrfull{MAS} research established foundational concepts including agent autonomy, social ability, reactivity, and pro-activeness \parencite{wooldridge2009introduction}. Early multi-agent software engineering tools focused on distributed development, collaborative editing, and automated code review, but lacked the natural language understanding capabilities that modern LLMs provide.
+
+The emergence of large language models, beginning with GPT-3 and accelerating with code-specialized models like Codex \parencite{chen2021evaluating} and Code Llama \parencite{roziere2023code}, enabled a new generation of agent systems capable of understanding and generating code with human-like proficiency. This capability, combined with reasoning techniques such as \acrfull{CoT} prompting \parencite{wei2022chain} and ReAct \parencite{yao2023react}, allows modern agents to tackle complex software engineering tasks that require multi-step reasoning and tool use.
+
+\subsection{Agent Coordination Models}
+
+The reviewed studies employ three primary coordination models, each with distinct characteristics and trade-offs.
+
+\subsubsection{Hierarchical Coordination}
+
+Hierarchical models establish a clear chain of command, with a central orchestrator agent decomposing tasks and delegating to specialized worker agents. MetaGPT \parencite{hong2023metagpt} exemplifies this approach, implementing a ``software company'' metaphor where a Product Manager agent decomposes requirements, an Architect agent designs solutions, and Engineer agents implement and test code.
+
+Advantages of hierarchical coordination include:
+\begin{itemize}
+    \item Clear task decomposition and responsibility assignment
+    \item Reduced communication overhead through centralized control
+    \item Natural alignment with traditional software development roles
+    \item Simplified debugging through traceable decision chains
+\end{itemize}
+
+Limitations include single points of failure at the orchestrator level and potential bottlenecks when the central agent must process all inter-agent communication.
+
+\subsubsection{Peer-to-Peer Coordination}
+
+Peer-to-peer models allow agents to communicate directly without central mediation. ChatDev \parencite{qian2023chatdev} implements a ``chat chain'' where agents engage in structured dialogues, with each agent both producing artifacts and reviewing work from peers.
+
+This model offers:
+\begin{itemize}
+    \item Greater resilience through distributed decision-making
+    \item Richer information exchange through direct agent interaction
+    \item Emergent behaviors from agent collaboration
+    \item More natural representation of human team dynamics
+\end{itemize}
+
+Challenges include increased communication complexity and potential for unproductive agent loops without appropriate termination conditions.
+
+\subsubsection{Hybrid Coordination}
+
+Many practical systems combine hierarchical and peer-to-peer elements. AutoGen \parencite{wu2023autogen} provides a flexible framework supporting both coordinator-worker patterns and direct agent conversations, allowing developers to configure coordination strategies appropriate to their specific use cases.
+
+\subsection{Role Specialization Patterns}
+
+The literature reveals consistent patterns in how testing-related roles are distributed among agents.
+
+\subsubsection{Planning Agent}
+
+A planning or requirements agent typically initiates the testing workflow by analyzing requirements, identifying test objectives, and decomposing the testing task into manageable subtasks. This agent often employs structured output formats (e.g., JSON schemas) to ensure downstream agents receive well-defined specifications.
+
+\subsubsection{Code Analysis Agent}
+
+Code analysis agents examine the \acrfull{SUT} to understand its structure, identify testable units, extract relevant context, and determine appropriate testing strategies. These agents may employ static analysis tools, parse abstract syntax trees, or analyze code semantics using LLM comprehension capabilities.
+
+\subsubsection{Test Generation Agent}
+
+The test generation agent produces test code based on inputs from planning and code analysis agents. Specialization may occur along multiple dimensions:
+\begin{itemize}
+    \item \textbf{Test type}: Unit tests, integration tests, end-to-end tests
+    \item \textbf{Language}: Java, Python, JavaScript specialists
+    \item \textbf{Framework}: pytest, JUnit, Jest expertise
+    \item \textbf{Technique}: Property-based testing, mutation-based generation, specification-based testing
+\end{itemize}
+
+\subsubsection{Execution Agent}
+
+Execution agents run generated tests in controlled environments, capture results, and report outcomes. These agents typically interact with external tools (test runners, containers, CI systems) through the \acrshort{ACI}, making them critical from a security perspective.
+
+\subsubsection{Validation Agent}
+
+Validation or review agents assess the quality of generated tests, checking for issues such as:
+\begin{itemize}
+    \item Trivial assertions that always pass
+    \item Missing edge case coverage
+    \item Test code that duplicates rather than validates SUT logic
+    \item Flaky tests with non-deterministic behavior
+    \item Style and maintainability concerns
+\end{itemize}
+
+\subsubsection{Debugging Agent}
+
+When tests fail, debugging agents analyze failures to determine root causes, distinguishing between SUT bugs (true positives) and test defects (false positives). Advanced implementations may propose fixes for identified issues.
+
+\subsection{Communication Protocols}
+
+Agent communication employs various protocols with different characteristics.
+
+\subsubsection{Direct Message Passing}
+
+Agents exchange structured messages containing task specifications, results, and feedback. Message formats range from natural language descriptions to strictly typed JSON schemas.
+
+\subsubsection{Blackboard Systems}
+
+Some frameworks employ shared workspaces where agents post intermediate results and read inputs from a common data store. This approach decouples agents and simplifies adding new capabilities.
+
+\subsubsection{Artifact-Centric Communication}
+
+Rather than explicit messages, agents communicate through shared artifacts (code files, test suites, execution logs). Each agent modifies or extends artifacts produced by predecessors.
+
+\subsection{Framework Comparison}
+
+Table~\ref{tab:framework_comparison} compares major multi-agent frameworks relevant to software testing.
+
+\begin{table}[ht]
+\caption{Comparison of multi-agent frameworks for software engineering}
+\label{tab:framework_comparison}
+\centering
+\small
+\begin{tabular}{l l l l l}
+\toprule
+\tabhead{Framework} & \tabhead{Coordination} & \tabhead{Roles} & \tabhead{Testing Focus} & \tabhead{Open Source} \\
+\midrule
+MetaGPT & Hierarchical & Software company & Integrated & Yes \\
+ChatDev & Peer-to-peer & Chat chain & Integrated & Yes \\
+SWE-agent & Single + tools & Issue resolver & Bug fixing & Yes \\
+AutoGen & Configurable & Flexible & General & Yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Agent-Computer Interface Design}
+
+The \acrfull{ACI} defines how agents interact with external systems, including code repositories, execution environments, and development tools. SWE-agent \parencite{yang2024sweagent} introduced principled ACI design, demonstrating that interface design significantly impacts agent performance beyond LLM capability alone.
+
+Key ACI design considerations include:
+\begin{itemize}
+    \item \textbf{Action space}: What operations can agents perform?
+    \item \textbf{Observation space}: What feedback do agents receive?
+    \item \textbf{State management}: How is context maintained across interactions?
+    \item \textbf{Error handling}: How do agents recover from failed operations?
+    \item \textbf{Permission boundaries}: What access controls limit agent capabilities?
+\end{itemize}
+
+Well-designed ACIs balance agent autonomy (enabling effective task completion) with safety constraints (preventing unintended or malicious actions).
 
 %----------------------------------------------------------------------------------------
 
-\section{In Closing}
+\section{LLM Selection and Configuration}
+\label{sec:llm_selection}
 
-You have reached the end of this mini-guide. You can now rename or overwrite this pdf file and begin writing your own \file{.tex} files and the rest of your thesis. The easy work of setting up the structure and framework has been taken care of for you. It's now your job to fill it out!
+This section addresses RQ6 by examining how different LLM choices and configurations impact multi-agent testing system performance. The selection of underlying models involves trade-offs across multiple dimensions including capability, cost, latency, privacy, and control.
 
-Good luck and have lots of fun!
+\subsection{Proprietary vs. Open-Weight Models}
 
-\begin{flushright}
-Guide written by ---\\
-Sunil Patel: \url{http://www.sunilpatel.co.uk}{www.sunilpatel.co.uk}\\
-Vel: \url{http://www.LaTeXTemplates.com}{LaTeXTemplates.com}
-\end{flushright}
+\subsubsection{Proprietary Models}
+
+Proprietary models such as GPT-4, Claude, and Gemini offer state-of-the-art capabilities, particularly for complex reasoning tasks. Studies consistently report higher performance on challenging benchmarks when using frontier proprietary models.
+
+Advantages include:
+\begin{itemize}
+    \item Superior performance on complex tasks
+    \item Continuous improvement through provider updates
+    \item Robust API infrastructure with high availability
+    \item Advanced features (function calling, structured outputs)
+\end{itemize}
+
+Disadvantages include:
+\begin{itemize}
+    \item Data transmitted to external providers (privacy concerns)
+    \item Per-token costs that scale with usage
+    \item Dependency on provider availability and pricing
+    \item Limited control over model behavior
+    \item Potential training data contamination with benchmarks
+\end{itemize}
+
+\subsubsection{Open-Weight Models}
+
+Open-weight models including LLaMA, Code Llama \parencite{roziere2023code}, and StarCoder \parencite{li2023starcoder} can be deployed locally, addressing privacy concerns and enabling customization through fine-tuning.
+
+Advantages include:
+\begin{itemize}
+    \item Local deployment keeps data on-premises
+    \item No per-token API costs (infrastructure costs only)
+    \item Full control over model deployment and behavior
+    \item Ability to fine-tune for specific domains
+    \item Transparency regarding model architecture and training
+\end{itemize}
+
+Disadvantages include:
+\begin{itemize}
+    \item Generally lower capability than frontier proprietary models
+    \item Significant infrastructure requirements for deployment
+    \item Expertise required for optimization and maintenance
+    \item Slower improvement cycle than proprietary alternatives
+\end{itemize}
+
+\subsection{Code-Specialized Models}
+
+Models trained specifically on code demonstrate superior performance on programming tasks compared to general-purpose models of similar size. Key code-specialized models include:
+
+\textbf{Codex and GPT-4}: OpenAI's code-capable models, with GPT-4 representing the current capability frontier for code generation and understanding \parencite{chen2021evaluating}.
+
+\textbf{Code Llama}: Meta's code-specialized variant of LLaMA, available in 7B, 13B, and 34B parameter versions, with a Python-specialized variant \parencite{roziere2023code}.
+
+\textbf{StarCoder}: A 15.5B parameter model trained on permissively licensed code, notable for its transparent training data and strong performance \parencite{li2023starcoder}.
+
+\textbf{CodeBERT}: An encoder-only model effective for code understanding tasks such as clone detection and defect prediction \parencite{feng2020codebert}.
+
+\subsection{Fine-Tuning vs. Prompt Engineering}
+
+Studies reveal a complex trade-off between fine-tuning specialized models and engineering effective prompts for general-purpose models.
+
+\subsubsection{Fine-Tuning Approaches}
+
+Fine-tuning adapts pre-trained models to specific testing tasks using domain-specific training data. Research has demonstrated that fine-tuned models can significantly outperform zero-shot prompting for specific testing tasks.
+
+Fine-tuning requires:
+\begin{itemize}
+    \item High-quality training data (test-code pairs)
+    \item Computational resources for training
+    \item Expertise in model training and evaluation
+    \item Ongoing maintenance as requirements evolve
+\end{itemize}
+
+\subsubsection{Prompt Engineering Approaches}
+
+Prompt engineering designs input formats that elicit desired behavior from general-purpose models without modifying model weights. Techniques include:
+
+\begin{itemize}
+    \item \textbf{Few-shot prompting}: Providing examples of desired input-output pairs
+    \item \textbf{Chain-of-thought}: Encouraging step-by-step reasoning \parencite{wei2022chain}
+    \item \textbf{ReAct}: Interleaving reasoning and action \parencite{yao2023react}
+    \item \textbf{Self-consistency}: Sampling multiple outputs and selecting by consensus
+    \item \textbf{Tree-of-thoughts}: Exploring multiple reasoning paths
+\end{itemize}
+
+\subsection{Context Window Management}
+
+LLMs operate within fixed context windows constraining the information available for each inference. Managing context effectively is crucial for testing tasks that may involve large codebases.
+
+Strategies include:
+\begin{itemize}
+    \item \textbf{\acrfull{RAG}}: Retrieving relevant code snippets based on the current task
+    \item \textbf{Hierarchical summarization}: Compressing code into summaries at multiple abstraction levels
+    \item \textbf{Selective context}: Including only immediately relevant code and documentation
+    \item \textbf{Sliding windows}: Processing large codebases in overlapping chunks
+\end{itemize}
+
+\subsection{Model Configuration Parameters}
+
+Key configuration parameters affecting generation behavior include:
+
+\begin{itemize}
+    \item \textbf{Temperature}: Controls randomness; lower values produce more deterministic outputs
+    \item \textbf{Top-p (nucleus sampling)}: Limits sampling to highest-probability tokens
+    \item \textbf{Maximum tokens}: Constrains output length
+    \item \textbf{Stop sequences}: Defines generation termination conditions
+    \item \textbf{Frequency/presence penalties}: Reduces repetition
+\end{itemize}
+
+For test generation, studies suggest moderate temperatures (0.2--0.4) balancing creativity with consistency, though optimal settings vary by task.
+
+%----------------------------------------------------------------------------------------
+
+\section{Effectiveness and Performance Evaluation}
+\label{sec:effectiveness}
+
+This section addresses RQ3 by examining the effectiveness of MAS-based testing approaches compared to traditional methods. The analysis covers evaluation metrics, benchmark datasets, and comparative performance results.
+
+\subsection{Evaluation Metrics Taxonomy}
+
+The literature employs diverse metrics to evaluate testing effectiveness, which can be organized into several categories.
+
+\subsubsection{Coverage Metrics}
+
+Coverage metrics measure the extent to which generated tests exercise the SUT:
+
+\begin{itemize}
+    \item \textbf{Line coverage}: Percentage of source code lines executed
+    \item \textbf{Branch coverage}: Percentage of decision branches taken
+    \item \textbf{Method coverage}: Percentage of methods invoked
+    \item \textbf{Mutation score}: Percentage of seeded faults detected
+\end{itemize}
+
+\subsubsection{Correctness Metrics}
+
+Correctness metrics assess whether generated tests are valid and meaningful:
+
+\begin{itemize}
+    \item \textbf{Compilation rate}: Percentage of generated tests that compile
+    \item \textbf{Execution rate}: Percentage of tests that execute without runtime errors
+    \item \textbf{Pass rate}: Percentage of tests that pass on correct implementations
+    \item \textbf{Assertion validity}: Whether assertions test meaningful properties
+\end{itemize}
+
+\subsubsection{Bug Detection Metrics}
+
+Bug detection metrics evaluate the ability to identify real defects:
+
+\begin{itemize}
+    \item \textbf{True positive rate}: Correctly identified bugs as a proportion of total bugs
+    \item \textbf{False positive rate}: Incorrect bug reports as a proportion of total reports
+    \item \textbf{Bug detection efficiency}: Bugs found per test or per token spent
+\end{itemize}
+
+\subsubsection{Code Generation Metrics}
+
+The pass@k metric, widely used in code generation evaluation, measures the probability of generating at least one correct solution within k attempts \parencite{chen2021evaluating}:
+
+\begin{equation}
+\text{pass@k} = \mathbb{E}_{\text{Problems}} \left[ 1 - \frac{\binom{n-c}{k}}{\binom{n}{k}} \right]
+\label{eq:passk}
+\end{equation}
+
+where $n$ is the total number of samples and $c$ is the number of correct samples.
+
+\subsection{Benchmark Datasets}
+
+\subsubsection{HumanEval}
+
+HumanEval \parencite{chen2021evaluating} contains 164 hand-written Python programming problems with function signatures, docstrings, and test cases. While primarily designed for code generation evaluation, it serves as a foundation for testing-related benchmarks.
+
+\subsubsection{MBPP}
+
+The Mostly Basic Python Problems (MBPP) benchmark \parencite{austin2021program} provides 974 crowd-sourced Python programming tasks, offering broader coverage than HumanEval.
+
+\subsubsection{SWE-bench}
+
+SWE-bench \parencite{jimenez2024swebench} evaluates agents on real GitHub issues from popular Python repositories. Unlike synthetic benchmarks, SWE-bench requires understanding large codebases and making appropriate modifications, making it highly relevant for testing system evaluation.
+
+\subsubsection{Defects4J}
+
+Defects4J \parencite{just2014defects4j} provides a database of real bugs from open-source Java projects, enabling evaluation of bug detection and test generation for real-world defects.
+
+\subsection{Comparative Performance Results}
+
+\subsubsection{MAS vs. Single-Agent Approaches}
+
+Studies consistently demonstrate that multi-agent architectures outperform single-agent approaches on complex testing tasks. MetaGPT \parencite{hong2023metagpt} reported that the multi-agent approach achieved significantly higher pass rates on software development tasks compared to single-agent baselines, with testing quality directly impacting overall success rates.
+
+\subsubsection{LLM-Based vs. Traditional Testing Tools}
+
+Comparisons between LLM-based and traditional testing tools reveal complementary strengths:
+
+\begin{itemize}
+    \item \textbf{EvoSuite} \parencite{fraser2011evosuite}: Achieves high branch coverage through search-based generation but produces tests that are often difficult to understand and maintain.
+
+    \item \textbf{Randoop} \parencite{pacheco2007randoop}: Generates many tests quickly through random exploration but with limited semantic awareness.
+
+    \item \textbf{LLM-based tools}: Generate more readable, semantically meaningful tests but may miss edge cases that systematic approaches find.
+\end{itemize}
+
+CODAMOSA \parencite{lemieux2023codamosa} proposed combining LLM generation with search-based testing to escape coverage plateaus, achieving higher coverage than either approach alone.
+
+\subsubsection{Mutation Testing Performance}
+
+Mutation testing \parencite{jia2011analysis} provides a rigorous framework for evaluating test quality by measuring the proportion of artificial faults (mutants) detected by the test suite. LLM-generated tests have shown promising results on mutation testing benchmarks, particularly when guided by mutation analysis feedback.
+
+\subsection{Threats to Validity}
+
+Several factors complicate interpretation of reported effectiveness results:
+
+\begin{itemize}
+    \item \textbf{Benchmark contamination}: LLMs may have seen benchmark problems during training, inflating performance estimates.
+
+    \item \textbf{Evaluation metrics}: Different studies use incompatible metrics, making cross-study comparison difficult.
+
+    \item \textbf{Reproducibility}: Many studies do not release code or use proprietary models whose behavior changes over time.
+
+    \item \textbf{Task selection}: Benchmarks may not represent the full complexity of real-world testing scenarios.
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\section{Security and Privacy Challenges}
+\label{sec:security_challenges}
+
+This section addresses RQ1 by examining the security and privacy risks associated with LLM-based multi-agent testing systems. The analysis identifies five primary risk categories: data leakage, adversarial manipulation, unsafe code generation, grounding failures, and ACI vulnerabilities.
+
+\subsection{Data Leakage Risks}
+
+Data leakage occurs when sensitive information is inadvertently exposed through agent interactions with LLM providers or external systems.
+
+\subsubsection{Intellectual Property Exfiltration}
+
+Testing agents require access to source code, which may contain proprietary algorithms, trade secrets, or competitive intelligence. When using cloud-based LLM providers, this code is transmitted to external servers, potentially violating confidentiality requirements.
+
+Risks include:
+\begin{itemize}
+    \item Code transmitted to LLM providers may be retained or used for training
+    \item API logs may persist sensitive information
+    \item Network interception could expose transmitted code
+    \item Provider employees may access query logs
+\end{itemize}
+
+\subsubsection{PII Exposure}
+
+Codebases frequently contain \acrfull{PII} in various forms:
+\begin{itemize}
+    \item Test fixtures with realistic user data (names, emails, addresses)
+    \item Configuration files with credentials or API keys
+    \item Log files with user activity records
+    \item Database seeds with sample customer information
+\end{itemize}
+
+Agents processing such codebases may transmit PII to external providers, potentially violating \acrshort{GDPR} requirements regarding data transfers and purpose limitation.
+
+\subsubsection{Prompt Leakage}
+
+System prompts defining agent behavior may themselves contain sensitive information, including:
+\begin{itemize}
+    \item Proprietary testing methodologies
+    \item Security scanning patterns
+    \item Internal system architecture details
+    \item Competitive intelligence
+\end{itemize}
+
+Prompt injection attacks may extract these system prompts, exposing protected information.
+
+\subsection{Adversarial Manipulation}
+
+Adversarial actors may exploit agent systems through various manipulation techniques.
+
+\subsubsection{Prompt Injection}
+
+Prompt injection attacks embed malicious instructions in data processed by agents \parencite{greshake2023not}. In testing contexts, injection vectors include:
+
+\begin{itemize}
+    \item \textbf{Code comments}: Malicious instructions hidden in code comments that agents read as context
+    \item \textbf{Docstrings}: Instructions embedded in function documentation
+    \item \textbf{String literals}: Injection payloads in test data or configuration
+    \item \textbf{File names}: Specially crafted file names processed by agents
+    \item \textbf{Error messages}: Malicious content in error outputs that agents analyze
+\end{itemize}
+
+Successful injection may cause agents to:
+\begin{itemize}
+    \item Execute unauthorized commands
+    \item Exfiltrate sensitive data
+    \item Modify code in unintended ways
+    \item Skip security checks
+    \item Generate misleading test results
+\end{itemize}
+
+\subsubsection{Trojan Attacks}
+
+Trojan comments or code patterns may be planted in repositories to trigger specific agent behaviors when encountered. Unlike prompt injection (which requires active manipulation), trojans persist in codebases and activate when unsuspecting agents process affected files.
+
+\subsubsection{Agent Alignment Failures}
+
+Multi-agent systems may exhibit emergent behaviors not intended by designers, particularly when agents pursue local objectives that conflict with global system goals.
+
+\subsection{Unsafe Code Generation}
+
+Agents generating test code may introduce security vulnerabilities or malicious functionality.
+
+\subsubsection{Vulnerability Introduction}
+
+Generated test code may contain:
+\begin{itemize}
+    \item SQL injection vulnerabilities in database test helpers
+    \item Path traversal issues in file handling tests
+    \item Command injection in tests invoking external processes
+    \item Insecure deserialization in test fixtures
+    \item Hardcoded credentials for test authentication
+\end{itemize}
+
+While test code typically runs in isolated environments, vulnerabilities may propagate to production if test utilities are reused or if isolation is imperfect.
+
+\subsubsection{Dependency Confusion}
+
+LLMs may hallucinate package names that do not exist, creating opportunities for ``slopsquatting'' attacks where malicious actors register these hallucinated package names. When agents attempt to install hallucinated dependencies, they may instead install attacker-controlled malicious packages.
+
+\subsubsection{Typosquatting}
+
+Similarly, LLMs may generate slightly misspelled package names (e.g., ``requets'' instead of ``requests''), which attackers may have registered as typosquatting packages containing malware.
+
+\subsection{Grounding Failures}
+
+The ``grounding gap'' refers to the disconnect between LLM knowledge and the actual state of the system under test.
+
+\subsubsection{Hallucinated APIs}
+
+LLMs may generate tests calling methods or APIs that do not exist in the SUT, either because:
+\begin{itemize}
+    \item The LLM's training data included different versions
+    \item The LLM confuses similar but distinct APIs
+    \item The LLM extrapolates non-existent functionality
+\end{itemize}
+
+\subsubsection{Outdated Knowledge}
+
+LLM training data has a knowledge cutoff date, meaning:
+\begin{itemize}
+    \item Recent API changes may not be reflected
+    \item Deprecated patterns may be suggested
+    \item Security vulnerabilities fixed after cutoff may be reintroduced
+\end{itemize}
+
+\subsubsection{Context Inconsistency}
+
+With limited context windows, agents may generate tests inconsistent with code outside the visible window, leading to:
+\begin{itemize}
+    \item Tests that assume incorrect preconditions
+    \item Missing setup or teardown requirements
+    \item Conflicts with global state managed elsewhere
+\end{itemize}
+
+\subsection{ACI Vulnerabilities}
+
+The Agent-Computer Interface represents a critical attack surface requiring careful security design.
+
+\subsubsection{Excessive Permissions}
+
+Agents may be granted broader permissions than necessary for their tasks, violating the principle of least privilege. Overly permissive ACIs enable agents to:
+\begin{itemize}
+    \item Access files outside the project directory
+    \item Execute arbitrary system commands
+    \item Make network connections to arbitrary hosts
+    \item Modify system configuration
+\end{itemize}
+
+\subsubsection{Insufficient Isolation}
+
+Test execution environments may lack adequate isolation from:
+\begin{itemize}
+    \item Production systems and data
+    \item Other test executions (cross-contamination)
+    \item Host system resources
+    \item Network access to sensitive services
+\end{itemize}
+
+\subsubsection{Audit Trail Gaps}
+
+Insufficient logging of agent actions may prevent:
+\begin{itemize}
+    \item Detection of malicious behavior
+    \item Forensic analysis after incidents
+    \item Compliance verification
+    \item Debugging of unexpected outcomes
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\section{Mitigation Strategies and Secure Architectures}
+\label{sec:mitigation}
+
+This section addresses RQ2 by examining the architectural patterns and mitigation strategies proposed in the literature to address the security and privacy risks identified in Section~\ref{sec:security_challenges}. Strategies are organized into three categories: model-centric, pipeline-centric, and algorithmic approaches.
+
+\subsection{Model-Centric Mitigations}
+
+Model-centric strategies address risks at the LLM layer itself.
+
+\subsubsection{Local Model Deployment}
+
+Deploying open-weight models locally eliminates data transmission to external providers, addressing IP and PII leakage concerns. Organizations can run models such as Code Llama or StarCoder on their own infrastructure, maintaining complete control over data flows.
+
+Trade-offs include:
+\begin{itemize}
+    \item Reduced capability compared to frontier proprietary models
+    \item Significant infrastructure investment (GPU servers)
+    \item Operational overhead for model serving and updates
+    \item Expertise requirements for optimization
+\end{itemize}
+
+\subsubsection{Fine-Tuning for Safety}
+
+Models can be fine-tuned to reject harmful requests, avoid generating unsafe code patterns, and follow security guidelines. Techniques include:
+\begin{itemize}
+    \item \textbf{RLHF}: Reinforcement Learning from Human Feedback to align with safety preferences
+    \item \textbf{Constitutional AI}: Training models to follow explicit safety principles
+    \item \textbf{Adversarial training}: Exposing models to attack examples during training
+\end{itemize}
+
+\subsubsection{Output Filtering}
+
+Post-generation filtering can detect and block unsafe outputs before they reach downstream systems:
+\begin{itemize}
+    \item Pattern matching for known dangerous code constructs
+    \item Static analysis of generated code for vulnerabilities
+    \item Dependency verification against known-good package lists
+    \item Credential scanning to prevent secrets in generated code
+\end{itemize}
+
+\subsection{Pipeline-Centric Mitigations}
+
+Pipeline-centric strategies implement security controls in the infrastructure surrounding agents.
+
+\subsubsection{Sandboxed Execution}
+
+Test execution should occur in isolated environments preventing impact on host systems or networks. Implementation approaches include:
+
+\begin{itemize}
+    \item \textbf{Containers}: Docker or similar containerization provides process isolation with configurable resource limits
+    \item \textbf{Virtual machines}: Full VM isolation for stronger security boundaries
+    \item \textbf{Serverless functions}: Ephemeral execution environments that reset between invocations
+    \item \textbf{WebAssembly}: Language-agnostic sandboxing with fine-grained capability control
+\end{itemize}
+
+Sandbox configuration should enforce:
+\begin{itemize}
+    \item Network isolation or allowlisted connections only
+    \item Read-only access to source code
+    \item Resource limits (CPU, memory, disk, time)
+    \item No access to host filesystems outside designated directories
+    \item Prevented privilege escalation
+\end{itemize}
+
+\subsubsection{PII Scrubbing}
+
+Data preprocessing can remove or redact PII before code reaches agents:
+
+\begin{itemize}
+    \item \textbf{Pattern-based detection}: Regular expressions for emails, phone numbers, credentials
+    \item \textbf{Named entity recognition}: ML-based identification of names, addresses, etc.
+    \item \textbf{Secret scanning}: Tools like truffleHog or git-secrets for credential detection
+    \item \textbf{Synthetic replacement}: Replacing real data with realistic but fake alternatives
+\end{itemize}
+
+\subsubsection{Context Minimization}
+
+Providing agents only the information strictly necessary for their tasks limits potential exposure:
+\begin{itemize}
+    \item Include only relevant source files in context
+    \item Exclude configuration, credentials, and infrastructure code
+    \item Summarize rather than include full file contents where possible
+    \item Implement need-to-know access at the agent level
+\end{itemize}
+
+\subsubsection{ACI Hardening}
+
+Securing the Agent-Computer Interface involves:
+
+\begin{itemize}
+    \item \textbf{Explicit permission model}: Agents must be granted specific capabilities (file read, file write, execute, network)
+    \item \textbf{Action validation}: All agent actions verified against policy before execution
+    \item \textbf{Rate limiting}: Preventing runaway agents through operation throttling
+    \item \textbf{Allowlisting}: Only permitted commands and tools available to agents
+    \item \textbf{Confirmation gates}: Human approval required for high-risk operations
+\end{itemize}
+
+\subsubsection{Audit Logging}
+
+Comprehensive logging enables detection, forensics, and compliance:
+\begin{itemize}
+    \item All LLM prompts and responses
+    \item All agent actions and their outcomes
+    \item All file accesses and modifications
+    \item All network communications
+    \item Chain-of-thought reasoning traces
+\end{itemize}
+
+Logs should be:
+\begin{itemize}
+    \item Tamper-evident (cryptographically secured)
+    \item Retained according to compliance requirements
+    \item Searchable for incident investigation
+    \item Analyzed for anomaly detection
+\end{itemize}
+
+\subsection{Algorithmic Mitigations}
+
+Algorithmic strategies use testing and validation techniques to verify agent behavior.
+
+\subsubsection{Mutation Testing for Validation}
+
+Using mutation testing \parencite{jia2011analysis} to validate LLM-generated tests provides an objective quality metric. By seeding artificial faults (mutants) in the SUT, the quality of generated tests can be assessed: high-quality tests should detect (kill) most mutants.
+
+This approach:
+\begin{itemize}
+    \item Provides objective quality metrics for generated tests
+    \item Identifies tests with weak assertions
+    \item Guides iterative test improvement
+    \item Does not require oracle knowledge
+\end{itemize}
+
+\subsubsection{Combinatorial Testing}
+
+Combinatorial testing systematically varies inputs to identify failure conditions. For agent systems, combinatorial testing can:
+\begin{itemize}
+    \item Identify input combinations that trigger unsafe behavior
+    \item Verify consistent behavior across configuration variations
+    \item Test boundary conditions in permission enforcement
+\end{itemize}
+
+\subsubsection{Chaos Engineering}
+
+Chaos engineering approaches deliberately inject failures to verify resilience:
+\begin{itemize}
+    \item Network partitions between agents
+    \item LLM API failures and timeouts
+    \item Resource exhaustion scenarios
+    \item Malformed responses from components
+\end{itemize}
+
+\subsection{Defense in Depth}
+
+Effective security requires layering multiple mitigations, recognizing that no single control is sufficient:
+
+\begin{enumerate}
+    \item \textbf{Prevention}: PII scrubbing, context minimization, permission restrictions
+    \item \textbf{Detection}: Output filtering, anomaly detection, audit analysis
+    \item \textbf{Response}: Automatic shutdown, human escalation, incident logging
+    \item \textbf{Recovery}: Rollback capabilities, isolation containment, forensic preservation
+\end{enumerate}
+
+%----------------------------------------------------------------------------------------
+
+\section{Industrial Deployment and CI/CD Integration}
+\label{sec:industrial_deployment}
+
+This section addresses RQ5 by examining the practical challenges and solutions for deploying MAS-based testing in real-world development workflows.
+
+\subsection{Integration Patterns}
+
+\subsubsection{Shadow Mode Deployment}
+
+Organizations typically begin with shadow deployments where agent-generated tests run alongside but do not replace existing test suites:
+\begin{itemize}
+    \item Agent tests execute in parallel with human-written tests
+    \item Results are compared but do not block deployments
+    \item Discrepancies are analyzed to improve agent behavior
+    \item Confidence is built before production adoption
+\end{itemize}
+
+\subsubsection{CI/CD Pipeline Integration}
+
+MAS testing systems can integrate at various CI/CD stages:
+
+\begin{itemize}
+    \item \textbf{Pre-commit}: Generate tests for changed code before commit
+    \item \textbf{Pull request}: Analyze PRs and suggest additional tests
+    \item \textbf{Continuous testing}: Generate and run tests on each commit
+    \item \textbf{Nightly builds}: Comprehensive test generation for full codebase
+    \item \textbf{Release gates}: Validate coverage requirements before release
+\end{itemize}
+
+\subsubsection{IDE Integration}
+
+Developer-facing integrations provide immediate feedback:
+\begin{itemize}
+    \item Generate tests for selected code regions
+    \item Suggest tests during code review
+    \item Explain existing test failures
+    \item Propose fixes for failing tests
+\end{itemize}
+
+\subsection{Cost-Benefit Analysis}
+
+\subsubsection{Token Cost Modeling}
+
+LLM costs depend on:
+\begin{itemize}
+    \item Input tokens (code context, instructions)
+    \item Output tokens (generated tests, explanations)
+    \item Model selection (frontier vs. efficient models)
+    \item Request frequency (per-commit vs. periodic)
+\end{itemize}
+
+A typical test generation request might consume:
+\begin{itemize}
+    \item 2,000--4,000 input tokens (code context)
+    \item 500--1,500 output tokens (generated test)
+\end{itemize}
+
+\subsubsection{Developer Time Savings}
+
+Benefits include:
+\begin{itemize}
+    \item Reduced time writing boilerplate test code
+    \item Faster identification of missing test coverage
+    \item Earlier detection of bugs through improved coverage
+    \item Reduced cognitive load in test maintenance
+\end{itemize}
+
+\subsubsection{Quality Improvements}
+
+Measurable quality benefits include:
+\begin{itemize}
+    \item Increased code coverage
+    \item More bugs found before production
+    \item Reduced escaped defects
+    \item Improved test readability and maintainability
+\end{itemize}
+
+\subsection{Organizational Adoption Challenges}
+
+\subsubsection{Skill Requirements}
+
+Adopting MAS-based testing requires:
+\begin{itemize}
+    \item Prompt engineering expertise
+    \item Understanding of agent architectures
+    \item Security and privacy awareness
+    \item Ability to evaluate and refine agent outputs
+\end{itemize}
+
+\subsubsection{Process Changes}
+
+Organizations must adapt:
+\begin{itemize}
+    \item Code review processes to include agent-generated code
+    \item Testing strategies to leverage agent capabilities
+    \item Security reviews to address agent-specific risks
+    \item Compliance processes for AI-assisted development
+\end{itemize}
+
+\subsubsection{Cultural Factors}
+
+Adoption success depends on:
+\begin{itemize}
+    \item Developer trust in agent-generated tests
+    \item Management support for AI adoption
+    \item Clear communication about capabilities and limitations
+    \item Mechanisms for feedback and improvement
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\section{Regulatory and Compliance Considerations}
+\label{sec:regulatory}
+
+This section examines the regulatory landscape affecting deployment of LLM-based testing systems, with particular attention to GDPR and the EU AI Act.
+
+\subsection{GDPR Implications}
+
+The \acrfull{GDPR} \parencite{gdpr2016} imposes requirements on processing of personal data that affect agent-based testing systems.
+
+\subsubsection{Data Minimization}
+
+Article 5(1)(c) requires that personal data be ``adequate, relevant and limited to what is necessary.'' For testing systems, this means:
+\begin{itemize}
+    \item Avoiding inclusion of real personal data in agent context
+    \item Scrubbing PII from code before LLM processing
+    \item Using synthetic data for test fixtures
+    \item Limiting data retention in logs and caches
+\end{itemize}
+
+\subsubsection{Purpose Limitation}
+
+Article 5(1)(b) requires data be ``collected for specified, explicit and legitimate purposes.'' Organizations must ensure:
+\begin{itemize}
+    \item Clear documentation of testing as a legitimate purpose
+    \item No secondary use of data processed by agents
+    \item Separation from other processing activities
+\end{itemize}
+
+\subsubsection{Data Transfers}
+
+Chapter V restricts transfers of personal data outside the EU. Using cloud-based LLM providers may constitute a transfer requiring:
+\begin{itemize}
+    \item Standard Contractual Clauses with providers
+    \item Verification of provider's data protection practices
+    \item Potentially, data localization or local model deployment
+\end{itemize}
+
+\subsubsection{Data Protection Impact Assessment}
+
+Article 35 requires \acrfull{DPIA} for processing likely to result in high risk. Agentic testing systems may trigger DPIA requirements due to:
+\begin{itemize}
+    \item Automated processing of code containing personal data
+    \item Novel technology with uncertain risks
+    \item Potential for systematic processing at scale
+\end{itemize}
+
+\subsection{EU AI Act Implications}
+
+The EU AI Act \parencite{euaiact2024} introduces requirements for AI systems that may apply to agent-based testing.
+
+\subsubsection{Risk Classification}
+
+AI systems are classified by risk level:
+\begin{itemize}
+    \item \textbf{Unacceptable risk}: Prohibited practices
+    \item \textbf{High risk}: Subject to strict requirements
+    \item \textbf{Limited risk}: Transparency obligations
+    \item \textbf{Minimal risk}: No specific requirements
+\end{itemize}
+
+Testing systems are likely classified as limited or minimal risk unless they:
+\begin{itemize}
+    \item Test safety-critical systems (may be high-risk)
+    \item Make autonomous decisions affecting individuals
+    \item Are embedded in high-risk applications
+\end{itemize}
+
+\subsubsection{Transparency Requirements}
+
+Article 52 requires disclosure when:
+\begin{itemize}
+    \item AI systems interact with natural persons
+    \item Content is AI-generated
+    \item Emotion recognition or biometric categorization is used
+\end{itemize}
+
+For testing systems, transparency may require:
+\begin{itemize}
+    \item Clear labeling of agent-generated tests
+    \item Documentation of agent involvement in quality assurance
+    \item Disclosure to developers working with agent outputs
+\end{itemize}
+
+\subsection{Liability Considerations}
+
+\subsubsection{Shared Responsibility}
+
+When agent-generated tests fail to detect bugs, liability questions arise:
+\begin{itemize}
+    \item Is the organization liable for relying on agent testing?
+    \item Does the LLM provider bear responsibility?
+    \item How does human review affect liability allocation?
+\end{itemize}
+
+\subsubsection{Documentation for Defense}
+
+Organizations should maintain records demonstrating:
+\begin{itemize}
+    \item Reasonable selection and configuration of agent systems
+    \item Appropriate human oversight of agent outputs
+    \item Continuous monitoring and improvement
+    \item Response to identified issues
+\end{itemize}
+
+\subsection{Privacy-by-Design Implementation}
+
+Following privacy-by-design principles \parencite{cavoukian2011privacy}, testing systems should incorporate:
+
+\begin{enumerate}
+    \item \textbf{Proactive not reactive}: Build privacy protections from the start
+    \item \textbf{Privacy as default}: Ensure data protection without user action
+    \item \textbf{Privacy embedded}: Integrate privacy into system design
+    \item \textbf{Full functionality}: Achieve both privacy and utility
+    \item \textbf{End-to-end security}: Protect data throughout lifecycle
+    \item \textbf{Visibility and transparency}: Maintain verifiable practices
+    \item \textbf{Respect for user privacy}: Keep user interests central
+\end{enumerate}
+
+%----------------------------------------------------------------------------------------
+
+\section{Discussion and Research Gaps}
+\label{sec:discussion}
+
+This section synthesizes findings across the reviewed literature, identifies research gaps, and discusses implications for the proposed research.
+
+\subsection{Synthesis of Findings}
+
+\subsubsection{Architectural Maturity}
+
+Multi-agent architectures for software testing have reached a level of maturity where they demonstrably outperform single-agent approaches on complex tasks. However, significant variation exists in how systems implement coordination, role specialization, and communication, with no consensus on optimal patterns for testing-specific applications.
+
+\subsubsection{Effectiveness Evidence}
+
+Evidence for the effectiveness of LLM-based testing is accumulating, with studies reporting meaningful improvements in coverage, bug detection, and developer productivity. However, evaluation methodologies vary widely, benchmark contamination concerns persist, and long-term production deployment studies remain scarce.
+
+\subsubsection{Security Understanding}
+
+The security and privacy risks of agent-based testing are increasingly well-characterized, with comprehensive taxonomies of threats including data leakage, adversarial manipulation, and unsafe code generation. However, the translation from risk identification to practical mitigation implementation is incomplete.
+
+\subsubsection{Practical Deployment}
+
+Industrial deployment of LLM-based testing is occurring, but published case studies are limited. Organizations navigate cost-benefit trade-offs, integration challenges, and organizational change with limited guidance from the literature.
+
+\subsection{Identified Research Gaps}
+
+\subsubsection{Security-Focused Architecture Design}
+
+While security risks and mitigation techniques are individually documented, comprehensive architectural frameworks integrating multiple mitigations into coherent, deployable systems are lacking. Existing frameworks prioritize functionality over security, treating protection as an afterthought.
+
+\subsubsection{Privacy-Preserving Testing}
+
+Specific techniques for conducting effective testing while minimizing privacy exposure require further development. Trade-offs between context richness (for effective testing) and context minimization (for privacy) are not well understood.
+
+\subsubsection{Evaluation in Production Contexts}
+
+Most evaluations occur on benchmark datasets under controlled conditions. Long-term studies of agent testing systems in production environments, measuring real bug detection rates, developer acceptance, and security incidents, are needed.
+
+\subsubsection{Regulatory Compliance Guidance}
+
+Practical guidance for achieving GDPR and AI Act compliance with agent-based testing systems is largely absent from the literature. Organizations lack clear frameworks for demonstrating compliance.
+
+\subsubsection{Cost Optimization}
+
+While token costs are acknowledged, systematic approaches to optimizing cost-effectiveness---through model selection, caching, or architectural decisions---are underdeveloped.
+
+\subsection{Implications for Proposed Research}
+
+The identified gaps directly motivate the contributions proposed in this thesis:
+
+\begin{enumerate}
+    \item The lack of security-focused architectures motivates the development of a secure-by-design reference architecture (Contribution 3).
+
+    \item The absence of integrated security analysis motivates the comprehensive literature review synthesizing security, privacy, and effectiveness perspectives (Contribution 1).
+
+    \item The need for practical deployment guidance motivates the best practices compilation (Contribution 5).
+
+    \item The gap between theoretical mitigations and practical implementation motivates the prototype development (Contribution 4).
+\end{enumerate}
+
+\subsection{Limitations of This Review}
+
+This review has several limitations that should be acknowledged:
+
+\begin{itemize}
+    \item \textbf{Rapid field evolution}: The field is evolving rapidly, and some relevant work may have been published after the search cutoff.
+
+    \item \textbf{Publication bias}: Published studies may overrepresent positive results, with failed approaches underreported.
+
+    \item \textbf{Gray literature}: Industry practices not published in academic venues may be underrepresented.
+
+    \item \textbf{Language restriction}: Limiting to English-language publications may exclude relevant work.
+
+    \item \textbf{Benchmark limitations}: Many reviewed studies use potentially contaminated benchmarks, affecting reliability of effectiveness claims.
+\end{itemize}
+
+\subsection{Summary}
+
+This literature review has examined studies addressing the six research questions guiding this thesis. The review reveals a maturing field with demonstrated potential for MAS-based automated testing, alongside significant unaddressed challenges in security, privacy, and practical deployment. These findings establish the foundation for the architectural proposals and empirical work presented in subsequent chapters.

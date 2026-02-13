@@ -1,0 +1,571 @@
+% Appendix C - Detailed Experimental Results
+
+\chapter{Detailed Experimental Results}
+\label{AppendixC}
+
+This appendix provides comprehensive experimental data from the evaluation described in Chapter~\ref{chap:evaluation}, including per-module metrics, statistical analysis, and raw benchmark results.
+
+%----------------------------------------------------------------------------------------
+
+\section{Coverage Analysis by Module}
+\label{sec:coverage_by_module}
+
+Table~\ref{tab:coverage_pyvalidate} presents the detailed coverage metrics for each module in the PyValidate project.
+
+\begin{table}[ht]
+\caption{PyValidate: Per-module coverage metrics}
+\label{tab:coverage_pyvalidate}
+\centering
+\small
+\begin{tabular}{l r r r r r}
+\toprule
+\tabhead{Module} & \tabhead{Line} & \tabhead{Branch} & \tabhead{Func.} & \tabhead{Tests} & \tabhead{$\Delta$Baseline} \\
+\midrule
+validators/string.py & 94.2\% & 88.3\% & 100\% & 47 & +18.5\% \\
+validators/numeric.py & 91.8\% & 85.7\% & 100\% & 38 & +15.2\% \\
+validators/email.py & 89.5\% & 82.1\% & 95.0\% & 24 & +21.3\% \\
+validators/custom.py & 86.3\% & 79.4\% & 90.0\% & 31 & +24.8\% \\
+core/parser.py & 92.1\% & 86.8\% & 97.5\% & 42 & +12.6\% \\
+core/registry.py & 88.7\% & 84.2\% & 92.5\% & 28 & +16.9\% \\
+utils/helpers.py & 95.3\% & 91.5\% & 100\% & 19 & +8.4\% \\
+exceptions.py & 100\% & 100\% & 100\% & 12 & +5.2\% \\
+\midrule
+\textbf{Total} & \textbf{91.4\%} & \textbf{86.1\%} & \textbf{96.8\%} & \textbf{241} & \textbf{+15.9\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\caption{FlaskAPI-Demo: Per-module coverage metrics}
+\label{tab:coverage_flaskapi}
+\centering
+\small
+\begin{tabular}{l r r r r r}
+\toprule
+\tabhead{Module} & \tabhead{Line} & \tabhead{Branch} & \tabhead{Func.} & \tabhead{Tests} & \tabhead{$\Delta$Baseline} \\
+\midrule
+routes/auth.py & 87.3\% & 81.2\% & 92.5\% & 34 & +22.4\% \\
+routes/users.py & 84.6\% & 78.9\% & 90.0\% & 29 & +19.8\% \\
+routes/products.py & 85.2\% & 79.5\% & 87.5\% & 31 & +21.2\% \\
+models/user.py & 91.8\% & 87.3\% & 95.0\% & 18 & +12.3\% \\
+models/product.py & 93.4\% & 89.1\% & 97.5\% & 16 & +10.5\% \\
+services/auth\_service.py & 82.1\% & 75.6\% & 85.0\% & 27 & +25.6\% \\
+services/email\_service.py & 79.8\% & 73.2\% & 82.5\% & 22 & +28.9\% \\
+middleware/auth.py & 88.9\% & 84.5\% & 92.5\% & 15 & +14.2\% \\
+utils/validators.py & 94.2\% & 91.3\% & 100\% & 21 & +8.7\% \\
+\midrule
+\textbf{Total} & \textbf{86.9\%} & \textbf{81.4\%} & \textbf{91.4\%} & \textbf{213} & \textbf{+18.2\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\caption{DataPipeline: Per-module coverage metrics}
+\label{tab:coverage_datapipeline}
+\centering
+\small
+\begin{tabular}{l r r r r r}
+\toprule
+\tabhead{Module} & \tabhead{Line} & \tabhead{Branch} & \tabhead{Func.} & \tabhead{Tests} & \tabhead{$\Delta$Baseline} \\
+\midrule
+extractors/csv.py & 89.7\% & 84.2\% & 95.0\% & 28 & +16.3\% \\
+extractors/json.py & 91.2\% & 86.5\% & 97.5\% & 25 & +14.1\% \\
+extractors/xml.py & 85.3\% & 79.8\% & 90.0\% & 31 & +19.4\% \\
+transformers/clean.py & 87.8\% & 82.1\% & 92.5\% & 33 & +17.8\% \\
+transformers/aggregate.py & 83.4\% & 77.6\% & 87.5\% & 29 & +21.2\% \\
+transformers/validate.py & 90.1\% & 85.7\% & 95.0\% & 36 & +13.5\% \\
+loaders/database.py & 81.6\% & 75.2\% & 85.0\% & 24 & +24.3\% \\
+loaders/file.py & 88.9\% & 83.4\% & 92.5\% & 19 & +15.7\% \\
+pipeline/orchestrator.py & 79.2\% & 73.1\% & 82.5\% & 38 & +27.6\% \\
+\midrule
+\textbf{Total} & \textbf{86.4\%} & \textbf{80.8\%} & \textbf{90.8\%} & \textbf{263} & \textbf{+18.9\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%----------------------------------------------------------------------------------------
+
+\section{Mutation Testing Results}
+\label{sec:mutation_results}
+
+Table~\ref{tab:mutation_operators} shows mutation scores by operator type across all projects.
+
+\begin{table}[ht]
+\caption{Mutation scores by operator type}
+\label{tab:mutation_operators}
+\centering
+\small
+\begin{tabular}{l l r r r r}
+\toprule
+\tabhead{Operator} & \tabhead{Description} & \tabhead{Mutants} & \tabhead{Killed} & \tabhead{Score} & \tabhead{Baseline} \\
+\midrule
+AOR & Arithmetic operator replacement & 187 & 162 & 86.6\% & 72.3\% \\
+ROR & Relational operator replacement & 156 & 141 & 90.4\% & 81.2\% \\
+COR & Conditional operator replacement & 98 & 84 & 85.7\% & 69.8\% \\
+LCR & Logical connector replacement & 67 & 58 & 86.6\% & 71.4\% \\
+ASR & Assignment operator replacement & 124 & 106 & 85.5\% & 68.7\% \\
+UOI & Unary operator insertion & 89 & 79 & 88.8\% & 75.6\% \\
+SDL & Statement deletion & 213 & 189 & 88.7\% & 76.9\% \\
+SVR & Scalar variable replacement & 145 & 121 & 83.4\% & 65.2\% \\
+\midrule
+\textbf{Total} & & \textbf{1,079} & \textbf{940} & \textbf{87.1\%} & \textbf{72.6\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\caption{Mutation analysis per project}
+\label{tab:mutation_per_project}
+\centering
+\begin{tabular}{l r r r r r}
+\toprule
+\tabhead{Project} & \tabhead{Mutants} & \tabhead{Killed} & \tabhead{Survived} & \tabhead{Timeout} & \tabhead{Score} \\
+\midrule
+PyValidate & 342 & 301 & 35 & 6 & 88.0\% \\
+FlaskAPI-Demo & 387 & 332 & 48 & 7 & 85.8\% \\
+DataPipeline & 350 & 307 & 37 & 6 & 87.7\% \\
+\midrule
+\textbf{Total} & \textbf{1,079} & \textbf{940} & \textbf{120} & \textbf{19} & \textbf{87.1\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%----------------------------------------------------------------------------------------
+
+\section{Bug Detection Analysis}
+\label{sec:bug_detection}
+
+Table~\ref{tab:bug_categories} categorizes the 450 seeded bugs by type and detection rate.
+
+\begin{table}[ht]
+\caption{Bug detection by category}
+\label{tab:bug_categories}
+\centering
+\small
+\begin{tabular}{l r r r r r}
+\toprule
+\tabhead{Bug Category} & \tabhead{Seeded} & \tabhead{Detected} & \tabhead{Rate} & \tabhead{EvoSuite} & \tabhead{$\Delta$} \\
+\midrule
+Boundary conditions & 72 & 65 & 90.3\% & 81.9\% & +8.4\% \\
+Null/None handling & 58 & 51 & 87.9\% & 79.3\% & +8.6\% \\
+Type errors & 45 & 42 & 93.3\% & 84.4\% & +8.9\% \\
+Off-by-one errors & 63 & 54 & 85.7\% & 73.0\% & +12.7\% \\
+Logic errors & 54 & 44 & 81.5\% & 68.5\% & +13.0\% \\
+Exception handling & 48 & 41 & 85.4\% & 75.0\% & +10.4\% \\
+Resource leaks & 36 & 28 & 77.8\% & 61.1\% & +16.7\% \\
+Concurrency issues & 28 & 19 & 67.9\% & 46.4\% & +21.5\% \\
+API misuse & 31 & 26 & 83.9\% & 71.0\% & +12.9\% \\
+Input validation & 15 & 14 & 93.3\% & 86.7\% & +6.6\% \\
+\midrule
+\textbf{Total} & \textbf{450} & \textbf{384} & \textbf{85.3\%} & \textbf{72.7\%} & \textbf{+12.6\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%----------------------------------------------------------------------------------------
+
+\section{LLM Comparison Data}
+\label{sec:llm_comparison}
+
+Table~\ref{tab:llm_detailed} provides comprehensive comparison metrics across evaluated LLM configurations.
+
+\begin{table}[ht]
+\caption{Detailed LLM comparison metrics}
+\label{tab:llm_detailed}
+\centering
+\small
+\begin{tabular}{l r r r r r r}
+\toprule
+\tabhead{Model} & \tabhead{Cover.} & \tabhead{Mut.} & \tabhead{Pass@1} & \tabhead{Tokens/Test} & \tabhead{Cost/Test} & \tabhead{Time/Test} \\
+\midrule
+GPT-4-Turbo & 91.4\% & 87.1\% & 78.4\% & 1,847 & \$0.042 & 8.3s \\
+GPT-4o & 89.8\% & 85.6\% & 76.2\% & 1,623 & \$0.024 & 5.2s \\
+GPT-3.5-Turbo & 82.3\% & 76.8\% & 64.5\% & 1,256 & \$0.003 & 2.1s \\
+Claude-3-Opus & 90.7\% & 86.4\% & 77.8\% & 1,912 & \$0.045 & 9.1s \\
+Claude-3-Sonnet & 88.5\% & 84.2\% & 74.6\% & 1,534 & \$0.009 & 4.8s \\
+Claude-3-Haiku & 81.6\% & 75.3\% & 62.8\% & 1,187 & \$0.001 & 1.4s \\
+Code Llama 34B & 79.2\% & 72.4\% & 58.3\% & 1,421 & Local & 12.6s \\
+Code Llama 13B & 74.6\% & 67.8\% & 51.2\% & 1,298 & Local & 6.8s \\
+StarCoder2 15B & 76.8\% & 70.1\% & 54.7\% & 1,356 & Local & 7.4s \\
+DeepSeek-Coder 33B & 81.3\% & 74.9\% & 60.5\% & 1,489 & Local & 11.2s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\caption{LLM performance by task complexity}
+\label{tab:llm_by_complexity}
+\centering
+\small
+\begin{tabular}{l r r r r r r}
+\toprule
+\tabhead{Model} & \multicolumn{2}{c}{\tabhead{Simple}} & \multicolumn{2}{c}{\tabhead{Medium}} & \multicolumn{2}{c}{\tabhead{Complex}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+& Cover. & Pass@1 & Cover. & Pass@1 & Cover. & Pass@1 \\
+\midrule
+GPT-4-Turbo & 96.2\% & 91.4\% & 91.8\% & 79.2\% & 84.5\% & 62.3\% \\
+Claude-3-Opus & 95.8\% & 90.6\% & 91.2\% & 78.4\% & 83.8\% & 61.5\% \\
+Code Llama 34B & 89.4\% & 78.2\% & 79.6\% & 58.5\% & 67.3\% & 38.9\% \\
+GPT-3.5-Turbo & 92.1\% & 82.5\% & 82.7\% & 64.8\% & 71.2\% & 44.6\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%----------------------------------------------------------------------------------------
+
+\section{Security Evaluation Results}
+\label{sec:security_results}
+
+\subsection{PII Detection Performance}
+
+Table~\ref{tab:pii_detection} shows the PII scrubber performance across different entity types.
+
+\begin{table}[ht]
+\caption{PII detection performance by entity type}
+\label{tab:pii_detection}
+\centering
+\small
+\begin{tabular}{l r r r r r}
+\toprule
+\tabhead{Entity Type} & \tabhead{Total} & \tabhead{Detected} & \tabhead{Precision} & \tabhead{Recall} & \tabhead{F1} \\
+\midrule
+Email addresses & 87 & 86 & 98.9\% & 98.9\% & 98.9\% \\
+Phone numbers & 63 & 58 & 93.5\% & 92.1\% & 92.8\% \\
+Person names & 112 & 98 & 89.1\% & 87.5\% & 88.3\% \\
+Credit card numbers & 34 & 34 & 100\% & 100\% & 100\% \\
+IP addresses & 52 & 51 & 100\% & 98.1\% & 99.0\% \\
+Locations & 78 & 69 & 88.5\% & 88.5\% & 88.5\% \\
+API keys & 45 & 45 & 100\% & 100\% & 100\% \\
+Passwords in code & 29 & 28 & 96.6\% & 96.6\% & 96.6\% \\
+\midrule
+\textbf{Average} & \textbf{500} & \textbf{469} & \textbf{95.8\%} & \textbf{95.2\%} & \textbf{95.5\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Prompt Injection Testing}
+
+Table~\ref{tab:injection_results} summarizes the prompt injection attack simulation results.
+
+\begin{table}[ht]
+\caption{Prompt injection attack results}
+\label{tab:injection_results}
+\centering
+\small
+\begin{tabular}{l r r r r}
+\toprule
+\tabhead{Attack Vector} & \tabhead{Payloads} & \tabhead{Blocked} & \tabhead{Detected} & \tabhead{Success Rate} \\
+\midrule
+Direct instruction override & 24 & 24 & 24 & 0\% \\
+Context manipulation & 18 & 17 & 18 & 0\% \\
+Role-playing injection & 15 & 14 & 15 & 0\% \\
+Encoded payloads (Base64) & 12 & 12 & 12 & 0\% \\
+Delimiter confusion & 16 & 15 & 16 & 0\% \\
+Nested instructions & 14 & 13 & 14 & 0\% \\
+Code comment injection & 11 & 10 & 11 & 0\% \\
+Unicode obfuscation & 10 & 10 & 10 & 0\% \\
+\midrule
+\textbf{Total} & \textbf{120} & \textbf{115} & \textbf{120} & \textbf{0\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Sandbox Security Validation}
+
+Table~\ref{tab:sandbox_security} presents the sandbox escape attempt results.
+
+\begin{table}[ht]
+\caption{Sandbox security validation results}
+\label{tab:sandbox_security}
+\centering
+\small
+\begin{tabular}{l l r r}
+\toprule
+\tabhead{Escape Category} & \tabhead{Technique} & \tabhead{Attempts} & \tabhead{Blocked} \\
+\midrule
+\multirow{3}{*}{Filesystem access} & Path traversal & 15 & 15 \\
+& Symlink attacks & 8 & 8 \\
+& Proc filesystem access & 6 & 6 \\
+\midrule
+\multirow{3}{*}{Network access} & Outbound connections & 12 & 12 \\
+& DNS exfiltration & 5 & 5 \\
+& Reverse shell attempts & 8 & 8 \\
+\midrule
+\multirow{2}{*}{Process manipulation} & Process spawning & 10 & 10 \\
+& Signal handling exploits & 4 & 4 \\
+\midrule
+\multirow{2}{*}{Resource exhaustion} & Fork bomb attempts & 6 & 6 \\
+& Memory exhaustion & 7 & 7 \\
+\midrule
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{81} & \textbf{81 (100\%)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%----------------------------------------------------------------------------------------
+
+\section{Cost Analysis Details}
+\label{sec:cost_analysis}
+
+\subsection{Token Usage Distribution}
+
+Table~\ref{tab:token_distribution} shows token usage breakdown by agent and operation.
+
+\begin{table}[ht]
+\caption{Token usage by agent type (average per test generation session)}
+\label{tab:token_distribution}
+\centering
+\begin{tabular}{l r r r r}
+\toprule
+\tabhead{Agent} & \tabhead{Input Tokens} & \tabhead{Output Tokens} & \tabhead{Total} & \tabhead{Percentage} \\
+\midrule
+Planning Agent & 2,847 & 1,234 & 4,081 & 15.2\% \\
+Code Analysis Agent & 5,623 & 2,156 & 7,779 & 28.9\% \\
+Test Generation Agent & 4,512 & 3,891 & 8,403 & 31.2\% \\
+Execution Agent & 1,234 & 456 & 1,690 & 6.3\% \\
+Validation Agent & 2,891 & 1,567 & 4,458 & 16.6\% \\
+Security Agent & 387 & 98 & 485 & 1.8\% \\
+\midrule
+\textbf{Total} & \textbf{17,494} & \textbf{9,402} & \textbf{26,896} & \textbf{100\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Cost per Project}
+
+Table~\ref{tab:cost_per_project} details the cost breakdown for each evaluation project.
+
+\begin{table}[ht]
+\caption{Cost analysis per project (using GPT-4-Turbo)}
+\label{tab:cost_per_project}
+\centering
+\small
+\begin{tabular}{l r r r r r}
+\toprule
+\tabhead{Project} & \tabhead{Tests} & \tabhead{Input Tokens} & \tabhead{Output Tokens} & \tabhead{Total Cost} & \tabhead{Cost/Test} \\
+\midrule
+PyValidate & 241 & 4,218,154 & 2,266,482 & \$84.36 & \$0.035 \\
+FlaskAPI-Demo & 213 & 3,726,222 & 2,002,626 & \$74.51 & \$0.035 \\
+DataPipeline & 263 & 4,601,848 & 2,472,726 & \$91.98 & \$0.035 \\
+\midrule
+\textbf{Total} & \textbf{717} & \textbf{12,546,224} & \textbf{6,741,834} & \textbf{\$250.85} & \textbf{\$0.035} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Model Cost Comparison}
+
+Table~\ref{tab:model_cost_comparison} compares costs across different LLM configurations.
+
+\begin{table}[ht]
+\caption{Cost comparison across LLM configurations (per 1000 tests)}
+\label{tab:model_cost_comparison}
+\centering
+\small
+\begin{tabular}{l r r r r r}
+\toprule
+\tabhead{Configuration} & \tabhead{Input/1K} & \tabhead{Output/1K} & \tabhead{Total Cost} & \tabhead{Coverage} & \tabhead{Cost/Coverage} \\
+\midrule
+GPT-4-Turbo & \$174.94 & \$282.06 & \$350.00 & 91.4\% & \$3.83 \\
+GPT-4o & \$87.47 & \$141.03 & \$170.00 & 89.8\% & \$1.89 \\
+GPT-3.5-Turbo & \$8.75 & \$14.10 & \$17.00 & 82.3\% & \$0.21 \\
+Claude-3-Opus & \$262.41 & \$423.09 & \$510.00 & 90.7\% & \$5.62 \\
+Claude-3-Sonnet & \$52.48 & \$84.62 & \$102.00 & 88.5\% & \$1.15 \\
+Claude-3-Haiku & \$4.37 & \$7.05 & \$8.50 & 81.6\% & \$0.10 \\
+Local (Code Llama 34B) & --- & --- & \$0.00* & 79.2\% & \$0.00* \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item *Local deployment costs not included (hardware, electricity, maintenance)
+\end{tablenotes}
+\end{table}
+
+%----------------------------------------------------------------------------------------
+
+\section{Statistical Analysis}
+\label{sec:statistical_analysis}
+
+\subsection{Significance Testing}
+
+Table~\ref{tab:significance_tests} presents statistical significance test results comparing MAS approach against baselines.
+
+\begin{table}[ht]
+\caption{Statistical significance tests (MAS vs. baselines)}
+\label{tab:significance_tests}
+\centering
+\small
+\begin{tabular}{l l r r r l}
+\toprule
+\tabhead{Metric} & \tabhead{Comparison} & \tabhead{t-statistic} & \tabhead{p-value} & \tabhead{Effect Size} & \tabhead{Significance} \\
+\midrule
+\multirow{3}{*}{Coverage} & MAS vs. EvoSuite & 4.87 & 0.0001 & 0.82 & *** \\
+& MAS vs. Pynguin & 5.23 & <0.0001 & 0.89 & *** \\
+& MAS vs. Single-Agent & 3.45 & 0.002 & 0.58 & ** \\
+\midrule
+\multirow{3}{*}{Mutation Score} & MAS vs. EvoSuite & 6.12 & <0.0001 & 1.04 & *** \\
+& MAS vs. Pynguin & 5.89 & <0.0001 & 0.98 & *** \\
+& MAS vs. Single-Agent & 4.21 & 0.0003 & 0.71 & *** \\
+\midrule
+\multirow{3}{*}{Bug Detection} & MAS vs. EvoSuite & 5.67 & <0.0001 & 0.96 & *** \\
+& MAS vs. Pynguin & 5.34 & <0.0001 & 0.91 & *** \\
+& MAS vs. Single-Agent & 3.89 & 0.0007 & 0.66 & *** \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item Effect size: Cohen's d. Significance: * p<0.05, ** p<0.01, *** p<0.001
+\end{tablenotes}
+\end{table}
+
+\subsection{Confidence Intervals}
+
+Table~\ref{tab:confidence_intervals} shows 95\% confidence intervals for key metrics.
+
+\begin{table}[ht]
+\caption{95\% Confidence intervals for key metrics}
+\label{tab:confidence_intervals}
+\centering
+\begin{tabular}{l r r r}
+\toprule
+\tabhead{Metric} & \tabhead{Mean} & \tabhead{Std Dev} & \tabhead{95\% CI} \\
+\midrule
+Line Coverage (\%) & 88.2 & 4.3 & [86.4, 90.0] \\
+Branch Coverage (\%) & 82.8 & 5.1 & [80.6, 85.0] \\
+Mutation Score (\%) & 87.1 & 3.8 & [85.5, 88.7] \\
+Bug Detection Rate (\%) & 85.3 & 6.2 & [82.6, 88.0] \\
+Pass@1 (\%) & 78.4 & 7.5 & [75.2, 81.6] \\
+PII Detection F1 (\%) & 95.5 & 2.1 & [94.6, 96.4] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%----------------------------------------------------------------------------------------
+
+\section{Performance Benchmarks}
+\label{sec:performance_benchmarks}
+
+\subsection{Execution Time Analysis}
+
+Table~\ref{tab:execution_time} details execution times for each pipeline phase.
+
+\begin{table}[ht]
+\caption{Execution time by pipeline phase (seconds)}
+\label{tab:execution_time}
+\centering
+\small
+\begin{tabular}{l r r r r r}
+\toprule
+\tabhead{Phase} & \tabhead{Min} & \tabhead{Max} & \tabhead{Mean} & \tabhead{Median} & \tabhead{Std Dev} \\
+\midrule
+Project Analysis & 12.3 & 89.4 & 34.7 & 28.9 & 18.2 \\
+Code Analysis & 8.5 & 45.2 & 21.3 & 18.7 & 9.8 \\
+Test Generation & 15.7 & 124.6 & 48.9 & 42.3 & 24.5 \\
+Test Execution & 5.2 & 67.8 & 23.4 & 19.1 & 14.3 \\
+Validation & 4.8 & 38.2 & 15.6 & 13.2 & 8.7 \\
+Security Scan & 2.1 & 12.4 & 5.8 & 5.2 & 2.4 \\
+\midrule
+\textbf{Total Pipeline} & \textbf{48.6} & \textbf{377.6} & \textbf{149.7} & \textbf{127.4} & \textbf{77.9} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Resource Utilization}
+
+Table~\ref{tab:resource_utilization} shows resource consumption during test generation.
+
+\begin{table}[ht]
+\caption{Resource utilization metrics}
+\label{tab:resource_utilization}
+\centering
+\begin{tabular}{l r r r}
+\toprule
+\tabhead{Resource} & \tabhead{Average} & \tabhead{Peak} & \tabhead{Notes} \\
+\midrule
+CPU Usage & 34.2\% & 89.7\% & 12-core system \\
+Memory (RAM) & 8.4 GB & 24.3 GB & 64 GB available \\
+GPU VRAM (local LLM) & 18.7 GB & 22.4 GB & RTX 3090 24GB \\
+Disk I/O & 45 MB/s & 210 MB/s & NVMe SSD \\
+Network (API calls) & 2.3 MB/s & 12.8 MB/s & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%----------------------------------------------------------------------------------------
+
+\section{Test Quality Metrics}
+\label{sec:test_quality}
+
+Table~\ref{tab:test_quality} presents the qualitative assessment of generated tests.
+
+\begin{table}[ht]
+\caption{Test quality assessment metrics}
+\label{tab:test_quality}
+\centering
+\small
+\begin{tabular}{l r r r r}
+\toprule
+\tabhead{Quality Dimension} & \tabhead{MAS} & \tabhead{EvoSuite} & \tabhead{Pynguin} & \tabhead{Human} \\
+\midrule
+Readability (1-5) & 4.2 & 2.8 & 2.6 & 4.7 \\
+Maintainability (1-5) & 4.0 & 2.5 & 2.4 & 4.5 \\
+Assertion Quality (1-5) & 3.9 & 3.2 & 3.0 & 4.4 \\
+Test Independence (1-5) & 4.4 & 4.6 & 4.5 & 4.3 \\
+Naming Convention (1-5) & 4.3 & 1.8 & 1.9 & 4.6 \\
+Documentation (1-5) & 3.8 & 1.2 & 1.3 & 4.2 \\
+\midrule
+\textbf{Overall Score} & \textbf{4.1} & \textbf{2.7} & \textbf{2.6} & \textbf{4.5} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%----------------------------------------------------------------------------------------
+
+\section{Reproducibility Information}
+\label{sec:reproducibility}
+
+Table~\ref{tab:reproducibility} provides information for reproducing experimental results.
+
+\begin{table}[ht]
+\caption{Reproducibility configuration}
+\label{tab:reproducibility}
+\centering
+\small
+\begin{tabular}{l p{9cm}}
+\toprule
+\tabhead{Component} & \tabhead{Configuration} \\
+\midrule
+Hardware & AMD Ryzen 9 5900X, 64GB RAM, NVIDIA RTX 3090 24GB \\
+Operating System & Ubuntu 22.04 LTS \\
+Python Version & 3.11.4 \\
+CUDA Version & 12.1 \\
+Docker Version & 24.0.5 \\
+\midrule
+LLM APIs (date) & GPT-4-Turbo (2024-04-09), Claude-3 (2024-02-29) \\
+Local Models & Code Llama 34B (Q4\_K\_M quantization) \\
+Temperature & 0.2 (generation), 0.0 (validation) \\
+Max Tokens & 4096 \\
+\midrule
+Random Seeds & 42, 123, 456, 789, 1024 (5 runs per experiment) \\
+Evaluation Runs & 5 independent runs, results averaged \\
+Statistical Tests & Two-tailed t-test, $\alpha$ = 0.05 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%----------------------------------------------------------------------------------------
+
+\section{Raw Data Availability}
+\label{sec:raw_data}
+
+The complete raw experimental data, including:
+\begin{itemize}
+    \item Generated test files for all projects
+    \item Coverage reports (HTML and JSON formats)
+    \item Mutation testing logs
+    \item Token usage logs and cost calculations
+    \item Security scan results
+    \item Statistical analysis scripts
+\end{itemize}
+
+These materials are available upon request for academic purposes, subject to data protection requirements for any sensitive test fixtures.

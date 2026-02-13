@@ -1,68 +1,371 @@
-% Chapter 1
-% 
-\chapter{Thesis Structure} % Main chapter title
-\label{chap:Chapter1} % For referencing the chapter elsewhere, use Chapter~\ref{Chapter1}
+% Chapter 1 - Introduction
 
+\chapter{Introduction}
+\label{chap:introduction}
 
-%-------------------------------------------------------------------------------
-%---------
-%
-\section{Introduction} 
-\label{sec:chap1_introduction} %For referencing this section elsewhere, use Section~\ref{sec:chap1_introduction}
+%----------------------------------------------------------------------------------------
 
-\acrlong{AI}, which is abbreviated \acrshort{AI}.
-The goal of a Master dissertation is to document the work developed and highlight its importance. Firstly, the author should aim to follow the best practices in terms of writing style and organise the contents such that the message is clear. The language style used should be clear, and avoid colloquial expressions.
+\section{Context and Motivation}
+\label{sec:context_motivation}
 
-Please use an automated spell checker during the writing of your work.
+Software testing remains one of the most critical yet resource-intensive activities in the \acrfull{SDLC}. Industry estimates consistently indicate that testing activities consume between 30\% and 50\% of total development effort, while inadequate testing continues to cost the global economy billions annually through software failures, security breaches, and system downtime. As software systems grow increasingly complex---spanning distributed architectures, microservices, and cloud-native deployments---the challenge of ensuring software quality through comprehensive testing has become even more pronounced.
 
-This chapter provides some brief recommendations for the writing of your dissertation. 
+\subsection{The Economic Impact of Software Testing}
 
-\section{Structure}
+The economic significance of software testing cannot be overstated. According to the Consortium for Information and Software Quality (CISQ), the cost of poor software quality in the United States alone exceeded \$2.4 trillion in 2022, with a substantial portion attributable to inadequate testing practices. The report identified technical debt, failed projects, and operational failures as primary contributors, many of which could be mitigated through more comprehensive testing approaches.
 
-The structure of the document can be divided in three major parts: Introduction, Body and Conclusions.
+Furthermore, the World Quality Report indicates that organizations allocate an average of 23\% of their IT budgets to quality assurance and testing activities. Despite this significant investment, many organizations report dissatisfaction with their testing coverage and effectiveness. A survey by Capgemini found that 52\% of organizations struggle to achieve adequate test coverage for their applications, while 47\% cite the inability to test early enough in the development cycle as a major challenge.
 
-The introduction includes, at least, a statement of what was the work developed; a brief, focused, state of the art; an explanation of how the work fits into the current state of the art, and how it contributes to it; a description of the structure of the document.
+The rise of agile and DevOps practices has intensified these challenges. Modern development methodologies emphasize rapid iteration, continuous integration, and frequent releases---often multiple times per day for leading technology companies. This acceleration places enormous pressure on testing processes, which must keep pace with development velocity while maintaining quality standards. Traditional manual testing approaches simply cannot scale to meet these demands.
 
-The Body of the dissertation should include a literature review (in one or more chapters) and one or more chapters that describe the work developed and the results, justifying them adequately.
+\subsection{The Promise of AI-Assisted Testing}
 
-The conclusions make a final balance of the work, highlighting the main aspects of the work and making critical judgments about what was accomplished, and providing suggestions for future work, if appropriate. 
+The emergence of artificial intelligence, particularly \acrfull{LLM} technology, has opened new possibilities for addressing these testing challenges. Since the release of GPT-3 in 2020 and subsequent models including GPT-4, Claude, and open-weight alternatives, the capabilities of AI systems in understanding and generating code have advanced dramatically. These models demonstrate remarkable proficiency in tasks previously thought to require human expertise: understanding code semantics, inferring program behavior, generating natural language documentation, and producing syntactically correct code.
 
-\subsection{Contents Check List}
+The application of LLMs to software testing represents a natural extension of these capabilities. Rather than requiring human testers to manually write test cases or configure test generation tools, LLM-based approaches can analyze source code, understand intended functionality, and generate meaningful test cases automatically. Early research has demonstrated promising results: LLM-generated tests can achieve competitive coverage compared to traditional automated testing tools while producing more readable and maintainable test code.
 
-Table~\ref{tab:checklist} presents a check list defining the contents of the dissertation.
+However, the complexity of comprehensive software testing often exceeds the capabilities of single-model approaches. Real-world testing involves multiple interrelated activities: understanding requirements, analyzing code structure, identifying testable units, generating appropriate test cases, executing tests in suitable environments, validating results, and iteratively refining the test suite based on feedback. This complexity motivates the exploration of \acrfull{MAS} architectures, where multiple specialized agents collaborate to address different aspects of the testing challenge.
 
-{\small
-\begin{table}
-\caption{Check list}
-\label{tab:checklist}
-\centering
-\begin{tabular}{l l l}
-\toprule
-\tabhead{Description} & \tabhead{Mandatory ?} & \tabhead{Page number} \\
-\midrule
-Cover & Yes & None\\
-Front Page (first page of the template) & Yes & None\\
-Abstract (Portuguese) & Yes & Roman numeral\\
-Abstract (English) & Yes & Roman numeral\\
-Acknowledgments & No & Roman numeral\\
-Table of Contents & Yes & Roman numeral\\
-List of Figures & Yes & Roman numeral\\
-List of Tables & Yes & Roman numeral\\
-List of Source Code Listings & Yes & Roman numeral\\
-List of Acronyms and List of Symbols & Yes & Roman numeral\\
-\makecell[cl]{Dissertation Body (including introduction, \\contributions, and conclusions)} & Yes & Arabic numeral\\
-References & Yes & Arabic numeral\\
-Appendices and Other Tables of Contents & No & Arabic numeral\\
-\bottomrule\\
-\end{tabular}
-\end{table}
-}
+\subsection{Enterprise Adoption Barriers}
 
+Despite the promise of LLM-based testing approaches, significant barriers impede their adoption in enterprise environments. Organizations handling sensitive data---including financial institutions, healthcare providers, and government agencies---face stringent requirements regarding data protection, regulatory compliance, and intellectual property security. These requirements create tension with the typical deployment model for LLM-based systems, which often involves transmitting code and data to cloud-based API providers.
 
-\section{Formatting}
+The regulatory landscape adds further complexity. The European Union's \acrfull{GDPR}, enacted in 2016 and enforced since 2018, establishes comprehensive requirements for the processing of personal data. More recently, the EU AI Act (2024) introduces specific obligations for AI systems, including requirements for transparency, human oversight, and risk management. Organizations deploying AI-assisted testing systems must navigate these regulatory frameworks while realizing the productivity benefits of automation.
 
-The document can be written in Portuguese or English. The minimum number of pages is 60 and the maximum is 120 (not counting the Annexes). Small deviations are allowed. Please follow the margins and fonts  defined in this template. The font size should be 11pt. The document should be printed double sided.
+Security concerns extend beyond regulatory compliance. LLM-based agents operating autonomously on codebases represent a novel attack surface. Adversarial actors may attempt to manipulate agent behavior through prompt injection attacks, where malicious instructions embedded in code comments or strings cause agents to behave contrary to their intended purpose. The potential for data exfiltration, credential exposure, and unauthorized code execution demands careful architectural consideration.
 
-Note that the graphical aspect of the thesis is important, but does not replace a well-written and well-organised presentation of ideas.
+These challenges motivate the central focus of this thesis: developing a secure, privacy-preserving architecture for MAS-based automated testing that addresses enterprise security requirements while maintaining testing effectiveness.
 
-Please refer to Chapter~\ref{chap:Chapter2} and Chapter~\ref{chap:Chapter3} for details about this template, how to format the document and insert citations, figures, tables, equations and other elements.
+\subsection{Evolution of Software Testing Approaches}
+
+The evolution of software testing has progressed through several distinct phases, each representing an attempt to address the limitations of previous approaches while meeting the growing demands of software development.
+
+\subsubsection{Manual Testing Era}
+
+Early approaches relied entirely on manual testing, where human testers would methodically execute test cases and verify expected outcomes. Testers would follow written test plans, interact with applications through their user interfaces, and document observed behavior against expected results. While thorough when properly executed, manual testing proved insufficiently scalable for modern development practices that demand rapid iteration and continuous deployment. The limitations of manual testing became increasingly apparent as software systems grew in complexity and release cycles shortened from years to months, then weeks, and eventually days.
+
+\subsubsection{Script-Based Automation}
+
+The limitations of manual testing drove the adoption of automated testing frameworks in the 1990s and 2000s. Tools such as JUnit (1997), Selenium (2004), and their successors enabled developers to script repetitive test scenarios and integrate them into build processes. This automation dramatically improved test execution efficiency---a test suite that required hours of manual execution could run in minutes. The emergence of \acrfull{CI}/\acrfull{CD} pipelines further accelerated adoption, as automated tests became gatekeepers for code integration and deployment.
+
+However, script-based automation introduced new challenges. Test scripts require substantial upfront investment in development and ongoing maintenance as the \acrfull{SUT} evolves. Studies estimate that test maintenance can consume 40--70\% of the total testing effort over a project's lifecycle. Furthermore, automated scripts can only verify what they are explicitly programmed to check---they lack the adaptability and judgment that human testers bring to exploratory testing.
+
+\subsubsection{Search-Based Test Generation}
+
+The desire to reduce manual test creation effort led to the development of automated test generation techniques. Search-based software testing (SBST) approaches, exemplified by tools such as EvoSuite and Randoop, use evolutionary algorithms and random generation to automatically produce test cases targeting coverage criteria. These tools can achieve high code coverage with minimal human effort, automatically generating inputs that exercise different program paths.
+
+Despite their capabilities, SBST tools face fundamental limitations. The generated tests often lack semantic meaning---they achieve coverage by executing code paths but may not validate meaningful behavior. The ``oracle problem'' remains unsolved: while these tools can generate inputs, determining correct expected outputs typically requires human knowledge. Additionally, the generated tests are often difficult to understand and maintain, as they lack the structure and naming conventions that make human-written tests readable.
+
+\subsubsection{The LLM Revolution}
+
+The emergence of Large Language Models has opened a fundamentally new approach to test generation. Unlike previous automated techniques that operate purely on syntactic or structural properties of code, LLMs can understand code semantics, infer intended behavior from context and documentation, and generate human-readable test code. This capability addresses several limitations of prior approaches: LLM-generated tests can include meaningful assertions based on inferred behavior, follow project conventions for readability, and adapt to different testing frameworks and styles.
+
+However, traditional automated testing approaches present their own set of challenges. Script-based testing requires substantial upfront investment in test case development and ongoing maintenance as the \acrfull{SUT} evolves. Test scripts are inherently brittle, frequently breaking when user interfaces change or when code is refactored, even when the underlying functionality remains correct. Furthermore, achieving meaningful test coverage requires domain expertise and considerable manual effort to identify relevant test scenarios, edge cases, and potential failure modes.
+
+The emergence of \acrfull{LLM} technology has fundamentally transformed the landscape of \acrfull{AI} applications, including those in \acrfull{SE}. Models such as \acrfull{GPT}-4, Claude, and open-weight alternatives like \acrfull{LLaMA} have demonstrated remarkable capabilities in understanding and generating code, comprehending natural language specifications, and reasoning about software behavior. These capabilities have catalyzed significant research interest in applying LLMs to automate various software engineering tasks, including code generation, bug detection, code review, and---of particular relevance to this work---software testing.
+
+Initial applications of LLMs to testing focused on single-agent approaches, where a single LLM-powered agent would be prompted to generate test cases, analyze code coverage, or identify potential bugs. While these approaches showed promising results on benchmark tasks, they revealed fundamental limitations when applied to complex, real-world testing scenarios. Single-agent systems struggle with the inherent complexity of comprehensive testing, which typically requires multiple distinct capabilities: understanding requirements, analyzing code structure, generating test cases, executing tests, interpreting results, and iteratively refining the testing strategy.
+
+\acrfull{MAS} architectures offer a compelling solution to these limitations. By decomposing complex testing tasks among multiple specialized agents---each with distinct roles, capabilities, and perspectives---MAS can address the multifaceted nature of software testing more effectively than monolithic single-agent approaches. Drawing inspiration from human development teams, where different specialists (developers, testers, reviewers, architects) collaborate to ensure software quality, MAS architectures enable coordinated autonomous testing with role-based specialization.
+
+Recent frameworks such as MetaGPT, ChatDev, and SWE-agent have demonstrated the viability of multi-agent approaches for software engineering tasks. These systems employ hierarchical or peer-to-peer coordination models, where agents with specialized roles collaborate through structured communication protocols. In the testing domain, this might involve a planning agent decomposing testing objectives, code analysis agents examining the SUT, test generation agents producing test cases, execution agents running tests in sandboxed environments, and validation agents assessing test quality and coverage.
+
+Despite the promising potential of MAS-based automated testing, significant challenges remain before such systems can be safely deployed in production environments. Chief among these are concerns regarding security and privacy. LLM-based agents operating autonomously on codebases may inadvertently expose sensitive information, including \acrfull{PII}, proprietary algorithms, or security credentials. The \acrfull{ACI}---the boundary through which agents interact with code repositories, execution environments, and external systems---represents a critical attack surface that must be carefully secured.
+
+Furthermore, the regulatory landscape is evolving rapidly. The European Union's \acrfull{GDPR} imposes strict requirements on the processing of personal data, while the forthcoming EU AI Act will introduce additional obligations for AI systems, particularly those classified as high-risk. Organizations deploying agentic testing systems must navigate these regulatory requirements, ensuring compliance while realizing the benefits of autonomous testing.
+
+This thesis is motivated by the convergence of these technological and regulatory trends. The potential for MAS-powered testing to address longstanding challenges in software quality assurance is substantial, yet realizing this potential requires careful attention to architectural design, security hardening, and privacy protection. This work aims to bridge the gap between research prototypes and production-ready systems by developing a comprehensive understanding of MAS-based testing approaches and proposing a secure, privacy-preserving architecture for their deployment.
+
+%----------------------------------------------------------------------------------------
+
+\section{Problem Statement}
+\label{sec:problem_statement}
+
+The software testing community faces a fundamental tension between the need for comprehensive, thorough testing and the practical constraints of time, resources, and expertise. Traditional automated testing approaches, while more efficient than purely manual testing, suffer from several well-documented limitations:
+
+\begin{itemize}
+    \item \textbf{Test Script Brittleness}: Automated test scripts are tightly coupled to the current implementation of the SUT. Minor changes to user interfaces, API signatures, or internal code structure frequently break existing tests, requiring substantial maintenance effort.
+
+    \item \textbf{Limited Adaptability}: Traditional test frameworks lack the ability to understand the semantic intent behind tests or to adapt testing strategies based on observed system behavior. When the SUT changes, tests must be manually updated rather than automatically adjusted.
+
+    \item \textbf{Coverage Challenges}: Achieving meaningful test coverage requires identifying relevant test scenarios, boundary conditions, and potential failure modes. This process demands domain expertise and often results in significant gaps, particularly for complex business logic and edge cases.
+
+    \item \textbf{Oracle Problem}: Determining expected outcomes for test cases (the oracle problem) remains a significant challenge. Automated test generation tools can produce inputs but often struggle to specify correct expected outputs without human guidance.
+\end{itemize}
+
+The application of LLMs to testing has shown promise in addressing some of these limitations. LLMs can understand code semantics, generate meaningful test cases from natural language descriptions, and reason about expected behavior. However, single-agent LLM approaches introduce their own set of challenges:
+
+\begin{itemize}
+    \item \textbf{Context Window Limitations}: LLMs operate within fixed context windows that constrain the amount of code and information they can process simultaneously. Complex codebases exceeding these limits cannot be fully comprehended by a single agent in a single invocation.
+
+    \item \textbf{Lack of Specialization}: A single agent must simultaneously handle diverse tasks (code analysis, test generation, execution, validation) that may benefit from specialized approaches, prompting strategies, or even different underlying models.
+
+    \item \textbf{Reasoning Gaps}: While LLMs demonstrate impressive capabilities on structured tasks, they exhibit reasoning gaps when faced with complex multi-step problems that require maintaining state, tracking dependencies, and coordinating across multiple activities.
+
+    \item \textbf{Hallucination Risks}: LLMs may generate plausible-sounding but incorrect information, including references to nonexistent libraries (a vulnerability known as ``slopsquatting''), incorrect API usage, or flawed test assertions.
+\end{itemize}
+
+MAS architectures offer a theoretical solution to these limitations through role-based decomposition and coordinated collaboration. However, the deployment of MAS-based testing systems introduces significant security and privacy concerns that have received insufficient attention in the literature:
+
+\begin{itemize}
+    \item \textbf{Data Leakage}: Agents with access to source code may inadvertently transmit proprietary information to external LLM providers, violating intellectual property protections and potentially exposing trade secrets.
+
+    \item \textbf{PII Exposure}: Codebases frequently contain embedded personal data, test fixtures with realistic user information, or configuration files with credentials. Autonomous agents may process and transmit such sensitive data without appropriate safeguards.
+
+    \item \textbf{Adversarial Manipulation}: Malicious actors may exploit agent systems through prompt injection attacks, where carefully crafted code comments or strings manipulate agent behavior. Trojan comments embedded in code could cause agents to execute unauthorized actions.
+
+    \item \textbf{Unsafe Code Generation}: Agents generating test code may introduce security vulnerabilities, include malicious dependencies, or execute dangerous operations in test environments that lack adequate isolation.
+
+    \item \textbf{ACI Vulnerabilities}: The Agent-Computer Interface, through which agents interact with code repositories, execution environments, and external services, represents a critical attack surface requiring careful security design.
+\end{itemize}
+
+Additionally, a significant gap exists between research prototypes and production-ready systems. Most existing MAS frameworks have been evaluated on benchmark datasets under controlled conditions, with limited consideration of:
+
+\begin{itemize}
+    \item Integration with existing CI/CD pipelines and development workflows
+    \item Cost-effectiveness in terms of LLM token consumption versus developer time saved
+    \item Compliance with regulatory frameworks such as GDPR and the EU AI Act
+    \item Organizational adoption challenges and change management
+    \item Long-term maintainability and evolution of agent-based testing systems
+\end{itemize}
+
+This thesis addresses these interrelated challenges by systematically investigating the state of the art in MAS-based automated testing, identifying the predominant security and privacy risks, cataloging proposed mitigation strategies, and proposing a secure-by-design architecture that balances testing effectiveness with privacy protection and regulatory compliance.
+
+%----------------------------------------------------------------------------------------
+
+\section{Research Questions}
+\label{sec:research_questions}
+
+This thesis is guided by six research questions organized into two complementary themes: security and privacy considerations (RQ1--RQ2), and effectiveness and architecture (RQ3--RQ6). The security-focused questions emerged from preliminary research conducted for a prior systematic review, while the remaining questions address the broader landscape of MAS-based automated testing.
+
+\subsection{Security and Privacy Research Questions}
+
+\textbf{RQ1 (Security and Privacy Risks)}: \textit{What predominant security and privacy risks are associated with LLM-based Multi-Agent Systems in enterprise software testing environments?}
+
+This question investigates the threat landscape specific to agentic testing systems. Understanding the risks associated with autonomous agents operating on sensitive codebases is essential for developing appropriate countermeasures. RQ1 encompasses sub-concerns including data leakage vectors, adversarial manipulation techniques, unsafe code generation patterns, and privacy violations that may occur during agent operation.
+
+\textbf{RQ2 (Mitigation Strategies)}: \textit{What architectural patterns and mitigation strategies (e.g., sandboxing, PII scrubbing) are proposed in the literature to secure Agent-Computer Interfaces and prevent data leakage?}
+
+Building on the risks identified in RQ1, this question examines the defensive measures proposed by researchers and practitioners. RQ2 explores model-centric approaches (such as local LLM deployment and fine-tuning), pipeline-centric strategies (including ACI hardening and execution sandboxing), and algorithmic techniques (such as mutation testing for validation and chaos engineering for robustness).
+
+\subsection{Effectiveness and Architecture Research Questions}
+
+\textbf{RQ3 (Effectiveness)}: \textit{How effective are Multi-Agent Systems powered by Large Language Models in automated software testing compared to traditional testing approaches?}
+
+This question evaluates the comparative performance of MAS-based testing against established baselines. Effectiveness encompasses multiple dimensions:
+
+\begin{itemize}
+    \item \textbf{RQ3.1}: What metrics are used to evaluate MAS-based testing effectiveness (coverage, bug detection rate, false positive rate)?
+    \item \textbf{RQ3.2}: What are the performance benchmarks for different MAS architectures in testing contexts?
+\end{itemize}
+
+\textbf{RQ4 (Architecture and Design)}: \textit{What architectural patterns and design principles are most effective for implementing MAS-based automated testing systems?}
+
+This question explores the design space for multi-agent testing architectures:
+
+\begin{itemize}
+    \item \textbf{RQ4.1}: How do different agent collaboration models (hierarchical, peer-to-peer, hybrid) impact testing outcomes?
+    \item \textbf{RQ4.2}: What role specialization patterns exist for testing agents (coder, tester, reviewer, debugger, architect)?
+\end{itemize}
+
+\textbf{RQ5 (Practical Implementation)}: \textit{What are the practical challenges and solutions for deploying MAS-based testing in real-world software development workflows?}
+
+This question bridges the gap between research and practice:
+
+\begin{itemize}
+    \item \textbf{RQ5.1}: How do MAS-based testing systems integrate with existing CI/CD pipelines?
+    \item \textbf{RQ5.2}: What is the cost-benefit analysis (token cost versus developer time) for different testing scenarios?
+\end{itemize}
+
+\textbf{RQ6 (LLM Selection and Configuration)}: \textit{How do different Large Language Model choices and configurations impact the performance of Multi-Agent testing systems?}
+
+This question examines the LLM selection and configuration decisions that influence system behavior:
+
+\begin{itemize}
+    \item \textbf{RQ6.1}: What are the trade-offs between proprietary models (GPT-4, Claude) versus open-weight models (LLaMA, CodeLlama)?
+    \item \textbf{RQ6.2}: How do fine-tuning strategies compare to prompt engineering for testing agents?
+\end{itemize}
+
+\subsection{Research Question Relationships}
+
+These research questions are interconnected and mutually informing. RQ1 and RQ2 establish the security and privacy constraints that any proposed architecture must satisfy. RQ3 provides the effectiveness criteria against which architectural decisions (RQ4) must be evaluated. RQ5 grounds the research in practical deployment considerations, while RQ6 informs the selection of LLM components within the proposed architecture. Together, these questions form a comprehensive framework for investigating MAS-based automated testing systems.
+
+%----------------------------------------------------------------------------------------
+
+\section{Research Objectives}
+\label{sec:objectives}
+
+This thesis pursues one primary objective and five secondary objectives that collectively address the identified research questions.
+
+\subsection{Primary Objective}
+
+Design and validate a secure Multi-Agent System architecture for automated software testing that incorporates privacy-by-design principles and addresses the security concerns identified in the literature.
+
+This primary objective integrates findings from the systematic literature review with practical architectural design, resulting in a reference architecture that organizations can adapt for their specific testing requirements. The architecture will address the tensions between testing effectiveness and security constraints, providing explicit guidance on trade-off decisions.
+
+\subsection{Secondary Objectives}
+
+\textbf{Objective 2: Comprehensive Systematic Literature Review}
+
+Conduct a systematic literature review following the \acrfull{PRISMA} methodology that synthesizes the current state of knowledge across all six research questions. This review will cover:
+
+\begin{itemize}
+    \item Security and privacy risks in LLM-based agent systems
+    \item Proposed mitigation strategies and secure architectures
+    \item MAS architectures for software engineering and testing
+    \item Evaluation metrics and benchmarks for testing effectiveness
+    \item Practical deployment considerations and case studies
+    \item LLM selection and configuration strategies
+\end{itemize}
+
+\textbf{Objective 3: Taxonomy Development}
+
+Develop a structured taxonomy categorizing the architectural approaches employed in LLM-based multi-agent testing systems, classifying systems along dimensions including coordination models, role specialization patterns, communication protocols, and LLM integration strategies.
+
+\textbf{Objective 4: Prototype Implementation}
+
+Develop a prototype implementation of the proposed architecture that demonstrates the feasibility of secure MAS-based testing. The prototype will incorporate:
+
+\begin{itemize}
+    \item Multiple specialized agents with defined roles (planning, code analysis, test generation, execution, validation, security)
+    \item Sandboxed execution environments with appropriate isolation
+    \item PII scrubbing and data minimization mechanisms
+    \item ACI hardening with explicit permission models
+    \item Audit logging and chain-of-thought tracking for transparency
+\end{itemize}
+
+\textbf{Objective 5: Empirical Evaluation}
+
+Evaluate the prototype implementation against established benchmarks and real-world codebases to assess:
+
+\begin{itemize}
+    \item Testing effectiveness (coverage, bug detection, test quality)
+    \item Security properties (resistance to identified attack vectors)
+    \item Privacy compliance (data minimization, access control)
+    \item Performance characteristics (execution time, token consumption, resource utilization)
+\end{itemize}
+
+\textbf{Objective 6: Industrial Deployment Guidelines}
+
+Synthesize practical guidelines for organizations seeking to adopt MAS-based testing, including shadow deployment strategies, cost-benefit analysis frameworks, CI/CD integration patterns, and regulatory compliance considerations.
+
+%----------------------------------------------------------------------------------------
+
+\section{Expected Contributions}
+\label{sec:contributions}
+
+This thesis is expected to make the following contributions to the fields of software testing and AI-assisted software engineering:
+
+\textbf{Contribution 1: Comprehensive Systematic Literature Review}
+
+A systematic review covering security, privacy, architecture, and effectiveness of MAS-based testing systems. Unlike existing reviews that focus narrowly on either security aspects or testing effectiveness, this review provides an integrated perspective essential for practitioners seeking to deploy such systems. The review will synthesize findings from approximately 40--50 studies across multiple databases, following rigorous PRISMA methodology.
+
+\textbf{Contribution 2: Taxonomy of MAS Testing Architectures}
+
+A structured taxonomy categorizing the architectural approaches employed in LLM-based multi-agent testing systems. This taxonomy will classify systems along dimensions including:
+
+\begin{itemize}
+    \item Agent coordination models (hierarchical, peer-to-peer, hybrid)
+    \item Role specialization patterns (single-role, multi-role, adaptive)
+    \item Communication protocols (direct, blackboard, publish-subscribe)
+    \item LLM integration strategies (API-based, local, hybrid)
+\end{itemize}
+
+\textbf{Contribution 3: Secure-by-Design Reference Architecture}
+
+A reference architecture for MAS-based automated testing that incorporates security and privacy protections as foundational design elements rather than afterthoughts. This architecture will provide:
+
+\begin{itemize}
+    \item Explicit security boundaries and trust zones
+    \item Data flow controls with PII protection mechanisms
+    \item ACI hardening patterns with least-privilege access
+    \item Integration points for \acrfull{HITL} oversight
+    \item Compliance mappings for GDPR and EU AI Act requirements
+\end{itemize}
+
+\textbf{Contribution 4: Prototype Implementation and Evaluation}
+
+A functional prototype demonstrating the proposed architecture, along with empirical evaluation results establishing its effectiveness and security properties. The prototype will serve as a reference implementation that researchers and practitioners can extend for their specific use cases.
+
+\textbf{Contribution 5: Best Practices for Industrial Deployment}
+
+Practical guidelines for organizations seeking to adopt MAS-based testing, including:
+
+\begin{itemize}
+    \item Shadow deployment strategies for gradual adoption
+    \item Cost-benefit analysis frameworks
+    \item Integration patterns for existing CI/CD pipelines
+    \item Organizational change management considerations
+    \item Regulatory compliance checklists
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\section{Scope and Delimitations}
+\label{sec:scope}
+
+To maintain focus and ensure feasibility within the constraints of a Master's thesis, this research establishes clear boundaries regarding its scope and delimitations.
+
+\subsection{In Scope}
+
+The following aspects are within the scope of this research:
+
+\begin{itemize}
+    \item \textbf{Testing Domain}: The research focuses on automated unit testing and integration testing for software applications. These testing levels represent the most common targets for automated test generation and provide sufficient complexity to evaluate MAS architectures.
+
+    \item \textbf{Programming Language}: The prototype implementation targets Python codebases. Python was selected due to its prevalence in data science and web development, its dynamic typing (which presents interesting challenges for test generation), and the maturity of its testing ecosystem (pytest, coverage.py, mutmut).
+
+    \item \textbf{Security Focus}: The research prioritizes security and privacy concerns relevant to enterprise deployment, including data leakage prevention, PII protection, prompt injection defense, and sandboxed execution. These concerns are particularly relevant for organizations subject to regulatory requirements.
+
+    \item \textbf{LLM Integration}: The architecture supports both cloud-based LLM providers (OpenAI, Anthropic) and locally-deployed open-weight models (Code Llama, Mistral). This flexibility addresses the spectrum of organizational requirements regarding data privacy.
+
+    \item \textbf{Regulatory Context}: The research considers compliance with GDPR and the EU AI Act as representative regulatory frameworks. While specific requirements vary by jurisdiction, these regulations establish patterns applicable to privacy and AI governance more broadly.
+\end{itemize}
+
+\subsection{Out of Scope}
+
+The following aspects are explicitly excluded from this research:
+
+\begin{itemize}
+    \item \textbf{Other Testing Types}: Performance testing, security penetration testing, usability testing, and end-to-end UI testing are not addressed. These testing types involve different challenges and would require specialized agent designs.
+
+    \item \textbf{Other Programming Languages}: While the architectural principles are language-agnostic, the prototype implementation and evaluation focus exclusively on Python. Generalization to statically-typed languages (Java, C++) or other dynamic languages (JavaScript, Ruby) is left for future work.
+
+    \item \textbf{Model Training}: The research uses existing pre-trained LLMs and does not involve training new models. Fine-tuning experiments are limited in scope and use established techniques.
+
+    \item \textbf{Formal Verification}: The security analysis relies on empirical evaluation and attack simulation rather than formal verification methods. While formal approaches could provide stronger guarantees, they are beyond the scope of this work.
+
+    \item \textbf{Long-term Production Study}: The evaluation uses controlled experiments and benchmark datasets. A longitudinal study of production deployment, while valuable, exceeds the time constraints of this thesis.
+\end{itemize}
+
+\subsection{Assumptions}
+
+The research proceeds under the following assumptions:
+
+\begin{itemize}
+    \item Organizations deploying MAS-based testing have existing CI/CD infrastructure that can integrate with new testing tools.
+    \item LLM capabilities continue to improve, making investment in LLM-based testing infrastructure increasingly valuable over time.
+    \item Security and privacy requirements will remain central concerns for enterprise software development.
+    \item The regulatory landscape will continue to evolve toward greater AI governance, making compliance-aware architectures increasingly important.
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\section{Thesis Structure}
+\label{sec:thesis_structure}
+
+This thesis is organized into six chapters, structured to progressively address the research questions and objectives:
+
+\textbf{Chapter~\ref{chap:introduction}: Introduction} (this chapter) establishes the context and motivation for the research, articulates the problem statement, presents the research questions and objectives, and outlines the expected contributions.
+
+\textbf{Chapter~\ref{chap:literature_review}: Literature Review} presents a comprehensive systematic review following PRISMA methodology. The chapter examines the current state of knowledge across all six research questions, covering MAS architectures for testing, LLM selection and configuration, testing effectiveness evaluation, security and privacy challenges, mitigation strategies, and practical deployment considerations. The chapter concludes with a synthesis of findings and identification of research gaps.
+
+\textbf{Chapter~\ref{chap:architecture}: Proposed Architecture} describes the design of a secure MAS architecture for automated testing. The chapter presents requirements analysis, high-level architectural design, detailed agent role specifications, security-by-design implementation patterns, and LLM integration strategies.
+
+\textbf{Chapter~\ref{chap:implementation}: Implementation} details the prototype implementation of the proposed architecture. The chapter covers the technology stack, core component implementation, workflow design, and integration with development environments.
+
+\textbf{Chapter~\ref{chap:evaluation}: Experimental Validation} presents the empirical evaluation of the prototype. The chapter describes the experimental design, effectiveness evaluation results, security assessment findings, performance analysis, and ablation studies examining the contribution of individual architectural components.
+
+\textbf{Chapter~\ref{chap:conclusions}: Conclusions and Future Work} summarizes the research contributions, provides explicit answers to each research question, discusses practical implications for industry adoption, acknowledges limitations, and outlines directions for future research.
+
+Additionally, appendices provide supplementary materials including detailed PRISMA data extraction tables, extended code listings, and additional experimental results.

@@ -48,6 +48,8 @@ headsepline, % Uncomment to get a line under the header
 
 \usepackage{pgfplots} % Required for drawing high--quality function plots (can be removed if not used)
 \pgfplotsset{compat=newest}
+\usepackage{multirow}
+\usepackage{enumitem}
 
 %
 % Next you have examples of admissable citation styles; we recomend using the authoryear-comp citation style (which resembles Harvard); don't forget to only uncomment one
@@ -76,7 +78,7 @@ headsepline, % Uncomment to get a line under the header
 
 \thesistitle{Automated Software Testing using Multi-Agent Systems (MAS) and Large Language Models (LLMs)} % Your thesis title, this is used in the title, print it elsewhere with \ttitle
 
-\thesissubtitle{{[}Sub-Título (se exisitir){]}} % Your thesis title, this is used in the title, print it elsewhere with \tsubtitle
+\thesissubtitle{A Privacy-Preserving Approach} % Your thesis title, this is used in the title, print it elsewhere with \tsubtitle
 
 \author{Rui Marinho} % Your name, this is used in the title page, print it elsewhere with \authorname
 
@@ -86,17 +88,17 @@ headsepline, % Uncomment to get a line under the header
 
 \supervisor{Constantino Martins} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
 
-\cosupervisor{{[}Nome do Co-orientador (caso exista){]}} % Your co-supervisor's name, this is used in the title page, print it elsewhere with \cosupname (comment, if no co-supervisor)
+%\cosupervisor{{[}Nome do Co-orientador (caso exista){]}} % Your co-supervisor's name, this is used in the title page, print it elsewhere with \cosupname (comment, if no co-supervisor)
 
-\committeepresident{{[}Nome do Presidente, Categoria, Escola{]}} % Name of the president of the evaluation committee, print it elsewhere with \presidentname
+\committeepresident{[To be defined]} % Name of the president of the evaluation committee, print it elsewhere with \presidentname
 
-\committeemembers{{[}Nome do Vogal1, Categoria, Escola{]}\\{[}Nome do Vogal2, Categoria, Escola{]} (até 4 vogais)\\} % Name of the evaluation committee members (up to four), print it elsewhere with \committee
+\committeemembers{[To be defined upon thesis defense scheduling]} % Name of the evaluation committee members (up to four), print it elsewhere with \committee
 
 \keywords{Multi-Agent Systems, Large Language Models, Software Testing, Privacy, Security, GDPR} % Please define up to 6 keywords that better describe your work, print it elsewhere with \keywordnames
 
-\university{\href{http://www.university.com}{University Name}} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
+\university{\href{https://www.ipp.pt}{Polit\'ecnico do Porto}} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
 
-\department{\href{http://department.university.com}{Department or School Name}} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
+\department{\href{https://www.isep.ipp.pt}{Instituto Superior de Engenharia do Porto (ISEP)}} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
 
 \thesisdate{Porto, \today} % thesis date,  print it elsewhere with \tdate
 
@@ -123,8 +125,9 @@ headsepline, % Uncomment to get a line under the header
 \input{ch1/chapter1}
 \input{ch2/chapter2}
 \input{ch3/chapter3}
-%\input{ch4/chapter4}
-%\input{ch5/chapter5}
+\input{ch4/chapter4}
+\input{ch5/chapter5}
+\input{ch6/chapter6}
 
 
 %----------------------------------------------------------------------------------------
@@ -144,8 +147,8 @@ headsepline, % Uncomment to get a line under the header
 % Uncomment the lines as you write the Appendices
 
 \input{appendices/appendixA}
-%\input{appendices/appendixB}
-%\input{appendices/appendixC}
+\input{appendices/appendixB}
+\input{appendices/appendixC}
 
 %----------------------------------------------------------------------------------------
 
