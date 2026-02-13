@@ -1,0 +1,222 @@
+[
+  {
+    "title": "MAGISTER: LLM-Based Test Generation with Role-Specialized Agents",
+    "authors": "A. Ahammad; M. El Bajta; M. Radgui",
+    "year": "2025",
+    "venue": "2025 International Conference on Intelligent Systems: Theories and Applications (SITA)",
+    "abstract": "Automated test generation is one of the most critical topics in software testing, with numerous challenges due to the need for deep code understanding and the creation of meaningful assertions. Traditional approaches often generate low-quality and difficult-to-read tests that lack real code understanding and rely on statistical and dynamic analysis. With the recent advances in Large Language Models (LLMs), new opportunities emerge for generating unit tests that prioritize readability and context understanding. In this paper, we introduce MAGISTER, a multiagent framework for LLM-based unit test generation, where each agent (Analyzer Agent, Test Generation Agent, Executor Agent, and Refiner Agent) specializes in a specific role within the framework workflow, which involves analyzing the codebase to identify testable units and generating test code with feedbackdriven refinement. We evaluated MAGISTER on five open-source Python projects, demonstrating a significant improvement in code coverage for modular codebases compared to the original userwritten tests. However, it still has limitations when handling large and complex projects requiring domain-specific knowledge. Our results demonstrate the promising potential of LLM-driven and agent-based architectures in advancing test automation while highlighting directions for future improvement.",
+    "keywords": "Automated Test Generation;Large Language Models;Multi-Agent Systems;Unit Testing;LLM-based Testing",
+    "source": "IEEE",
+    "doi": "10.1109/SITA67914.2025.11273637"
+  },
+  {
+    "title": "A Vision for Debiasing Confirmation Bias in Software Testing via LLM",
+    "authors": "I. Salman; M. Waseem; V. Mandi\u0107; R. D. De Alwis",
+    "year": "2025",
+    "venue": "2025 ACM/IEEE International Symposium on Empirical Software Engineering and Measurement (ESEM)",
+    "abstract": "Background: Large language models (LLM) suffer from various forms of biases due to the biased datasets used to train the models. At the same time, human cognitive biases have an equal propensity to express themselves when using LLMs for software engineering tasks. Software testing is a critical phase of the software development life cycle. Confirmation bias is reported to have deteriorated software testing by designing more specification-consistent test cases compared to specificationinconsistent test cases. However, there is a lack of debiasing (mitigation) strategies in this regard. Aims: In this paper, first, we investigate whether the LLM model suffers from confirmation bias while performing software testing tasks. Second, we propose a vision of debasing confirmation bias in software testing via LLM. Method: We conducted an empirical study to detect confirmation bias by an LLM (ChatGPT4.0) in the design of functional test cases. Based on empirical findings, we used the analytical paradigm to design a multi-agent system. Results: We present a vision for debiasing confirmation bias in functional software testing by leveraging LLMs via a multi-agent approach. Conclusions: The proposed vision may improve the performance of LLMs in terms of reduced confirmation bias and serve as a debiasing technique for functional software testing.",
+    "keywords": "large language model;confirmation bias;functional software testing;debiasing;multi-agent",
+    "source": "IEEE",
+    "doi": "10.1109/ESEM64174.2025.00050"
+  },
+  {
+    "title": "Evaluation of the Choice of LLM in a Multi-Agent Solution for GUI-Test Generation",
+    "authors": "S. Tomic; E. Al\u00e9groth; M. Isaac",
+    "year": "2025",
+    "venue": "2025 IEEE Conference on Software Testing, Verification and Validation (ICST)",
+    "abstract": "Automated testing, particularly for GUI-based systems, remains a costly and labor-intensive process and prone to errors. Despite advancements in automation, manual testing still dominates in industrial practice, resulting in delays, higher costs, and increased error rates. Large Language Models (LLMs) have shown great potential to automate tasks traditionally requiring human intervention, leveraging their cognitive-like abilities for test generation and evaluation. In this study, we present PathFinder, a Multi-Agent LLM (MALLM) framework that incorporates four agents responsible for (a) perception and summarization, (b) decision-making, (c) input handling and extraction, and (d) validation, which work collaboratively to automate exploratory web-based GUI testing. The goal of this study is to assess how different LLMs, applied to different agents, affect the efficacy of automated exploratory GUI testing. We evaluate PathFinder with three models, Mistral-Nemo, Gemma2, and Llama3.1, on four e-commerce websites. Thus, 27 permutations of the LLMs, across three agents (excluding the validation agent), to test the hypothesis that a solution with multiple agents, each using different LLMs, is more efficacious (efficient and effective) than a multi-agent solution where all agents use the same LLM. The results indicate that the choice of LLM constellation (combination of LLMs) significantly impacts efficacy, suggesting that a single LLM across agents may yield the best balance of efficacy (measured by F1-score). Hypothesis to explain this result include, but are not limited to: improved decision-making consistency and reduced task coordination discrepancies. The contributions of this study are an architecture for MALLM-based GUI testing, empirical results on its performance, and novel insights into how LLM selection impacts the efficacy of automated testing.",
+    "keywords": "Multi-Agent Systems;Large Language Models (LLMs);Automated Testing;MALLM;AI-Assisted Software Testing",
+    "source": "IEEE",
+    "doi": "10.1109/ICST62969.2025.10989038"
+  },
+  {
+    "title": "MultiFuzz: A Dense Retrieval-based Multi-Agent System for Network Protocol Fuzzing",
+    "authors": "Y. Maklad; F. Wael; A. Hamdi; W. Elsersy; K. Shaban",
+    "year": "2025",
+    "venue": "2025 IEEE/ACS 22nd International Conference on Computer Systems and Applications (AICCSA)",
+    "abstract": "Traditional protocol fuzzing techniques, such as those employed by AFL-based systems, often lack effectiveness due to a limited semantic understanding of complex protocol grammars and rigid seed mutation strategies. Recent works, such as ChatAFL, have integrated Large Language Models (LLMs) to guide protocol fuzzing and address these limitations, pushing protocol fuzzers to wider exploration of the protocol state space. But ChatAFL still faces issues like unreliable output, LLM hallucinations, and assumptions of LLM knowledge about protocol specifications. This paper introduces MultiFuzz, a novel dense retrieval-based multi-agent system designed to overcome these limitations by integrating semantic-aware context retrieval, specialized agents, and structured tool-assisted reasoning. MultiFuzz utilizes agentic chunks of protocol documentation (RFC Documents) to build embeddings in a vector database for a retrieval-augmented generation (RAG) pipeline, enabling agents to generate more reliable and structured outputs, enhancing the fuzzer in mutating protocol messages with enhanced state coverage and adherence to syntactic constraints. The framework decomposes the fuzzing process into modular groups of agents that collaborate through chain-of-thought reasoning to dynamically adapt fuzzing strategies based on the retrieved contextual knowledge. Experimental evaluations on the Real-Time Streaming Protocol (RTSP) demonstrate that MultiFuzz significantly improves branch coverage and explores deeper protocol states and transitions over state-of-the-art (SOTA) fuzzers such as NSFuzz, AFLNet, and ChatAFL. By combining dense retrieval, agentic coordination, and language model reasoning, MultiFuzz establishes a new paradigm in autonomous protocol fuzzing, offering a scalable and extensible foundation for future research in intelligent agentic-based fuzzing systems.",
+    "keywords": "Protocol Fuzzing;Network Security;Finite-State Machine;Reverse Engineering;Large Language Models;MultiAgent Systems;Dense Retrieval;Retrieval-Augmented Generation;Chain-of-Thoughts",
+    "source": "IEEE",
+    "doi": "10.1109/AICCSA66935.2025.11315267"
+  },
+  {
+    "title": "MCM: A Multi-Agent Collaborative Multimodal Framework For Traditional Chinese Medicine Diagnosis",
+    "authors": "C. Liang; Z. Ma; W. Wang; M. Ding; Z. Cao; M. Chen",
+    "year": "2025",
+    "venue": "2025 IEEE International Conference on Image Processing (ICIP)",
+    "abstract": "The advancement of information technology and the rise of generative AI have paved the way for the development of Large Language Models (LLMs) tailored for TCM diagnostics. However, existing LLMs in the field of TCM face challenges in interpretability, limited modality in interaction, and robustness. To address these limitations, we propose MCM, a Multi-Agent Collaborative Multimodal Framework for TCM Diagnosis. This framework enables robust and interpretable multimodal diagnosis through multi-agent collaboration, offering novel methodologies for applying LLMs in the TCM domain. Experimental results demonstrate that the model within the MCM framework improved performance after fine-tuning, with additional capability gains under the MCM framework\u2019s support, effectively addressing the challenges faced by LLMs in TCM, including interpretability, limited data modality, and lack of robustness. The code is open-sourced at: https://github.com/JerryMazeyu/MCM.",
+    "keywords": "Traditional Chinese Medicine;Large Language Model;Multi-Agent Collaboration;Multi-modality;Intelligent Diagnosis;Interpretability",
+    "source": "IEEE",
+    "doi": "10.1109/ICIP55913.2025.11084334"
+  },
+  {
+    "title": "HPCAgentTester: a Multi-Agent LLM Approach for Enhanced HPC Unit Test Generation",
+    "authors": "R. Karanjai; L. Xu; W. Shi",
+    "year": "2025",
+    "venue": "2025 2nd IEEE/ACM International Conference on AI-powered Software (AIware)",
+    "abstract": "Unit testing in High-Performance Computing (HPC) is critical but challenged by parallelism, complex algorithms, and diverse hardware. Traditional methods often fail to address non-deterministic behavior and synchronization issues in HPC applications. This paper introduces HPCAgentTester, a novel multi-agent Large Language Model (LLM) framework designed to automate and enhance unit test generation for HPC software utilizing OpenMP and MPI. HPCAgentTester employs a unique collaborative workflow where specialized LLM agents (Recipe Agent and Test Agent) iteratively generate and refine test cases through a critique loop. This architecture enables the generation of context-aware unit tests that specifically target parallel execution constructs, complex communication patterns, and hierarchical parallelism. We demonstrate HPCAgentTester's ability to produce compilable and functionally correct tests for OpenMP and MPI primitives, effectively identifying subtle bugs that are often missed by conventional techniques. Our evaluation shows that HPCAgentTester significantly improves test compilation rates and correctness compared to standalone LLMs, offering a more robust and scalable solution for ensuring the reliability of parallel software systems.",
+    "keywords": "HPC;Large Language Models;MPI;MultiAgent Systems;OpenMP;Parallel Programming;Test Generation;Unit Testing",
+    "source": "IEEE",
+    "doi": "10.1109/AIware69974.2025.00031"
+  },
+  {
+    "title": "LibLMFuzz: LLM-Augmented Fuzz Target Generation for Black-Box Libraries",
+    "authors": "I. Hardgrove; J. D. Hastings",
+    "year": "2025",
+    "venue": "2025 Cyber Awareness and Research Symposium (CARS)",
+    "abstract": "A fundamental problem in cybersecurity and computer science is determining whether a program is free of bugs and vulnerabilities. Fuzzing, a popular approach to discovering vulnerabilities in programs, has several advantages over alternative strategies, although it has investment costs in the form of initial setup and continuous maintenance. The choice of fuzzing is further complicated when only a binary library is available, such as the case of closed-source and proprietary software. In response, we introduce LibLMFuzz, a framework that reduces costs associated with fuzzing closed-source libraries by pairing an agentic Large Language Model (LLM) with a lightweight toolchain (disassembler/compiler/fuzzer) to autonomously analyze stripped binaries, plan fuzzing strategies, generate drivers, and iteratively self-repair build and runtime errors. Tested on four widely used Linux libraries, LibLMFuzz produced syntactically correct drivers for all 558 fuzzable API functions, achieving 100% API coverage with no human intervention. Across the 1601 synthesized drivers, 75.52% were nominally correct on first execution. The results show that LLM-augmented middleware holds promise in reducing the costs of fuzzing black-box components and provides a foundation for future research efforts. Future opportunities exist for research in branch coverage.",
+    "keywords": "LLM-augmented fuzzing;Autonomous target generation;Automated vulnerability discovery;API coverage;Black-box fuzzing;LLM fuzz-driver generation;Software security",
+    "source": "IEEE",
+    "doi": "10.1109/CARS67163.2025.11337309"
+  },
+  {
+    "title": "LLM-Driven Smart Test Case Generation for Scalable Software Testing",
+    "authors": "K. Kanagaraj; D. Handa; K. K. Nikhil; S. Duvarakanath; S. M.",
+    "year": "2025",
+    "venue": "2025 2nd International Conference on Software, Systems and Information Technology (SSITCON)",
+    "abstract": "Software testing is vital to modern development; however, traditional test case generation remains limited by imprecision, heavy manual intervention, and a lack of scalability. This study proposes a robust framework that integrates Large Language Models (LLMs) with multi-agent systems to generate fully automated, end-to-end test cases. By combining Deep Learning with Chain-of-Thought reasoning, the framework intelligently analyzes back-end APIs and front-end UIs, producing context-aware and comprehensive test suites. The evaluation of the system demonstrated a high-test success rate of 91.6 % and an average code coverage of 85.3 % in diverse applications. This study offers a much greater degree of adaptability to new requirements with minimal intervention while maintaining high reliability and performance qualities. These facts make it attractive for enterprise environments, where it can speed up testing with much greater precision, scaling, and enterprise readiness. Hence, the framework stands for an end-to-end solution for next-generation regression automation.",
+    "keywords": "LLM;Multi-Agent Systems;Testcase Generation;System Testing;CI/CD",
+    "source": "IEEE",
+    "doi": "10.1109/SSITCON66133.2025.11342080"
+  },
+  {
+    "title": "AI-Powered Multi-Agent Framework for Automated Unit Test Case Generation: Enhancing Software Quality through LLM\u2019s",
+    "authors": "A. Garlapati; M. N. V. Satya Sai Muni Parmesh; Savitha; J. S",
+    "year": "2024",
+    "venue": "2024 5th IEEE Global Conference for Advancement in Technology (GCAT)",
+    "abstract": "Recent years have witnessed an enormous rise in the design, repair and the enhancement of software automation tests. The reliability of program\u2019s unit testing has major impact on its overall performance. The anticipated influence of Artificial Intelligence advancements on test automation methodologies are significant. Many studies on automated testing implicitly assume that the test results are deterministic, means that similar tests faults remain same. The precision of software is largely ensured by unit testing. But writing unit tests manually is a time-consuming process, which leads us to drive into \"Automation Analysis\". Recent years comprised the application of Large Language Models (LLM\u2019s) in numerous fields related to software development, especially the automated creation of unit testing.However, these frameworks require more instructions, or few shot learnings on sample tests that already exist. This research provides a comprehensive empirical assessment of the efficiency of LLM\u2019s for automating unit testing production, with no need for further manual analysis. The method we employ is put into practice for test cases, an adaptable Agents and LLM-based testing framework that evaluates test cases generated, by reviewing and re-writing them in different phases. Evaluation of this test cases was done by using mistral-large LLM Model. The analysis results that developed acquired an overall coverage of 100% for code given. Finally, to enhance the typical evaluation, this research suggests and concludes that LLMs, can be successfully incorporated into present practices, through adaptative instructions and improvements.",
+    "keywords": "Large Language Models - LLM\u2019s;Manual Testing;Artificial Intelligence;Automation;Agents;Unit Tests",
+    "source": "IEEE",
+    "doi": "10.1109/GCAT62922.2024.10923987"
+  },
+  {
+    "title": "IntelliTest: An Intelligent Framework for Agentic Functional Test Generation Using Multimodal Data and Domain Knowledge",
+    "authors": "A. S. Tiwari; S. Ganesh Nutan Dev C; P. M. Patole; G. Ponnamreddy; S. Chinthalapudi; D. P. Kattamanchi",
+    "year": "2025",
+    "venue": "2025 IEEE Future Networks World Forum (FNWF)",
+    "abstract": "IntelliTest is an end-to-end, locally deployable framework that automates functional test generation and selection for complex embedded systems from two input modes: Software Change Artifacts (SCAs)\u2014multimodal changelist data combining code diffs with textual metadata\u2014and Natural-Language Queries (NLQs) for direct test requests. It employs a domainagnostic ontology defining procedural semantics, compiled into a structured procedural database and a specification knowledge graph for retrieval-augmented reasoning. The dual-agent architecture\u2014Context-Analysis-and-Scoping Agent (CASA) and Constrained-Testcase-Synthesis Agent (CTSA)\u2014interprets SCAs or NLQs, validates functionalities through ontology-grounded databases, and synthesizes constraint-compliant sequences. Dynamic coverage databases use greedy set-cover selection and cross-impact expansion to expose cousin bugs in adjacent modules. Human-in-the-loop feedback refines ontology instantiations. Deployed locally for data-security compliance, IntelliTest was validated on commercial modem firmware (>50,000 files, >250,000 functions), achieving 95% functionality identification, 92% code-change coverage, 90% constraint satisfaction, and a five-fold reduction in generation time, shrinking regression suites by 40\u201360% while maintaining comprehensive coverage",
+    "keywords": "Automated Functional Testing;LLM Agents;multi-agent systems;ontology-driven generation;dual-agent frameworks;retrieval-augmented generation",
+    "source": "IEEE",
+    "doi": "10.1109/FNWF66845.2025.11317278"
+  },
+  {
+    "title": "Multi-Agent Auditing for Smart Contracts*",
+    "authors": "Y. Ding; J. Yu; A. Twabi; L. Zhang; T. Kondo; H. Sato",
+    "year": "2025",
+    "venue": "2025 9th International Symposium on Computer Science and Intelligent Control (ISCSIC)",
+    "abstract": "Smart contracts underpin contemporary decentralized systems, yet their immutability and perpetual execution amplify the consequences of latent defects. Despite progress in manual audits, static analysis, fuzzing, and formal verification, auditors face a widening gap between the scalability and desired assurance due to limited automation capability. Recent large language models (LLMs) with tool-use capabilities promise greater automation, but monolithic single-agent auditors struggle with coverage, robustness, and reproducibility. Motivated by addressing these issues, we propose Multi-Agent Auditing (MAA), a framework that coordinates a team of tool-grounded agents through a constrained protocol that privileges verifiable artifacts. Besides, we mechanize an LLM-assisted orchestration mechanism and a shared knowledge base to coordinate a set of agents specialized in sophisticated testing approaches to produce budget-aware and evidence-centric audit results. Furthermore, we present the experiment results showing that MAA outperforms singleLLM auditors and provide empirical insights into LLM-backend selection.",
+    "keywords": "multi-agent system;smart contract;large language model;agent orchestration;software testing",
+    "source": "IEEE",
+    "doi": "10.1109/ISCSIC67494.2025.11352002"
+  },
+  {
+    "title": "An Agentic Reasoning-Based Feedback System for Programming Assignments",
+    "authors": "N. A. A. Sulaiman; H. Haron; N. M. Mahfuz; N. A. M. Saat; S. N. Daud; S. Alias",
+    "year": "2025",
+    "venue": "2025 IEEE 11th International Conference on Computing, Engineering and Design (ICCED)",
+    "abstract": "This study introduces Explain-then-Grade, an automated feedback framework designed for programming lab assignments using agent reasoning and large language models (LLMs). Unlike conventional auto-graders, which provide marks directly and general feedback, the proposed framework requires the agent to explain detected errors prior to assigning marks, thereby enhancing pedagogical value and transparency. The framework integrates sandboxed execution, on-the-fly test generation, and structured, stepwise explanatory reasoning, ensuring that students receive constructive, rubric-aligned feedback. To evaluate its effectiveness, the system was applied to anonymized submissions from a Data Mining module and complemented with open-source student code repositories. Performance was benchmarked against classic unit test-based auto-graders and LLM-only grading models, using five dimensions: grading accuracy, explanation quality, error coverage, and efficiency. Results demonstrate that Explain-then-Grade achieved higher grading reliability ($93 \\%$ accuracy, $\\kappa=0.85$), superior explanation quality (4.4/5), broader error coverage ($83.7 \\%$), and substantial time savings ($67 \\%$). These outcomes highlight its potential to support both traditional and open and distance learning (ODL) contexts by shifting automated assessment from mere evaluation toward formative, feedback-driven learning. The study establishes a structured agentic reasoning pipeline for reproducible and pedagogically aligned automated grading.",
+    "keywords": "Agent Reasoning;Automated Grading;Large Language Model (LLM);Trustworthy AI in Education",
+    "source": "IEEE",
+    "doi": "10.1109/ICCED68324.2025.11324743"
+  },
+  {
+    "title": "LLMs in Debate: Does Arguing Make Them Better at Detecting Metamorphic Relations?",
+    "authors": "D. B. Bose; Y. B. Alebachew; C. Brown",
+    "year": "2025",
+    "venue": "2025 40th IEEE/ACM International Conference on Automated Software Engineering Workshops (ASEW)",
+    "abstract": "Large Language Models (LLMs) are transforming software engineering, including mobile Augmented Reality (AR) applications. AR software behavior often depends on dynamic environmental factors, making it difficult to use conventional testing and verification approaches. Metamorphic Testing (MT) offers an alternative by assessing whether expected transformations hold across varied conditions. However, there is limited work exploring how well LLMs can detect these transformations-Metamorphic Relations (MRs)-in applications. We propose a stability-driven evaluation framework that examines whether LLMs consistently apply MRs across rephrasings. Our study finds that StarCoder and CodeLlama exhibit higher stability in MR identification compared to the general-purpose model Gemma. Additionally, we use a multi-agent debate framework to investigate whether combining multiple perspectives improves consistency in MR identification. The debate mechanism reduces MR inconsistencies, leading to more stable MR identification across all MRs. While debate helps stabilize MR identification, our evaluation against humanlabeled ground truth reveals that stability alone does not always correlate with correctness. Some models maintain stable yet incorrect predictions(CodeLlama), whereas debate enhances both consistency and correctness alignment, making LLM reasoning more reliable. This work contributes a method to evaluate LLMs in the absence of ground truth, establishing stability as a metric for assessing model reliability. Applying a multi-agent debate framework offers a promising approach to enhancing LLM reliability, especially in contexts where the ground truth is elusive.",
+    "keywords": "Large language models;Metamorphic testing;Augmented Reality (AR);Multi-Agent Debate;Stability Evaluation",
+    "source": "IEEE",
+    "doi": "10.1109/ASEW67777.2025.00019"
+  },
+  {
+    "title": "Human-In-The-Loop Software Development Agents: Challenges and Future Directions",
+    "authors": "J. Pasuksmit; W. Takerngsaksiri; P. Thongtanunam; C. Tantithamthavorn; R. Zhang; S. Wang; F. Jiang; J. Li; E. Cook; K. Chen; M. Wu",
+    "year": "2025",
+    "venue": "2025 IEEE/ACM 22nd International Conference on Mining Software Repositories (MSR)",
+    "abstract": "Multi-agent LLM-driven systems for software development are rapidly gaining traction, offering new opportunities to enhance productivity. At Atlassian, we deployed Human-in-the-Loop Software Development Agents to resolve Jira work items and evaluated the generated code quality using functional correctness testing and GPT-based similarity scoring. This paper highlights two major challenges: the high computational costs of unit testing and the variability in LLM-based evaluations. We also propose future research directions to improve evaluation frameworks for Human-In-The-Loop software development tools.",
+    "keywords": "hula;atlassian;llm;human-in-the-loop;jira;code-generation",
+    "source": "IEEE",
+    "doi": "10.1109/MSR66628.2025.00112"
+  },
+  {
+    "title": "Seeing is Believing: Vision-Driven Non-Crash Functional Bug Detection for Mobile Apps",
+    "authors": "Z. Liu; C. Li; C. Chen; J. Wang; M. Chen; B. Wu; Y. Wang; J. Hu; Q. Wang",
+    "year": "2025",
+    "venue": "IEEE Transactions on Software Engineering",
+    "abstract": "Mobile app GUI (Graphical User Interface) pages now contain rich visual information, with the visual semantics of each page helping users understand the application logic. However, these complex visual and functional logics present new challenges to software testing. Existing automated GUI testing methods, constrained by the lack of reliable testing oracles, are limited to detecting crash bugs with obvious abnormal signals. Consequently, many non-crash functional bugs, ranging from unexpected behaviors to logical errors, often evade detection by current techniques. While these non-crash functional bugs can exhibit visual cues that serve as potential testing oracles, they often entail a sequence of screenshots, and detecting them necessitates an understanding of the operational logic among GUI page transitions, which is challenging traditional techniques. Considering the remarkable performance of Multimodal Large Language Models (MLLM) in visual and language understanding, this paper proposes VisionDroid, a novel vision-driven, multi-agent collaborative automated GUI testing approach for detecting non-crash functional bugs. It comprises three agents: Explorer, Monitor, and Detector, to guide the exploration, oversee the testing progress, and spot issues. We also address several challenges, i.e., aligning visual and textual information for MLLM input, achieving functionality-oriented exploration, and inferring test oracles for non-crash bugs, to enhance the performance of functionality bug detection. We evaluate VisionDroid on 590 non-crash bugs and compare it with 12 baselines, it can achieve more than 14%-112% and 108%-147% boost in average recall and precision compared with the best baseline. The ablation study further proves the contribution of each module. Moreover, VisionDroid identifies 43 unknown bugs on Google Play, of which 31 have been fixed.",
+    "keywords": "Multimodal large language model;android app;non-crash bugs",
+    "source": "IEEE",
+    "doi": "10.1109/TSE.2025.3614469"
+  },
+  {
+    "title": "Research on Multi-Model Fusion Machine Learning Demand Intelligent Forecasting System in Cloud Computing Environment",
+    "authors": "J. Huang",
+    "year": "2025",
+    "venue": "2025 2nd International Conference on Intelligent Algorithms for Computational Intelligence Systems (IACIS)",
+    "abstract": "Background: Large language models (LLMs) are increasingly being used for automated unit test generation, but reported performance varies across tasks and datasets, and key aspects such as assertion plausibility and target coverage are not well understood. Methods: We perform a structured evaluation of LLM-based test generation on recent benchmarks and settings, summarizing research results in hinting, static analysis guidance, multi-agent work frameworks, and oracle generation; we compare LLMs with traditional tools such as EvoSuite, and analyze factors that affect coverage, fault detection, and maintainability. Results: When LLMs are used in conjunction with static analysis or method slicing, competitive and improved coverage can be achieved; achieving target line/branch/path coverage and obtaining robust oracles remain challenging; using multi-stage hints and tools (e.g., interpreters/RAGs) can enhance the correctness of results, and manually verified benchmarks can effectively improve the reliability of evaluations. The tests generated by LLM are promising but not uniformly so: future extensions depend on better oracle reasoning, task-appropriate prompts and scaffolding, and rigorous contamination-aware evaluation with statistical tests and repeatable properties.",
+    "keywords": "cloud computing;resource demand forecasting;ensemble learning;machine learning",
+    "source": "IEEE",
+    "doi": "10.1109/IACIS65746.2025.11210946"
+  },
+  {
+    "title": "Unit Test Generation Multi-Agent AI System for Enhancing Software Documentation and Code Coverage",
+    "authors": "D. Stojanovi\u0107; B. Pavkovi\u0107; N. \u010ceti\u0107; M. Kruni\u0107; L. Vidakovi\u0107",
+    "year": "2024",
+    "venue": "2024 32nd Telecommunications Forum (TELFOR)",
+    "abstract": "Software development necessitates a robust testing plan though test development can be laborious and nonappealing task. We explore the utilization of the application artificial intelligence agents for generating and executing unit tests, enhancing the \u201cMostly Basic Python Problems\u201d dataset. We employ behavior-driven development within a three-agent system to generate user stories and unit tests. Empirical results indicate improvements in branch coverage, illustrating the effective utilization of large language models in software testing and development processes.",
+    "keywords": "AI agents;unit test generation;code generation;SW test automation;transformers;BDD",
+    "source": "IEEE",
+    "doi": "10.1109/TELFOR63250.2024.10819096"
+  },
+  {
+    "title": "Large Language Model Supply Chain: A Research Agenda",
+    "authors": "N/A",
+    "year": "2025",
+    "venue": "TOSEM '25",
+    "abstract": "Defines and analyzes the \"supply chain\" of LLMs, including infrastructure, foundation models, and downstream applications like autonomous agents and testing tools.",
+    "keywords": "",
+    "source": "ACM",
+    "doi": ""
+  },
+  {
+    "title": "A Survey on Large Language Models for Code Generation",
+    "authors": "N/A",
+    "year": "2026",
+    "venue": "TOSEM",
+    "abstract": "A comprehensive survey on \"Code LLMs,\" covering evolution, advanced techniques (autonomous agents, RAG), and comparative analysis on benchmarks like HumanEval, MBPP, and SWE-bench.",
+    "keywords": "",
+    "source": "ACM",
+    "doi": ""
+  },
+  {
+    "title": "RepairAgent: An Autonomous, LLM-Based Agent for Program Repair",
+    "authors": "N/A",
+    "year": "2025",
+    "venue": "ICSE '25",
+    "abstract": "Introduces RepairAgent, an autonomous agent that uses an LLM and a finite state machine to plan and execute actions (invoking tools) to fix software bugs.",
+    "keywords": "",
+    "source": "ACM",
+    "doi": ""
+  },
+  {
+    "title": "Demystifying LLM-Based Software Engineering Agents",
+    "authors": "N/A",
+    "year": "2025",
+    "venue": "PACMSE (FSE)",
+    "abstract": "A study analyzing \"Agentless\" approaches versus complex agentic frameworks. It shows that simple, multi-phase LLM approaches can outperform complex agents on benchmarks like SWE-bench.",
+    "keywords": "",
+    "source": "ACM",
+    "doi": ""
+  },
+  {
+    "title": "A Multi-Agent Approach for REST API Testing with Semantic Graphs and LLM-Driven Inputs",
+    "authors": "N/A",
+    "year": "2025",
+    "venue": "ICSE '25",
+    "abstract": "Introduces AutoRestTest, which uses a multi-agent reinforcement learning approach combined with LLMs to generate inputs and test REST APIs more effectively.",
+    "keywords": "",
+    "source": "ACM",
+    "doi": ""
+  }
+]

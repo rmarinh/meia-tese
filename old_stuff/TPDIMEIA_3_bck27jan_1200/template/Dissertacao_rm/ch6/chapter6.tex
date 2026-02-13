@@ -1,0 +1,36 @@
+\chapter{Conclusions and Future Work}
+\label{chap:conclusions}
+
+This chapter summarizes the work developed in the context of this dissertation proposal, highlighting the preliminary findings from the literature review and the expected impact of the proposed Multi-Agent System (MAS). It also outlines the future work required to complete the dissertation, including the implementation roadmap and experimental validation.
+
+\section{Summary of the Work}
+\label{sec:summary}
+
+The automation of software testing has long been a goal of the software engineering community. While previous generations of tools relied on static analysis and brittle scripts, the advent of Large Language Models (LLMs) has opened new avenues for "generative testing." However, as identified in Chapter 2, current single-agent approaches suffer from significant limitations, most notably "Contextual Blindness" (lack of repository awareness) and the "Grounding Gap" (inability to verify code correctness).
+
+This dissertation proposes a novel solution to these problems: a Multi-Agent System framework grounded in the execution environment. By utilizing the Letta framework for state management and implementing an Agent-Computer Interface (ACI), the proposed system mimics the workflow of a human engineering team. The "Planner" agent strategies, the "Coder" agent implements, and the "Executor" agent validates—creating a self-correcting feedback loop that is absent in standard "Chat with Code" interfaces.
+
+\section{Discussion of Contributions}
+\label{sec:discussion_conclusions}
+
+The anticipated contributions of this work are both scientific and technical. Scientifically, it will provide empirical evidence regarding the efficacy of agentic feedback loops, potentially quantifying the value of "agent collaboration" over "prompt engineering." Technically, the delivery of a reusable, Docker-sandboxed framework for autonomous testing represents a practical tool that can be adopted by the industry to reduce the "maintenance burden" of legacy codebases.
+
+Furthermore, the ethical framework developed in Section 2.5 and implemented in Section 3.4 ensures that this automation does not come at the cost of safety or privacy. By embedding PII scrubbing and human-in-the-loop safeguards, the project addresses the growing concerns regarding the deployment of autonomous AI in enterprise environments.
+
+\section{Future Work}
+\label{sec:future_work}
+
+To achieve the objectives outlined in Chapter 1, the following tasks remain:
+
+\begin{itemize}
+    \item \textbf{Framework Implementation (Months 1-2):} Finalize the integration of Letta with the Dockerized execution environment. Implement the specific prompts for the Planner and Reviewer personas.
+    \item \textbf{Data Collection (Month 3):} Execute the baseline experiments using GPT-4o on the SWE-bench Light dataset to establish a performance floor.
+    \item \textbf{Evaluation (Month 4):} Run the full MAS framework on the same dataset and analyze the results. Focus on the "Self-Correction Rate" to validate the hypothesis that feedback loops improve code quality.
+    \item \textbf{Dissertation Writing (Month 5):} Compile the results into the final dissertation document, refining the discussion based on the empirical data.
+\end{itemize}
+
+\section{Final Remarks}
+\label{sec:final_remarks}
+
+This dissertation proposal addresses a critical gap in the current state of AI for Software Engineering. By moving beyond simple text generation to agentic orchestration, it aims to unlock the true potential of LLMs as reliable, autonomous partners in the software development lifecycle. The work done so far—defining the problem, reviewing the state of the art, and architecting the solution—provides a solid foundation for the successful execution of the project.
+

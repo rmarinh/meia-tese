@@ -1,0 +1,74 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{List of Algorithms}{xix}{section*.10}%
+\contentsline {chapter}{List of Source Code}{xxi}{section*.12}%
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.14}%
+\contentsline {section}{\numberline {1.1}Contextualization}{1}{section.15}%
+\contentsline {subsubsection}{The Economic Imperative of Automation}{2}{section*.16}%
+\contentsline {subsubsection}{From Static Analysis to Generative Reasoning}{2}{section*.17}%
+\contentsline {section}{\numberline {1.2}Problem Definition}{2}{section.18}%
+\contentsline {section}{\numberline {1.3}Objective and Hypothesis}{3}{section.22}%
+\contentsline {section}{\numberline {1.4}Expected Results and Contributions}{3}{section.23}%
+\contentsline {subsection}{\numberline {1.4.1}Scientific Contributions}{4}{subsection.24}%
+\contentsline {subsection}{\numberline {1.4.2}Technical Contributions}{4}{subsection.25}%
+\contentsline {section}{\numberline {1.5}Expected Results}{4}{section.26}%
+\contentsline {section}{\numberline {1.6}Document Structure}{4}{section.27}%
+\contentsline {chapter}{\numberline {2}State of the Art}{7}{chapter.28}%
+\contentsline {section}{\numberline {2.1}Methodology}{7}{section.29}%
+\contentsline {section}{\numberline {2.2}Research Questions}{7}{section.30}%
+\contentsline {section}{\numberline {2.3}Search Strategy}{8}{section.32}%
+\contentsline {subsubsection}{Data Sources}{8}{section*.33}%
+\contentsline {subsubsection}{Search Strings}{8}{section*.35}%
+\contentsline {section}{\numberline {2.4}Inclusion and Exclusion Criteria}{9}{section.37}%
+\contentsline {section}{\numberline {2.5}Study Selection Process}{9}{section.39}%
+\contentsline {section}{\numberline {2.6}Quality Assessment}{10}{section.42}%
+\contentsline {section}{\numberline {2.7}Synthesis of Findings}{11}{section.43}%
+\contentsline {subsection}{\numberline {2.7.1}RQ1: Architecture \& Orchestration}{11}{subsection.44}%
+\contentsline {subsubsection}{Hierarchical Orchestration (Waterfall)}{11}{section*.45}%
+\contentsline {subsubsection}{Cooperative Orchestration (Feedback Loops)}{11}{section*.46}%
+\contentsline {subsubsection}{Self-Reflection and Debugging}{12}{section*.47}%
+\contentsline {subsection}{\numberline {2.7.2}RQ2: Knowledge Integration}{12}{subsection.48}%
+\contentsline {subsubsection}{Retrieval-Augmented Generation (RAG)}{12}{section*.49}%
+\contentsline {subsubsection}{Agent-Computer Interfaces (ACI)}{12}{section*.50}%
+\contentsline {subsection}{\numberline {2.7.3}RQ3: Validation \& Evaluation}{13}{subsection.51}%
+\contentsline {subsubsection}{Benchmarks: From HumanEval to Real-World}{13}{section*.52}%
+\contentsline {subsubsection}{Stability as a Metric}{13}{section*.53}%
+\contentsline {subsubsection}{Domain-Specific Validation}{13}{section*.54}%
+\contentsline {section}{\numberline {2.8}Discussion}{13}{section.55}%
+\contentsline {section}{\numberline {2.9}Conclusion}{14}{section.56}%
+\contentsline {chapter}{\numberline {3}Methodology and Tools}{15}{chapter.57}%
+\contentsline {section}{\numberline {3.1}Introduction}{15}{section.58}%
+\contentsline {section}{\numberline {3.2}Methodological Approach}{15}{section.59}%
+\contentsline {subsection}{\numberline {3.2.1}Architectural Design}{15}{subsection.60}%
+\contentsline {section}{\numberline {3.3}Tools and Technologies}{16}{section.61}%
+\contentsline {subsection}{\numberline {3.3.1}Alternative Frameworks Considered}{16}{subsection.62}%
+\contentsline {subsection}{\numberline {3.3.2}Letta Framework}{16}{subsection.63}%
+\contentsline {subsection}{\numberline {3.3.3}Supporting Technologies}{16}{subsection.64}%
+\contentsline {section}{\numberline {3.4}Data Collection and Experimental Evaluation}{17}{section.65}%
+\contentsline {subsection}{\numberline {3.4.1}Data Collection Strategy}{17}{subsection.66}%
+\contentsline {subsection}{\numberline {3.4.2}Experimental Design}{17}{subsection.67}%
+\contentsline {subsection}{\numberline {3.4.3}Evaluation Metrics}{17}{subsection.70}%
+\contentsline {section}{\numberline {3.5}Ethical and Security Implementation}{18}{section.71}%
+\contentsline {section}{\numberline {3.6}Conclusion}{18}{section.72}%
+\contentsline {chapter}{\numberline {4}Ethical, Legal, and Privacy Considerations}{19}{chapter.73}%
+\contentsline {section}{\numberline {4.1}Regulatory and Legal Framework}{19}{section.74}%
+\contentsline {section}{\numberline {4.2}Privacy and Security Risks}{20}{section.75}%
+\contentsline {section}{\numberline {4.3}Mitigation Architectures}{20}{section.76}%
+\contentsline {section}{\numberline {4.4}Ethical and Environmental Implications}{20}{section.77}%
+\contentsline {section}{\numberline {4.5}Proposed Governance Framework}{21}{section.78}%
+\contentsline {section}{\numberline {4.6}Conclusion}{21}{section.79}%
+\contentsline {chapter}{\numberline {5}Experimentation}{23}{chapter.80}%
+\contentsline {section}{\numberline {5.1}Experimental Questions}{23}{section.81}%
+\contentsline {section}{\numberline {5.2}Experimental Setup}{23}{section.82}%
+\contentsline {subsection}{\numberline {5.2.1}Dataset Selection}{23}{subsection.83}%
+\contentsline {subsection}{\numberline {5.2.2}Baselines}{24}{subsection.84}%
+\contentsline {section}{\numberline {5.3}Evaluation Metrics}{24}{section.87}%
+\contentsline {section}{\numberline {5.4}Execution Procedure}{24}{section.88}%
+\contentsline {section}{\numberline {5.5}Threats to Validity}{25}{section.93}%
+\contentsline {subsection}{\numberline {5.5.1}Internal Validity}{25}{subsection.94}%
+\contentsline {subsection}{\numberline {5.5.2}External Validity}{25}{subsection.95}%
+\contentsline {chapter}{\numberline {6}Conclusions and Future Work}{27}{chapter.96}%
+\contentsline {section}{\numberline {6.1}Summary of the Work}{27}{section.97}%
+\contentsline {section}{\numberline {6.2}Discussion of Contributions}{27}{section.98}%
+\contentsline {section}{\numberline {6.3}Future Work}{28}{section.99}%
+\contentsline {section}{\numberline {6.4}Final Remarks}{28}{section.100}%
+\contentsline {chapter}{References}{29}{chapter*.101}%

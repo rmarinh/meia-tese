@@ -1,0 +1,540 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global/global}
+    \entry{alshahwan2024automated}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=36249c4bd31fa7c848a4ed8ec005dbd2}{%
+           family={Alshahwan},
+           familyi={A\bibinitperiod},
+           given={Nadia\bibnamedelimb et\bibnamedelima al.},
+           giveni={N\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{36249c4bd31fa7c848a4ed8ec005dbd2}
+      \strng{fullhash}{36249c4bd31fa7c848a4ed8ec005dbd2}
+      \strng{fullhashraw}{36249c4bd31fa7c848a4ed8ec005dbd2}
+      \strng{bibnamehash}{36249c4bd31fa7c848a4ed8ec005dbd2}
+      \strng{authorbibnamehash}{36249c4bd31fa7c848a4ed8ec005dbd2}
+      \strng{authornamehash}{36249c4bd31fa7c848a4ed8ec005dbd2}
+      \strng{authorfullhash}{36249c4bd31fa7c848a4ed8ec005dbd2}
+      \strng{authorfullhashraw}{36249c4bd31fa7c848a4ed8ec005dbd2}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{International Conference on Software Engineering (ICSE)}
+      \field{title}{Automated Unit Test Improvement using Large Language Models at Meta}
+      \field{year}{2024}
+    \endentry
+    \entry{acm_ethics}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=849731f4f6c962ebf3a016a8b55f644f}{%
+           family={{Association for Computing Machinery}},
+           familyi={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{849731f4f6c962ebf3a016a8b55f644f}
+      \strng{fullhash}{849731f4f6c962ebf3a016a8b55f644f}
+      \strng{fullhashraw}{849731f4f6c962ebf3a016a8b55f644f}
+      \strng{bibnamehash}{849731f4f6c962ebf3a016a8b55f644f}
+      \strng{authorbibnamehash}{849731f4f6c962ebf3a016a8b55f644f}
+      \strng{authornamehash}{849731f4f6c962ebf3a016a8b55f644f}
+      \strng{authorfullhash}{849731f4f6c962ebf3a016a8b55f644f}
+      \strng{authorfullhashraw}{849731f4f6c962ebf3a016a8b55f644f}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{ACM Code of Ethics and Professional Conduct}
+      \field{year}{2018}
+      \verb{urlraw}
+      \verb https://www.acm.org/code-of-ethics
+      \endverb
+      \verb{url}
+      \verb https://www.acm.org/code-of-ethics
+      \endverb
+    \endentry
+    \entry{badertdinov2025swe}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=7cc35c6ea6d0b32f0caa3415dfc09287}{%
+           family={Badertdinov},
+           familyi={B\bibinitperiod},
+           given={Ibragim\bibnamedelimb et\bibnamedelima al.},
+           giveni={I\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{7cc35c6ea6d0b32f0caa3415dfc09287}
+      \strng{fullhash}{7cc35c6ea6d0b32f0caa3415dfc09287}
+      \strng{fullhashraw}{7cc35c6ea6d0b32f0caa3415dfc09287}
+      \strng{bibnamehash}{7cc35c6ea6d0b32f0caa3415dfc09287}
+      \strng{authorbibnamehash}{7cc35c6ea6d0b32f0caa3415dfc09287}
+      \strng{authornamehash}{7cc35c6ea6d0b32f0caa3415dfc09287}
+      \strng{authorfullhash}{7cc35c6ea6d0b32f0caa3415dfc09287}
+      \strng{authorfullhashraw}{7cc35c6ea6d0b32f0caa3415dfc09287}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{SWE-rebench: An Automated Pipeline for Task Collection and Decontaminated Evaluation of Software Engineering Agents}
+      \field{year}{2025}
+    \endentry
+    \entry{chen2025when}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=2ee442195d81d4d53bc9d0f3dd41e637}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Jingyi\bibnamedelimb et\bibnamedelima al.},
+           giveni={J\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{2ee442195d81d4d53bc9d0f3dd41e637}
+      \strng{fullhash}{2ee442195d81d4d53bc9d0f3dd41e637}
+      \strng{fullhashraw}{2ee442195d81d4d53bc9d0f3dd41e637}
+      \strng{bibnamehash}{2ee442195d81d4d53bc9d0f3dd41e637}
+      \strng{authorbibnamehash}{2ee442195d81d4d53bc9d0f3dd41e637}
+      \strng{authornamehash}{2ee442195d81d4d53bc9d0f3dd41e637}
+      \strng{authorfullhash}{2ee442195d81d4d53bc9d0f3dd41e637}
+      \strng{authorfullhashraw}{2ee442195d81d4d53bc9d0f3dd41e637}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{When LLMs Meet API Documentation: Can Retrieval Augmentation Aid Code Generation Just as It Helps Developers?}
+      \field{year}{2025}
+    \endentry
+    \entry{eu_ai_act}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=158562a5e9dc942912330c711ca123ca}{%
+           family={{European Union}},
+           familyi={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{158562a5e9dc942912330c711ca123ca}
+      \strng{fullhash}{158562a5e9dc942912330c711ca123ca}
+      \strng{fullhashraw}{158562a5e9dc942912330c711ca123ca}
+      \strng{bibnamehash}{158562a5e9dc942912330c711ca123ca}
+      \strng{authorbibnamehash}{158562a5e9dc942912330c711ca123ca}
+      \strng{authornamehash}{158562a5e9dc942912330c711ca123ca}
+      \strng{authorfullhash}{158562a5e9dc942912330c711ca123ca}
+      \strng{authorfullhashraw}{158562a5e9dc942912330c711ca123ca}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Regulation (EU) 2024/1689 of the European Parliament and of the Council of 13 June 2024 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act)}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb http://data.europa.eu/eli/reg/2024/1689/oj
+      \endverb
+      \verb{url}
+      \verb http://data.europa.eu/eli/reg/2024/1689/oj
+      \endverb
+    \endentry
+    \entry{hong2023metagpt}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=c340482549e946605fb88bddbee39658}{%
+           family={Hong},
+           familyi={H\bibinitperiod},
+           given={Sirui\bibnamedelimb et\bibnamedelima al.},
+           giveni={S\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{c340482549e946605fb88bddbee39658}
+      \strng{fullhash}{c340482549e946605fb88bddbee39658}
+      \strng{fullhashraw}{c340482549e946605fb88bddbee39658}
+      \strng{bibnamehash}{c340482549e946605fb88bddbee39658}
+      \strng{authorbibnamehash}{c340482549e946605fb88bddbee39658}
+      \strng{authornamehash}{c340482549e946605fb88bddbee39658}
+      \strng{authorfullhash}{c340482549e946605fb88bddbee39658}
+      \strng{authorfullhashraw}{c340482549e946605fb88bddbee39658}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{International Conference on Learning Representations (ICLR)}
+      \field{title}{MetaGPT: Meta Programming for A Multi-Agent Collaborative Framework}
+      \field{year}{2024}
+    \endentry
+    \entry{huang2023agentcoder}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=9d5edab20d72484960c29dd783057806}{%
+           family={Huang},
+           familyi={H\bibinitperiod},
+           given={Dong\bibnamedelimb et\bibnamedelima al.},
+           giveni={D\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9d5edab20d72484960c29dd783057806}
+      \strng{fullhash}{9d5edab20d72484960c29dd783057806}
+      \strng{fullhashraw}{9d5edab20d72484960c29dd783057806}
+      \strng{bibnamehash}{9d5edab20d72484960c29dd783057806}
+      \strng{authorbibnamehash}{9d5edab20d72484960c29dd783057806}
+      \strng{authornamehash}{9d5edab20d72484960c29dd783057806}
+      \strng{authorfullhash}{9d5edab20d72484960c29dd783057806}
+      \strng{authorfullhashraw}{9d5edab20d72484960c29dd783057806}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{International Conference on Software Engineering (ICSE)}
+      \field{title}{AgentCoder: Multi-Agent-based Code Generation with Iterative Testing and Optimisation}
+      \field{year}{2024}
+    \endentry
+    \entry{jimenez2024swebench}{inproceedings}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=df0da99ab284c0b459f3e75d957e5708}{%
+           family={Jimenez},
+           familyi={J\bibinitperiod},
+           given={Carlos\bibnamedelima E},
+           giveni={C\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6d7f2cb81cb28fc59ce872d27eeaee07}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4001730f0187f52733e4f23c951a4133}{%
+           family={Wettig},
+           familyi={W\bibinitperiod},
+           given={Alexander},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5c1b62cbd4e181d818b927549813cf73}{%
+           family={Yao},
+           familyi={Y\bibinitperiod},
+           given={Shunyu},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7db82cb04645af99e6b26124b33a1ca8}{%
+           family={Yin},
+           familyi={Y\bibinitperiod},
+           given={Kexin},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=997c3143c2e5d593e816d2ff704fbf98}{%
+           family={Narasimhan},
+           familyi={N\bibinitperiod},
+           given={Karthik},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{51cc3335d78b25fdf063bb7af5ede502}
+      \strng{fullhash}{384eac0b75f10730e4a1cf6ee6d71cde}
+      \strng{fullhashraw}{384eac0b75f10730e4a1cf6ee6d71cde}
+      \strng{bibnamehash}{51cc3335d78b25fdf063bb7af5ede502}
+      \strng{authorbibnamehash}{51cc3335d78b25fdf063bb7af5ede502}
+      \strng{authornamehash}{51cc3335d78b25fdf063bb7af5ede502}
+      \strng{authorfullhash}{384eac0b75f10730e4a1cf6ee6d71cde}
+      \strng{authorfullhashraw}{384eac0b75f10730e4a1cf6ee6d71cde}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{The Twelfth International Conference on Learning Representations}
+      \field{title}{SWE-bench: Can Language Models Resolve Real-World GitHub Issues?}
+      \field{year}{2024}
+    \endentry
+    \entry{jin2024rgd}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=e8ac9d615744038b0d586ed38894b616}{%
+           family={Jin},
+           familyi={J\bibinitperiod},
+           given={Haolin\bibnamedelimb et\bibnamedelima al.},
+           giveni={H\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{e8ac9d615744038b0d586ed38894b616}
+      \strng{fullhash}{e8ac9d615744038b0d586ed38894b616}
+      \strng{fullhashraw}{e8ac9d615744038b0d586ed38894b616}
+      \strng{bibnamehash}{e8ac9d615744038b0d586ed38894b616}
+      \strng{authorbibnamehash}{e8ac9d615744038b0d586ed38894b616}
+      \strng{authornamehash}{e8ac9d615744038b0d586ed38894b616}
+      \strng{authorfullhash}{e8ac9d615744038b0d586ed38894b616}
+      \strng{authorfullhashraw}{e8ac9d615744038b0d586ed38894b616}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{RGD: Multi-LLM Based Agent Debugger via Refinement and Generation Guidance}
+      \field{year}{2024}
+    \endentry
+    \entry{mundler2024code}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=04702903598fdc6acb02e303c41deb6e}{%
+           family={Mündler},
+           familyi={M\bibinitperiod},
+           given={Niels\bibnamedelimb et\bibnamedelima al.},
+           giveni={N\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{04702903598fdc6acb02e303c41deb6e}
+      \strng{fullhash}{04702903598fdc6acb02e303c41deb6e}
+      \strng{fullhashraw}{04702903598fdc6acb02e303c41deb6e}
+      \strng{bibnamehash}{04702903598fdc6acb02e303c41deb6e}
+      \strng{authorbibnamehash}{04702903598fdc6acb02e303c41deb6e}
+      \strng{authornamehash}{04702903598fdc6acb02e303c41deb6e}
+      \strng{authorfullhash}{04702903598fdc6acb02e303c41deb6e}
+      \strng{authorfullhashraw}{04702903598fdc6acb02e303c41deb6e}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Code Agents are State of the Art Software Testers}
+      \field{year}{2024}
+    \endentry
+    \entry{nunez2024autosafecoder}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=063bcfcb2565d21fb6b16443de88112e}{%
+           family={Nunez},
+           familyi={N\bibinitperiod},
+           given={Ana\bibnamedelimb et\bibnamedelima al.},
+           giveni={A\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{063bcfcb2565d21fb6b16443de88112e}
+      \strng{fullhash}{063bcfcb2565d21fb6b16443de88112e}
+      \strng{fullhashraw}{063bcfcb2565d21fb6b16443de88112e}
+      \strng{bibnamehash}{063bcfcb2565d21fb6b16443de88112e}
+      \strng{authorbibnamehash}{063bcfcb2565d21fb6b16443de88112e}
+      \strng{authornamehash}{063bcfcb2565d21fb6b16443de88112e}
+      \strng{authorfullhash}{063bcfcb2565d21fb6b16443de88112e}
+      \strng{authorfullhashraw}{063bcfcb2565d21fb6b16443de88112e}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{AutoSafeCoder: A Multi-Agent Framework for Securing LLM Code Generation through Static Analysis and Fuzz Testing}
+      \field{year}{2024}
+    \endentry
+    \entry{page2021prisma}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=dc8dec2af340843f020ddf7e651a3a4b}{%
+           family={Page},
+           familyi={P\bibinitperiod},
+           given={Matthew\bibnamedelimb J\bibnamedelimb et\bibnamedelima al.},
+           giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {British Medical Journal Publishing Group}%
+      }
+      \strng{namehash}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{fullhash}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{fullhashraw}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{bibnamehash}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{authorbibnamehash}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{authornamehash}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{authorfullhash}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{authorfullhashraw}{dc8dec2af340843f020ddf7e651a3a4b}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{BMJ}
+      \field{title}{The PRISMA 2020 statement: an updated guideline for reporting systematic reviews}
+      \field{volume}{372}
+      \field{year}{2021}
+    \endentry
+    \entry{pan2025codecor}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=8dee37d8057ff3be9237c26d086a72ef}{%
+           family={Pan},
+           familyi={P\bibinitperiod},
+           given={Ruwei\bibnamedelimb et\bibnamedelima al.},
+           giveni={R\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{8dee37d8057ff3be9237c26d086a72ef}
+      \strng{fullhash}{8dee37d8057ff3be9237c26d086a72ef}
+      \strng{fullhashraw}{8dee37d8057ff3be9237c26d086a72ef}
+      \strng{bibnamehash}{8dee37d8057ff3be9237c26d086a72ef}
+      \strng{authorbibnamehash}{8dee37d8057ff3be9237c26d086a72ef}
+      \strng{authornamehash}{8dee37d8057ff3be9237c26d086a72ef}
+      \strng{authorfullhash}{8dee37d8057ff3be9237c26d086a72ef}
+      \strng{authorfullhashraw}{8dee37d8057ff3be9237c26d086a72ef}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{CodeCoR: An LLM-Based Self-Reflective Multi-Agent Framework for Code Generation}
+      \field{year}{2025}
+    \endentry
+    \entry{qian2023chatdev}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=7fc8f6c94b9a0273ca54021ffa8e5d91}{%
+           family={Qian},
+           familyi={Q\bibinitperiod},
+           given={Chen\bibnamedelimb et\bibnamedelima al.},
+           giveni={C\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{fullhash}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{fullhashraw}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{bibnamehash}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{authorbibnamehash}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{authornamehash}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{authorfullhash}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{authorfullhashraw}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \field{sortinit}{Q}
+      \field{sortinithash}{ce69a400a872ddd02ee7fdb3b38c6abd}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Annual Meeting of the Association for Computational Linguistics (ACL)}
+      \field{title}{ChatDev: Communicative Agents for Software Development}
+      \field{year}{2024}
+    \endentry
+    \entry{ugarte2025astral}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=1ed38498aac5cd89cf65e49fe7ebd1c3}{%
+           family={Ugarte},
+           familyi={U\bibinitperiod},
+           given={Miriam\bibnamedelimb et\bibnamedelima al.},
+           giveni={M\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{1ed38498aac5cd89cf65e49fe7ebd1c3}
+      \strng{fullhash}{1ed38498aac5cd89cf65e49fe7ebd1c3}
+      \strng{fullhashraw}{1ed38498aac5cd89cf65e49fe7ebd1c3}
+      \strng{bibnamehash}{1ed38498aac5cd89cf65e49fe7ebd1c3}
+      \strng{authorbibnamehash}{1ed38498aac5cd89cf65e49fe7ebd1c3}
+      \strng{authornamehash}{1ed38498aac5cd89cf65e49fe7ebd1c3}
+      \strng{authorfullhash}{1ed38498aac5cd89cf65e49fe7ebd1c3}
+      \strng{authorfullhashraw}{1ed38498aac5cd89cf65e49fe7ebd1c3}
+      \field{sortinit}{U}
+      \field{sortinithash}{6901a00e45705986ee5e7ca9fd39adca}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{ASTRAL: Automated Safety Testing of Large Language Models}
+      \field{year}{2025}
+    \endentry
+    \entry{vaswani2017attention}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=072e3ef6ef802a7535ce240c07eaaabc}{%
+           family={Vaswani},
+           familyi={V\bibinitperiod},
+           given={Ashish\bibnamedelimb et\bibnamedelima al.},
+           giveni={A\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{fullhash}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{fullhashraw}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{bibnamehash}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{authorbibnamehash}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{authornamehash}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{authorfullhash}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{authorfullhashraw}{072e3ef6ef802a7535ce240c07eaaabc}
+      \field{sortinit}{V}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Attention is all you need}
+      \field{year}{2017}
+    \endentry
+    \entry{winters2020software}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=726a77b2c0c9e2331047428dbfded3cf}{%
+           family={Winters},
+           familyi={W\bibinitperiod},
+           given={Titus\bibnamedelimb et\bibnamedelima al.},
+           giveni={T\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{fullhash}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{fullhashraw}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{bibnamehash}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{authorbibnamehash}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{authornamehash}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{authorfullhash}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{authorfullhashraw}{726a77b2c0c9e2331047428dbfded3cf}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Software Engineering at Google: Lessons Learned from Programming Over Time}
+      \field{year}{2020}
+    \endentry
+    \entry{yang2024sweagent}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=34723b92afdd99d1b5be49e67d5edc80}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={John\bibnamedelimb et\bibnamedelima al.},
+           giveni={J\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{fullhash}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{fullhashraw}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{bibnamehash}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{authorbibnamehash}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{authornamehash}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{authorfullhash}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{authorfullhashraw}{34723b92afdd99d1b5be49e67d5edc80}
+      \field{sortinit}{Y}
+      \field{sortinithash}{fd67ad5a9ef0f7456bdd9aab10fe1495}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Conference on Neural Information Processing Systems (NeurIPS)}
+      \field{title}{SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering}
+      \field{year}{2024}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

@@ -1,0 +1,1606 @@
+ 
+ 
+ 
+ 
+Inteligência Artificial para Geração de Conteúdo 
+Procedural Adaptativo 
+Um Estudo com GANs/VAE em Videojogos  
+ 
+ 
+Carlos Filipe Borges Moutinho 
+Aluno nº: 1140858 
+ 
+Dissertação para obtenção do Grau de  
+Mestre em Engenharia de Inteligência Artificial 
+ 
+ 
+Orientador: Maria Goreti Carvalho Marreiros  
+ 
+Júri:  
+Presidente:  
+[Nome do Presidente, Categoria, Escola]   
+Vogais:  
+[Nome do Vogal1, Categoria, Escola] 
+[Nome do Vogal2,  Categoria, Escola]  (até 4 vogais)  
+ 
+ 
+Porto, [Mês] [Ano] Calibri, 12pt 
+
+---PAGE BREAK---
+ii 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Página em branco [apagar este comentário] 
+ 
+ 
+---PAGE BREAK---
+iii 
+ 
+ 
+Declaração de Integridade 
+Declaro ter conduzido este trabalho académico com integridade. 
+Não plagiei ou apliquei qualquer forma de uso indevido de informações ou falsificação de 
+resultados ao longo do processo que levou à sua elaboração. 
+Portanto, o trabalho apresentado neste documento é original e de minha autoria, não tendo 
+sido utilizado anteriormente para nenhum outro fim. As exceções [REMOVER ESTE PERÍODO 
+NO CASO DE NÃO SE APLICAR – APAGAR ESTE COMENTÁRIO] estão explicitamente 
+reconhecidas na secção onde são abordadas as considerações éticas. Esta secção também 
+declara como as ferramentas de Inteligência Artificial foram utilizadas e para que finalidade. 
+Declaro ainda que tenho pleno conhecimento do Código de Conduta Ética do P.PORTO. 
+ISEP, Porto, [Dia] de [Mês] de [Ano] 
+[Optar pela versão em Português ou Inglês de acordo com 
+a língua de redação do documento - apagar este 
+comentário] 
+  
+---PAGE BREAK---
+iv 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Página em branco [apagar este comentário]
+---PAGE BREAK---
+v 
+ 
+ 
+Statement of Integrity 
+I hereby declare that I have conducted this academic work with integrity. 
+I have not plagiarised or applied any form of undue use of information or falsification of results 
+along the process leading to its elaboration. 
+Therefore, the work presented in this document is original and was authored by me, having not 
+been previously used for any other purpose. The exceptions [REMOVE THIS CLAUSE IF IT DOES 
+NOT APPLY – REMOVE THIS COMMENT] are explicitly acknowledged in the section that 
+addresses ethical considerations. This section also states how Artificial Intelligence tools were 
+used and for what purpose. 
+I further declare that I have fully acknowledged the Code of Ethical Conduct of P.PORTO. 
+ISEP, Porto, [Month] [Day], [Year] 
+ 
+ 
+  
+---PAGE BREAK---
+vi 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Página em branco [apagar este comentário]
+---PAGE BREAK---
+vii 
+ 
+ 
+Dedicatória (opcional) 
+…. 
+  
+---PAGE BREAK---
+viii 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Página em branco [apagar este comentário]
+---PAGE BREAK---
+ix 
+ 
+ 
+Resumo 
+Este documento contém as principais regras de formatação a aplicar na escrita do relatório da 
+unidade curricular Projeto / Dissertação / Estágio, do Mestrado em Engenharia de Inteligência 
+Artificial (MEIA), do Departamento de Engenharia Informática (DEI), do Instituto Superior de 
+Engenharia do Porto (ISEP). As regras aqui apresentadas formam um conjunto de boas práticas 
+recomendadas para a elaboração de uma dissertação. No entanto, recomenda-se a discussão 
+destes e outros aspetos com o respetivo orientador.  
+São apresentadas as normas a seguir relativamente ao formato a usar, modo de organização do 
+documento, regras gerais de formatação do texto, formatação de tabelas e figuras, inserção de 
+referências bibliográficas no texto e apresentação das referências bibliográficas. 
+ 
+Este documento foi originalmente preparado pela Doutora Fátima Rodrigues (DEI/ISEP), tendo 
+sido adaptado para o MEIA.  
+ 
+Palavras-chave: Palavra-chave1, …, Palavra-chave6   
+---PAGE BREAK---
+x 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Página em branco [apagar este comentário]
+---PAGE BREAK---
+xi 
+ 
+ 
+Abstract 
+O documento tese deve conter um resumo em português e outro em inglês que não excedam 
+as 200 palavras ou 1 página A4. Quando o documento é escrito em português o abstract deve 
+ser uma tradução em inglês do resumo.  
+Após o resumo/abstract é obrigatório colocar as principais palavras-chave/keywords do tema 
+em que se insere o trabalho desenvolvido, sendo permitido um máximo de 6 palavras-
+chave/keywords, estas devem ser caraterizadoras do trabalho desenvolvido e surgirem com 
+frequência no documento escrito. 
+ 
+ 
+Keywords: Keyword1, …, Keyword6   
+---PAGE BREAK---
+xii 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Página em branco [apagar este comentário]
+---PAGE BREAK---
+xiii 
+ 
+ 
+Agradecimentos <opcional> 
+Dirigidos ao(s) orientador(es), à família, aos colegas, às Instituições, … 
+  
+---PAGE BREAK---
+xiv 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Página em branco [apagar este comentário]
+---PAGE BREAK---
+xv 
+ 
+ 
+Índice 
+1 Introdução ................................................................................. 1 
+1.1 Contextualização ...............................................................................1 
+1.2 Contextualização da indústria dos videojogos .............................................3 
+1.3 Descrição do problema ........................................................................5 
+1.4 Questões e objetivos da investigação .......................................................6 
+1.5 Contribuições da dissertação .................................................................7 
+1.6 Estrutura do documento.......................................................................7 
+1.7 Extra .......................................................... Erro! Marcador não definido. 
+2 State of the Art and Systematic Review of the Literature ..................... 10 
+2.1 Introduction ................................................................................... 10 
+2.2 Related literature ........................................... Erro! Marcador não definido. 
+2.2.1 Methodology of review ............................... Erro! Marcador não definido. 
+2.2.2 Research Questions ................................... Erro! Marcador não definido. 
+2.2.3 Definition of search strategy ........................ Erro! Marcador não definido. 
+2.2.4 Definition of search sources .......................................................... 14 
+2.2.5 Definition of search terms ............................................................ 15 
+2.2.6 Study selection, inclusion and exclusion criteria .................................. 16 
+2.3 Results found ................................................................................. 18 
+2.3.1 Study selection and characteristics .................................................. 18 
+2.3.2 Subject coverage of studies .......................................................... 18 
+2.3.3 RQ1 — Modelos generativos e representações de níveis 2D ...................... 18 
+2.3.4 RQ2 — Mecanismos de adaptação ao jogador e métricas usadas ................ 20 
+2.3.5 RQ3 — Métodos de validação algorítmica da jogabilidade ........................ 22 
+2.3.6 RQ4 — Telemetria do jogador, privacidade e conformidade legal .............. 23 
+2.4 Discussion ..................................................................................... 24 
+2.4.1 RQ1 — Modelos generativos e representações de níveis 2D ...................... 24 
+2.4.2 RQ2 — .................................................................................... 26 
+2.4.3 RQ3 — .................................................................................... 27 
+2.4.4 RQ4 — .................................................................................... 28 
+2.5 Conclusions and future work ............................................................... 28 
+3 State of the Art and Systematic Review of the Literature ..................... 30 
+3.1 Introduction ................................................................................... 30 
+  
+---PAGE BREAK---
+xvi 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Inserir página em branco apenas se necessário de modo 
+que a próxima secção comece numa página à direita 
+---PAGE BREAK---
+ 
+ 
+Lista de Figuras 
+Figura 1 – Esta legenda tem só uma linha ..................................... Erro! Marcador não definido. 
+Figura 2 – Esta legenda tem mais do que uma linha, por isso é justificada à esquerda, fonte 
+calibri 10 pt., figura retirada de (Ramos 2008) .............................. Erro! Marcador não definido. 
+Figura 3 – Relacionamento entre nº de argumentos e nº de simulações (Marreiros 2010) . Erro! 
+Marcador não definido. 
+Figura 4 – Visualização gráfica do resultado (Faria 2009) .............. Erro! Marcador não definido. 
+ 
+  
+---PAGE BREAK---
+ 
+xviii 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Inserir página em branco apenas se necessário de modo 
+a que a próxima secção comece numa página à direita
+---PAGE BREAK---
+ 
+ 
+Lista de Tabelas 
+Tabela 1 Questões de investigação consideradas na revisão da literatura ............................... 12 
+Tabela 2 Temas e termos de pesquisa utilizados na revisão sistemática .................................. 15 
+Tabela 3 Lista de critérios de inclusão ....................................................................................... 17 
+Tabela 4 Lista de critérios de exclusão ....................................................................................... 17 
+ 
+  
+---PAGE BREAK---
+ 
+xx 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Inserir página em branco apenas se necessário de modo 
+a que a próxima secção comece numa página à direita
+---PAGE BREAK---
+ 
+ 
+Acrónimos e Símbolos 
+ 
+Lista de Acrónimos  
+AA Aprendizagem Automática 
+AS  Análise de Sentimentos 
+CNN Convolutional Neural Network (texto que não está em português em itálico, se 
+a tese estiver escrita em português) 
+IA  Inteligência Artificial 
+LSTM   Long-Short Term Memory  
+SVM   Support Vector Machine 
+ 
+Lista de Símbolos 
+   Taxa de Aprendizagem 
+ϴ   Threshold 
+  
+---PAGE BREAK---
+ 
+xxii 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Inserir página em branco apenas se necessário de modo 
+a que a próxima secção comece numa página à direita 
+ 
+---PAGE BREAK---
+ 
+1 
+ 
+1 Introdução 
+Introduction 
+O seguinte capítulo enquadra o tema da dissertação e clarifica o problema de investigação que 
+motiva o trabalho desenvolvido. A Secção 1.2 apresenta uma contextualização geral da 
+indústria dos videojogos, enquanto a Secção 1.3 se foca no papel dos videojogos 2D, nas 
+práticas de criação de níveis e na evolução das técnicas de Geração Procedural de Conteúdo 
+baseadas em Aprendizagem Automática. A Secção 1.4 descreve o problema de investigação, 
+identificando os principais desafios técnicos, adaptativos e éticos associados à geração 
+automática de níveis 2D. Na Secção 1.5 são formulados as questões de investigação e os 
+objetivos que orientam o desenvolvimento da dissertação. Por fim, as Secções 1.6 e 1.7 
+apresentam, respetivamente, as principais contribuições do trabalho e a estrutura global do 
+documento. 
+1.1 Contextualização 
+Contextualisation 
+A indústria dos videojogos tem apresentado, ao longo das últimas décadas, um crescimento 
+económico e cultural particularmente expressivo, acompanhando as tendências globais de 
+expansão do mercado digital e de consolidação do entretenimento interativo como um dos 
+setores mais relevantes da atualidade. De acordo com dados da Administração do Comércio 
+Internacional do Departamento do Comércio dos Estados Unidos(International Trade 
+Administration, 2023), a indústria global dos videojogos atingiu, em 2023, um valor aproximado 
+de 184 mil milhões de dólares, contando com mais de 3,2 mil milhões de jogadores em todo o 
+mundo, o que evidencia a escala, a maturidade e o impacto social deste ecossistema a nível 
+global. No contexto norte-americano, o setor revelou igualmente uma relevância económica 
+significativa, tendo criado e suportado mais de 350 mil postos de trabalho e contribuído com 
+cerca de 66 mil milhões de dólares para o Produto Interno Bruto (PIB) dos Estados Unidos. 
+Adicionalmente, estima-se que mais de 190 milhões de americanos joguem videojogos 
+---PAGE BREAK---
+ 
+2 
+ 
+regularmente, sendo que 78% dos agregados familiares utilizaram pelo menos um dispositivo 
+de jogo nos doze meses anteriores, demonstrando a forte penetração deste meio na sociedade 
+contemporânea. 
+Esta evolução tem sido acompanhada por uma intensificação das expectativas dos jogadores, 
+que procuram experiências cada vez mais prolongadas, envolventes e personalizadas, indo 
+além do entretenimento pontual e valorizando conteúdos capazes de se adaptar às suas 
+preferências, ao seu estilo de jogo e ao seu nível de habilidade. Neste contexto, a confluência 
+entre o crescimento sustentado da indústria e os avanços recentes na Inteligência Artificial (IA), 
+em particular nas técnicas de aprendizagem profunda, tem permitido a emergência de novos 
+paradigmas de criação de conteúdo, com destaque para a Procedural Content Generation (PCG) 
+e, mais recentemente, para as abordagens de Procedural Content Generation Machine Learning 
+(PCGML). Estas abordagens exploram a capacidade dos modelos de IA para aprender 
+automaticamente padrões estilísticos e estruturais a partir de exemplos reais, possibilitando a 
+criação de conteúdo variado, coerente e escalável (Summerville et al., 2018). 
+Simultaneamente, o interesse crescente em IA adaptativa e modelação de jogador tem 
+enfatizado a necessidade de ajustar a experiência de jogo ao comportamento do utilizador, 
+recorrendo a métricas simples, como o tempo de conclusão de um nível, o número de mortes 
+ou a percentagem de exploração alcançada, para inferir o grau de desafio mais adequado. Esta 
+preocupação não é exclusiva de sistemas adaptativos baseados em IA, estando também 
+presente em géneros de jogos cuja experiência é, por natureza, dinâmica e não totalmente 
+determinística. Exemplos incluem jogos de exploração de masmorras, jogos roguelike ou 
+roguelite, nos quais a experiência de jogo não é idêntica entre partidas, apresentando variação 
+significativa de uma sessão para outra. Neste contexto, existem jogos amplamente 
+reconhecidos por utilizarem geração algorítmica de mundos ou cenários que exploram a ideia 
+de experiências não repetitivas, valorizadas pelos jogadores por aumentarem a rejogabilidade 
+e o envolvimento a longo prazo. 
+Neste enquadramento, observa-se que grandes empresas da indústria dos videojogos, 
+nomeadamente a Sony e a Electronic Arts, têm explorado abordagens de adaptação dinâmica 
+da experiência de jogo, através de patentes, suportadas por mecanismos de análise de 
+desempenho e de telemetria do jogador, como métricas de progressão, tempo de jogo, número 
+de falhas, padrões de sucesso ou retenção, complementadas, em alguns casos, por dados 
+fisiológicos, tais como resposta galvânica da pele, frequência cardíaca ou indicadores de tensão 
+muscular, recolhidos através de dispositivos ou comandos de jogo, conforme documentado em 
+patentes que descrevem sistemas de ajuste automático da dificuldade e de outros parâmetros 
+de jogo com base nesses sinais comportamentais e biométricos (Electronic Arts Inc., 2020; Sony 
+Computer Entertainment Inc., 2011). 
+Neste panorama, torna-se evidente que a combinação entre IA generativa, PCG e adaptação ao 
+jogador representa uma área emergente com aplicabilidade concreta no desenvolvimento de 
+videojogos, exigindo investigação sistemática sobre modelos, representações, métodos de 
+validação e implicações éticas associadas. 
+---PAGE BREAK---
+ 
+3 
+ 
+ 
+Para além do crescimento do mercado e da expansão do número de jogadores, a indústria 
+enfrenta uma pressão crescente associada ao aumento da complexidade e dos custos de 
+produção, particularmente em projetos de grande escala. Indicadores recentes sugerem uma 
+tendência de subida dos orçamentos de desenvolvimento, com estimativas a apontarem para 
+uma passagem de intervalos típicos de 50–150 milhões de dólares para valores na ordem dos 
+200 milhões de dólares ou mais em projetos atuais, podendo ter envolvido neles mais de 1.000 
+profissionais distribuídos por vários estúdios, para criar apenas um videojogo, refletindo assim 
+o aumento de exigência técnica e de conteúdo esperado pelos jogadores (European 
+Commission, 2023). 
+Esta dinâmica reforça a necessidade de metodologias que promovam maior eficiência e 
+escalabilidade na criação de conteúdo, sobretudo em equipas pequenas e estúdios 
+independentes, onde o esforço manual associado à produção e iteração de níveis constitui 
+frequentemente um constrangimento significativo (European Commission, 2023). Esta pressão 
+sobre os custos de desenvolvimento reflete-se igualmente no ecossistema de consumo, no qual 
+se observam sinais de que o preço do hardware de jogo nem sempre segue o padrão histórico 
+de redução progressiva ao longo do tempo, tendo sido anunciadas, nos últimos anos, 
+atualizações de preço recomendadas para consolas em mercados específicos(Sony Interactive 
+Entertainment, 2022, 2025). 
+Embora estes fatores dependam de variáveis económicas e estratégicas que vão para além do 
+âmbito desta dissertação, contribuem para contextualizar a relevância de soluções técnicas 
+orientadas para a redução do custo e do tempo de desenvolvimento, favorecendo abordagens 
+mais eficientes e sustentáveis na produção de conteúdo para videojogos, particularmente em 
+contextos onde a experiência de jogo é dinâmica e assenta na geração de conteúdos variados, 
+não repetitivos e adaptáveis ao jogador. 
+1.2 Contextualização da indústria dos videojogos 
+Contextualisation of the video game industry 
+Atualmente observa-se uma predominância comercial dos títulos tridimensionais; contudo, os 
+videojogos bidimensionais continuam a desempenhar um papel relevante no panorama 
+contemporâneo, tanto pela sua acessibilidade técnica como pela expressividade do formato. 
+Títulos 2D têm sido consistentemente reconhecidos em eventos internacionais de referência 
+da indústria, como os The Game Awards e os BAFTA Games Awards (British Academy of Film & 
+Arts, 2025; The Game Awards, 2018), evidenciando que o design bidimensional mantém uma 
+presença crítica e cultural significativa. Esta relevância assenta igualmente numa tradição 
+consolidada de géneros como os jogos de plataformas e de ação lateral, amplamente 
+explorados por estúdios independentes e por equipas de menor dimensão. 
+Nos videojogos 2D, a experiência é frequentemente estruturada como uma sequência de níveis 
+concebidos através de processos de level design, constituídos por plataformas, inimigos, 
+---PAGE BREAK---
+ 
+4 
+ 
+obstáculos, recompensas e zonas secretas. A construção manual destes níveis é um processo 
+intensivo, que exige competências especializadas e múltiplas iterações de afinação. Para 
+equipas pequenas, este esforço pode constituir um entrave significativo, sobretudo quando se 
+pretende oferecer grandes quantidades de conteúdo, variantes alternativas ou níveis 
+adaptados a diferentes perfis de jogador. 
+As abordagens clássicas de Geração Procedural de Conteúdo baseadas em regras definidas por 
+especialistas, gramáticas, algoritmos evolutivos e métodos de procura heurística têm fornecido 
+soluções relevantes para a automatização da criação de conteúdo. Contudo, estas abordagens 
+dependem de uma definição manual minuciosa de regras e de funções de avaliação e nem 
+sempre conseguem capturar adequadamente os padrões característicos do design concebido 
+por designers humanos. Estas limitações motivaram a investigação em Geração Procedural de 
+Conteúdo via Aprendizagem Automática, na qual a geração é orientada por modelos treinados 
+diretamente sobre exemplos reais, permitindo aprender distribuições complexas e produzir 
+instâncias plausíveis do espaço de design (Summerville et al., 2018). 
+No âmbito da Geração Procedural de Conteúdo via Aprendizagem Automática, a investigação 
+tem-se centrado progressivamente em modelos generativos profundos, capazes de aprender 
+diretamente a partir de exemplos reais de conteúdo (Summerville et al., 2018). Entre estas 
+abordagens, destacam-se os Variational Auto-Encoders (VAE) e as Generative Adversarial 
+Networks (GANs) (Liu et al., 2021). Os VAE são modelos generativos baseados numa arquitetura 
+encoder–decoder, cujo objetivo consiste em aprender uma representação latente contínua dos 
+dados, conciliando a reconstrução dos exemplos de treino com a regularização do espaço 
+latente. Por sua vez, as GAN assentam num processo adversarial entre um gerador e um 
+discriminador, no qual o gerador aprende a produzir amostras que imitam a distribuição dos 
+dados reais (Liu et al., 2021). 
+No contexto dos videojogos, estes modelos têm sido aplicados à geração de níveis através da 
+representação matricial ou imagética do conteúdo, suportada por arquiteturas convolucionais. 
+(Liu et al., 2021). Para além das suas aplicações em geração de conteúdo, as CNN são 
+amplamente utilizadas em tarefas de processamento e melhoria de imagem, como classificação, 
+segmentação e super-resolução, aproveitando a sua capacidade de extrair características 
+espaciais em dados com topologia de grelha, como imagens. Esta versatilidade reforça a sua 
+adequação ao domínio dos videojogos 2D, onde a representação matricial de níveis beneficia 
+da estrutura espacial capturada por estas redes (Sony Interactive Entertainment, 2024).  
+A capacidade destes modelos para aprender distribuições complexas permite capturar padrões 
+espaciais característicos do design de níveis, tornando possível gerar novo conteúdo com 
+coerência estrutural e estilo semelhante aos dados reais. Neste enquadramento, a indústria 
+evidencia simultaneamente uma necessidade prática de aumentar a eficiência e a variedade do 
+conteúdo produzido e um interesse científico em explorar mecanismos de adaptação 
+automática baseados no comportamento do jogador, situando-se assim na interseção entre 
+PCG, IA generativa e IA adaptativa. 
+---PAGE BREAK---
+ 
+5 
+ 
+ 
+1.3 Descrição do problema 
+Description of the problem 
+A presente dissertação centra-se num conjunto de desafios que decorrem da intersecção entre 
+as exigências da produção de níveis em videojogos 2D, as expectativas cada vez maiores dos 
+jogadores e as limitações das abordagens atuais de geração automática de conteúdo. Em 
+muitos videojogos 2D, o nível constitui a unidade fundamental da experiência, determinando o 
+ritmo, a dificuldade, o espaço de exploração e a estrutura do desafio. A criação manual destes 
+níveis é, contudo, um processo exigente, altamente especializado e difícil de escalar. Produzir 
+grandes quantidades de conteúdo coerente implica um investimento substancial de tempo e 
+recursos, especialmente para equipas pequenas ou estúdios independentes, que 
+frequentemente não dispõem da capacidade necessária para manter várias iterações de design 
+com o mesmo grau de detalhe e consistência. 
+Esta dificuldade é agravada pelo facto de os jogadores apresentarem perfis, ritmos de 
+progressão e níveis de habilidade distintos, o que torna desejável que a experiência de jogo se 
+adapte dinamicamente ao comportamento e ao desempenho de cada utilizador. Métricas 
+simples, como o tempo necessário para completar um nível, o número de mortes ocorridas, a 
+percentagem de exploração alcançada ou a quantidade de inimigos derrotados, permitem 
+inferir se um determinado nível se encontra excessivamente fácil, demasiado difícil ou ajustado 
+ao jogador.  
+A relevância deste desafio é ainda evidenciada pelo facto de a própria indústria ter explorado 
+mecanismos de adaptação dinâmica da experiência de jogo, como ilustrado por patentes que 
+descrevem o ajuste de dificuldade com base em sinais fisiológicos do jogador ou em métricas 
+de telemetria e retenção(Electronic Arts Inc., 2020; Sony Computer Entertainment Inc., 2011). 
+Estes esforços reforçam a pertinência do problema, mas não eliminam as dificuldades 
+associadas à criação escalável e adaptativa de níveis em videojogos 2D. 
+Por outro lado, embora as abordagens clássicas de Geração Procedural de Conteúdo tenham 
+permitido automatizar parcialmente o processo de criação de níveis, continuam dependentes 
+de regras explícitas, gramáticas ou algoritmos evolutivos cuidadosamente construídos por 
+especialistas. Estas abordagens exigem um esforço considerável na definição de heurísticas e 
+funções de avaliação, e nem sempre conseguem capturar de forma natural as regularidades 
+estilísticas presentes nos níveis criados manualmente (Summerville et al., 2018). Os avanços da 
+aprendizagem profunda motivaram, assim, a transição para métodos de PCG via Aprendizagem 
+Automática (PCGML), em que modelos treinados sobre exemplos reais aprendem distribuições 
+complexas e se tornam capazes de gerar conteúdo plausível. Modelos generativos profundos, 
+como Variational Auto-Encoders (VAE) e Generative Adversarial Networks (GANs) condicionais, 
+têm mostrado particular potencial na geração de níveis representados matricialmente, 
+permitindo reconstruir, extrapolar e adaptar padrões espaciais típicos do design de plataformas 
+2D (Liu et al., 2021). 
+---PAGE BREAK---
+ 
+6 
+ 
+Contudo, a utilização destes modelos levanta problemas adicionais que necessitam de ser 
+tratados de forma sistemática. É essencial garantir que os níveis gerados mantêm propriedades 
+mínimas de jogabilidade e progressão, o que requer mecanismos algorítmicos de validação. 
+Uma abordagem comum consiste na transformação do nível num grafo, permitindo verificar a 
+existência de um caminho viável entre pontos essenciais, tendo em conta as restrições do 
+movimento do jogador e as estruturas presentes. Existe também a necessidade de controlar a 
+geração de conteúdo para que este responda a métricas de desempenho, introduzindo uma 
+componente de adaptação dinâmica que aproxime o sistema de níveis personalizados (Liu et 
+al., 2021). 
+Para além dos desafios técnicos associados à geração e adaptação de níveis, a utilização de 
+telemetria introduz preocupações éticas e legais relacionadas com a privacidade dos dados dos 
+jogadores. Mesmo quando se utilizam métricas mínimas e não intrusivas, é essencial justificar 
+a sua recolha, limitar o seu armazenamento e garantir a conformidade com os princípios do 
+Regulamento Geral sobre a Proteção de Dados (RGPD). 
+Apesar dos avanços registados na literatura, permanece em aberto a questão de como integrar 
+modelos generativos profundos com mecanismos simples e controláveis de adaptação ao 
+jogador, garantindo simultaneamente a jogabilidade dos níveis gerados, a coerência estrutural 
+do conteúdo e o respeito por constrangimentos éticos e legais associados à recolha de 
+telemetria. 
+Deste modo, o problema que esta dissertação procura abordar consiste em desenvolver um 
+sistema capaz de gerar automaticamente níveis 2D variados, coerentes e adaptativos, 
+utilizando modelos generativos treinados sobre exemplos reais, assegurando simultaneamente 
+a jogabilidade, o controlo adaptativo e o respeito pelo enquadramento ético e legal. 
+1.4 Questões e objetivos da investigação 
+Research questions and objectives 
+A presente dissertação é orientada por uma questão de investigação central que resulta dos 
+desafios identificados no contexto da geração procedural de níveis em videojogos 2D, 
+nomeadamente a necessidade de conjugar geração automática de conteúdo, garantia de 
+jogabilidade e adaptação ao desempenho do jogador. Neste enquadramento, a questão de 
+investigação principal que orienta o trabalho é a seguinte: “De que forma a integração de 
+modelos generativos profundos (GANs/VAE) com mecanismos de validação baseados em grafos 
+permite a criação de níveis 2D que sejam simultaneamente jogáveis e adaptáveis ao 
+desempenho do utilizador?” 
+Para responder a esta questão, a dissertação estabelece um conjunto de objetivos de 
+investigação, de natureza técnica e experimental, que orientam o desenvolvimento do trabalho 
+e a avaliação das soluções propostas. Em particular, pretende-se: 
+---PAGE BREAK---
+ 
+7 
+ 
+ 
+ Desenvolver um sistema de geração procedural de níveis 2D baseado em modelos 
+generativos profundos, utilizando VAE e GAN condicionais treinados sobre níveis 
+representados de forma matricial ou imagética; 
+ Definir e implementar mecanismos de validação algorítmica de jogabilidade baseados 
+em grafos, capazes de assegurar propriedades mínimas de progressão e acessibilidade 
+nos níveis gerados; 
+ Integrar métricas simples de desempenho do jogador no processo de geração, de forma 
+a permitir a adaptação controlada dos níveis a diferentes perfis de utilizador; 
+ Avaliar experimentalmente a qualidade dos níveis gerados, considerando critérios de 
+jogabilidade, coerência estrutural e capacidade de adaptação; 
+ Analisar as implicações éticas e legais associadas à recolha e utilização de telemetria do 
+jogador, garantindo conformidade com princípios de minimização de dados e com o 
+Regulamento Geral sobre a Proteção de Dados (RGPD). 
+Estes objetivos orientam o desenvolvimento metodológico e experimental da dissertação, 
+servindo de base à definição das opções técnicas adotadas e à análise crítica dos resultados 
+apresentados nos capítulos seguintes. 
+1.5 Contribuições da dissertação 
+Contributions of the dissertation 
+O documento pode ser escrito em português ou em inglês. O limite de páginas mínimo é de 60 
+páginas e máximo de 120 páginas, formato A4, Fonte Calibri de dimensão 11 pt, a espaço e 
+meio. Em Word poderá utilizar o estilo Text, já definido no separador Home grupo Quick Styles. 
+Note-se que todos estilos principais estão disponíveis no mesmo local. As páginas deverão ter 
+margens Top: 3.5 cm, Bottom: 2.5, Inside: 3.5, Outside: 2.6. Different odd and even pages. A 
+tese deverá ser impressa em frente e verso. 
+1.6 Estrutura do documento 
+Document structure 
+O documento pode ser escrito em português ou em inglês. O limite de páginas mínimo é de 60 
+páginas e máximo de 120 páginas, formato A4, Fonte Calibri de dimensão 11 pt, a espaço e 
+meio. Em Word poderá utilizar o estilo Text, já definido no separador Home grupo Quick Styles. 
+Note-se que todos estilos principais estão disponíveis no mesmo local. As páginas deverão ter 
+---PAGE BREAK---
+ 
+8 
+ 
+margens Top: 3.5 cm, Bottom: 2.5, Inside: 3.5, Outside: 2.6. Different odd and even pages. A 
+tese deverá ser impressa em frente e verso. 
+ 
+ 
+  
+---PAGE BREAK---
+ 
+9 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Inserir página em branco apenas se necessário de modo 
+a que o próximo capítulo comece numa página à direita 
+---PAGE BREAK---
+ 
+10 
+ 
+2 Estado da arte e revisão sistemática da 
+literatura 
+State of the Art and Systematic Review of the Literature 
+2.1 Introdução 
+Introduction 
+O presente capítulo apresenta o estado da arte e a revisão sistemática da literatura que 
+suportam a dissertação, seguindo as diretrizes PRISMA, com o objetivo de identificar, organizar 
+e sintetizar as abordagens existentes sobre geração procedural de níveis em videojogos 2D com 
+recurso a técnicas de inteligência artificial, bem como os mecanismos de adaptação ao jogador, 
+validação algorítmica da jogabilidade e implicações associadas à recolha de telemetria. A Secção 
+2.2 descreve a metodologia da revisão, definindo as questões de investigação, a estratégia de 
+pesquisa, as fontes e termos utilizados, e os critérios de inclusão e exclusão aplicados. A Secção 
+2.3 apresenta e caracteriza os estudos selecionados, sintetizando os resultados obtidos por 
+questão de investigação. Na Secção 2.4 é realizada uma discussão crítica dos achados, 
+destacando tendências, limitações e lacunas relevantes na literatura. Por fim, a Secção 2.5 
+resume as principais conclusões da revisão e aponta direções de trabalho futuro, enquadrando-
+as com os objetivos do protótipo e do contributo experimental da dissertação.  
+2.2 Literatura relacionada 
+Related literature 
+---PAGE BREAK---
+ 
+11 
+ 
+ 
+2.2.1 Metodologia da revisão 
+Methodology of review 
+A presente dissertação apresenta uma revisão sistemática da literatura conduzida de acordo 
+com as diretrizes Preferred Reporting Items for Systematic Reviews and Meta-Analyses 
+(PRISMA), com o objetivo de analisar e sistematizar o estado da arte relativo à aplicação de 
+modelos generativos baseados em inteligência artificial na Geração Procedural de Conteúdo em 
+videojogos 2D, com particular enfoque na adaptação ao perfil do jogador, na validação 
+algorítmica de jogabilidade e nas implicações éticas associadas à recolha de telemetria.  
+A metodologia adotada visa garantir transparência, reprodutibilidade e rigor científico ao 
+processo de revisão, permitindo identificar tendências, lacunas e desafios existentes na 
+literatura. Para esse efeito, o processo de revisão foi estruturado em várias fases, incluindo a 
+definição das questões de investigação, a seleção das fontes de pesquisa, a definição das 
+estratégias e termos de pesquisa, a aplicação de critérios de inclusão e exclusão, a seleção dos 
+estudos relevantes e, por fim, a extração, análise e síntese dos resultados. 
+A pesquisa bibliográfica incidiu sobre estudos publicados em revistas científicas e atas de 
+conferências com revisão por pares, no período temporal definido, focando trabalhos 
+relacionados com a aplicação de técnicas de inteligência artificial à geração de conteúdo em 
+videojogos, sem a assunção prévia de modelos ou abordagens específicas, de modo a permitir 
+que as soluções mais relevantes emerjam da literatura analisada. Foram igualmente 
+considerados estudos que abordem mecanismos de adaptação da experiência de jogo ao 
+comportamento do jogador, métodos de validação de jogabilidade e aspetos relacionados com 
+privacidade e proteção de dados. 
+O processo de seleção dos estudos seguiu uma abordagem faseada. Numa primeira etapa, 
+procedeu-se à identificação dos registos provenientes das bases de dados selecionadas, sendo 
+posteriormente efetuada a remoção de duplicados com base no identificador DOI e na 
+normalização dos títulos. Após a remoção de duplicados, os estudos restantes foram sujeitos a 
+uma fase de triagem inicial, baseada na análise dos títulos e resumos, com o objetivo de excluir 
+trabalhos irrelevantes para o âmbito da investigação. Numa fase subsequente, os textos 
+completos dos estudos potencialmente relevantes foram analisados em detalhe, de forma a 
+verificar o cumprimento dos critérios de inclusão e exclusão previamente definidos. 
+Os resultados da revisão são apresentados de forma estruturada por questão de investigação, 
+sendo complementados, sempre que pertinente, por tabelas e esquemas de síntese. O processo 
+global de identificação, seleção, elegibilidade e inclusão dos estudos é resumido através de um 
+diagrama PRISMA, assegurando a rastreabilidade e clareza metodológica da revisão realizada. 
+---PAGE BREAK---
+ 
+12 
+ 
+2.2.2 Questões de investigação 
+Research Questions 
+A presente revisão sistemática é orientada por uma questão de investigação central definida 
+especificamente para o processo de revisão da literatura, a qual visa estruturar e delimitar a 
+análise do estado da arte de acordo com as diretrizes PRISMA. Embora esta questão se encontre 
+alinhada com o tema geral da dissertação, o seu âmbito é distinto do objetivo principal do 
+trabalho experimental, incidindo exclusivamente sobre a identificação, caracterização e 
+sistematização das abordagens existentes na literatura científica relativas à geração procedural 
+de níveis em videojogos 2D, à adaptação ao jogador e à validação da jogabilidade. Esta distinção 
+permite garantir clareza metodológica e evitar a sobreposição entre os objetivos da revisão 
+sistemática e os objetivos da investigação desenvolvida na dissertação. A questão de 
+investigação principal definida é a seguinte: “De que forma técnicas de inteligência artificial, em 
+particular modelos generativos, têm sido aplicadas à geração de níveis em videojogos 2D na 
+literatura recente, e que abordagens têm sido propostas para a validação da jogabilidade e 
+adaptação ao jogador?” 
+Para apoiar a resposta a esta questão central, a literatura é analisada com base em quatro 
+questões de investigação específicas, apresentadas na Tabela 1 Questões de investigação 
+consideradas na revisão da literatura. Em conjunto, estas questões permitem organizar a 
+análise dos estudos selecionados e identificar tendências, abordagens e lacunas relevantes no 
+domínio em estudo. 
+Tabela 1 Questões de investigação consideradas na revisão da literatura 
+Identificador Questão 
+RQ1 
+Que tipos de modelos generativos baseados em inteligência 
+artificial têm sido utilizados na literatura para a geração 
+procedural de níveis em videojogos 2D, e que representações 
+matriciais ou imagéticas dos níveis são adotadas? 
+RQ2 
+Que mecanismos de adaptação ao jogador são descritos na 
+literatura no contexto da geração procedural de níveis em 
+videojogos 2D, e que métricas de desempenho ou 
+comportamento são utilizadas para esse efeito? 
+RQ3 
+Que métodos de validação algorítmica da jogabilidade têm sido 
+propostos para níveis gerados automaticamente em videojogos 
+2D? 
+RQ4 
+De que forma a recolha e utilização de dados de telemetria do 
+jogador em sistemas de geração adaptativa de níveis, e que 
+preocupações relacionadas com privacidade, minimização de 
+dados e conformidade legal são discutidas? 
+RQ5 (Dados e 
+reprodutibilidade) 
+talvez  
+ 
+Que datasets/jogos (p.ex., Mario, Zelda, Sokoban), configurações 
+e práticas de reprodutibilidade (código, seeds, splits, 
+disponibilização) são usados? 
+(Muito útil para mostrar lacunas e justificar o teu protótipo.) 
+---PAGE BREAK---
+ 
+13 
+ 
+ 
+RQ5 
+(Avaliação/validação 
+experimental) 
+talvez 
+ 
+Como é que os estudos avaliam a qualidade dos níveis gerados 
+(métricas, testes com utilizadores, agentes, comparações com 
+baselines) e que evidência reportam? 
+(Isto complementa a tua RQ3, que está mais focada em validação 
+algorítmica de jogabilidade; aqui apanhas também avaliação 
+empírica/quantitativa.) 
+ 
+A RQ1 incide sobre os tipos de modelos generativos baseados em inteligência artificial descritos 
+na literatura para a geração procedural de níveis em videojogos 2D, bem como sobre as 
+representações matriciais ou imagéticas adotadas para codificar esses níveis. Esta questão 
+permite identificar e comparar as diferentes abordagens existentes, analisando de que forma 
+os níveis são representados para efeitos de aprendizagem automática e quais os modelos mais 
+frequentemente utilizados neste contexto. 
+A RQ2 centra-se nos mecanismos de adaptação ao jogador descritos na literatura no âmbito da 
+geração procedural de níveis em videojogos 2D. Em particular, esta questão analisa que 
+métricas de desempenho ou comportamento do jogador, como tempo de conclusão, número 
+de falhas ou padrões de exploração, são utilizadas para informar ou condicionar o processo de 
+geração, permitindo compreender como a adaptação do conteúdo tem sido abordada nos 
+estudos existentes. 
+A RQ3 aborda os métodos de validação algorítmica da jogabilidade propostos para níveis 
+gerados automaticamente em videojogos 2D. O objetivo desta questão é identificar as 
+estratégias utilizadas para assegurar propriedades mínimas de jogabilidade e progressão, tais 
+como a existência de percursos viáveis ou a acessibilidade entre regiões do nível, garantindo 
+que o conteúdo gerado é funcional do ponto de vista do jogador. 
+Por fim, a RQ4 analisa de que forma a literatura aborda a recolha e utilização de dados de 
+telemetria do jogador em sistemas de geração adaptativa de níveis. Esta questão permite 
+identificar as preocupações discutidas relativamente à privacidade, minimização e proteção de 
+dados, bem como os enquadramentos legais considerados, nomeadamente no que respeita à 
+conformidade com regulamentos de proteção de dados aplicáveis. 
+2.2.3 Definição de estratégia de pesquisa 
+Definition of search strategy 
+A estratégia de pesquisa foi definida com o objetivo de identificar estudos científicos relevantes 
+para responder às questões de investigação formuladas nesta revisão sistemática. A pesquisa 
+foi delineada de forma a abranger os principais tópicos associados à geração procedural de 
+níveis em videojogos 2D recorrendo a técnicas de inteligência artificial, bem como os 
+mecanismos de adaptação ao jogador, a validação algorítmica da jogabilidade e as implicações 
+---PAGE BREAK---
+ 
+14 
+ 
+associadas à recolha e utilização de dados de telemetria, tal como discutidos na literatura 
+científica. 
+Atendendo à diversidade temática das questões de investigação, a estratégia de pesquisa foi 
+estruturada através de um conjunto de expressões de pesquisa organizadas em torno de uma 
+query base (Q0) e de queries complementares por eixo temático (Q1–Q4), aplicadas de forma 
+independente. A query base foi concebida para identificar estudos relacionados com a aplicação 
+de técnicas de inteligência artificial à geração procedural de níveis em videojogos, assegurando 
+uma cobertura abrangente do domínio. As queries complementares foram definidas para 
+aprofundar aspetos específicos correspondentes às questões de investigação, nomeadamente 
+a representação dos níveis (RQ1), os mecanismos de adaptação ao jogador (RQ2), os métodos 
+de validação algorítmica da jogabilidade (RQ3) e a recolha e utilização de dados de telemetria, 
+incluindo considerações relativas à privacidade e proteção de dados (RQ4). 
+Cada uma das expressões de pesquisa foi aplicada de forma consistente às bases de dados 
+selecionadas, sendo os resultados obtidos posteriormente agregados no processo de revisão 
+sistemática. Após a agregação, procedeu-se à remoção de duplicados com base no identificador 
+DOI e na normalização dos títulos, antes das fases de triagem e avaliação de elegibilidade. Esta 
+opção metodológica permitiu assegurar uma cobertura adequada da literatura relevante em 
+cada um dos eixos de investigação, reduzindo o risco de exclusão de estudos pertinentes que 
+abordam apenas subconjuntos específicos do problema em análise. As expressões de pesquisa 
+foram definidas de modo a equilibrar abrangência e precisão, recorrendo a combinações de 
+termos-chave e operadores lógicos que refletem os conceitos centrais das questões de 
+investigação, sendo a definição detalhada das fontes e dos termos utilizados apresentada nas 
+secções seguintes. 
+2.2.4 Definição de fontes de pesquisa 
+Definition of search sources 
+A pesquisa bibliográfica foi realizada em bases de dados científicas amplamente reconhecidas 
+nas áreas da Engenharia Informática, Inteligência Artificial e Tecnologias de Videojogos, de 
+forma a garantir a qualidade, relevância e diversidade dos estudos incluídos na revisão 
+sistemática. Foram utilizadas as bases de dados IEEE Xplore, Web of Science, ACM Digital Library 
+e Scopus, selecionadas por cobrirem revistas científicas e atas de conferências com revisão por 
+pares relevantes para os domínios da inteligência artificial aplicada aos videojogos, da geração 
+procedural de conteúdo, da adaptação ao jogador e da validação algorítmica da jogabilidade. 
+As expressões de pesquisa definidas na estratégia de pesquisa (Q0–Q4) foram aplicadas de 
+forma consistente a todas as bases de dados selecionadas, permitindo uma recolha sistemática 
+e comparável dos estudos disponíveis. A utilização conjunta destas fontes contribuiu para uma 
+pesquisa abrangente e equilibrada, reduzindo o risco de viés associado à dependência de uma 
+---PAGE BREAK---
+ 
+15 
+ 
+ 
+única fonte e aumentando a probabilidade de identificação dos estudos mais relevantes para 
+responder às questões de investigação definidas. 
+2.2.5 Definição dos termos de pesquisa 
+Definition of search terms 
+Os termos de pesquisa foram definidos com base nas questões de investigação apresentadas 
+na Subsecção Erro! A origem da referência não foi encontrada., com o objetivo de captar os 
+conceitos centrais associados à geração procedural de níveis em videojogos 2D recorrendo a 
+técnicas de inteligência artificial, à adaptação do conteúdo ao perfil do jogador, à validação 
+algorítmica de jogabilidade e às implicações relacionadas com a recolha e utilização de dados 
+de telemetria. 
+A definição dos termos de pesquisa procurou equilibrar abrangência e precisão, recorrendo a 
+terminologia amplamente utilizada na literatura científica. Os termos foram organizados por 
+eixos conceptuais correspondentes às questões de investigação, distinguindo entre uma query 
+base, destinada a capturar estudos sobre geração procedural de níveis recorrendo a técnicas 
+de inteligência artificial (Q0), e conjuntos de termos específicos utilizados em queries 
+complementares por eixo temático (Q1–Q4). Para maximizar a recuperação de estudos 
+relevantes, os termos foram aplicados aos campos título, resumo, palavras-chave do autor e 
+termos de indexação, sempre que suportado pelas bases de dados utilizadas. Os termos foram 
+organizados por temas, refletindo os diferentes eixos conceptuais associados às questões de 
+investigação. 
+De acordo com a estratégia de pesquisa adotada, os termos definidos foram combinados 
+utilizando operadores lógicos booleanos (AND, OR) para a construção das expressões de 
+pesquisa finais. Sempre que relevante, foram consideradas variantes lexicais e diferentes 
+formas de escrita dos termos, de modo a acomodar variações terminológicas entre áreas e 
+bases de dados. As expressões de pesquisa foram ajustadas à sintaxe de cada base de dados, 
+mantendo a base conceptual em todas as pesquisas realizadas. 
+ 
+Tabela 2 Temas e termos de pesquisa utilizados na revisão sistemática 
+Tema Descrição Termos de pesquisa 
+exemplificativos 
+Geração 
+Procedural de 
+Conteúdo 
+Conceitos associados à geração 
+automática de conteúdo em 
+videojogos 
+procedural content 
+generation, PCG, game level 
+generation, level generation, 
+content generation 
+---PAGE BREAK---
+ 
+16 
+ 
+Videojogos 2D 
+Domínio específico de aplicação 
+dos sistemas de geração 
+2D games, platform game, 
+side-scrolling game, tile-
+based level 
+Modelos 
+baseados em IA 
+Técnicas de inteligência artificial 
+utilizadas na geração de níveis 
+artificial intelligence, 
+machine learning, deep 
+learning, generative model, 
+representation learning 
+Representação 
+de níveis 
+Formas de codificação estrutural 
+dos níveis para processamento 
+computacional 
+matrix representation, 
+image-based representation, 
+grid-based levels, tile 
+representation 
+Adaptação ao 
+jogador 
+Mecanismos de ajuste do 
+conteúdo com base no 
+comportamento do jogador 
+player modeling, adaptive 
+games, dynamic difficulty 
+adjustment, player 
+performance metrics 
+Validação de 
+jogabilidade 
+Métodos para garantir 
+propriedades mínimas de 
+jogabilidade 
+playability validation, graph-
+based validation, pathfinding, 
+reachability analysis 
+Telemetria e 
+privacidade 
+Recolha e utilização de dados do 
+jogador e implicações legais 
+player telemetry, game 
+analytics, data privacy, data 
+protection, GDPR 
+Os termos associados ao domínio dos videojogos 2D (por exemplo, 2D games, platform games, 
+tile-based levels) foram utilizados como filtros incrementais em queries específicas, não sendo 
+necessariamente incluídos como requisitos obrigatórios na query base, de forma a evitar a 
+exclusão indevida de estudos relevantes que não explicitam estas características nos campos 
+de pesquisa. 
+2.2.6 Seleção de estudos, critérios de inclusão e exclusão 
+Study selection, inclusion and exclusion criteria 
+A seleção dos estudos foi conduzida com base em critérios de inclusão e exclusão claramente 
+definidos, com o objetivo de assegurar que os trabalhos considerados na revisão sistemática 
+são relevantes para o âmbito da investigação, metodologicamente adequados e diretamente 
+relacionados com as questões de investigação formuladas. A definição destes critérios permitiu 
+orientar o processo de seleção de forma consistente, reduzindo o risco de viés e garantindo a 
+comparabilidade dos estudos analisados. 
+Os critérios de inclusão foram definidos de modo a abranger estudos que contribuam para a 
+compreensão da aplicação de técnicas de inteligência artificial à geração procedural de níveis 
+em videojogos 2D, bem como para a análise de mecanismos de adaptação ao jogador, validação 
+algorítmica de jogabilidade e utilização de telemetria. Desta forma, assegura-se que os estudos 
+incluídos apresentam relevância científica e enquadramento direto com os objetivos da revisão 
+---PAGE BREAK---
+ 
+17 
+ 
+ 
+sistemática. Foram definidos os seguintes critérios de inclusão para a seleção dos estudos 
+considerados na revisão: 
+Tabela 3 Lista de critérios de inclusão 
+Identificador Questão 
+IC1 O estudo deve abordar a aplicação de técnicas de inteligência 
+artificial à geração procedural de conteúdo em videojogos; 
+IC2 O estudo deve considerar a geração ou adaptação de níveis em 
+videojogos 2D; 
+IC3 
+O estudo deve abordar pelo menos um dos seguintes aspetos, 
+em alinhamento com as questões de investigação definidas: 
+“(i) a geração procedural ou representação de níveis em 
+videojogos 2D recorrendo a técnicas de inteligência artificial 
+(RQ1)”, “(ii) mecanismos de adaptação ao jogador e métricas de 
+desempenho ou comportamento (RQ2)”, “(iii) métodos de 
+validação algorítmica da jogabilidade (RQ3)”, “(iv) recolha e 
+utilização de dados de telemetria do jogador, incluindo 
+considerações relativas à privacidade e proteção de dados 
+(RQ4)”; 
+IC4 O estudo deve ter sido publicado em revistas científicas ou atas 
+de conferências com revisão por pares. 
+Estes critérios de inclusão foram definidos de forma a garantir a coerência direta entre os 
+estudos selecionados e as questões de investigação (RQ1–RQ4), permitindo a inclusão de 
+trabalhos que abordem apenas subconjuntos específicos do problema em análise, sem prejuízo 
+da cobertura global da revisão sistemática. 
+Os critérios de exclusão foram definidos com o intuito de eliminar estudos que, embora 
+potencialmente relacionados com temas adjacentes, não contribuem de forma direta ou 
+relevante para responder às questões de investigação, ou que não apresentam o nível de rigor 
+científico necessário para integração na revisão sistemática. Foram definidos os seguintes 
+critérios de exclusão para a seleção dos estudos considerados na revisão: 
+Tabela 4 Lista de critérios de exclusão 
+Identificador Questão 
+EC1 Publicações não escritas em inglês ou português; 
+EC2 
+Publicações publicadas anteriormente a 2010, por se tratar de 
+um período anterior à consolidação das técnicas modernas de 
+inteligência artificial aplicadas à geração procedural de 
+conteúdo; 
+EC3 Estudos que não se enquadram no domínio dos videojogos ou da 
+Geração Procedural de Conteúdo; 
+EC4 Estudos que correspondem a artigos de opinião, resumos 
+alargados, tutoriais, relatórios técnicos ou literatura cinzenta; 
+---PAGE BREAK---
+ 
+18 
+ 
+EC5 
+Estudos que não se encontram disponíveis em texto integral, que 
+não apresentam informação suficiente para análise ou que 
+correspondem a duplicados. 
+2.3 Resultados encontrados 
+Results found 
+2.3.1 Seleção e características do estudo 
+Study selection and characteristics 
+Iniciar um capítulo novo sempre numa página à direita (ímpar).  
+2.3.2 Seleção e características do estudo 
+Study selection and characteristics 
+Iniciar um capítulo novo sempre numa página à direita (ímpar).  
+2.3.3 RQ1 — Modelos generativos e representações de níveis 2D 
+A literatura converge em duas opções metodológicas centrais na geração procedural de níveis 
+2D: (i) a representação do nível, isto é, a forma como a estrutura espacial é codificada, e (ii) a 
+escolha de modelos da família de modelos generativos, que aprende, a partir de amostras, a 
+distribuição do conteúdo. Esta combinação condiciona diretamente o tipo de regularidades 
+capturadas (locais vs. globais), a capacidade de generalização e o grau de controlo sobre o 
+conteúdo gerado (Summerville et al., 2018). 
+De forma consistente, a literatura descreve a codificação de níveis 2D como um problema de 
+representação estruturada: antes de treinar um modelo generativo, é necessário decidir como 
+transformar um nível num formato manipulável por algoritmos de aprendizagem automática. 
+As representações mais frequentes podem agrupar-se em sequências, grelhas/matrizes e 
+grafos, que correspondem, respetivamente, a (i) dados ordenados adequados a modelos 
+autorregressivos, (ii) dados espaciais em grelha adequados a modelos que exploram vizinhanças 
+locais, e (iii) estruturas relacionais adequadas quando a conectividade entre regiões/entidades 
+é mais relevante do que a geometria exata. Em jogos 2D baseados em tiles, a grelha é a 
+codificação mais direta, mas representações sequenciais continuam a ser comuns quando o 
+nível pode ser linearizado (por exemplo, em videojogos de plataformas com progressão 
+predominantemente da esquerda para a direita), convertendo o mapa em fatias/colunas (slices) 
+---PAGE BREAK---
+ 
+19 
+ 
+ 
+ou numa cadeia de símbolos, o que permite aplicar modelos típicos de previsão de tokens e 
+modelação de dependências ao longo do “percurso” do nível (Summerville et al., 2018). 
+Tabela 5 Taxonomia das técnicas por representação 
+Técnica / família Sequência Grelha/Matriz Grafo 
+Modelos probabilísticos (Markov / 
+n-grams / MdMC) 
+✓ ✓ – 
+Redes recorrentes (LSTM/GRU) e 
+variantes com atenção 
+✓ ✓ (via linearização) – 
+Transformers (self-attention) ✓ (tokens) ✓ 
+(matriz→embeddings) 
+– 
+Modelos 
+convolucionais/autoencoders/GAN 
+(imagem) 
+– ✓ (imagem/matriz) – 
+Representações relacionais 
+(entidades/ligação/adjacência) 
+– – ✓ 
+ 
+Como podemos observar na Tabela 5, na geração de níveis, a forma de representar o nível 
+(sequência, grelha ou grafo) é uma escolha separada da técnica usada para aprender/gerar 
+conteúdo. Como estas escolhas são independentes, a mesma abordagem pode ser aplicada a 
+representações diferentes, e técnicas semelhantes podem surgir descritas sobre formatos 
+distintos de codificação (Summerville et al., 2018). 
+As abordagens baseadas em cadeias de Markov são recorrentes na literatura de PCG para níveis 
+de videojogos 2D quando o objetivo é aprender regularidades estatísticas a partir de níveis 
+existentes. Nestes casos, o nível é tipicamente descrito como uma coleção de estados discretos 
+(tiles/sprites) e a geração resulta da amostragem de transições probabilísticas entre esses 
+estados, aprendidas por contagem de frequências. Dependendo do estudo, a modelação pode 
+ser feita após transformar o nível do videojogo 2D numa sequência (formato 1D), ou 
+preservando a estrutura espacial através de vizinhanças (formato 2D), o que é particularmente 
+natural em tilemaps (que é na prática uma grelha 2D, ou seja, uma matriz em que cada célula 
+contém um tile (um identificador de bloco/terreno/objeto) (Zafar et al., 2019).  No contexto de 
+geração mais “generalista”, existem trabalhos que assumem explicitamente o nível como matriz 
+2D de sprites (em enquadramentos como Video Game Description Language  (VGDL), que é uma 
+linguagem/formalismo para descrever jogos (regras, entidades e níveis) de forma estruturada 
+ou General Video Game Level Generation (GVG-LG), descrevendo a própria cadeia de Markov 
+como um mecanismo coerente com essa codificação matricial, o que reforça a compatibilidade 
+destas técnicas com representações grelha-a-grelha.  
+Em contraste, quando se recorrem a modelos sequenciais como Redes Neurais Recorrentes 
+(RNN) ou Long Short-Term Memory (LSTM), é frequente adotar-se uma estratégia de 
+linearização do nível, o mapa 2D é convertido para uma sequência de símbolos, onde cada 
+---PAGE BREAK---
+ 
+20 
+ 
+tile/entidade é mapeado para um token (por exemplo, um carácter de um alfabeto discreto), 
+permitindo tratar a geração como um problema análogo a modelação de linguagem. Um 
+exemplo explícito descreve precisamente esta transformação e, para mitigar redundâncias 
+típicas de leitura linha-a-linha (ex., grandes áreas vazias), reorganiza a codificação do nível para 
+uma leitura coluna-a-coluna (uma forma prática de “slicing”), antes de treinar o modelo para 
+prever o próximo símbolo/tile (Zhu et al., 2023).  Esta opção está alinhada com a síntese de 
+PCGML, onde níveis de videojogos de plataforma são frequentemente tratados como 
+sequências devido à sua progressão natural, e onde a conversão por slices é apresentada como 
+um expediente representacional que viabiliza a aplicação de modelos 1D (incluindo n-grams e 
+LSTM) a conteúdo originalmente 2D (Zhao & Fan, 2024). 
+Nos trabalhos que aplicam Transformers, observa-se uma tendência para manter a estrutura 
+do nível como matriz 2D e, em seguida, mapear cada célula (tile/objeto) para uma 
+representação vetorial através de um passo de embedding.  Nesta formulação, o nível é descrito 
+como uma grelha onde cada posição contém uma entidade do jogo e, após o embedding, a 
+arquitetura baseada em self-attention passa a operar sobre essa representação em espaço de 
+maior dimensão, beneficiando da capacidade do Transformer para capturar dependências de 
+longo alcance (relevantes para coerência global do layout do nível a ser gerado) (Zhao & Fan, 
+2024) .  
+Por fim, uma parte relevante da literatura em PCGML discute modelos que operam 
+naturalmente sobre grelhas/imagens, como redes convolucionais, autoencoders e GANs, em 
+que a representação matricial do nível funciona como “imagem” (com codificações por 
+canal/one-hot, dependendo do desenho experimental) (Risi & Togelius, 2020; Wu, 2022). Estas 
+abordagens são frequentemente destacadas pelo seu potencial para capturar padrões espaciais 
+e “estilo” de níveis, e aparecem também associadas a estratégias de avaliação/filtragem com 
+agentes em alguns enquadramentos.  Em revisões mais abrangentes sobre PCG com 
+aprendizagem automática e generalização, são também descritas abordagens híbridas em que 
+o modelo generativo aprende uma representação latente do conteúdo e, posteriormente, a 
+geração é guiada por métodos de pesquisa ou otimização nesse espaço latente. Esta estratégia 
+permite introduzir controlo explícito sobre propriedades do nível e explorar diversidade sem 
+depender apenas de amostragem aleatória (Risi & Togelius, 2020). 
+2.3.4 RQ2 — Mecanismos de adaptação ao jogador e métricas usadas 
+A adaptação ao jogador, no contexto da geração procedural de níveis 2D, é frequentemente 
+formulada como um problema de controlo por realimentação: observa-se o jogador (ou um 
+proxy do seu comportamento), estima-se um estado/objetivo (por exemplo, se o desafio se 
+mantém adequado) e ajusta-se o conteúdo (parâmetros do nível, seleção de desafios, 
+distribuição de inimigos/itens) para aproximar o jogo desse objetivo. No conjunto de estudos 
+incluídos, as propostas diferenciam-se sobretudo pelo tipo de sinal observado (métricas de 
+desempenho/comportamento e, nalguns casos, medidas subjetivas) e pelo mecanismo de 
+decisão usado para condicionar a seleção/geração do conteúdo (Zook & Riedl, 2015). 
+---PAGE BREAK---
+ 
+21 
+ 
+ 
+Uma linha recorrente é a experience-driven PCG, onde a adaptação assenta num modelo de 
+experiência que liga características do conteúdo e traços do jogador a variáveis como diversão, 
+desafio e frustração. Neste enquadramento, a evidência inclui tanto medições subjetivas 
+recolhidas junto de participantes como métricas comportamentais extraídas da interação (por 
+exemplo, frequência de saltos, corrida e disparos), que são usadas para treinar modelos 
+preditivos e, posteriormente, orientar a procura de conteúdos que maximizem a experiência 
+prevista para um determinado perfil (Yannakakis & Togelius, 2011). 
+Quando o objetivo é incorporar evolução temporal do desempenho, a adaptação é apresentada 
+como um processo antecipatório: modela-se a progressão do jogador e seleciona-se conteúdo 
+que siga uma trajetória desejada ao longo do tempo. No GAMETAILOR (um sistema de 
+adaptação de desafios temporais, ou seja, um sistema de ajuste de desafios ao longo do tempo), 
+esta ideia é operacionalizada através de tensor factorization para prever desempenho e de 
+constrained optimization para escolher desafios que aproximem o desempenho previsto de 
+uma performance curve definida pelo designer, permitindo ajustar o desafio de forma 
+consistente com a progressão pretendida (Zook & Riedl, 2015). 
+Há também evidência de adaptação formulada como balanceamento dinâmico suportado por 
+uma métrica de erro diretamente observável. No mecanismo inspirado em ecossistemas, o 
+objetivo pode ser expresso por uma condição mensurável (por exemplo, terminar uma ronda 
+com a vida do jogador próximo de zero), convertendo o desvio ao objetivo num erro percentual 
+face a vida máximo e reduzindo esse erro ao longo de gerações através de Particle Swarm 
+Optimization (PSO) numa estrutura multinível. Os resultados reportam estabilização do erro, 
+na maioria dos testes, num intervalo próximo de [−5%,5%], sendo a convergência influenciada 
+por alterações na força do jogador (armadura e vida máxima) (Xia & Anand, 2016). 
+Algumas abordagens aproximam a adaptação de critérios automáticos de solubilidade e 
+“adequação” do desafio, recorrendo a agentes como mecanismo de verificação. No trabalho de 
+(Rajabi et al., 2021) níveis gerados por Deep Convolutional Generative Adversarial Network 
+(DCGAN) são filtrados por requisitos mínimos estruturais e por um critério de solvabilidade com 
+limiares explícitos: níveis resolvidos demasiado rapidamente são tratados como fáceis e níveis 
+que exigem demasiadas tentativas como difíceis, sendo a condição de aceitabilidade expressa 
+por um intervalo de tentativas (por exemplo, entre 10 e 300 episódios) verificado por um agente. 
+Por fim, embora não esteja restrito a geração de níveis 2D, o Balanced Difficulty Task Finder 
+(método de adaptação da dificuldade, cujo objetivo é escolher, a cada passo, uma tarefa com 
+dificuldade ajustada ao nível do utilizador para manter um equilíbrio entre competência e 
+desafio), fornece uma formalização útil do objetivo de adaptação alinhada com a noção de 
+“desafio adequado”: a dificuldade é definida numa escala contínua [0,1], assume-se uma 
+relação monotonia com a probabilidade de sucesso e ajusta-se a dificuldade online para 
+convergir para uma probabilidade-alvo s (por exemplo, s=0,7), através de uma regra de 
+atualização dependente de sucesso/fracasso e parâmetros que controlam a rapidez de 
+convergência (Yazidi et al., 2020). 
+---PAGE BREAK---
+ 
+22 
+ 
+2.3.5 RQ3 — Métodos de validação algorítmica da jogabilidade 
+Nos estudos analisados, a validação da jogabilidade em níveis 2D gerados automaticamente 
+surge sobretudo como um problema de verificação de propriedades mínimas (ex. se existir um 
+percurso viável entre início e fim), e em alguns casos, como quantificação do 
+esforço/dificuldade. Em termos práticos, isto traduz-se na combinação de (i) testes estruturais 
+sobre a representação do nível (grelha/tiles), (ii) métodos de procura/planeamento para 
+confirmar alcançabilidade, e (iii) mecanismos de filtragem/seleção e/ou reparação quando se 
+detetam falhas (Summerville et al., 2018). 
+Uma linha recorrente é a validação por procura baseada em agentes (playability/solvability 
+checks), onde o nível só é aceite se um agente conseguir completar o objetivo sob regras 
+definidas. Em geração generalista baseada em cadeias de Markov, a jogabilidade é avaliada 
+através da execução de agentes/controladores que tentam jogar o nível, permitindo filtrar 
+automaticamente níveis inviáveis antes de serem disponibilizados (Zafar et al., 2019) 
+Outra estratégia, típica em abordagens com modelos generativos profundos, é impor requisitos 
+mínimos e depois aplicar um critério explícito de solvabilidade por simulação. No estudo que 
+usa DCGAN para níveis 2D, os níveis gerados são primeiro filtrados por condições como ter 
+exatamente um início e um fim, limites para moedas e um número mínimo de plataformas. 
+Adicionalmente, a solvabilidade é verificada com uma pesquisa assistida por Reinforcement 
+Learning (RL), impondo-se que o nível seja resolúvel num intervalo de tentativas (por exemplo, 
+entre 10 e 300 episódios) para evitar níveis “demasiado fáceis” ou “demasiado difíceis (Rajabi 
+et al., 2021)”.   
+Quando a preocupação é a robustez do gerador (especialmente em geração offline), a validação 
+aparece sob a forma de identificação e mitigação de falhas catastróficas que tornam o nível 
+impraticável (ex: geometria que prende o jogador, gaps acima da capacidade de salto, conteúdo 
+opcional fora de alcance, ou até degradação do nível para casos triviais quando há pouca 
+informação). O trabalho sobre Mario descreve estas falhas como problemas que podem tornar 
+níveis “impossível de jogar” ou “muito simples” e propõe uma verificação por 
+restrições/heurísticas para filtrar níveis com esse tipo de anomalias (Volz et al., 2018). 
+Em paralelo, há abordagens mais “engenharia de jogo” que operacionalizam validação como 
+capacidade de navegação consistente com a física da plataforma. O framework de pathfinding 
+para jogos 2D plataforma formaliza o nível como um grafo de plataformas e liga pontos de 
+salto/aterragem com trajetórias calculadas por equações cinemáticas. A navegação combina 
+algoritmos baseados em A* para deslocação no solo com um algoritmo específico para 
+movimentos verticais/saltos, permitindo testar automaticamente se há caminho entre posições 
+e apoiar comportamentos de Non-Player Characters (NPC’s) (Wicaksana et al., 2025). 
+A literatura recente também evidencia que a validação algorítmica da jogabilidade não se limita 
+a verificar “se o nível é possível”, mas pode ser operacionalizada como validação operacional e 
+avaliação indireta do gerador através de playtesting simulado e modelos substitutos. Na síntese 
+---PAGE BREAK---
+ 
+23 
+ 
+ 
+de (Liu et al., 2021), é destacado que agentes (incluindo deep reinforcement learning) podem 
+produzir playtraces (a sequência de ações e estados do jogo ao longo do tempo) e sinais de 
+desempenho que ajudam a caracterizar rapidamente o espaço gerativo e a identificar 
+enviesamentos ou regiões problemáticas, permitindo validar operacionalmente a jogabilidade 
+e, por extensão, avaliar o próprio gerador quando esses resultados são usados para estratificar 
+o espaço de geração. 
+Complementarmente, a validação pode assumir a forma de análise sistemática das 
+propriedades do conteúdo gerado, em vez de depender apenas de verificações pontuais. 
+Segundo o estudo (Schaa & Barriga, 2024) pode-se aplicar a técnica Expressive Range Analysis 
+(ERA) para avaliar geradores de níveis de Super Mario Bros, comparando outputs de diferentes 
+abordagens (incluindo geradores open-source) e discutindo a utilidade de métricas/descritores 
+para evidenciar cobertura do espaço de níveis e padrões de qualidade, reforçando a ERA como 
+ferramenta de auditoria do comportamento do gerador e de deteção de falhas recorrentes. 
+Em contextos search-based PCG, a validação é frequentemente materializada numa função 
+objetivo (fitness) que agrega critérios de jogabilidade/qualidade. Neste cenário, a dificuldade 
+passa a ser também “o quão bem essa função guia a procura”. Ao utilizar ferramentas de 
+Exploratory Landscape Analysis para caracterizar propriedades do fitness landscape (ex: indícios 
+de rugosidade, estrutura e semelhança entre problemas) e com isso, apoiar escolhas 
+metodológicas mais informadas, como selecionar algoritmos de procura mais adequados e 
+interpretar porque certas formulações de validação conduzem a convergência fraca ou soluções 
+pouco úteis (Volz et al., 2023). 
+Por fim, quando a validação falha, alguns trabalhos avançam para reparação automática: 
+detetam onde a alcançabilidade é quebrada e alteram o nível para restaurar a jogabilidade. No 
+método de “reachability repair” para plataformas side-scrolling, o processo descrito passa por 
+corrigir erros lógicos, usar um “level-break agent” para localizar os tiles que tornam o nível 
+inalcançável e, por fim, substituir tiles com um modelo de deep learning para tornar o nível 
+alcançável, demonstrando o procedimento em níveis de Super Mario Bros (Fukuda et al., 2020).  
+2.3.6 RQ4 — Telemetria do jogador, privacidade e conformidade legal 
+Na literatura encontramos exemplos geração/adaptação de níveis, onde a telemetria é 
+predominantemente comportamental e “leve”: recolhem-se métricas de estilo e desempenho 
+durante o jogo e complementa-se, quando necessário, com avaliação subjetiva. No caso 
+descrito para níveis ao estilo Super Mario, os participantes classificam estados afetivos (como 
+diversão, desafio, frustração, previsibilidade, ansiedade, tédio) e o sistema regista indicadores 
+de estilo (frequência de saltos, corrida e disparos), além de outras variáveis de jogo; estes dados 
+são usados para treinar modelos preditivos e, depois, otimizar níveis para perfis específicos 
+(Yannakakis & Togelius, 2011). 
+ 
+---PAGE BREAK---
+ 
+24 
+ 
+Em paralelo, a telemetria pode ser enriquecida com sinais “objetivos” (para além do log de 
+ações), sobretudo quando o objetivo é inferir estados afetivos/cognitivos. Estas abordagens 
+híbridas que combinam autorrelato com medidas de psicofisiologia e com dados anotados de 
+vídeo e/ou fala, para ligar estados afetivos a características de jogabilidade. Embora isto 
+aumente a capacidade de modelação, eleva também o risco de intrusão, por envolver dados 
+potencialmente mais identificáveis e sensíveis (Yannakakis & Togelius, 2011). 
+Quando o foco é adaptação ao longo do tempo, a telemetria é tratada como série temporal de 
+desempenho: em vez de reagir só ao “momento”, o sistema procura prever evolução 
+(aprendizagem/fadiga) e selecionar conteúdo para seguir uma trajetória-alvo definida pelo 
+designer. Esta ideia é operacionalizada com modelação/predição temporal e seleção de 
+conteúdo sob restrições, alinhada com uma performance curve desejada(Zook & Riedl, 2015). 
+Há ainda evidência clara (embora fora de PCG de níveis 2D “puro”) de como sistemas interativos 
+instrumentados exploram telemetria granular para prever abandono/engajamento: podemos 
+observar registos de logs detalhados (tempo total, cliques em botões, uso de ajuda, tempo em 
+componentes da interface, edições de código, conclusão de níveis) e, quando há conta, recolhe 
+também atributos como e-mail, idade e género. Este tipo de instrumentação é um bom paralelo 
+para argumentar que “telemetria” pode rapidamente deixar de ser apenas desempenho e 
+passar a incluir identificadores (Yan et al., 2017). Em RGPD, isto liga-se diretamente a princípios 
+como limitação da finalidade e minimização dos dados (recolher apenas o necessário para o 
+objetivo declarado), bem como integridade/confidencialidade e limitação da conservação. Em 
+sistemas adaptativos, uma leitura prática destes princípios é: preferir métricas agregadas e não 
+identificáveis (ex.: contagens, tempos, taxas), evitar recolher identificadores diretos quando 
+não são essenciais, e separar qualquer identificador (conta/e-mail) da telemetria operacional, 
+idealmente com pseudonimização. Finalmente, quando a adaptação usa modalidades como 
+voz/vídeo (ex.: para inferir frustração/emoções), o risco de rei dentificação e o potencial 
+enquadramento como dados mais sensíveis aumentam, exigindo maior cautela: por defeito, 
+recolher menos, processar localmente sempre que possível, definir retenção curta e aplicar 
+privacy by design/by default desde o desenho do sistema (o “mínimo por defeito”). 
+2.4 Discussão 
+Discussion 
+2.4.1 RQ1 — Modelos generativos e representações de níveis 2D 
+Os estudos analisados sugerem que, em geração procedural de níveis 2D, a principal decisão de 
+desenho não é apenas sobre qual o modelo a usar também, mas de que forma terá o nível para 
+o modelo aprender. A literatura em PCG com aprendizagem automática organiza este problema 
+distinguindo a estrutura subjacente dos dados (sequência, grelha ou grafo) dos métodos de 
+aprendizagem/geração (ex. contagem de frequências, redes neuronais, factorização), 
+---PAGE BREAK---
+ 
+25 
+ 
+ 
+mostrando que escolhas semelhantes reaparecem em formatos distintos e com objetivos 
+diferentes (Summerville et al., 2018). 
+Nas abordagens probabilísticas clássicas (cadeias de Markov/n-gramas), observa-se uma 
+preferência por capturar regularidades locais, ou através da linearização do nível em fatias 
+recorrentes (quando a progressão é predominantemente lateral), ou através de vizinhanças 2D 
+quando o nível é tratado diretamente como grelha (Summerville et al., 2018; Zafar et al., 2019). 
+A formulação 2D é particularmente explícita em contextos mais gerais (VGDL/GVG-LG), onde o 
+nível é uma matriz 2D de sprites e o modelo estima transições condicionadas por dependências 
+espaciais (ex. esquerda/topo), reforçando a adequação destas técnicas quando o objetivo é 
+coerência local e simplicidade do gerador (Zafar et al., 2019). 
+Nos modelos sequenciais baseados em LSTM, o corpus tende a explorar a analogia com 
+modelação de linguagem, o nível é convertido numa sequência de símbolos, mas essa escolha 
+introduz um compromisso claro entre facilidade de treino e preservação de estrutura espacial. 
+Um exemplo concreto mostra que ler o nível linha-a-linha pode amplificar redundâncias (ex. 
+“céu” repetido) e dificultar a aprendizagem de padrões relevantes, por isso adota-se leitura 
+coluna-a-coluna (rotação 90º) para tornar o padrão estrutural mais evidente.  Ainda assim, a 
+limitação de comprimir sequências longas num estado oculto fixo é apontada como causa de 
+desordem simbólica. A introdução de mecanismos de atenção surge precisamente para dar 
+peso diferenciado a partes relevantes da sequência e melhorar consistência/coerência do nível 
+gerado (Summerville et al., 2018). 
+O recurso a arquiteturas Transformer é interpretável como resposta direta a este problema: em 
+vez de depender apenas de memória recorrente, a self-attention permite modelar 
+dependências de longo alcance (relevantes para coerência global do layout). Na prática, os 
+trabalhos descrevem uma pipeline recorrente: nível como matriz de tiles, mapeamento tile-
+para-vetor (embedding) e adição de codificação posicional para reintroduzir no modelo noção 
+de localização espacial. Isto mantém a grelha como objeto central, mas aumenta a capacidade 
+do modelo para relacionar regiões distantes do nível durante a geração (Zhao & Fan, 2024). 
+Em paralelo, modelos “tipo imagem” (convolucionais, autoencoders e GAN) beneficiam da 
+grelha por captarem bem padrões espaciais e “estilo”, mas a discussão sobre conteúdo 
+funcional reforça que um nível possa “parecer certo”, mas isso não é garantia que seja um nível 
+“funcionar”: restrições de jogabilidade dependem frequentemente de relações não locais (ex.  
+conectividade, contagens, saltos possíveis), o que pode levar a artefactos visualmente 
+plausíveis, mas inviáveis. Por esse motivo, é frequente defender-se a combinação de modelos 
+aprendidos com mecanismos de verificação/seleção e, sobretudo, a exploração de geração 
+guiada por objetivos através de procura no espaço latente (em vez de amostragem cega), para 
+introduzir controlo explícito sobre propriedades do nível (Summerville et al., 2018; Zafar et al., 
+2019). 
+Por fim, tal como perguntas de investigação seguintes, emerge uma limitação transversal: a 
+comparação entre abordagens é dificultada por configurações heterogéneas (jogos, 
+---PAGE BREAK---
+ 
+26 
+ 
+representações, métricas e datasets), e a escassez de dados reutilizáveis permanece um entrave 
+prático (muitos estudos treinam dentro de um jogo/série), apesar de iniciativas de 
+corpus/formatos comuns. Isto sugere que parte da analisa realizada nesta literatura relacionada 
+com a pergunta de investigação 1 evolui, não só por melhorias arquiteturais, mas também por 
+decisões de normalização representacional e pela disponibilização de dados/benchmarks que 
+suportem generalização e avaliação consistente. 
+Em síntese, o padrão dominante combina grelhas de tiles com modelos que maximizam 
+coerência espacial (do probabilístico local ao deep learning com atenção), enquanto 
+representações sequenciais continuam úteis quando a progressão do nível impõe uma 
+ordenação natural, contudo a robustez funcional e a comparabilidade entre estudos continuam 
+dependentes de escolhas de representação, disponibilidade de dados e validação estruturada 
+do conteúdo gerado.  
+2.4.2 RQ2 — RQ2: Mecanismos de adaptação ao jogador e métricas usadas 
+Os estudos analisados sugerem que a adaptação ao jogador em PCG de níveis 2D é, na prática, 
+um ciclo de controlo: observa-se o jogador (ou um proxy), estima-se um estado desejado (ex. 
+se o desafio é adequado) e ajusta-se o conteúdo para reduzir o desvio face a esse objetivo. As 
+diferenças entre propostas não estão apenas “no gerador”, mas sobretudo em (i) que sinal é 
+observado e (ii) como esse sinal é convertido numa decisão sobre geração/seleção de conteúdo 
+(Zook & Riedl, 2015). 
+Um técnica recorrente é a experience-driven PCG, onde a adaptação depende de um modelo 
+que liga traços do jogador e características do conteúdo a variáveis de experiência (diversão, 
+frustração, desafio). A vantagem é o alinhamento com objetivos centrados no utilizador; o custo 
+é a dependência de medidas de referência baseadas em auto-relato e de recolha/rotulagem 
+(questionários, escalas), processos geralmente dispendiosos e sensíveis ao contexto. Em muitos 
+casos, por pragmatismo, estas variáveis acabam por ser aproximadas por telemetria 
+comportamental (ex. ações frequentes, padrões de movimento), o que melhora escalabilidade, 
+mas aumenta o risco de o sistema otimizar proxies que nem sempre correspondem à 
+experiência real (Yannakakis & Togelius, 2011). 
+Outra abordagem assume a adaptação como controlo antecipatório: em vez de reagir apenas 
+ao estado atual, modela-se a progressão do jogador e escolhe-se conteúdo para seguir uma 
+trajetória definida pelo designer. O GAMETAILOR é um exemplo claro desta lógica, ao usar 
+previsão (tensor factorization) e seleção sob restrições (constrained optimization) para 
+aproximar o desempenho previsto de uma performance curve desejada (Zook & Riedl, 2015). A 
+leitura crítica aqui é que esta abordagem torna explícita a intenção do designer (curva-alvo), 
+mas exige modelos preditivos estáveis e um desenho cuidadoso da curva, sob pena de induzir 
+“correções” artificiais ou instáveis em jogadores com estilos não previstos. 
+Outra família formula a adaptação como minimização direta de erro com otimização online. O 
+mecanismo inspirado em ecossistemas traduz o objetivo (p. ex., terminar com vida perto de 
+---PAGE BREAK---
+ 
+27 
+ 
+ 
+zero) num erro mensurável e usa PSO para reduzir esse erro ao longo de gerações, reportando 
+convergência para um intervalo pequeno na maioria dos testes (Xia & Anand, 2016). Este tipo 
+de abordagem é apelativo pela clareza do objetivo e por funcionar com feedback simples; 
+contudo, tende a ser altamente dependente de como se define o erro e do quão bem esse erro 
+representa “dificuldade justa” (por exemplo, vida perto de zero pode corresponder a tensão 
+positiva ou a frustração, dependendo do jogador). 
+Observa-se também adaptação operacionalizada como verificação/filtragem por agentes, 
+aproximando “adequação” de critérios automáticos de solubilidade e dificuldade observável. 
+No caso de níveis DCGAN filtrados por um agente, a dificuldade é inferida por limiares de 
+episódios/tentativas: níveis resolvidos demasiado depressa são tratados como fáceis e níveis 
+que exigem demasiadas tentativas como difíceis (Rajabi et al., 2021). Esta estratégia é útil 
+quando se pretende garantir um mínimo de funcionalidade sem depender de estudos com 
+humanos, mas desloca o problema para a fidelidade do agente: se o agente não representa 
+bem o comportamento humano, a adaptação pode tornar-se enviesada (níveis “bons para o 
+agente” não são necessariamente “bons para pessoas”). 
+Por fim, propostas mais gerais como o Balanced Difficulty Task Finder oferecem uma 
+formalização elegante do alvo de adaptação: convergir para uma probabilidade de sucesso s (p. 
+ex., 0,7) através de atualização online baseada em sucesso/fracasso (Yazidi et al., 2020). A 
+utilidade desta formalização, no contexto 2D, é servir como “regra de bolso” robusta: define-se 
+um alvo simples, observável e interpretável. A limitação é que, tal como nas restantes 
+abordagens, a noção de dificuldade pode ficar “achatada” se for reduzida a sucesso/fracasso, 
+ignorando aspetos como estilo de jogo, exploração, risco ou preferências. 
+No conjunto, emerge um compromisso transversal: quanto mais rica é a noção de adaptação 
+(experiência subjetiva, progressão, preferências), maior o custo de dados e validação; quanto 
+mais simples e operacional é o sinal (erro, sucesso, episódios), mais fácil é implementar e avaliar, 
+mas maior o risco de otimizar um proxy incompleto. Assim, a tendência prática aponta para 
+soluções híbridas: telemetria comportamental como sinal principal, objetivos explícitos (alvo de 
+sucesso/curva) como guardrails, e mecanismos de verificação (agentes/constraints) para evitar 
+casos patológicos, articulando naturalmente com as preocupações de validação discutidas na 
+RQ3 (Zook & Riedl, 2015; Yannakakis & Togelius, 2011; Rajabi et al., 2021). 
+Em síntese, a literatura em RQ2 sugere que a adaptação em PCG de níveis 2D é menos uma 
+“técnica única” e mais uma arquitetura de decisão: escolher sinais observáveis, definir um alvo 
+interpretável e aplicar um mecanismo de controlo (otimização, filtragem, seleção guiada) que 
+seja compatível com as restrições do jogo e com o grau de personalização pretendido (Zook & 
+Riedl, 2015; Yazidi et al., 2020).  
+2.4.3 RQ3 — 
+Iniciar um capítulo novo sempre numa página à direita (ímpar).  
+---PAGE BREAK---
+ 
+28 
+ 
+2.4.4 RQ4 — 
+Iniciar um capítulo novo sempre numa página à direita (ímpar).  
+2.5 Conclusions and future work 
+Iniciar um capítulo novo sempre numa página à direita (ímpar).  
+ 
+  
+---PAGE BREAK---
+ 
+29 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Inserir página em branco apenas se necessário de modo 
+que o próximo capítulo comece numa página à direita 
+ 
+---PAGE BREAK---
+ 
+30 
+ 
+3 State of the Art and Systematic Review 
+of the Literature 
+3.1 Introduction 
+Proteção de Dados em Sistemas de Geração Procedural Adaptativa: Um State of Knowledge 
+sobre Anonimização de Telemetria de Jogadores 
+O State of Knowledge (SoKw) será centrado na análise de técnicas de anonimização e 
+pseudonimização aplicadas a dados de telemetria em videojogos e por extensão, em sistemas 
+inteligentes interativos. Este estudo irá identificar e classificar trabalhos que utilizem registos 
+de jogo, métricas de desempenho ou dados fisiológicos de jogadores para fins de adaptação, 
+personalização ou análise e com isso identificar os principais riscos de privacidade associados 
+a estes dados (por exemplo, reidentificação, perfis comportamentais de longo prazo, 
+inferência de estados emocionais), bem como as abordagens privacy-by-design propostas, 
+incluindo estratégias de minimização de dados, agregação, pseudonimização e controlo local 
+da informação e como enquadra-se o Regulamento Geral sobre a Proteção de Dados (RGPD). 
+  
+---PAGE BREAK---
+ 
+31 
+ 
+ 
+Inserir página em branco apenas se necessário de modo 
+que o próximo capítulo comece numa página à direita 
+---PAGE BREAK---
+ 
+32 
+ 
+Referências 
+British Academy of Film, & Arts, T. (2025). BAFTA Games Awards 2025. 
+https://www.bafta.org/awards/games/ 
+Electronic Arts Inc. (2020). Dynamic difficulty adjustment based on player retention and 
+performance (Issue US20200206631A1). 
+https://patents.google.com/patent/US20200206631A1 
+European Commission. (2023). Case M.10646 – Microsoft / Activision Blizzard. 
+https://ec.europa.eu/competition/mergers/cases/decisions/m10646_9311516_74
+43_3.pdf 
+Fukuda, T., Katai, O., & Ueda, S. (2020). Side-Scrolling Platform Game Levels Reachability 
+Repair Method and Its Applications to Super Mario Bros. IEICE Transactions on 
+Information and Systems, E103.D(9), 2058–2071. 
+https://doi.org/10.1587/transinf.2019EDP7245 
+International Trade Administration. (2023). Media and Entertainment: Video Games 
+Sector. 
+Liu, J., Khalifa, A., & Togelius, J. (2021). Deep learning for procedural content generation. 
+Neural Computing and Applications, 33, 1525–1543. 
+https://doi.org/10.1007/s00521-020-05383-8 
+Rajabi, M., Ashtiani, M., Minaei-Bidgoli, B., & Davoodi, O. (2021). A dynamic balanced 
+level generator for video games based on deep convolutional generative 
+adversarial networks. Scientia Iranica, 28(3), 1497–1514. 
+https://doi.org/10.24200/sci.2020.54747.3897 
+Risi, S., & Togelius, J. (2020). Increasing Generality in Machine Learning through 
+Procedural Content Generation. 
+Schaa, H., & Barriga, N. A. (2024). Evaluating the Expressive Range of Super Mario Bros Level 
+Generators. Algorithms, 17(7), 307. https://doi.org/10.3390/a17070307 
+Sony Computer Entertainment Inc. (2011). Adaptive game difficulty using biometric 
+feedback (Issue US20110260830A1). 
+https://patents.google.com/patent/US20110260830A1 
+Sony Interactive Entertainment. (2022). PS5 price to increase in select markets due to 
+global economic environment including high inflation rates. 
+https://blog.playstation.com/2022/08/25/ps5-price-to-increase-in-select-markets-
+due-to-global-economic-environment-including-high-inflation-rates/ 
+---PAGE BREAK---
+ 
+33 
+ 
+ 
+Sony Interactive Entertainment. (2024). PS5 Pro Technical Seminar reveals new in-depth 
+details on console. https://blog.playstation.com/2024/12/18/ps5-pro-technical-
+seminar-reveals-new-in-depth-details-on-console/ 
+Sony Interactive Entertainment. (2025). PS5 price to rise in Europe, Australia, and New 
+Zealand. https://blog.playstation.com/2025/04/13/ps5-price-to-rise-in-europe-
+australia-and-new-zealand/ 
+Summerville, A., Snodgrass, S., Guzdial, M., Holmgaard, C., Hoover, A. K., Isaksen, A., 
+Nealen, A., & Togelius, J. (2018). Procedural Content Generation via Machine 
+Learning (PCGML). IEEE Transactions on Games, 10(3), 257–270. 
+https://doi.org/10.1109/TG.2018.2846639 
+The Game Awards. (2018). The Game Awards 2018 – Awards and Winners. 
+https://thegameawards.com/rewind/year-2018 
+Volz, V., Naujoks, B., Kerschke, P., & Tušar, T. (2023). Tools for Landscape Analysis of 
+Optimisation Problems in Procedural Content Generation for Games. Applied Soft 
+Computing, 136, 110121. https://doi.org/10.1016/j.asoc.2023.110121 
+Volz, V., Snodgrass, S., Steine-Hanson, Z., Liang, J., Smith, A. M., & others. (2018). Identifying 
+Catastrophic Failures in Offline Level Generation for Mario. Proceedings of the 13th 
+International Conference on the Foundations of Digital Games (FDG ’18). 
+https://doi.org/10.1145/3235765.3235826 
+Wicaksana, B. A., Herumurti, D., & Kuswardayan, I. (2025, September). Enhancing Game 
+Development Efficiency: A Reusable AI Pathfinding Framework for 2D Platformer Games. 
+2025 12th International Conference on Electrical Engineering, Computer Science and 
+Informatics (EECSI). https://doi.org/10.1109/EECSI67060.2025.11290481 
+Wu, A. N. (2022). Generative Adversarial Networks in the built environment: A review of 
+the application of GANs across data types and scales. Building and Environment, 
+223, 109477. https://doi.org/10.1016/j.buildenv.2022.109477 
+Xia, W., & Anand, B. (2016). Game balancing with ecosystem mechanism. 2016 
+International Conference on Data Mining and Advanced Computing (SAPIENCE). 
+https://doi.org/10.1109/SAPIENCE.2016.7684145 
+Yan, A., Lee, M. J., & Ko, A. J. (2017). Predicting Abandonment in Online Coding Tutorials. 2017 
+IEEE Symposium on Visual Languages and Human-Centric Computing (VL/HCC), 191–199. 
+https://doi.org/10.1109/VLHCC.2017.8103467 
+Yannakakis, G. N., & Togelius, J. (2011). Experience-Driven Procedural Content 
+Generation. IEEE Transactions on Affective Computing, 2(3), 147–161. 
+https://doi.org/10.1109/T-AFFC.2011.6 
+---PAGE BREAK---
+ 
+34 
+ 
+Yazidi, A., Abolpour Mofrad, A., Goodwin, M., Hammer, H. L., & Arntzen, E. (2020). 
+Balanced difficulty task finder: an adaptive recommendation method for learning 
+tasks based on the concept of state of flow. Cognitive Neurodynamics. 
+https://doi.org/10.1007/s11571-020-09624-3 
+Zafar, A., Irfan, A., & Sabir, M. Z. (2019). Generating General Levels using Markov Chains. 
+Zhao, T., & Fan, Z. (2024). Enhancing Procedural Game Level Generation using 
+Transformer-based Neural Architectures. 2024 International Symposium on Internet 
+of Things and Smart Cities (ISITSC). 
+https://doi.org/10.1109/ISITSC64373.2024.00007 
+Zhu, J., Gao, T., & Mi, Q. (2023). Automatic Creation of LSTM Game Level Based on 
+Attention Mechanism. 2023 6th International Seminar on Research of Information 
+Technology and Intelligent Systems (ISRITI). 
+https://doi.org/10.1109/ISRITI60336.2023.10467911 
+Zook, A., & Riedl, M. O. (2015). Temporal Game Challenge Tailoring. IEEE Transactions on 
+Computational Intelligence and AI in Games, 7(4), 336–346. 
+https://doi.org/10.1109/TCIAIG.2014.2342934 
+  
+ 
+ 
+ 
+ 
+ 
+Exemplos, não apagar para já 
+… 
+(EurAI 2022) 
+ 
+European Association for Artificial Intelligence,  
+EurAI, viewed 7 January 2022,  
+https://eurai.org/ 
+ 
+… 
+(Ortony 1993) 
+ 
+Ortony AE. (1993). Metaphor and thought. Cambridge University Press. 
+ 
+… 
+(Ramos et al. 2008) 
+ 
+---PAGE BREAK---
+ 
+35 
+ 
+ 
+Ramos, C., Augusto, J. C., & Shapiro, D. (2008). Ambient intelligence—
+the next step for artificial intelligence. IEEE Intelligent Systems, 23(2), 
+15-18. 
+ 
+ 
+… 
+ 
+ou alternativamente 
+ 
+… 
+[14] Marreiros G, Santos R, Ramos C, Neves J. Context-aware emotion-based model for group 
+decision making. IEEE Intelligent Systems. 2010; 25(2), p. 31-39. 
+… 
+[22] Faria L, Silva A, Vale Z, Marques A. Training control centers' operators in incident diagnosis 
+and power restoration using intelligent tutoring systems. IEEE Transactions on Learning 
+Technologies. 2009; 2(2), p. 135-147. 
+… 
+[31] Vale Z, Gomes L, Faria P, Ramos C. Intelligent Energy-Oriented Home. In: Kaur G, Tomar P, 
+Tanque M, editors. Artificial Intelligence to Solve Pervasive Internet of Things Issues. . Academic 
+Press. 2020; p. 269-289. 
+ 
+---PAGE BREAK---

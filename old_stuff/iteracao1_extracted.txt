@@ -1,0 +1,300 @@
+Statement Of Integrity
+[Maintain only the version corresponding to the main language of the work]
+I hereby declare that I have conducted this academic work with integrity.
+I have not plagiarised or applied any form of undue use of information or falsification of
+results along the process leading to its elaboration.
+Therefore, the work presented in this document is original and was authored by me, having
+not been previously used for any other purpose. The exceptions [REMOVE THIS CLAUSE
+IF IT DOES NOT APPLY - REMOVE THIS COMMENT] are explicitly acknowledged in
+the section that addresses ethical considerations. This section also states how Artificial
+Intelligence tools were used and for what purpose.
+I further declare that I have fully acknowledged the Code of Ethical Conduct of P.PORTO.
+ISEP, Porto, [Month] [Day], [Year]
+Declaro ter conduzido este trabalho académico com integridade.
+Não plagiei ou apliquei qualquer forma de uso indevido de informações ou falsificação de
+resultados ao longo do processo que levou à sua elaboração.
+Portanto, o trabalho apresentado neste documento é original e de minha autoria, não
+tendo sido utilizado anteriormente para nenhum outro fim. As exceções [REMOVER ESTE
+PERÍODO NO CASO DE NÃO SE APLICAR - APAGAR ESTE COMENTÁRIO] estão
+explicitamente reconhecidas na secção onde são abordadas as considerações éticas. Esta
+secção também declara como as ferramentas de Inteligência Artificial foram utilizadas e para
+que finalidade.
+Declaro ainda que tenho pleno conhecimento do Código de Conduta Ética do P.PORTO.
+ISEP, Porto, [Dia] de [Mês] de [Ano]
+i
+---PAGE BREAK---
+
+---PAGE BREAK---
+Dedicatory
+The dedicatory is optional. Below is an example of a humorous dedication.
+iii
+---PAGE BREAK---
+
+---PAGE BREAK---
+Abstract
+Software testing is a resource-intensive activity in modern software development. Although
+Large Language Models (LLMs) show potential for code generation, their application to
+complex testing scenarios is often limited by hallucinations and a lack of environmental
+context. This dissertation explores Multi-Agent Systems (MAS) as a solution to these
+limitations. Through a Systematic Literature Review (SLR) of 25 seminal studies from
+2023 to 2025, we analyze how role-based agent orchestration—seen in frameworks like
+MetaGPT and ChatDev—mimics human engineering workflows to improve reliability. Key
+findings indicate a shift towards “Agent-Computer Interfaces” (ACI) that ground agents
+in real execution environments, and the adoption of “LLM-as-a-Judge” methodologies for
+scalable validation. The synthesis confirms that MAS architectures outperform monolithic
+LLM approaches, supporting the move towards autonomous software engineering.
+Keywords:Automated Software Testing, Multi-Agent Systems, Large Language Models,
+Agent-Computer Interface, Generative Software Engineering.
+Keywords:Automated Software Testing, Multi-Agent Systems, Large Language Models,
+Agent-Computer Interface, Generative Software Engineering
+v
+---PAGE BREAK---
+
+---PAGE BREAK---
+Resumo
+Palavras-chave:AutomatedSoftwareTesting, Multi-AgentSystems, LargeLanguageMod-
+els, Agent-Computer Interface, Generative Software Engineering
+vii
+---PAGE BREAK---
+
+---PAGE BREAK---
+Contents
+List of Algorithms xv
+List of Source Code xvii
+1 State of the Art 1
+1.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+1.2 Theoretical Background . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+1.2.1 Software Testing Automation . . . . . . . . . . . . . . . . . . . . 1
+1.2.2 Large Language Models in Software Engineering . . . . . . . . . . 1
+1.2.3 Multi-Agent Systems and Reasoning . . . . . . . . . . . . . . . . . 1
+1.3 Systematic Literature Review . . . . . . . . . . . . . . . . . . . . . . . . . 2
+1.3.1 Methodology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+Research Questions . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+Inclusion and Exclusion Criteria . . . . . . . . . . . . . . . . . . . 2
+1.3.2 Search and Selection . . . . . . . . . . . . . . . . . . . . . . . . . 2
+1.3.3 Data Extraction and Quality Assessment . . . . . . . . . . . . . . 2
+1.4 Synthesis of Findings . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+1.4.1 Architectural Patterns (RQ1) . . . . . . . . . . . . . . . . . . . . 3
+1.4.2 Knowledge Integration (RQ2) . . . . . . . . . . . . . . . . . . . . 3
+1.4.3 Validation Frameworks (RQ3) . . . . . . . . . . . . . . . . . . . . 3
+1.5 Discussion and Limitations . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+1.6 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+Bibliography 5
+ix
+---PAGE BREAK---
+
+---PAGE BREAK---
+List of Figures
+xi
+---PAGE BREAK---
+
+---PAGE BREAK---
+List of Tables
+xiii
+---PAGE BREAK---
+
+---PAGE BREAK---
+List of Algorithms
+xv
+---PAGE BREAK---
+
+---PAGE BREAK---
+List of Source Code
+xvii
+---PAGE BREAK---
+
+---PAGE BREAK---
+Chapter 1
+State of the Art
+1.1 Introduction
+Inthischapter, Iexplorethetheoreticalfoundationsandthecurrentstateoftheartregarding
+the automation of software testing using Multi-Agent Systems (MAS) and Large Language
+Models (LLMs). I start by establishing the background in software testing automation and
+the emergence of Generative AI in Software Engineering. Then, I detail the Systematic
+Literature Review (SLR) I conducted to identify and analyze relevant contributions in this
+field.
+1.2 Theoretical Background
+1.2.1 Software Testing Automation
+Testing remains a bottleneck in modern software development. It is the critical phase that
+ensures systems meet requirements and are defect-free. Winters et al. Winters, Manshreck,
+and Wright 2020 point out that maintaining velocity at scale is impossible without rigorous
+automated testing. While we have relied on scripted frameworks like Selenium or JUnit for
+years, they come with a cost: someone has to write and maintain those scripts, and covering
+complex edge cases is often a manual, error-prone process.
+1.2.2 Large Language Models in Software Engineering
+Since the arrival of the Transformer architecture Vaswani et al. 2017, we have seen a mas-
+sive shift in Natural Language Processing (NLP) and Software Engineering. Large Language
+Models (LLMs) are now capable of generating, explaining, and translating code with sur-
+prising accuracy. In testing, this means we can potentially generate test cases directly from
+requirements or code snippets, significantly cutting down the manual effort involved.
+1.2.3 Multi-Agent Systems and Reasoning
+While LLMs handle individual tasks well, they often struggle with complex workflows that
+demand extended reasoning and planning beyond a single prompt’s capacity. Prompting
+strategies like Chain-of-Thought Wei et al. 2022 have improved reasoning, but the agen-
+tic paradigm takes this further. Approaches like ReAct Yao et al. 2023 combine reasoning
+and acting, allowing models to use tools (e.g., compilers, linters) and interact with envi-
+ronments. Multi-Agent Systems (MAS) orchestrate multiple such agents—specialized as
+planners, coders, or reviewers—to solve complex engineering problems collaboratively.
+1
+---PAGE BREAK---
+Chapter 1. State of the Art
+1.3 Systematic Literature Review
+To understand how these technologies are being applied to software testing, I conducted a
+Systematic Literature Review following the PRISMA 2020 guidelines.
+1.3.1 Methodology
+Istructuredthereviewaroundthreemainareas: AgenticArchitectureOrchestration,Context-
+Aware Knowledge Integration, and Validation Frameworks.
+Research Questions
+•RQ1 — Architecture & Orchestration:How are specialized agents within Multi-
+Agent Systems architecturally decomposed, coordinated, and orchestrated to accom-
+plish complex software testing tasks?
+•RQ2 — Knowledge Integration & Grounding:What methodologies (e.g., RAG,
+Tool Use) are employed to integrate proprietary, domain-specific knowledge into LLM-
+based test generation systems?
+•RQ3 — Evaluation & Validation:How do existing studies evaluate the correctness
+and effectiveness of LLM-generated test scripts?
+Inclusion and Exclusion Criteria
+The scope is defined using the PICO framework:
+•Population:Enterprise-grade software development environments.
+•Intervention:MAS orchestrated by LLMs, utilizing RAG and Tool Use.
+•Comparison:Traditional manual testing and single-agent LLM approaches.
+•Outcome:Functional correctness, hallucination rate, and adherence to coding stan-
+dards.
+1.3.2 Search and Selection
+I conducted the search on December 23, 2025, using arXiv (via HuggingFace) and Semantic
+Scholar. To ensure comprehensive coverage, I defined a boolean search string targeting the
+intersection of the three core domains:
+(“Software Testing” OR “Test Generation”) AND (“Multi-Agent” OR “MAS”)
+AND (“LLM” OR “Large Language Model”)
+The initial identification yielded 42 results. I then screened the titles and abstracts against
+theinclusioncriteriadefinedinthePICOframework. Iexcluded17papersthateitherfocused
+solely on single-agent approaches, lacked empirical validation, or were not written in English.
+This process resulted in a final set of 25 primary studies.
+1.3.3 Data Extraction and Quality Assessment
+For each of the 25 selected studies, I extracted data using a standardized form capturing:
+(1) the specific multi-agent architecture employed (e.g., hierarchical vs. cooperative); (2)
+2
+---PAGE BREAK---
+1.4. Synthesis of Findings
+the underlying LLMs used (e.g., GPT-4, Llama 3); (3) the integration of external tools
+(RAG, compilers); and (4) the evaluation metrics and benchmarks.
+I assessed the quality of these studies by evaluating the reproducibility of their experiments
+and the rigor of their validation. Specifically, I prioritized papers that utilized standard
+benchmarks (like SWE-bench or HumanEval) over those relying solely on proprietary or
+trivial datasets. However, given the rapid pace of this field, I included high-impact preprints
+from arXiv, acknowledging that peer review might still be ongoing for some recent works.
+1.4 Synthesis of Findings
+Thefollowinganalysissynthesizesfindingsfromtheselectedstudies, groupedbytheresearch
+questions outlined earlier.
+1.4.1 Architectural Patterns (RQ1)
+Arecurringthemeinrecentresearchisbreakingdowncomplextestingtasksintospecificroles
+for different agents. Frameworks like MetaGPT Hong et al. 2023 and ChatDev Qian et al.
+2023 pioneered this approach. These systems implement “Standard Operating Procedures”
+(SOPs) or waterfall-like workflows where distinct agents (e.g.,Tester,Reviewer,Coder)
+collaborate. For instance, AgentCoder D. Huang et al. 2023 uses a feedback loop where
+a programmer agent writes code and a test designer agent iteratively creates test cases to
+validate it. This multi-agent approach consistently outperforms single-agent baselines.
+1.4.2 Knowledge Integration (RQ2)
+One major hurdle is testing in proprietary environments where public models fail. To fix
+this, recent work focuses on integrating external knowledge and tools. Meta’s TestGen-
+LLM Alshahwan et al. 2024 shows how agents can be grounded in existing test suites and
+codebase context to generate regression tests that actually work in production. Similarly,
+SWE-agent Yang et al. 2024 introduces an “Agent-Computer Interface” (ACI). This allows
+agents to navigate repositories and run tools like linters or compilers on their own, meaning
+they aren’t just guessing—they are validating their work in the real execution environment.
+1.4.3 Validation Frameworks (RQ3)
+Assessing the quality of tests generated by AI remains difficult. Running the tests to see
+if they pass or fail is the most reliable method, but it consumes significant computational
+resources. New benchmarks, such as SWE-rebench Badertdinov et al. 2025, offer controlled
+settings to test how well agents handle actual GitHub issues. Additionally, researchers are
+looking into using stronger LLMs to judge the work of others. This “LLM-as-a-Judge”
+approach Mündler et al. 2024 checks if the generated tests make sense and cover the code,
+providing a faster alternative to running every test, especially when resources are limited.
+1.5 Discussion and Limitations
+The synthesis reveals a clear trajectory: the industry is moving from simple "prompt engi-
+neering" to complex "agent engineering." However, this review is subject to certain limita-
+tions. First, the reliance on arXiv and Semantic Scholar may exclude some closed-source
+3
+---PAGE BREAK---
+Chapter 1. State of the Art
+industrial reports, though this was mitigated by including papers from major tech labs (Meta,
+Microsoft). Second, the field is evolving so rapidly that "state of the art" benchmarks are
+constantlybeingsuperseded; forinstance, early2024benchmarksarealreadyconsideredeasy
+for the latest models. Finally, most studies focus on Python or Java, potentially limiting the
+generalizability of these findings to legacy languages like C or COBOL.
+1.6 Conclusion
+CombiningMulti-AgentSystemswithLLMsmarksamajorshiftinhowweautomatesoftware
+testing. It is clear that we are moving away from static, script-based automation toward
+dynamic, agentic workflows that can reason and correct themselves. Subsequent chapters
+analyze these studies in depth to answer the defined research questions.
+4
+---PAGE BREAK---
+Bibliography
+Abtahi, Seyed Moein and Akramul Azim (2025). “Augmenting Large Language Models
+with Static Code Analysis for Automated Code Quality Improvements”. In:arXiv preprint
+arXiv:2506.10330.
+Alshahwan, Nadia et al. (2024). “Automated Unit Test Improvement using Large Language
+Models at Meta”. In:arXiv preprint arXiv:2402.09171.
+Applis, Leonhard et al. (2025). “Unified Software Engineering agent as AI Software Engi-
+neer”. In:arXiv preprint arXiv:2506.14683.
+Badertdinov, Ibragim et al. (2025). “SWE-rebench: An Automated Pipeline for Task Collec-
+tion and Decontaminated Evaluation of Software Engineering Agents”. In:arXiv preprint
+arXiv:2505.20411.
+Chen,Jingyietal.(2025).“WhenLLMsMeetAPIDocumentation:CanRetrievalAugmenta-
+tionAidCodeGenerationJustasItHelpsDevelopers?” In:arXivpreprintarXiv:2503.15231.
+He, Qingsong et al. (2025). “Z-Space: A Multi-Agent Tool Orchestration Framework for
+Enterprise-Grade LLM Automation”. In:arXiv preprint arXiv:2511.19483.
+Hong, Sirui et al. (2023). “MetaGPT: Meta Programming for A Multi-Agent Collaborative
+Framework”. In:arXiv preprint arXiv:2308.00352.
+Huang, Dong et al. (2023). “AgentCoder: Multi-Agent-based Code Generation with Iterative
+Testing and Optimisation”. In:arXiv preprint arXiv:2312.13010.
+Jin, Haolin, Linghan Huang, et al. (2024). “From LLMs to LLM-based Agents for Software
+Engineering:ASurveyofCurrent,ChallengesandFuture”.In:arXivpreprintarXiv:2408.02479.
+Jin, Haolin, Zechao Sun, and Huaming Chen (2024). “RGD: Multi-LLM Based Agent De-
+bugger via Refinement and Generation Guidance”. In:International Conference on Agents.
+Kim,Myeongsooetal.(2024).“AMulti-AgentApproachforRESTAPITestingwithSeman-
+tic Graphs and LLM-Driven Inputs”. In:International Conference on Software Engineering.
+Liu, Junwei et al. (2024). “Large Language Model-Based Agents for Software Engineering:
+A Survey”. In:arXiv preprint arXiv:2409.02977.
+Meng, Xiangxin et al. (2024). “An Empirical Study on LLM-based Agents for Automated
+Bug Fixing”. In:arXiv preprint arXiv:2411.10213.
+Mündler, Niels et al. (2024). “Code Agents are State of the Art Software Testers”. In:arXiv
+preprint arXiv:2406.12952.
+Nunez, Ana et al. (2024). “AutoSafeCoder: A Multi-Agent Framework for Securing LLM
+CodeGenerationthroughStaticAnalysisandFuzzTesting”.In:arXivpreprintarXiv:2409.10737.
+Oueslati, Khouloud, Maxime Lamothe, and Foutse Khomh (2025). “RefAgent: A Multi-
+agent LLM-based Framework for Automatic Software Refactoring”. In:arXiv preprint
+arXiv:2511.03153.
+Pan,Ruwei,HongyuZhang,andChaoLiu(2025).“CodeCoR:AnLLM-BasedSelf-Reflective
+Multi-Agent Framework for Code Generation”. In:arXiv preprint arXiv:2501.07811.
+Qian, Chen et al. (2023). “ChatDev: Communicative Agents for Software Development”. In:
+arXiv preprint arXiv:2307.07924.
+Shamim, Isha and Rekha Singhal (2024). “Methodology for Quality Assurance Testing of
+LLM-based Multi-Agent Systems”. In:International Conference on AI-ML-Systems.
+5
+---PAGE BREAK---
+Bibliography
+Tawosi, Vali et al. (2025). “ALMAS: an Autonomous LLM-based Multi-Agent Software
+Engineering Framework”. In:arXiv preprint arXiv:2510.03463.
+Ugarte, Miriam et al. (2025). “ASTRAL: Automated Safety Testing of Large Language
+Models”. In:arXiv preprint arXiv:2501.17132.
+Vaswani, Ashish et al. (2017). “Attention is all you need”. In:Advances in neural information
+processing systems, pp. 5998–6008.
+Wang, Junjie et al. (2023). “Software Testing with Large Language Model: Survey, Land-
+scape, and Vision”. In:arXiv preprint arXiv:2307.07221.
+Wei,Jasonetal.(2022).“Chain-of-ThoughtPromptingElicitsReasoninginLargeLanguage
+Models”. In:Advances in Neural Information Processing Systems. Vol. 35, pp. 24824–
+24837.
+Winters,Titus,TomManshreck,andHyrumWright(2020).SoftwareEngineeringatGoogle:
+Lessons Learned from Programming Over Time. O’Reilly Media.
+Wu, Xingyu, Yunzhe Tian, and Wenjia Niu (2025). “CurriculumPT: LLM-Based Multi-Agent
+Autonomous Penetration Testing with Curriculum-Guided Task Scheduling”. In:Applied
+Sciences.
+Xia, Chunqiu Steven et al. (2024). “Agentless: Demystifying LLM-based Software Engineer-
+ing Agents”. In:arXiv preprint arXiv:2407.01489.
+Yang, John et al. (2024). “SWE-agent: Agent-Computer Interfaces Enable Automated Soft-
+ware Engineering”. In:arXiv preprint arXiv:2405.15793.
+Yao, Shunyu et al. (2023). “ReAct: Synergizing Reasoning and Acting in Language Models”.
+In:International Conference on Learning Representations.
+6
+---PAGE BREAK---

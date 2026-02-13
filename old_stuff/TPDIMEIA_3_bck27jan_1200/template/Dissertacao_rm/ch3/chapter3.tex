@@ -1,0 +1,101 @@
+\chapter{Methodology and Tools}
+\label{chap:methodology}
+
+This chapter outlines the methodological approach adopted for the development of the Multi-Agent System (MAS) framework. It details the architectural design, the selection of specific tools and technologies (including the Letta framework), and the strategies for data collection and experimental validation.
+
+\section{Introduction}
+\label{sec:intro_methodology}
+
+The complexity of orchestrating autonomous agents requires a robust engineering foundation. This chapter transitions from the theoretical exploration of the state of the art to the practical implementation details of the proposed system. It describes the "Planner-Actor-Critic" architecture used to coordinate agent activities and justifies the selection of the technology stack. Furthermore, it defines the experimental protocols that will be used to gather data and evaluate the system's performance against the objectives defined in Chapter 1.
+
+\section{Methodological Approach}
+\label{sec:methodological_approach}
+
+The research follows a Design Science Research (DSR) methodology. DSR is chosen because the primary goal is to create a novel artifact (the MAS Framework) that solves a specific problem (automated test generation). The process involves iterative cycles of design, development, and evaluation.
+
+\subsection{Architectural Design}
+The system architecture is built upon a modular MAS pattern. It distinguishes between the "Control Plane" (where agents plan and communicate) and the "Data Plane" (where code is executed and tested).
+\begin{itemize}
+    \item \textbf{Planner Agent:} Responsible for analyzing the repository structure and creating a test strategy.
+    \item \textbf{Coder Agent:} Generates the actual test code based on the plan.
+    \item \textbf{Executor Agent:} Runs the tests in a sandboxed environment and captures output.
+\end{itemize}
+
+\section{Tools and Technologies}
+\label{sec:tools_technologies}
+
+The implementation relies on a modern stack of AI and software engineering tools. While several frameworks exist for orchestrating agents, a comparative analysis was conducted to select the most suitable solution for this dissertation.
+
+\subsection{Alternative Frameworks Considered}
+Before selecting the final technology stack, four prominent Multi-Agent System (MAS) frameworks were evaluated:
+
+\begin{itemize}
+    \item \textbf{LangGraph (LangChain):} A library for building stateful, multi-actor applications with LLMs. It excels at defining cyclic graphs where agents can loop and maintain state. However, it requires significant boilerplate for memory management and lacks a native "Archival Memory" tier.
+    \item \textbf{MetaGPT:} A framework that imposes a strict "Standard Operating Procedure" (SOP) on agents (e.g., Product Manager $\rightarrow$ Architect $\rightarrow$ Engineer). While efficient for waterfall-style generation, its rigid structure makes it difficult to implement the dynamic "self-healing" loops required for this research.
+    \item \textbf{CrewAI:} A high-level framework designed for role-playing agents. It is excellent for rapid prototyping but can be less deterministic in complex execution loops, often struggling with precise tool usage in strict engineering contexts.
+    \item \textbf{AutoGen (Microsoft):} One of the first frameworks to popularize conversational agents. While powerful, its conversation-based state management can become chaotic in long-running tasks, whereas this project requires structured, persistent memory.
+\end{itemize}
+
+Given these constraints, \textbf{Letta} was selected as the backbone for agent state management due to its unique tiered memory architecture.
+
+\subsection{Letta Framework}
+\label{subsec:letta}
+Letta (formerly associated with MemGPT) is utilized to manage the context and memory of the agents. Unlike stateless LLM calls, Letta allows agents to maintain a persistent "working memory" of the codebase they are analyzing. This is critical for solving the "Contextual Blindness" problem identified in Chapter 2.
+
+Letta organizes memory into two distinct tiers:
+\begin{itemize}
+    \item \textbf{Core Memory:} Stores the agent's persona (e.g., "You are a Senior QA Engineer") and human instructions. This memory is always present in the context window.
+    \item \textbf{Archival Memory:} A larger storage area (backed by a vector database) where the agent can offload information about files, previous test runs, and documentation. The agent can retrieve this information on-demand, allowing it to work with repositories that exceed the LLM's context limit.
+\end{itemize}
+
+\subsection{Supporting Technologies}
+In addition to Letta, the following tools are integrated:
+\begin{itemize}
+    \item \textbf{LLM Backend:} OpenAI GPT-4o and open-weights models (Llama 3) serve as the reasoning engines.
+    \item \textbf{Vector Database:} ChromaDB is used for RAG operations, allowing semantic search over the codebase.
+    \item \textbf{Containerization:} Docker is used to sandbox the execution environment, preventing generated code from affecting the host system.
+\end{itemize}
+
+\section{Data Collection and Experimental Evaluation}
+\label{sec:data_collection}
+
+This section details the plan for data collection ("Recolha de Dados") and the experimental methods ("Experimentação") that will be used to validate the proposed solution.
+
+\subsection{Data Collection Strategy}
+The project relies on the \textbf{SWE-bench Light} dataset for evaluation. This dataset is a curated collection of real-world GitHub issues (bug reports and feature requests) paired with the pull requests that resolved them.
+\begin{itemize}
+    \item \textbf{Source:} The dataset includes repositories like Django, scikit-learn, and flask.
+    \item \textbf{Selection Criteria:} A random sample of 50 issues will be selected to serve as the test bed.
+    \item \textbf{Ground Truth:} Each issue comes with a "Gold Patch" and a set of "Fail-to-Pass" tests. The agent's goal is to autonomously generate a test that reproduces the bug (fails on the original code) and passes on the fixed code.
+\end{itemize}
+
+\subsection{Experimental Design}
+The evaluation will compare the proposed MAS framework against two baselines:
+\begin{enumerate}
+    \item \textbf{Baseline A (Zero-Shot):} A single GPT-4o agent prompted to "write a test for this issue" without access to tools or memory.
+    \item \textbf{Baseline B (RAG-only):} A single agent with RAG access but no iterative feedback loop.
+\end{enumerate}
+
+\subsection{Evaluation Metrics}
+The success of the solution will be measured using the following key performance indicators (KPIs):
+\begin{itemize}
+    \item \textbf{Pass@1:} The percentage of issues for which the agent generates a passing test suite on the first attempt.
+    \item \textbf{Code Coverage:} The percentage of lines in the target module covered by the generated tests.
+    \item \textbf{Self-Correction Rate:} The frequency with which the agent successfully fixes a failing test after analyzing the error log (demonstrating the efficacy of the feedback loop).
+\end{itemize}
+
+\section{Ethical and Security Implementation}
+\label{sec:ethical_implementation}
+
+Aligning with the ethical considerations discussed in Section 2.5, this project implements specific safeguards to ensure data protection and safety during the experimental phase.
+
+\begin{itemize}
+    \item \textbf{Sandboxing:} All agent-generated code is executed within isolated Docker containers with no network access to the outside world, preventing accidental execution of malicious code.
+    \item \textbf{Data Privacy:} The framework is designed to scrub Personally Identifiable Information (PII) from logs before sending prompts to external LLM providers.
+    \item \textbf{Human-in-the-Loop:} The system includes a "break-glass" mechanism where a human operator can intervene and halt the agent loop if it detects deviations from the safety policy.
+\end{itemize}
+
+\section{Conclusion}
+\label{sec:conclusion_methodology}
+
+This chapter has established the blueprint for the implementation phase. By leveraging the state-management capabilities of Letta and adhering to a rigorous DSR methodology, the proposed framework is positioned to address the limitations of existing solutions. The next steps involve the full implementation of the agentic loops and the execution of the pilot experiments.

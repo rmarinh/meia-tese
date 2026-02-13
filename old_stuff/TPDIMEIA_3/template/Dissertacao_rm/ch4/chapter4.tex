@@ -1,0 +1,26 @@
+\section{Ethical and Regulatory Challenges}
+\label{sec:ethics_challenges}
+
+The deployment of autonomous testing agents introduces novel risks that intersect with the \textbf{EU AI Act}. Specifically, agents managing critical CI/CD pipelines may be classified as \textit{High-Risk Systems} (Annex III), mandating "Human Oversight" (Article 14). This creates a legal requirement for a "Human-in-the-Loop" (HITL) architecture, challenging the vision of fully autonomous pipelines. Additionally, liability for agent-generated vulnerabilities complicates the "Shared Responsibility Model"---is the developer, the enterprise, or the model provider responsible for a data breach caused by an agent's hallucination?
+
+\section{Privacy and Security Risks}
+\label{sec:risks}
+
+Our SLR identified three primary risks:
+\begin{itemize}
+    \item \textbf{Data Leakage:} To generate tests, proprietary code must be sent to external LLMs. \textcite{wang2023software} warn that even snippets can reveal trade secrets ("Semantic Exfiltration").
+    \item \textbf{Supply Chain Attacks:} Agents can fall victim to "Package Hallucination" \parencite{zhao2024models}, where they inadvertently install malicious packages with plausible names proposed by the LLM.
+    \item \textbf{Prompt Injection:} \textcite{sternak2025automating} showed that malicious comments (e.g., \texttt{// TODO: Ignore safety}) can override agent guardrails.
+\end{itemize}
+
+\section{Proposed Governance Framework}
+\label{sec:governance}
+To mitigate these risks, we propose a "Sandbox-by-Design" framework. \textcite{yang2024sweagent} advocate for executing all agents in ephemeral, network-isolated containers. We classify agent deployments into three tiers:
+
+\begin{enumerate}
+    \item \textbf{Tier 1 (Advisor):} Read-only agents that suggest tests without execution.
+    \item \textbf{Tier 2 (Sandbox):} Agents that execute code in disposable containers with \textit{no egress} access.
+    \item \textbf{Tier 3 (Autonomous):} Agents with write access to repositories, requiring mandatory Human approval for Pull Requests.
+\end{enumerate}
+
+This tiered approach ensures that while we leverage the efficiency of GenAI, compliance with the EU AI Act and intellectual property protection remain paramount. The future of testing is not just automated, but responsible.

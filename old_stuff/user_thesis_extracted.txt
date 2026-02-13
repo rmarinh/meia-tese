@@ -1,0 +1,852 @@
+[TÍTULO DA DISSERTAÇÃO]
+[Sub-Título (se exisitir)]
+[Nome Completo do(a) Candidato(a)]
+Student No.: [Número do Aluno]
+A dissertation submitted in partial fulfillment of
+the requirements for the degree of Master of Science,
+Specialisation Area of
+Supervisor: [Nome do Orientador]
+Co-Supervisor: [Nome do Co-orientador (caso exista)]
+Evaluation Committee:
+President:
+[Nome do Presidente, Categoria, Escola]
+Members:
+[Nome do Vogal1, Categoria, Escola]
+[Nome do Vogal2, Categoria, Escola] (até 4 vogais)
+Porto, December 29, 2025
+---PAGE BREAK---
+
+---PAGE BREAK---
+Statement Of Integrity
+[Maintain only the version corresponding to the main language of the work]
+I hereby declare that I have conducted this academic work with integrity.
+I have not plagiarised or applied any form of undue use of information or falsification of
+results along the process leading to its elaboration.
+Therefore, the work presented in this document is original and was authored by me, having
+not been previously used for any other purpose. The exceptions [REMOVE THIS CLAUSE
+IF IT DOES NOT APPLY - REMOVE THIS COMMENT] are explicitly acknowledged in
+the section that addresses ethical considerations. This section also states how Artificial
+Intelligence tools were used and for what purpose.
+I further declare that I have fully acknowledged the Code of Ethical Conduct of P.PORTO.
+ISEP, Porto, [Month] [Day], [Year]
+Declaro ter conduzido este trabalho académico com integridade.
+Não plagiei ou apliquei qualquer forma de uso indevido de informações ou falsificação de
+resultados ao longo do processo que levou à sua elaboração.
+Portanto, o trabalho apresentado neste documento é original e de minha autoria, não
+tendo sido utilizado anteriormente para nenhum outro fim. As exceções [REMOVER ESTE
+PERÍODO NO CASO DE NÃO SE APLICAR - APAGAR ESTE COMENTÁRIO] estão
+explicitamente reconhecidas na secção onde são abordadas as considerações éticas. Esta
+secção também declara como as ferramentas de Inteligência Artificial foram utilizadas e para
+que finalidade.
+Declaro ainda que tenho pleno conhecimento do Código de Conduta Ética do P.PORTO.
+ISEP, Porto, [Dia] de [Mês] de [Ano]
+iii
+---PAGE BREAK---
+
+---PAGE BREAK---
+Dedicatory
+The dedicatory is optional. Below is an example of a humorous dedication.
+"To my wife Marganit and my children Ella Rose and Daniel Adam without whom this book
+would have been completed two years earlier." in "An Introduction To Algebraic Topology"
+by Joseph J. Rotman.
+v
+---PAGE BREAK---
+
+---PAGE BREAK---
+Abstract
+This document explains the main formatting rules to apply to a Master Dissertation work
+for the MSc in Artificial Intelligence Engineering of the Computer Engineering Department
+(DEI) of the School of Engineering (ISEP) of the Polytechnic of Porto (IPP).
+The rules here presented are a set of recommended good practices for formatting the dis-
+seration work. Please note that this document does not have definite hard rules, and the
+discussion of these and other aspects of the development of the work should be discussed
+with the respective supervisor(s).
+ThisdocumentisbasedonapreviousdocumentpreparedbyDr. FátimaRodrigues(DEI/ISEP).
+The abstract should usually not exceed 200 words, or one page. When the work is written
+in Portuguese, it should have an abstract in English.
+Please define up to 6 keywords that better describe your work, in theTHESIS INFORMA-
+TIONblock of themain.texfile.
+Keywords:Keyword1, ..., Keyword6
+vii
+---PAGE BREAK---
+
+---PAGE BREAK---
+Resumo
+Após o resumo/abstract é obrigatório colocar as principais palavras-chave/keywords do
+tema em que se insere o trabalho desenvolvido, sendo permitido um máximo de 6 palavras-
+chave/keywords, estas devem ser caraterizadoras do trabalho desenvolvido e surgirem com
+frequência no documento escrito.
+Para alterar a língua basta ir às configurações do documento no ficheiromain.texe alterar
+para a língua desejada (’english’ ou ’portuguese’)1. Isto fará com que os cabeçalhos incluídos
+no template sejam traduzidos para a respetiva língua.
+Palavras-chave:Keyword1, ..., Keyword6
+1Alterar a língua requer apagar alguns ficheiros temporários; O targetcleandoMakefileincluído pode
+ser utilizado para este propósito.
+ix
+---PAGE BREAK---
+
+---PAGE BREAK---
+Acknowledgement
+The optional Acknowledgment goes here...Below is an example of a humorous acknowl-
+edgment.
+"I’d also like to thank the Van Allen belts for protecting us from the harmful solar wind, and
+the earth for being just the right distance from the sun for being conducive to life, and for
+the ability for water atoms to clump so efficiently, for pretty much the same reason. Finally,
+I’d like to thank every single one of my forebears for surviving long enough in this hostile
+world to procreate. Without any one of you, this book would not have been possible." in
+"The Woman Who Died a Lot" by Jasper Fforde.
+xi
+---PAGE BREAK---
+
+---PAGE BREAK---
+Contents
+List of Algorithms xix
+List of Source Code xxi
+List of Acronyms xxv
+1 Introduction 1
+1.1 Contextualization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+1.1.1 The Evolution of Test Automation . . . . . . . . . . . . . . . . . . 1
+1.1.2 The Rise of Large Language Models . . . . . . . . . . . . . . . . . 1
+1.1.3 The Shift to Multi-Agent Systems . . . . . . . . . . . . . . . . . . 1
+1.2 Problem Statement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+1.2.1 Hallucinations and Correctness . . . . . . . . . . . . . . . . . . . . 2
+1.2.2 The Context and Grounding Gap . . . . . . . . . . . . . . . . . . 2
+1.2.3 Lack of Iterative Refinement . . . . . . . . . . . . . . . . . . . . . 2
+1.3 Research Questions and Objectives . . . . . . . . . . . . . . . . . . . . . . 2
+1.3.1 General Objective . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+1.3.2 Specific Objectives . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+1.4 Hypothesis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+1.5 Contributions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+1.6 Document Structure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+2 State of the Art 5
+2.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+2.2 Methodology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+2.2.1 Research Questions . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+2.2.2 Search Strategy . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+Data Sources . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+Search String . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+2.2.3 Inclusion and Exclusion Criteria . . . . . . . . . . . . . . . . . . . 6
+2.2.4 Study Selection Process . . . . . . . . . . . . . . . . . . . . . . . 7
+2.2.5 Quality Assessment . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+2.3 Synthesis of Findings . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+2.3.1 RQ1: Architecture & Orchestration . . . . . . . . . . . . . . . . . 7
+Hierarchical Orchestration (Waterfall) . . . . . . . . . . . . . . . . 8
+Cooperative Orchestration (Feedback Loops) . . . . . . . . . . . . 8
+Self-Reflection and Debugging . . . . . . . . . . . . . . . . . . . . 8
+2.3.2 RQ2: Knowledge Integration . . . . . . . . . . . . . . . . . . . . . 8
+Retrieval-Augmented Generation (RAG) . . . . . . . . . . . . . . . 8
+Agent-Computer Interfaces (ACI) . . . . . . . . . . . . . . . . . . 9
+2.3.3 RQ3: Validation & Evaluation . . . . . . . . . . . . . . . . . . . . 9
+xiii
+---PAGE BREAK---
+Benchmarks: From HumanEval to SWE-bench . . . . . . . . . . . 9
+LLM-as-a-Judge . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+2.4 Discussion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+2.4.1 Trend Analysis: From Prompt Engineering to Flow Engineering . . 10
+2.4.2 Limitations of Current Research . . . . . . . . . . . . . . . . . . . 10
+2.5 Ethical Considerations . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+2.5.1 Data Privacy and Intellectual Property . . . . . . . . . . . . . . . . 10
+2.5.2 Bias and Fairness in Testing . . . . . . . . . . . . . . . . . . . . . 10
+2.5.3 Impact on the Workforce . . . . . . . . . . . . . . . . . . . . . . . 11
+2.5.4 Energy Consumption and Sustainability . . . . . . . . . . . . . . . 11
+2.6 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+3 Algorithms, Source Code, the Portable Graphics Format and Acronyms 13
+3.1 Algorithms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+3.2 Source Code . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+3.3 The Portable Graphics Format . . . . . . . . . . . . . . . . . . . . . . . . 15
+3.3.1 TiKZ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.3.2 PGFPLOTS . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.4 Handling Acronyms Automatically . . . . . . . . . . . . . . . . . . . . . . 18
+Bibliography 19
+A Appendix Title Here 21
+xiv
+---PAGE BREAK---
+List of Figures
+3.1 Using TiKZ for drawing pictures. . . . . . . . . . . . . . . . . . . . . . . . 16
+3.2 Using PGFPLOTS for drawing a graph. . . . . . . . . . . . . . . . . . . . 17
+xv
+---PAGE BREAK---
+
+---PAGE BREAK---
+List of Tables
+2.1 Research Questions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+2.2 Inclusion Criteria (PICO) . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+2.3 Exclusion Criteria . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+xvii
+---PAGE BREAK---
+
+---PAGE BREAK---
+List of Algorithms
+3.1 Euclid’s algorithm . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+xix
+---PAGE BREAK---
+
+---PAGE BREAK---
+List of Source Code
+3.1 Euclid’s algorithm (Java). . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+3.2 Euclid’s algorithm (C). . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+xxi
+---PAGE BREAK---
+
+---PAGE BREAK---
+List of Symbols
+adistancem
+PpowerW(J s −1)
+ωangular frequencyrad
+xxiii
+---PAGE BREAK---
+
+---PAGE BREAK---
+List of Acronyms
+GPOS General Purpose Operating System.
+PGF Portable Graphics Format.
+RTOS Real-Time Operating System.
+xxv
+---PAGE BREAK---
+
+---PAGE BREAK---
+Chapter 1
+Introduction
+1.1 Contextualization
+Software testing stands as one of the most resource-intensive yet indispensable phases in the
+software development lifecycle (SDLC). It is the primary mechanism for ensuring system re-
+liability, security, and adherence to user requirements. In the context of modern Continuous
+Integration/Continuous Deployment (CI/CD) pipelines, the demand for rapid, automated
+testing has never been higher. Winters (2020) in"Software Engineering at Google"empha-
+size that as systems scale, the linearity of manual testing becomes a bottleneck that halts
+development velocity. Consequently, the industry has traversed a long evolutionary path:
+from purely manual verification to script-based automation frameworks like Selenium and
+JUnit, and now, towards the era of Artificial Intelligence (AI).
+1.1.1 The Evolution of Test Automation
+Historically, test automation was synonymous with writing code to test code. Frameworks
+such as JUnit for Java or PyTest for Python allowed developers to codify assertions. While
+this represented a significant leap over manual clicking, it introduced the "maintenance
+trap." As the application code evolved, the rigid test scripts would break, requiring constant
+human intervention to update selectors, logic, and data mocks. This fragility led to the
+search for more resilient, adaptive testing methods.
+1.1.2 The Rise of Large Language Models
+The introduction of the Transformer architecture by Vaswani (2017) marked a watershed
+moment. Large Language Models (LLMs) trained on vast repositories of source code (e.g.,
+GitHub, StackOverflow) demonstrated an emergent ability to understand not just natural
+language, butthesyntaxandsemanticsofprogramminglanguages. ModelslikeCodex(pow-
+ering GitHub Copilot) and later GPT-4 proved capable of generating unit tests, documenting
+legacy code, and even translating between languages. This capability promised to alleviate
+the burden of test writing, theoretically allowing developers to generate comprehensive test
+suites from simple natural language prompts.
+1.1.3 The Shift to Multi-Agent Systems
+However, the initial excitement around "Generative AI for Code" faced a reality check when
+appliedtocomplex,enterprise-gradesystems. AsingleinteractionwithanLLM(a"prompt")
+is inherently stateless and limited by its context window. It struggles to hold the architecture
+of a million-line repository in its "working memory." To address this, the field is shifting
+1
+---PAGE BREAK---
+Chapter 1. Introduction
+towardsMulti-AgentSystems(MAS).Inthisparadigm,the"AI"isnotasinglechatbotbut
+a team of specialized agents—a "Product Manager"agent that breaks down requirements, a
+"Developer" agent that writes the code, a "QA" agent that reviews it, and a "Tester" agent
+that attempts to break it. Frameworks like MetaGPT (Hong 2023) and ChatDev (Qian
+2023) illustrate this collaborative approach, showing that agents with distinct personas and
+feedback loops can solve problems that overwhelm a single model.
+1.2 Problem Statement
+DespitethepromiseofagenticAI,theautomatedgenerationofreliable,executabletestcases
+for enterprise software remains an unsolved problem. The current landscape is plagued by
+three critical issues:
+1.2.1 Hallucinations and Correctness
+Single-prompt LLMs frequently generate code that is syntactically correct but semantically
+flawed. They may hallucinate library methods that do not exist or assume variable states
+that are impossible in the actual application runtime. Without a feedback loop to "compile
+and check," these generated tests add noise rather than value, leading to a loss of trust in
+AI-generated artifacts.
+1.2.2 The Context and Grounding Gap
+Real-world software does not exist in a vacuum. It relies on complex dependency graphs,
+internal APIs, and specific environment configurations. An LLM operating in a text-only
+interface lacks "grounding"—it cannot see the file structure, checking the installed package
+versions, or run a linter. This disconnection results in test cases that might work in a generic
+environment but fail instantly in the specific, proprietary context of the enterprise codebase.
+1.2.3 Lack of Iterative Refinement
+Human engineers rarely write perfect code on the first try; they write, run, see the error,
+and debug. Most existing LLM-based testing tools operate in a "fire-and-forget" mode.
+They generate a test file and stop. If the test fails, the system lacks the mechanism to read
+the error log, reason about the failure (e.g., "was it a bad import or a logic bug?"), and
+self-correct. The absence of this iterative "inner loop" of debugging is a major barrier to
+autonomy.
+1.3 Research Questions and Objectives
+The overarching goal of this dissertation is to bridge these gaps by developing a robust
+Multi-Agent System framework tailored for automated software testing.
+1.3.1 General Objective
+To design, implement, and evaluate a Multi-Agent System (MAS) architecture that utilizes
+specialized agent roles and Agent-Computer Interfaces (ACI) to autonomously generate,
+validate, and refine test cases for enterprise-grade software systems.
+2
+---PAGE BREAK---
+1.4. Hypothesis
+1.3.2 Specific Objectives
+To achieve the general goal, the following specific objectives are defined:
+1.SO1:Construct a taxonomy of agent roles (e.g., Generator, Reviewer, Executor)
+necessary for a complete testing workflow.
+2.SO2:Develop an Agent-Computer Interface (ACI) that grants agents controlled ac-
+cess to external tools (compilers, linters, test runners) to enable grounding and vali-
+dation.
+3.SO3:Implement an iterative "self-healing" mechanism where agents utilize execution
+feedback (stderr/stdout) to correct their own generated code.
+4.SO4:Empirically validate the framework against state-of-the-art benchmarks (e.g.,
+SWE-bench) to quantify improvements in functional correctness and code coverage
+compared to single-agent baselines.
+1.4 Hypothesis
+This research is driven by the following central hypothesis:
+"A Multi-Agent System, specifically one composed of specialized roles with ac-
+cess to an execution environment and iterative feedback loops, will significantly
+outperform single-prompt Large Language Models in the generation of valid,
+executable, and high-coverage test cases for complex software repositories."
+1.5 Contributions
+TheprimarycontributionsofthisdissertationtothefieldofAutomatedSoftwareEngineering
+are:
+•Framework Architecture:A novel MAS architecture for testing that integrates the
+"Planner-Actor-Critic" pattern with tool-use capabilities.
+•Empirical Evidence:A comprehensive comparative analysis providing quantitative
+data on the efficacy of agentic loops versus static prompting.
+•Ethical Framework:A detailed assessment of the privacy and workforce implications
+of deploying autonomous coding agents, offering guidelines for "Human-in-the-Loop"
+governance.
+1.6 Document Structure
+The remainder of this document is organized as follows:
+•Chapter 2: State of the Artprovides a systematic literature review, analyzing the
+evolution of MAS in testing, current architectural patterns, and validation methodolo-
+gies.
+•Chapter 3: Methodology & Design[Future Work] will detail the proposed system
+architecture, agent prompts, and the design of the ACI.
+3
+---PAGE BREAK---
+Chapter 1. Introduction
+•Chapter 4: Implementation & Results[Future Work] will present the experimental
+setup, the datasets used, and the quantitative results of the evaluation.
+•Chapter5: Discussion&Conclusion[FutureWork]willinterpretthefindings, discuss
+limitations, and outline future research directions.
+4
+---PAGE BREAK---
+Chapter 2
+State of the Art
+2.1 Introduction
+The rapid advancement of Large Language Models (LLMs) has precipitated a paradigm
+shift in Software Engineering (SE), particularly in the domain of automated software testing.
+Whiletraditionalautomatedtestingreliesheavilyonstaticanalysisandmanuallyscriptedtest
+cases, theemergenceofGenerativeAI(GenAI)offersthepotentialforautonomous, context-
+aware test generation. However, single-prompt LLM interactions often fail to address the
+complexity of enterprise-grade software due to hallucinations, limited context windows, and
+a lack of grounding in the execution environment. Consequently, the research frontier has
+moved towards Multi-Agent Systems (MAS), where specialized agents collaborate to plan,
+generate, execute, and refine tests.
+This chapter presents a Systematic Literature Review (SLR) conducted to rigorously analyze
+the current state of the art in MAS-driven automated testing. Following the PRISMA 2020
+guidelines (Moher et al. 2009), this review systematically identifies, selects, and synthesizes
+25primarystudiespublishedbetween2023and2025. Thegoalistoanswercriticalquestions
+regarding the architectural orchestration of these agents, the integration of domain-specific
+knowledge, and the validation methodologies used to ensure reliability. Furthermore, this
+chapter includes a dedicated analysis of the ethical, legal, and environmental implications of
+deploying autonomous agents in software development workflows.
+2.2 Methodology
+To ensure transparency, reproducibility, and scientific rigor, this SLR adopts a structured
+methodology based on the PRISMA (Preferred Reporting Items for Systematic Reviews and
+Meta-Analyses) framework. The review process was executed in four distinct phases: (1)
+Definition of Research Questions, (2) Search Strategy, (3) Study Selection, and (4) Data
+Extraction and Synthesis.
+2.2.1 Research Questions
+The primary objective of this review is to understand how MAS architectures can overcome
+the limitations of monolithic LLMs in software testing. To this end, three specific Research
+Questions (RQs) were formulated, as detailed in Table 2.1.
+5
+---PAGE BREAK---
+Chapter 2. State of the Art
+Table 2.1: Research Questions
+ID Research Question
+RQ1Architecture & Orchestration:How are specialized agents
+within Multi-Agent Systems architecturally decomposed, co-
+ordinated, and orchestrated to accomplish complex software
+testing tasks?
+RQ2Knowledge Integration:What methodologies (e.g.,
+Retrieval-Augmented Generation, Tool Use, Agent-Computer
+Interfaces) are employed to integrate proprietary, domain-
+specific knowledge into LLM-based test generation systems?
+RQ3Validation & Evaluation:How do existing studies eval-
+uate the correctness, coverage, and effectiveness of LLM-
+generated test scripts, and what benchmarks are considered
+the gold standard?
+2.2.2 Search Strategy
+Data Sources
+Given the rapid pace of development in Generative AI, significant contributions frequently
+appear in preprint repositories before formal conference proceedings. Therefore, the search
+was conducted across the following databases:
+•arXiv:To capture the latest preprints and high-impact reports from major research
+labs (e.g., Microsoft Research, Meta AI, Google DeepMind).
+•Semantic Scholar:To identify citation networks and relevant peer-reviewed papers in
+venues such as ICSE, FSE, and ASE.
+•IEEE Xplore & ACM Digital Library:To ensure coverage of formally published
+archival literature.
+Search String
+A boolean search string was constructed to target the intersection of three core domains:
+Software Testing, Multi-Agent Systems, and Large Language Models. The search string
+used was:
+("Software Testing" OR "Test Generation" OR "Unit Testing" OR "Fuzzing")
+AND ("Multi-Agent" OR "MAS" OR "Agentic" OR "Autonomous Agents")
+AND ("LLM" OR "Large Language Model" OR "Generative AI" OR "GPT")
+The search was conducted in December 2025, covering the period from January 2023 to
+December 2025. This timeframe was selected to focus specifically on the "post-ChatGPT"
+era, where agentic capabilities became viable.
+2.2.3 Inclusion and Exclusion Criteria
+The selection process was governed by the PICO (Population, Intervention, Comparison,
+Outcome) framework, as defined in Table 2.2 and Table 2.3.
+6
+---PAGE BREAK---
+2.3. Synthesis of Findings
+Table 2.2: Inclusion Criteria (PICO)
+Criterion Description
+PopulationSoftware development environments, focusing on code repos-
+itories (Python, Java, etc.) and enterprise testing workflows.
+InterventionMulti-Agent Systems (MAS) utilizing LLMs as the reason-
+ing engine, specifically those employing multiple distinct roles
+(e.g., Coder, Tester).
+ComparisonStudies comparing MAS approaches against single-agent
+LLMs, traditional symbolic methods (e.g., EvoSuite), or man-
+ual human baselines.
+OutcomeQuantitative metrics such as Pass@k, Code Coverage, Hallu-
+cination Rate, or Qualitative assessments of agent collabora-
+tion.
+Table 2.3: Exclusion Criteria
+ID Reason for Exclusion
+EC1 Papers focused solely on single-prompt engineering without
+agentic loops or tool use.
+EC2 Studies lacking empirical validation or reproducible bench-
+marks.
+EC3 Non-English publications.
+EC4 Grey literature (blog posts, white papers) not backed by tech-
+nical reports.
+2.2.4 Study Selection Process
+The initial search yielded a total of 42 potentially relevant citations. After removing dupli-
+cates and screening titles/abstracts against the inclusion criteria, 17 papers were excluded
+for irrelevance (e.g., focusing on general NLP rather than code generation, or single-agent
+chatbots). The full text of the remaining 25 studies was reviewed in depth. These 25
+primary studies form the basis of the synthesis presented in Section 2.3.
+2.2.5 Quality Assessment
+Each selected study was evaluated for quality based on three factors: (1)Reproducibility
+(availability of code/datasets), (2)Benchmarking(use of standard benchmarks like SWE-
+bench vs. ad-hoc datasets), and (3)Architectural Clarity(clear definition of agent roles
+and communication protocols).
+2.3 Synthesis of Findings
+2.3.1 RQ1: Architecture & Orchestration
+The literature reveals a decisive move from single-agent systems to multi-agent architec-
+tures. The synthesis identifies two primary architectural patterns:HierarchicalandCoop-
+erativeorchestration.
+7
+---PAGE BREAK---
+Chapter 2. State of the Art
+Hierarchical Orchestration (Waterfall)
+In hierarchical systems, agents are organized in a top-down structure mimicking a corpo-
+rate hierarchy. Hong (2023) introducedMetaGPT, which assigns roles such as Product
+Manager, Architect, Project Manager, and Engineer. The workflow follows a strict Stan-
+dard Operating Procedure (SOP), where the output of one agent (e.g., a PRD from the
+Manager) serves as the immutable input for the next (e.g., a System Design from the Ar-
+chitect). This structure reduces "drift" and ensures that code generation is aligned with
+high-level requirements. However, it can be rigid, struggling with tasks that require iterative
+"back-and-forth" debugging.
+Cooperative Orchestration (Feedback Loops)
+Cooperative architectures focus on iterative refinement through peer review. Qian (2023)
+proposedChatDev, where agents (e.g., Coder and Reviewer) engage in a dialogue to discuss
+implementation details before writing code. Huang (2023) further specialized this for testing
+withAgentCoder. In this framework, a "Test Designer" agent generates test cases, which
+are then used to verify the code produced by a "Programmer" agent. If tests fail, the
+feedback is fed back to the Programmer in a loop. Thismulti-agent feedback loopwas
+found to significantly outperform single-pass generation, increasing Pass@1 rates on the
+HumanEval benchmark by over 15%.
+Self-Reflection and Debugging
+Recent works likeCodeCoR(Pan 2025) andRGD(Jin 2024) emphasize "Self-Reflection."
+Here, agents do not just generate code but also generate a rationale or analysis of their own
+errors. For example,LDB(Large Language Model Debugger) generates a "bug report"
+before attempting a fix, separating the fault localization step from the patch generation
+step. This decomposition of the testing task—Plan, Generate, Test, Fix—is the hallmark
+of modern MAS architectures.
+2.3.2 RQ2: Knowledge Integration
+A critical limitation of off-the-shelf LLMs is their lack of knowledge about specific enter-
+prise codebases. The review identifies two dominant strategies for knowledge integration:
+Retrieval-Augmented Generation (RAG)andAgent-Computer Interfaces (ACI).
+Retrieval-Augmented Generation (RAG)
+RAG allows agents to query a vector database containing the project’s documentation and
+source code. Chen (2025) explored how RAG aids code generation, finding that retriev-
+ing relevant API documentation significantly reduces hallucination of non-existent methods.
+However, naive RAG (retrieving top-k chunks) often fails for testing because test generation
+requires understanding thelogicof the code, not just keyword matches. Advanced tech-
+niques use "Graph-based RAG," where the retrieval follows the Call Graph or Control Flow
+Graph (CFG) of the application.
+8
+---PAGE BREAK---
+2.3. Synthesis of Findings
+Agent-Computer Interfaces (ACI)
+PerhapsthemostsignificantinnovationistheconceptoftheACI,formalizedbyYang(2024)
+inSWE-agent. Just as humans use IDEs, agents need an interface to interact with the OS.
+An ACI provides agents with tools to:
+•Search:‘grep‘ or ‘find‘ files in a repository.
+•Read:View file contents with line numbers.
+•Edit:Apply patches to specific line ranges.
+•Execute:Run ‘pytest‘ or ‘make‘ and capture the ‘stdout‘/‘stderr‘.
+This "grounding" is crucial. Alshahwan (2024) at Meta demonstrated withTestGen-LLM
+that agents grounded in the execution environment (i.e., those that can run the tests they
+generate) achieve a higher fix rate for regressions than those that operate in a "blind" text-
+generation mode. The ability to see the error message allows the agent to iteratively repair
+the test case.
+2.3.3 RQ3: Validation & Evaluation
+Validating the output of generative models is notoriously difficult. The SLR highlights a
+transition from static similarity metrics (e.g., BLEU score) to execution-based functional
+correctness.
+Benchmarks: From HumanEval to SWE-bench
+Early studies relied onHumanEvalorMBPP(Mostly Basic Python Problems), which con-
+sist of self-contained algorithmic puzzles. However, Jimenez et al. (2024) argued that these
+do not represent real-world software engineering. This led to the creation ofSWE-bench,
+a dataset of real GitHub issues and pull requests from popular libraries (e.g., Django, scikit-
+learn). Badertdinov (2025) introducedSWE-rebenchto ensure evaluation rigor, showing
+that many agents that perform well on HumanEval fail catastrophically on SWE-bench due
+to the complexity of file dependencies and environment setup.
+LLM-as-a-Judge
+Running full test suites is computationally expensive. To mitigate this, Mündler (2024)
+and others propose"LLM-as-a-Judge". In this paradigm, a strong model (e.g., GPT-4)
+evaluates the quality of test cases generated by a weaker/cheaper model (e.g., Llama-3-8B).
+The judge checks for:
+•Readability:Does the test follow naming conventions?
+•Coverage:Does the test target the edge cases implied by the requirements?
+•Logic:Does the test assertion make sense?
+While not a replacement for execution, LLM-as-a-Judge provides a rapid, scalable feedback
+signal during the generation phase.
+9
+---PAGE BREAK---
+Chapter 2. State of the Art
+2.4 Discussion
+2.4.1 Trend Analysis: From Prompt Engineering to Flow Engineering
+The synthesis of the primary studies suggests a fundamental shift in how AI systems are
+built. The industry is moving away from "Prompt Engineering" (optimizing the text sent
+to a model) towards"Flow Engineering". In Flow Engineering, the focus is on designing
+the architecture of interaction between agents—defining the graph of state transitions, the
+available tools, and the acceptance criteria for each step. This aligns with the findings of
+Wu (2025), who showed that curriculum-guided task scheduling (a form of flow engineering)
+improves penetration testing performance.
+2.4.2 Limitations of Current Research
+Despite the progress, several gaps remain:
+•Language Bias:The vast majority of studies focus on Python and Java. There
+is a paucity of research on legacy languages like C++, COBOL, or PL/SQL, which
+underpin critical banking and infrastructure systems.
+•Benchmark Saturation:Standard benchmarks are becoming saturated quickly. Mod-
+els are increasingly being trained on the test sets of open benchmarks, leading to data
+contamination and inflated scores (Badertdinov 2025).
+•StateManagement:Mostagentsarestatelessbetweensessions. Theydonot"learn"
+from one bug fix to improve the next, limiting their long-term utility in a continuous
+integration (CI) pipeline.
+2.5 Ethical Considerations
+Thedeploymentofautonomousagentsinsoftwaretestingintroducesnovelethicalchallenges
+that extend beyond technical correctness.
+2.5.1 Data Privacy and Intellectual Property
+A paramount concern in enterprise adoption is the exposure of Intellectual Property (IP).
+Sending proprietary source code to external LLM providers (e.g., OpenAI, Anthropic) via
+API raises significant risks of data leakage. Even if providers promise not to train on API
+data, the transmission itself may violate strict data residency laws (e.g., GDPR in Europe).
+Techniques likePII Maskingand the use of locally hosted open-weights models (e.g., Llama
+3, Mixtral) are discussed as necessary mitigations (Nunez 2024).
+2.5.2 Bias and Fairness in Testing
+LLMs are trained on public code, which reflects the biases of the open-source community.
+If training data is dominated by certain coding styles or frameworks, agents may exhibit
+testing bias. For example, an agent might rigorously test "happy paths" commonly found
+in tutorials but neglect edge cases relevant to accessibility or diverse user inputs. Ugarte
+(2025) highlight that automated safety testing must explicitly account for these biases to
+prevent the deployment of discriminatory software.
+10
+---PAGE BREAK---
+2.6. Conclusion
+2.5.3 Impact on the Workforce
+The automation of QA roles raises fears of job displacement. However, the literature sug-
+gests a transformation rather than an elimination of roles. The role of the "QA Engineer"
+is evolving into that of an"Agent Auditor". Humans will increasingly be responsible for
+defining the high-level testing strategy, configuring the agentic workflows, and reviewing the
+most critical failures, while agents handle the high-volume generation of unit and regression
+tests. This shift requires upskilling in AI literacy and system design.
+2.5.4 Energy Consumption and Sustainability
+Finally, the environmental impact of MAS cannot be ignored. A single complex task in
+frameworks like MetaGPT can trigger dozens of API calls and generate thousands of tokens.
+The energy cost of these inference chains is orders of magnitude higher than running a static
+analysis tool. Sustainable AI practices, such as caching RAG results and using smaller,
+specialized models for routine tasks, are emerging as a critical area of research to ensure the
+ecological viability of agentic SE.
+2.6 Conclusion
+This Systematic Literature Review confirms that the integration of Multi-Agent Systems
+with Large Language Models represents a transformative leap in automated software testing.
+Bydecomposingtasks, integratingexternaltoolsviaACIs, andemployingrigorousexecution-
+based validation, MAS architectures address the key limitations of hallucinations and lack
+of context that plagued earlier single-agent approaches. However, significant challenges
+regarding data privacy, legacy language support, and energy efficiency must be addressed
+before widespread enterprise adoption is feasible. The findings of this review directly inform
+the design of the framework proposed in this dissertation.
+11
+---PAGE BREAK---
+
+---PAGE BREAK---
+Chapter 3
+Algorithms, Source Code, the
+Portable Graphics Format and
+Acronyms
+3.1 Algorithms
+LATEX has several packages for typesetting algorithms in form of ”pseudocode”. In this
+template, we suggest the use of thealgorithmenvironment with thealgpseudocode
+package. More information about algorithms can be found athttps://en.wikibooks.
+org/wiki/LaTeX/Algorithms.
+Algorithm 3.1 shows Euclid’s algorithm that computes Greatest Common Divisor (GCD) of
+two integer numbers.
+Here it is the LATEX text for the ”pseudocode” algorithm presented in Algorithm 3.1.
+\begin{algorithm}
+\caption{Euclid’s algorithm (pseudocode)}
+\label{alg:euclid}
+\begin{algorithmic}[1]
+\scriptsize
+\State \textbf{Input}: Two integer numbers, $a$ and $b$
+\State \textbf{Output}: Greatest Common Divisor (GCD) of $a$ and $b$
+\State
+\Procedure{euclid}{$a,b$}\Comment{The GCD of $a$ and $b$}
+Algorithm 3.1Euclid’s algorithm
+1:Input: Two integer numbers,aandb
+2:Output: GCD ofaandb
+3:
+4:procedureEuclid(a, b)▷The GCD ofaandb
+5:r←amodb
+6:whiler̸= 0do▷We have the answer ifris0
+7:a←b
+8:b←r
+9:r←amodb
+10:end while
+11:returnb ▷The GCD isb
+12:end procedure
+13
+---PAGE BREAK---
+Chapter 3. Algorithms, Source Code, the Portable Graphics Format and Acronyms
+\State $r\gets a\bmod b$
+\While{$r\not=0$}\Comment{We have the answer if $r$ is $0$}
+\State $a\gets b$
+\State $b\gets r$
+\State $r\gets a\bmod b$
+\EndWhile
+\State \textbf{return} $b$\Comment{The GCD is $b$}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\listofalgorithmscommand generates a list of all algorithms. This command is called in
+thefrontmatter.texfile. Therefore, if there is no algorithm in the thesis, this command
+must be removed (or commented) from such file.
+3.2 Source Code
+Sometimes there is the need to present programming source code snippets. Thelistings
+package is a powerful way to get nice source code highlighting in LATEX. It supports various
+programming languages, like Java (selected as the default language in this template), C,
+and many others.
+Listing 3.1 and Listing 3.2 show the source code of the Euclid’s algorithm, written in Java
+and C, respectively.
+1// valid for positive integers .
+2public static int euclid ( int a , int b)
+3{
+4int r = a % b;
+5while ( r != 0)
+6{
+7a = b;
+8b = r ;
+9r = a % b;
+10}
+11return b;
+12}
+Listing 3.1: Euclid’s algorithm (Java).
+14
+---PAGE BREAK---
+3.3. The Portable Graphics Format
+// valid for positive integers .
+int euclid ( int a , int b)
+{
+int r = a % b;
+while ( r != 0)
+{
+a = b;
+b = r ;
+r = a % b;
+}
+return b;
+}
+Listing 3.2: Euclid’s algorithm (C).
+Here it is the LATEX text for both listings. Note that we encapsulate the listings inside a
+\minipageso that the listing does note break across pages. Using the\lstinputlisting
+command, the source code must be written in a separate file. In these two cases, both files
+are inch3\assets\directory.
+\begin{minipage}{\linewidth}
+\lstinputlisting [caption=Euclid’s algorithm (Java).,
+label=lst:euclid_java]
+{ch3/assets/euclid.java}
+\end{minipage}
+\begin{center}
+\begin{minipage}{0.7\linewidth}
+\lstinputlisting [language=C,
+caption=Euclid’s algorithm (C).,
+label=lst:euclid_c,
+numbers=none]
+{ch3/assets/euclid.c}
+\end{minipage}
+\end{center}
+As it can be seen from the text above, there are a lot of parameters that can be specified,
+like programming language (language), numbering, etc. More information about listings
+can be found athttps://en.wikibooks.org/wiki/LaTeX/Source_Code_Listingsand
+http://texdoc.net/texmf-dist/doc/latex/listings/listings.pdf.
+\listoflistingcommand generates a list of all source code listings. This command is
+called in thefrontmatter.texfile. Therefore, if there are no listings in the thesis, this
+command must be removed (or commented) from such file.
+3.3 The Portable Graphics Format
+ThePortableGraphicsFormat(PGF)andanumberofpackagesbuiltontopofPGF(suchas
+TiKZ and PGFPLOTS) enable producing high quality graphical elements for your document.
+15
+---PAGE BREAK---
+Chapter 3. Algorithms, Source Code, the Portable Graphics Format and Acronyms
+3.3.1 TiKZ
+TikZ is built on top of PGF and allows you to create sophisticated graphics using LATEX
+commands. According to its author, Till Tantau1, "What is TikZ? Basically, it just defines
+a number of TEX commands that draw graphics.". With TikZ it is possible to accurately
+position picture elements, use LATEX fonts, incorporate mathematical typesetting, and use
+other LATEX features in your drawings.
+The TikZ package defines thetikzpictureenvironment that is required to draw a graphic.
+This environment must be inserted into afigureenvironment when numbering and caption
+are required. Figure 3.1 shows a simple use of TiKZ, for which the LATEX source is as follows.
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+% Define four points
+\coordinate (P0) at (1,0);
+\coordinate (P1) at (0,1);
+\coordinate (P2) at (-1,0);
+\coordinate (P3) at (0,-1);
+% Draw the diamond
+\draw (P0)--(P1)--(P2)--(P3)--cycle;
+\end{tikzpicture}
+\caption{Using TiKZ for drawing pictures.}
+\label{fig:tikz}
+\end{figure}
+Figure 3.1: Using TiKZ for drawing pictures.
+Agreatamountofexamplesareavailableathttp://www.texample.net/tikz/examples/.
+More information about TiKZ can be found athttps://en.wikibooks.org/wiki/LaTeX/
+PGF/TikZandftp://ftp.di.uminho.pt/pub/ctan/graphics/pgf/base/doc/pgfmanual.
+pdf.
+3.3.2 PGFPLOTS
+PGFPLOTS provides tools to draw high quality plots, and is based on TiKZ. To use
+PGFPLOTS in the thesis you need to use\usepackage{pgfplots}(inmain.tex). To
+guarantee compatibility you need to specify\pgfplotsset{compat=<version>}. You can
+choose theversion(). In this case, it is recommended to choosenewest. The choice
+compat=newestmeans "I do not care if my old figures change in appearance after the next
+version upgrade".
+1Available online atftp://ftp.di.uminho.pt/pub/ctan/graphics/pgf/base/doc/pgfmanual.pdf
+16
+---PAGE BREAK---
+3.3. The Portable Graphics Format
+Here it is the LATEX text for create the graph presented in Figure 3.2.
+\begin{tikzpicture}
+\begin{axis}[ height=9cm, width=9cm, grid=major, ]
+\addplot {-x^5 - 242};
+\addlegendentry{model}
+\addplot coordinates {
+(-4.77778,2027.60977)
+(-3.55556,347.84069)
+(-2.33333,22.58953)
+(-1.11111,-493.50066)
+(0.11111,46.66082)
+(1.33333,-205.56286)
+(2.55556,-341.40638)
+(3.77778,-1169.24780)
+(5.00000,-3269.56775)
+};
+\addlegendentry{estimate}
+\end{axis}
+\end{tikzpicture}
+Figure 3.2 shows an example of a graph created using PGFPLOTS functions.
+−6 −4 −2 0 2 4 6
+−3,000
+−2,000
+−1,000
+0
+1,000
+2,000
+3,000 model
+estimate
+Figure 3.2: Using PGFPLOTS for drawing a graph.
+Agreatamountofexamplesareavailableathttp://pgfplots.sourceforge.net/gallery.
+html. More information about TiKZ can be found athttp://pgfplots.sourceforge.
+net/pgfplots.pdf.
+17
+---PAGE BREAK---
+Chapter 3. Algorithms, Source Code, the Portable Graphics Format and Acronyms
+3.4 Handling Acronyms Automatically
+When writing a thesis you need to define acronyms. According to Wikipedia2 "An acronym
+is an abbreviation used as a word which is formed from the initial components in a phrase
+or a word."and"Acronyms are used most often to abbreviate names of organizations and
+long or frequently referenced terms.". Typically, an acronym is a pronounceable word, which
+may already exist or it can be an invented word.
+The use of acronyms imposes two rules: (i) an acronym must be defined in the text
+during the first appearance of the phrase or word and (ii) the document must have a
+list of all acronyms alphabetically sorted. In LATEX this is provided by a package called
+\usepackage{glossaries}that simplifies the use of acronyms.
+Included in this thesis template there is a file calledglossary.tex(in folderfrontmatter),
+where all acronyms must be written in the form:
+\newacronym{label}{abbrv}{full}
+wherelabelis the unique label identifying the acronym,abbrvis the abbreviated form of
+the acronym andfullis the expanded text (word or phrase). This is an example of defining
+three acronyms:
+\newacronym{RTS}{RTS}{Real-Time System}
+\newacronym{GPOS}{GPOS}{General Purpose Operating System}
+\newacronym{RTOS}{RTOS}{Real-Time Operating System}
+In order to use the features of the\usepackage{glossaries}, you have only to use
+\gls{label}command in the text. Using this command the acronym will be defined
+in the first appearance in the text and it will be listed in a list. For instance, writing this
+LATEX text:
+Linux is not a \gls{RTOS} but it is a \gls{GPOS}.
+VxWorks is a \gls{RTOS}, so it is not a \gls{GPOS}.
+outputs the following text:
+Linux is not a Real-Time Operating System (RTOS) but it is a General Purpose Operating
+System (GPOS). VxWorks is a RTOS, so it is not a GPOS.
+More information about acronyms can be found athttps://en.wikibooks.org/wiki/
+LaTeX/Glossary.
+2Accessed in 16 of December of 2015
+18
+---PAGE BREAK---
+Bibliography
+Alshahwan, Nadia et al. (2024). “Automated Unit Test Improvement using Large Language
+Models at Meta”. In.
+Badertdinov, Ibragim et al. (2025). “SWE-rebench: An Automated Pipeline for Task Collec-
+tion and Decontaminated Evaluation of Software Engineering Agents”. In.
+Chen, Jingyi et al. (2025). “When LLMs Meet API Documentation: Can Retrieval Augmen-
+tation Aid Code Generation Just as It Helps Developers?” In.
+Hong, Sirui et al. (2023). “MetaGPT: Meta Programming for A Multi-Agent Collaborative
+Framework”. In.
+Huang, Dong et al. (2023). “AgentCoder: Multi-Agent-based Code Generation with Iterative
+Testing and Optimisation”. In.
+Jimenez, Carlos E et al. (2024). “SWE-bench: Can Language Models Resolve Real-World
+GitHub Issues?” In:The Twelfth International Conference on Learning Representations.
+Jin, Haolin et al. (2024). “RGD: Multi-LLM Based Agent Debugger via Refinement and
+Generation Guidance”. In.
+Moher, David et al. (2009). “Preferred reporting items for systematic reviews and meta-
+analyses: the PRISMA statement”. In:PLoS medicine6.7, e1000097.
+Mündler, Niels et al. (2024). “Code Agents are State of the Art Software Testers”. In.
+Nunez, Ana et al. (2024). “AutoSafeCoder: A Multi-Agent Framework for Securing LLM
+Code Generation through Static Analysis and Fuzz Testing”. In.
+Pan,Ruweietal.(2025).“CodeCoR:AnLLM-BasedSelf-ReflectiveMulti-AgentFramework
+for Code Generation”. In.
+Qian, Chen et al. (2023). “ChatDev: Communicative Agents for Software Development”. In.
+Ugarte, Miriam et al. (2025). “ASTRAL: Automated Safety Testing of Large Language
+Models”. In.
+Vaswani, Ashish et al. (2017). “Attention is all you need”. In.
+Winters, Titus et al. (2020).Software Engineering at Google: Lessons Learned from Pro-
+gramming Over Time.
+Wu, Xingyu et al. (2025). “CurriculumPT: LLM-Based Multi-Agent Autonomous Penetra-
+tion Testing with Curriculum-Guided Task Scheduling”. In.
+Yang, John et al. (2024). “SWE-agent: Agent-Computer Interfaces Enable Automated Soft-
+ware Engineering”. In.
+19
+---PAGE BREAK---
+
+---PAGE BREAK---
+Appendix A
+Appendix Title Here
+Write your Appendix content here.
+21
+---PAGE BREAK---

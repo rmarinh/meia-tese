@@ -1,0 +1,171 @@
+% we include the glossary here (frontmatter is included with \input, so this command is as if it was in main.tex)
+%\input{frontmatter/glossary} % the command makenoidxglossaries requires that the glossary entries must be defined in the preamble (to be compatible with overleaf)
+
+\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+
+\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\maketitlepage
+
+%----------------------------------------------------------------------------------------
+%	STATEMENT OF INTEGRITY
+%----------------------------------------------------------------------------------------
+
+\begin{soi}
+
+% here you put the statement of integrity in the main language of the work. Choose one option.
+
+[Maintain only the version corresponding to the main language of the work]
+\vspace{1cm}
+
+% if the main language is English:
+
+I hereby declare that I have conducted this academic work with integrity.
+
+I have not plagiarised or applied any form of undue use of information or falsification of results along the process leading to its elaboration.
+
+Therefore, the work presented in this document is original and was authored by me, having not been previously used for any other purpose. The exceptions are explicitly acknowledged in the section that addresses ethical considerations. This section also states how Artificial Intelligence tools were used and for what purpose.
+
+I further declare that I have fully acknowledged the Code of Ethical Conduct of P.PORTO.
+
+ISEP, Porto, January 27, 2026
+
+\vspace{1cm}
+	
+% if the main language is Portuguese:
+
+Declaro ter conduzido este trabalho acad\'emico com integridade.
+
+N\~ao plagiei ou apliquei qualquer forma de uso indevido de informa\c{c}\~oes ou falsifica\c{c}\~ao de resultados ao longo do processo que levou \`a sua elabora\c{c}\~ao.
+
+Portanto, o trabalho apresentado neste documento \'e original e de minha autoria, n\~ao tendo sido utilizado anteriormente para nenhum outro fim. As exce\c{c}\~oes est\~ao explicitamente reconhecidas na sec\c{c}\~ao onde s\~ao abordadas as considera\c{c}\~oes \'eticas. Esta sec\c{c}\~ao tamb\'em declara como as ferramentas de Intelig\^encia Artificial foram utilizadas e para que finalidade.
+
+Declaro ainda que tenho pleno conhecimento do C\'odigo de Conduta \'Etica do P.PORTO.
+
+ISEP, Porto, 27 de Janeiro de 2026
+	
+
+\end{soi}
+
+
+%----------------------------------------------------------------------------------------
+%	DEDICATION  (optional)
+%----------------------------------------------------------------------------------------
+%
+%\dedicatory{For/Dedicated to/To my\ldots}
+\begin{dedicatory}
+Dedicated to my family for their endless support, and to the scientific community for the inspiration to pursue this research.
+\end{dedicatory}
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{abstract}
+
+The automation of software testing is a critical bottleneck in modern Continuous Integration pipelines. While Large Language Models (LLMs) have demonstrated the ability to generate code, single-agent approaches suffer from "Contextual Blindness" and the "Grounding Gap," often producing hallucinated or non-executable tests due to a lack of repository awareness and execution feedback.
+
+This dissertation proposes a novel Multi-Agent System (MAS) framework designed to bridge these gaps. Adopting a Design Science Research (DSR) methodology, we first conducted a Systematic Literature Review (SLR) of 25 studies, identifying the shift from monolithic to agentic architectures. Based on these findings, we designed a "Planner-Coder-Executor" architecture utilizing the Letta framework for state management and an Agent-Computer Interface (ACI) for safe, sandboxed execution. This system mimics a human engineering team, employing iterative feedback loops to "self-heal" broken tests.
+
+Furthermore, addressing the ethical risks identified in our review, the framework incorporates a rigorous governance model compliant with the EU AI Act, ensuring data privacy through "Sandbox-by-Design" principles. The proposed solution aims to validate the hypothesis that agentic collaboration significantly outperforms single-shot generation in both code coverage and functional correctness when evaluated on industry benchmarks like SWE-bench.
+
+\end{abstract}
+
+\begin{abstractotherlanguage}
+
+A automação de testes de software é um gargalo crítico nos pipelines modernos de Integração Contínua. Embora os Grandes Modelos de Linguagem (LLMs) tenham demonstrado capacidade para gerar código, as abordagens baseadas em agente único sofrem de "Cegueira Contextual" e "Lacunas de Aterramento" (Grounding Gaps), produzindo frequentemente testes alucinados ou não executáveis devido à falta de consciência do repositório e de feedback de execução.
+
+Esta dissertação propõe uma nova arquitetura de Sistema Multi-Agente (MAS) desenhada para colmatar estas falhas. Adotando uma metodologia de Design Science Research (DSR), realizámos inicialmente uma Revisão Sistemática da Literatura (SLR) de 25 estudos, identificando a transição de arquiteturas monolíticas para agênticas. Com base nestes resultados, desenhámos uma arquitetura "Planeador-Programador-Executor" utilizando a framework Letta para gestão de estado e uma Interface Agente-Computador (ACI) para execução segura em sandbox. Este sistema imita uma equipa de engenharia humana, empregando ciclos de feedback iterativos para "auto-reparar" testes falhados.
+
+Além disso, abordando os riscos éticos identificados na nossa revisão, a framework incorpora um modelo de governança rigoroso compatível com o Regulamento de IA da UE (EU AI Act), garantindo a privacidade dos dados através de princípios de "Sandbox-by-Design". A solução proposta visa validar a hipótese de que a colaboração agêntica supera significativamente a geração single-shot, tanto em cobertura de código como em correção funcional, quando avaliada em benchmarks industriais como o SWE-bench.
+
+\end{abstractotherlanguage}
+
+%----------------------------------------------------------------------------------------
+%	ACKNOWLEDGEMENTS (optional)
+%----------------------------------------------------------------------------------------
+
+\begin{acknowledgements}
+
+I would like to express my gratitude to my supervisors for their guidance and expertise throughout this research. Their insights were invaluable in shaping the direction of this dissertation.
+
+%I also thank the faculty and staff at ISEP for providing the resources and environment necessary to complete this work. Finally, I am grateful to my colleagues and peers for their constructive feedback and support.
+
+\end{acknowledgements}
+
+%----------------------------------------------------------------------------------------
+%	LIST OF CONTENTS/FIGURES/TABLES PAGES
+%----------------------------------------------------------------------------------------
+
+\tableofcontents % Prints the main table of contents
+
+\listoffigures % Prints the list of figures
+
+\listoftables % Prints the list of tables
+
+\iflanguage{portuguese}{
+\renewcommand{\listalgorithmname}{Lista de Algor\'itmos}
+}
+\listofalgorithms % Prints the list of algorithms
+\addchaptertocentry{\listalgorithmname}
+
+
+\renewcommand{\lstlistlistingname}{List of Source Code}
+\iflanguage{portuguese}{
+\renewcommand{\lstlistlistingname}{Lista de C\'odigo}
+}
+\lstlistoflistings % Prints the list of listings (programming language source code)
+\addchaptertocentry{\lstlistlistingname}
+
+
+%----------------------------------------------------------------------------------------
+%	ABBREVIATIONS
+%----------------------------------------------------------------------------------------
+%\begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
+%%\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere\\
+%%\textbf{WSF} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or\\
+%\end{abbreviations}
+
+%----------------------------------------------------------------------------------------
+%	SYMBOLS
+%----------------------------------------------------------------------------------------
+
+\begin{symbols}{lll} % Include a list of Symbols (a three column table)
+
+$a$ & distance & \si{\meter} \\
+$P$ & power & \si{\watt} (\si{\joule\per\second}) \\
+%Symbol & Name & Unit \\
+
+\addlinespace % Gap to separate the Roman symbols from the Greek
+
+$\omega$ & angular frequency & \si{\radian} \\
+
+\end{symbols}
+
+
+
+%----------------------------------------------------------------------------------------
+%	ACRONYMS
+%----------------------------------------------------------------------------------------
+
+\newcommand{\listacronymname}{List of Acronyms}
+\iflanguage{portuguese}{
+\renewcommand{\listacronymname}{Lista de Acr\'onimos}
+}
+
+%Use GLS
+\glsresetall
+
+%\printglossary[title=\listacronymname,type=\acronymtype,style=long]
+\printnoidxglossary[title=\listacronymname,type=\acronymtype,style=long] % command compatible with overleaf
+
+%----------------------------------------------------------------------------------------
+%	DONE
+%----------------------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+\pagestyle{thesis} % Return the page headers back to the "thesis" style

@@ -1,0 +1,1512 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global/global}
+    \entry{ahammad2025magister}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=16e7f8425a03e947e788399394fb577c}{%
+           family={Ahammad},
+           familyi={A\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b170dcbb07b28b249e85df6e4a121c0e}{%
+           family={Bajta},
+           familyi={B\bibinitperiod},
+           given={M.\bibnamedelimi El},
+           giveni={M\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=88bc8c3d2d1f0cde3aa3761b665e38e9}{%
+           family={Radgui},
+           familyi={R\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{eda02c4d389add97667fc766ce776794}
+      \strng{fullhash}{eda02c4d389add97667fc766ce776794}
+      \strng{fullhashraw}{eda02c4d389add97667fc766ce776794}
+      \strng{bibnamehash}{eda02c4d389add97667fc766ce776794}
+      \strng{authorbibnamehash}{eda02c4d389add97667fc766ce776794}
+      \strng{authornamehash}{eda02c4d389add97667fc766ce776794}
+      \strng{authorfullhash}{eda02c4d389add97667fc766ce776794}
+      \strng{authorfullhashraw}{eda02c4d389add97667fc766ce776794}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Automated test generation is one of the most critical topics in software testing, with numerous challenges due to the need for deep code understanding and the creation of meaningful assertions. Traditional approaches often generate low-quality and difficult-to-read tests that lack real code understanding and rely on statistical and dynamic analysis. With the recent advances in Large Language Models (LLMs), new opportunities emerge for generating unit tests that prioritize readability and context...}
+      \field{booktitle}{2025 International Conference on Intelligent Systems: Theories and Applications (SITA)}
+      \field{title}{MAGISTER: LLM-Based Test Generation with Role-Specialized Agents}
+      \field{year}{2025}
+    \endentry
+    \entry{bose2025llms}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=d69e5fd80225c26c2676889f6a0e942b}{%
+           family={Bose},
+           familyi={B\bibinitperiod},
+           given={D.\bibnamedelimi B.},
+           giveni={D\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c0cb03b2f328821bf659e427e99f6830}{%
+           family={Alebachew},
+           familyi={A\bibinitperiod},
+           given={Y.\bibnamedelimi B.},
+           giveni={Y\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3cc411de646adc3ef435aed42754659c}{%
+           family={Brown},
+           familyi={B\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{34c6b39954f6dcff798c63f9fefee8bf}
+      \strng{fullhash}{34c6b39954f6dcff798c63f9fefee8bf}
+      \strng{fullhashraw}{34c6b39954f6dcff798c63f9fefee8bf}
+      \strng{bibnamehash}{34c6b39954f6dcff798c63f9fefee8bf}
+      \strng{authorbibnamehash}{34c6b39954f6dcff798c63f9fefee8bf}
+      \strng{authornamehash}{34c6b39954f6dcff798c63f9fefee8bf}
+      \strng{authorfullhash}{34c6b39954f6dcff798c63f9fefee8bf}
+      \strng{authorfullhashraw}{34c6b39954f6dcff798c63f9fefee8bf}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Large Language Models (LLMs) are transforming software engineering, including mobile Augmented Reality (AR) applications. AR software behavior often depends on dynamic environmental factors, making it difficult to use conventional testing and verification approaches. Metamorphic Testing (MT) offers an alternative by assessing whether expected transformations hold across varied conditions. However, there is limited work exploring how well LLMs can detect these transformations-Metamorphic Relation...}
+      \field{booktitle}{2025 40th IEEE/ACM International Conference on Automated Software Engineering Workshops (ASEW)}
+      \field{title}{LLMs in Debate: Does Arguing Make Them Better at Detecting Metamorphic Relations?}
+      \field{year}{2025}
+    \endentry
+    \entry{bouzenia2025repair}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=e9e12ef87ca92612b82666fd1b5f84fc}{%
+           family={Bouzenia},
+           familyi={B\bibinitperiod},
+           given={I.},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cf6dcb6b0bde3d31b3ad8df8620bd93b}{%
+           family={Devanbu},
+           familyi={D\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a1057621d01232412391b67ddc8f822f}{%
+           family={Pradel},
+           familyi={P\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{8e08306463a83973f0f515aa0c4d1505}
+      \strng{fullhash}{8e08306463a83973f0f515aa0c4d1505}
+      \strng{fullhashraw}{8e08306463a83973f0f515aa0c4d1505}
+      \strng{bibnamehash}{8e08306463a83973f0f515aa0c4d1505}
+      \strng{authorbibnamehash}{8e08306463a83973f0f515aa0c4d1505}
+      \strng{authornamehash}{8e08306463a83973f0f515aa0c4d1505}
+      \strng{authorfullhash}{8e08306463a83973f0f515aa0c4d1505}
+      \strng{authorfullhashraw}{8e08306463a83973f0f515aa0c4d1505}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Introduces RepairAgent, an autonomous agent that uses an LLM and a finite state machine to plan and execute actions (invoking tools) to fix software bugs.}
+      \field{booktitle}{ICSE '25}
+      \field{title}{RepairAgent: An Autonomous, LLM-Based Agent for Program Repair}
+      \field{year}{2025}
+    \endentry
+    \entry{ding2025multiagent}{inproceedings}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=488de293954e0f034e47e170c74f790f}{%
+           family={Ding},
+           familyi={D\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=89b432fa4bb24ef9e7312fd806fb771b}{%
+           family={Yu},
+           familyi={Y\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a429ff029fc0003dff2e74bde703860f}{%
+           family={Twabi},
+           familyi={T\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6d96d6fbd106e2ffd88ad23ce0119654}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=929add1c533639277ad2c69f21cb5129}{%
+           family={Kondo},
+           familyi={K\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=98563c8969eca371daabb71d89665264}{%
+           family={Sato},
+           familyi={S\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f0647fc6d53f2882ec38ba2e77594841}
+      \strng{fullhash}{43b22e385591a75160173a7e3bd19b20}
+      \strng{fullhashraw}{43b22e385591a75160173a7e3bd19b20}
+      \strng{bibnamehash}{f0647fc6d53f2882ec38ba2e77594841}
+      \strng{authorbibnamehash}{f0647fc6d53f2882ec38ba2e77594841}
+      \strng{authornamehash}{f0647fc6d53f2882ec38ba2e77594841}
+      \strng{authorfullhash}{43b22e385591a75160173a7e3bd19b20}
+      \strng{authorfullhashraw}{43b22e385591a75160173a7e3bd19b20}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Smart contracts underpin contemporary decentralized systems, yet their immutability and perpetual execution amplify the consequences of latent defects. Despite progress in manual audits, static analysis, fuzzing, and formal verification, auditors face a widening gap between the scalability and desired assurance due to limited automation capability. Recent large language models (LLMs) with tool-use capabilities promise greater automation, but monolithic single-agent auditors struggle with coverag...}
+      \field{booktitle}{2025 9th International Symposium on Computer Science and Intelligent Control (ISCSIC)}
+      \field{title}{Multi-Agent Auditing for Smart Contracts*}
+      \field{year}{2025}
+    \endentry
+    \entry{garlapati2024aipowered}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=57459af3012a365964d19b9aa47d917b}{%
+           family={Garlapati},
+           familyi={G\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bc5d9f4c73b94968422d14abe277fd3f}{%
+           family={Parmesh},
+           familyi={P\bibinitperiod},
+           given={M.\bibnamedelimi N.\bibnamedelimi V.\bibnamedelimi Satya\bibnamedelimb Sai\bibnamedelima Muni},
+           giveni={M\bibinitperiod\bibinitdelim N\bibinitperiod\bibinitdelim V\bibinitperiod\bibinitdelim S\bibinitperiod\bibinitdelim S\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7e94ed76df68feb96cc0bcd46596a6e0}{%
+           family={Savitha},
+           familyi={S\bibinitperiod}}}%
+        {{un=0,uniquepart=base,hash=7f551f461b16dc116f18a47a7df73178}{%
+           family={S},
+           familyi={S\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9c00f70a8ead7b85558c9f889f53aa16}
+      \strng{fullhash}{c5265580264290bca1dc5af99316855a}
+      \strng{fullhashraw}{c5265580264290bca1dc5af99316855a}
+      \strng{bibnamehash}{9c00f70a8ead7b85558c9f889f53aa16}
+      \strng{authorbibnamehash}{9c00f70a8ead7b85558c9f889f53aa16}
+      \strng{authornamehash}{9c00f70a8ead7b85558c9f889f53aa16}
+      \strng{authorfullhash}{c5265580264290bca1dc5af99316855a}
+      \strng{authorfullhashraw}{c5265580264290bca1dc5af99316855a}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Recent years have witnessed an enormous rise in the design, repair and the enhancement of software automation tests. The reliability of program’s unit testing has major impact on its overall performance. The anticipated influence of Artificial Intelligence advancements on test automation methodologies are significant. Many studies on automated testing implicitly assume that the test results are deterministic, means that similar tests faults remain same. The precision of software is largely ensur...}
+      \field{booktitle}{2024 5th IEEE Global Conference for Advancement in Technology (GCAT)}
+      \field{title}{AI-Powered Multi-Agent Framework for Automated Unit Test Case Generation: Enhancing Software Quality through LLM’s}
+      \field{year}{2024}
+    \endentry
+    \entry{hardgrove2025liblmfuzz}{inproceedings}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=79be146b3a8cec528db353c31b91418f}{%
+           family={Hardgrove},
+           familyi={H\bibinitperiod},
+           given={I.},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=661ca51064c4556d468e8a81814f479a}{%
+           family={Hastings},
+           familyi={H\bibinitperiod},
+           given={J.\bibnamedelimi D.},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{3b3527967c2c9a2d0258a27450810db4}
+      \strng{fullhash}{3b3527967c2c9a2d0258a27450810db4}
+      \strng{fullhashraw}{3b3527967c2c9a2d0258a27450810db4}
+      \strng{bibnamehash}{3b3527967c2c9a2d0258a27450810db4}
+      \strng{authorbibnamehash}{3b3527967c2c9a2d0258a27450810db4}
+      \strng{authornamehash}{3b3527967c2c9a2d0258a27450810db4}
+      \strng{authorfullhash}{3b3527967c2c9a2d0258a27450810db4}
+      \strng{authorfullhashraw}{3b3527967c2c9a2d0258a27450810db4}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{A fundamental problem in cybersecurity and computer science is determining whether a program is free of bugs and vulnerabilities. Fuzzing, a popular approach to discovering vulnerabilities in programs, has several advantages over alternative strategies, although it has investment costs in the form of initial setup and continuous maintenance. The choice of fuzzing is further complicated when only a binary library is available, such as the case of closed-source and proprietary software. In respons...}
+      \field{booktitle}{2025 Cyber Awareness and Research Symposium (CARS)}
+      \field{title}{LibLMFuzz: LLM-Augmented Fuzz Target Generation for Black-Box Libraries}
+      \field{year}{2025}
+    \endentry
+    \entry{hoffmann2024generating}{inproceedings}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=5ad488a1eff28dac6084587ec0730096}{%
+           family={Hoffmann},
+           familyi={H\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f7f19c3431d95c8b86a2101a2f493174}{%
+           family={Frister},
+           familyi={F\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a1a63ccf53a40a19a930170e29465357}
+      \strng{fullhash}{a1a63ccf53a40a19a930170e29465357}
+      \strng{fullhashraw}{a1a63ccf53a40a19a930170e29465357}
+      \strng{bibnamehash}{a1a63ccf53a40a19a930170e29465357}
+      \strng{authorbibnamehash}{a1a63ccf53a40a19a930170e29465357}
+      \strng{authornamehash}{a1a63ccf53a40a19a930170e29465357}
+      \strng{authorfullhash}{a1a63ccf53a40a19a930170e29465357}
+      \strng{authorfullhashraw}{a1a63ccf53a40a19a930170e29465357}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. AST}
+      \field{title}{Generating Software Tests for Mobile Applications Using Fine-Tuned Large Language Models}
+      \field{year}{2024}
+    \endentry
+    \entry{hong2023metagpt}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=c340482549e946605fb88bddbee39658}{%
+           family={Hong},
+           familyi={H\bibinitperiod},
+           given={Sirui\bibnamedelimb et\bibnamedelima al.},
+           giveni={S\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{c340482549e946605fb88bddbee39658}
+      \strng{fullhash}{c340482549e946605fb88bddbee39658}
+      \strng{fullhashraw}{c340482549e946605fb88bddbee39658}
+      \strng{bibnamehash}{c340482549e946605fb88bddbee39658}
+      \strng{authorbibnamehash}{c340482549e946605fb88bddbee39658}
+      \strng{authornamehash}{c340482549e946605fb88bddbee39658}
+      \strng{authorfullhash}{c340482549e946605fb88bddbee39658}
+      \strng{authorfullhashraw}{c340482549e946605fb88bddbee39658}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{International Conference on Learning Representations (ICLR)}
+      \field{title}{MetaGPT: Meta Programming for A Multi-Agent Collaborative Framework}
+      \field{year}{2024}
+    \endentry
+    \entry{huang2025research}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=01857aa236d9261867a4ccbd55bd157a}{%
+           family={Huang},
+           familyi={H\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{01857aa236d9261867a4ccbd55bd157a}
+      \strng{fullhash}{01857aa236d9261867a4ccbd55bd157a}
+      \strng{fullhashraw}{01857aa236d9261867a4ccbd55bd157a}
+      \strng{bibnamehash}{01857aa236d9261867a4ccbd55bd157a}
+      \strng{authorbibnamehash}{01857aa236d9261867a4ccbd55bd157a}
+      \strng{authornamehash}{01857aa236d9261867a4ccbd55bd157a}
+      \strng{authorfullhash}{01857aa236d9261867a4ccbd55bd157a}
+      \strng{authorfullhashraw}{01857aa236d9261867a4ccbd55bd157a}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Background: Large language models (LLMs) are increasingly being used for automated unit test generation, but reported performance varies across tasks and datasets, and key aspects such as assertion plausibility and target coverage are not well understood. Methods: We perform a structured evaluation of LLM-based test generation on recent benchmarks and settings, summarizing research results in hinting, static analysis guidance, multi-agent work frameworks, and oracle generation; we compare LLMs w...}
+      \field{booktitle}{2025 2nd International Conference on Intelligent Algorithms for Computational Intelligence Systems (IACIS)}
+      \field{title}{Research on Multi-Model Fusion Machine Learning Demand Intelligent Forecasting System in Cloud Computing Environment}
+      \field{year}{2025}
+    \endentry
+    \entry{jiang2024survey}{article}{}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=850b9e61b9cc106cd1b82515e62128e8}{%
+           family={Jiang},
+           familyi={J\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3768cb3691d9f8be784a4b189ba55772}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=183636520044871fa87dfca99a6f1280}{%
+           family={Shen},
+           familyi={S\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=20b4de09eb2c0f6fbdf0febbafea948d}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=20b4de09eb2c0f6fbdf0febbafea948d}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{dc52f6cf878f46015a15e9bd1fad7fcc}
+      \strng{fullhash}{c564bc9918a6cbb2406aea5fc84cd949}
+      \strng{fullhashraw}{c564bc9918a6cbb2406aea5fc84cd949}
+      \strng{bibnamehash}{dc52f6cf878f46015a15e9bd1fad7fcc}
+      \strng{authorbibnamehash}{dc52f6cf878f46015a15e9bd1fad7fcc}
+      \strng{authornamehash}{dc52f6cf878f46015a15e9bd1fad7fcc}
+      \strng{authorfullhash}{c564bc9918a6cbb2406aea5fc84cd949}
+      \strng{authorfullhashraw}{c564bc9918a6cbb2406aea5fc84cd949}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{A comprehensive survey on "Code LLMs," covering evolution, advanced techniques (autonomous agents, RAG), and comparative analysis on benchmarks like HumanEval, MBPP, and SWE-bench.}
+      \field{journaltitle}{TOSEM}
+      \field{title}{A Survey on Large Language Models for Code Generation}
+      \field{year}{2024}
+    \endentry
+    \entry{jimenez2024swebench}{inproceedings}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=df0da99ab284c0b459f3e75d957e5708}{%
+           family={Jimenez},
+           familyi={J\bibinitperiod},
+           given={Carlos\bibnamedelima E},
+           giveni={C\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6d7f2cb81cb28fc59ce872d27eeaee07}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4001730f0187f52733e4f23c951a4133}{%
+           family={Wettig},
+           familyi={W\bibinitperiod},
+           given={Alexander},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5c1b62cbd4e181d818b927549813cf73}{%
+           family={Yao},
+           familyi={Y\bibinitperiod},
+           given={Shunyu},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7db82cb04645af99e6b26124b33a1ca8}{%
+           family={Yin},
+           familyi={Y\bibinitperiod},
+           given={Kexin},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=997c3143c2e5d593e816d2ff704fbf98}{%
+           family={Narasimhan},
+           familyi={N\bibinitperiod},
+           given={Karthik},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{51cc3335d78b25fdf063bb7af5ede502}
+      \strng{fullhash}{384eac0b75f10730e4a1cf6ee6d71cde}
+      \strng{fullhashraw}{384eac0b75f10730e4a1cf6ee6d71cde}
+      \strng{bibnamehash}{51cc3335d78b25fdf063bb7af5ede502}
+      \strng{authorbibnamehash}{51cc3335d78b25fdf063bb7af5ede502}
+      \strng{authornamehash}{51cc3335d78b25fdf063bb7af5ede502}
+      \strng{authorfullhash}{384eac0b75f10730e4a1cf6ee6d71cde}
+      \strng{authorfullhashraw}{384eac0b75f10730e4a1cf6ee6d71cde}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{The Twelfth International Conference on Learning Representations}
+      \field{title}{SWE-bench: Can Language Models Resolve Real-World GitHub Issues?}
+      \field{year}{2024}
+    \endentry
+    \entry{kanagaraj2025llmdriven}{inproceedings}{}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=959370eb3cda0db22f0e8eabf19e95bd}{%
+           family={Kanagaraj},
+           familyi={K\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c00728448f243f0e775f26c6fca64a4a}{%
+           family={Handa},
+           familyi={H\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8f53bd2891ad0dabbc3f6fd9602a003b}{%
+           family={Nikhil},
+           familyi={N\bibinitperiod},
+           given={K.\bibnamedelimi K.},
+           giveni={K\bibinitperiod\bibinitdelim K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cfa3624dc75e4ea43f1da939f16702c1}{%
+           family={Duvarakanath},
+           familyi={D\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7a663caea1b722a63dc2868158ed584d}{%
+           family={M.},
+           familyi={M\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a8b8fe3bf81f69934b2e98adf4f05f08}
+      \strng{fullhash}{a793340452b0c3d2fde887de3ad48a60}
+      \strng{fullhashraw}{a793340452b0c3d2fde887de3ad48a60}
+      \strng{bibnamehash}{a8b8fe3bf81f69934b2e98adf4f05f08}
+      \strng{authorbibnamehash}{a8b8fe3bf81f69934b2e98adf4f05f08}
+      \strng{authornamehash}{a8b8fe3bf81f69934b2e98adf4f05f08}
+      \strng{authorfullhash}{a793340452b0c3d2fde887de3ad48a60}
+      \strng{authorfullhashraw}{a793340452b0c3d2fde887de3ad48a60}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Software testing is vital to modern development; however, traditional test case generation remains limited by imprecision, heavy manual intervention, and a lack of scalability. This study proposes a robust framework that integrates Large Language Models (LLMs) with multi-agent systems to generate fully automated, end-to-end test cases. By combining Deep Learning with Chain-of-Thought reasoning, the framework intelligently analyzes back-end APIs and front-end UIs, producing context-aware and comp...}
+      \field{booktitle}{2025 2nd International Conference on Software, Systems and Information Technology (SSITCON)}
+      \field{title}{LLM-Driven Smart Test Case Generation for Scalable Software Testing}
+      \field{year}{2025}
+    \endentry
+    \entry{karanjai2025hpcagenttester}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=cdaa5cd1b0136da39b8e52d663d2e5e5}{%
+           family={Karanjai},
+           familyi={K\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d539746d8c6dcf5a0d1f2b4c4a9f59de}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=912a43b3957453af94e052366373879e}{%
+           family={Shi},
+           familyi={S\bibinitperiod},
+           given={W.},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{98906683aa52998d74a2e50ad8269b2f}
+      \strng{fullhash}{98906683aa52998d74a2e50ad8269b2f}
+      \strng{fullhashraw}{98906683aa52998d74a2e50ad8269b2f}
+      \strng{bibnamehash}{98906683aa52998d74a2e50ad8269b2f}
+      \strng{authorbibnamehash}{98906683aa52998d74a2e50ad8269b2f}
+      \strng{authornamehash}{98906683aa52998d74a2e50ad8269b2f}
+      \strng{authorfullhash}{98906683aa52998d74a2e50ad8269b2f}
+      \strng{authorfullhashraw}{98906683aa52998d74a2e50ad8269b2f}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Unit testing in High-Performance Computing (HPC) is critical but challenged by parallelism, complex algorithms, and diverse hardware. Traditional methods often fail to address non-deterministic behavior and synchronization issues in HPC applications. This paper introduces HPCAgentTester, a novel multi-agent Large Language Model (LLM) framework designed to automate and enhance unit test generation for HPC software utilizing OpenMP and MPI. HPCAgentTester employs a unique collaborative workflow wh...}
+      \field{booktitle}{2025 2nd IEEE/ACM International Conference on AI-powered Software (AIware)}
+      \field{title}{HPCAgentTester: a Multi-Agent LLM Approach for Enhanced HPC Unit Test Generation}
+      \field{year}{2025}
+    \endentry
+    \entry{kim2024multi}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=57d384713dde644a3ea42834bb4f19ef}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Myeongsoo},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0af0582527ae0c241f82d21e2425a8cb}{%
+           family={Stennett},
+           familyi={S\bibinitperiod},
+           given={Tyler},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cd04b692368fa886a72debaaceba36ef}{%
+           family={Sinha},
+           familyi={S\bibinitperiod},
+           given={Saurabh},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c5e6ca7f1a50c8c19fcf29685cc61793}{%
+           family={Orso},
+           familyi={O\bibinitperiod},
+           given={Alessandro},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{d0e5638675acc66194d6cd750eebe8ed}
+      \strng{fullhash}{bc488230d379b2ae0af8b9868cb1fcb1}
+      \strng{fullhashraw}{bc488230d379b2ae0af8b9868cb1fcb1}
+      \strng{bibnamehash}{d0e5638675acc66194d6cd750eebe8ed}
+      \strng{authorbibnamehash}{d0e5638675acc66194d6cd750eebe8ed}
+      \strng{authornamehash}{d0e5638675acc66194d6cd750eebe8ed}
+      \strng{authorfullhash}{bc488230d379b2ae0af8b9868cb1fcb1}
+      \strng{authorfullhashraw}{bc488230d379b2ae0af8b9868cb1fcb1}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{International Conference on Software Engineering (ICSE)}
+      \field{title}{A Multi-Agent Approach for REST API Testing with Semantic Graphs and LLM-Driven Inputs}
+      \field{year}{2025}
+    \endentry
+    \entry{liu2025seeing}{article}{}{}
+      \name{author}{9}{}{%
+        {{un=0,uniquepart=base,hash=4502ea5dcc2b2cf1ac11fe01b5f68826}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Z.},
+           giveni={Z\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d32559a5fc6b9c48ad950f89259bc465}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=01fea9ce6da32048c0096b4f19fc1c50}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3702f1c146e64a6c91fc47b81ea59fc7}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=802879972afa5bd206c5988365d10ca8}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4e31f6e2351bdd7652825d00350a02fd}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=61ad10c626e1d641e0b1d7b5f48d3233}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=30c3519915a07c272d6fd946f3eaa35a}{%
+           family={Hu},
+           familyi={H\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=415d15406f27ab6319fe3dc2d7408598}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Q.},
+           giveni={Q\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9fec28a3108eb9ce605b2d27476e1b53}
+      \strng{fullhash}{bad433dbc3831d94838c43e582af7533}
+      \strng{fullhashraw}{bad433dbc3831d94838c43e582af7533}
+      \strng{bibnamehash}{9fec28a3108eb9ce605b2d27476e1b53}
+      \strng{authorbibnamehash}{9fec28a3108eb9ce605b2d27476e1b53}
+      \strng{authornamehash}{9fec28a3108eb9ce605b2d27476e1b53}
+      \strng{authorfullhash}{bad433dbc3831d94838c43e582af7533}
+      \strng{authorfullhashraw}{bad433dbc3831d94838c43e582af7533}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Mobile app GUI (Graphical User Interface) pages now contain rich visual information, with the visual semantics of each page helping users understand the application logic. However, these complex visual and functional logics present new challenges to software testing. Existing automated GUI testing methods, constrained by the lack of reliable testing oracles, are limited to detecting crash bugs with obvious abnormal signals. Consequently, many non-crash functional bugs, ranging from unexpected be...}
+      \field{journaltitle}{IEEE Transactions on Software Engineering}
+      \field{title}{Seeing is Believing: Vision-Driven Non-Crash Functional Bug Detection for Mobile Apps}
+      \field{year}{2025}
+    \endentry
+    \entry{maklad2025multifuzz}{inproceedings}{}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=90f1779f2a984dd08eeda27867386b83}{%
+           family={Maklad},
+           familyi={M\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=95be037861450087abd1bb305ade5706}{%
+           family={Wael},
+           familyi={W\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=eea1005bd7e5742cd087afdfd0b8a07f}{%
+           family={Hamdi},
+           familyi={H\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f81083e31956794323a78f3d7b0ad6fc}{%
+           family={Elsersy},
+           familyi={E\bibinitperiod},
+           given={W.},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=32288869ea5ea0dd4d7b6cf440dfcece}{%
+           family={Shaban},
+           familyi={S\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{0f89eef59e9f9772b5863e90706475ce}
+      \strng{fullhash}{32b657eac8415e9c242489aca912afb2}
+      \strng{fullhashraw}{32b657eac8415e9c242489aca912afb2}
+      \strng{bibnamehash}{0f89eef59e9f9772b5863e90706475ce}
+      \strng{authorbibnamehash}{0f89eef59e9f9772b5863e90706475ce}
+      \strng{authornamehash}{0f89eef59e9f9772b5863e90706475ce}
+      \strng{authorfullhash}{32b657eac8415e9c242489aca912afb2}
+      \strng{authorfullhashraw}{32b657eac8415e9c242489aca912afb2}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Traditional protocol fuzzing techniques, such as those employed by AFL-based systems, often lack effectiveness due to a limited semantic understanding of complex protocol grammars and rigid seed mutation strategies. Recent works, such as ChatAFL, have integrated Large Language Models (LLMs) to guide protocol fuzzing and address these limitations, pushing protocol fuzzers to wider exploration of the protocol state space. But ChatAFL still faces issues like unreliable output, LLM hallucinations, a...}
+      \field{booktitle}{2025 IEEE/ACS 22nd International Conference on Computer Systems and Applications (AICCSA)}
+      \field{title}{MultiFuzz: A Dense Retrieval-based Multi-Agent System for Network Protocol Fuzzing}
+      \field{year}{2025}
+    \endentry
+    \entry{nayyeri2025privacy}{inproceedings}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=8c4bb9aa254ee59b05f54b72dc460123}{%
+           family={Nayyeri},
+           familyi={N\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{ea36107ce2e50284b597cedbea01811f}
+      \strng{fullhash}{ea36107ce2e50284b597cedbea01811f}
+      \strng{fullhashraw}{ea36107ce2e50284b597cedbea01811f}
+      \strng{bibnamehash}{ea36107ce2e50284b597cedbea01811f}
+      \strng{authorbibnamehash}{ea36107ce2e50284b597cedbea01811f}
+      \strng{authornamehash}{ea36107ce2e50284b597cedbea01811f}
+      \strng{authorfullhash}{ea36107ce2e50284b597cedbea01811f}
+      \strng{authorfullhashraw}{ea36107ce2e50284b597cedbea01811f}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. ICCKE}
+      \field{title}{A Privacy-Preserving Recommender for Filling Web Forms Using a Local Large Language Model}
+      \field{year}{2025}
+    \endentry
+    \entry{page2021prisma}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=dc8dec2af340843f020ddf7e651a3a4b}{%
+           family={Page},
+           familyi={P\bibinitperiod},
+           given={Matthew\bibnamedelimb J\bibnamedelimb et\bibnamedelima al.},
+           giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {British Medical Journal Publishing Group}%
+      }
+      \strng{namehash}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{fullhash}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{fullhashraw}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{bibnamehash}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{authorbibnamehash}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{authornamehash}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{authorfullhash}{dc8dec2af340843f020ddf7e651a3a4b}
+      \strng{authorfullhashraw}{dc8dec2af340843f020ddf7e651a3a4b}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{BMJ}
+      \field{title}{The PRISMA 2020 statement: an updated guideline for reporting systematic reviews}
+      \field{volume}{372}
+      \field{year}{2021}
+    \endentry
+    \entry{pasuksmit2025humanintheloop}{inproceedings}{}{}
+      \name{author}{11}{}{%
+        {{un=0,uniquepart=base,hash=dd5948712fd9d21a4e168bbc332afff4}{%
+           family={Pasuksmit},
+           familyi={P\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d1475ac92cfd8e845ab14974ce0a2240}{%
+           family={Takerngsaksiri},
+           familyi={T\bibinitperiod},
+           given={W.},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f4b0f571e969f5cbad5d034c4eddfcf4}{%
+           family={Thongtanunam},
+           familyi={T\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bbaec9ae87edac91d52d9ce964f19108}{%
+           family={Tantithamthavorn},
+           familyi={T\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=528b0708ec1bf9b1677b35261fac82bf}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cd6c1d35aed39fa11fcfba0d353120d6}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0cbe0eebdfd3843cf37b5f76f2b462e7}{%
+           family={Jiang},
+           familyi={J\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ef065b28c31984323fd6d3483d29aafd}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bad36e887dc9a1b13f2d6b242640e746}{%
+           family={Cook},
+           familyi={C\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bbd76d99dff4497fda6976a4f0146e4f}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bd478291134e5efdbf172615f331fec0}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f3ac7ff114a52be4b5f2e558081d296b}
+      \strng{fullhash}{ba200d49651d7a18d53004c32c6cff0e}
+      \strng{fullhashraw}{ba200d49651d7a18d53004c32c6cff0e}
+      \strng{bibnamehash}{f3ac7ff114a52be4b5f2e558081d296b}
+      \strng{authorbibnamehash}{f3ac7ff114a52be4b5f2e558081d296b}
+      \strng{authornamehash}{f3ac7ff114a52be4b5f2e558081d296b}
+      \strng{authorfullhash}{ba200d49651d7a18d53004c32c6cff0e}
+      \strng{authorfullhashraw}{ba200d49651d7a18d53004c32c6cff0e}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Multi-agent LLM-driven systems for software development are rapidly gaining traction, offering new opportunities to enhance productivity. At Atlassian, we deployed Human-in-the-Loop Software Development Agents to resolve Jira work items and evaluated the generated code quality using functional correctness testing and GPT-based similarity scoring. This paper highlights two major challenges: the high computational costs of unit testing and the variability in LLM-based evaluations. We also propose ...}
+      \field{booktitle}{2025 IEEE/ACM 22nd International Conference on Mining Software Repositories (MSR)}
+      \field{title}{Human-In-The-Loop Software Development Agents: Challenges and Future Directions}
+      \field{year}{2025}
+    \endentry
+    \entry{qian2023chatdev}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=7fc8f6c94b9a0273ca54021ffa8e5d91}{%
+           family={Qian},
+           familyi={Q\bibinitperiod},
+           given={Chen\bibnamedelimb et\bibnamedelima al.},
+           giveni={C\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{fullhash}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{fullhashraw}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{bibnamehash}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{authorbibnamehash}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{authornamehash}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{authorfullhash}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \strng{authorfullhashraw}{7fc8f6c94b9a0273ca54021ffa8e5d91}
+      \field{sortinit}{Q}
+      \field{sortinithash}{ce69a400a872ddd02ee7fdb3b38c6abd}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Annual Meeting of the Association for Computational Linguistics (ACL)}
+      \field{title}{ChatDev: Communicative Agents for Software Development}
+      \field{year}{2024}
+    \endentry
+    \entry{sallou2024breaking}{inproceedings}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=36ab08b113e4856d20650319353ae973}{%
+           family={Sallou},
+           familyi={S\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{0f75c22941e9b24a538454c8a39b8bbf}
+      \strng{fullhash}{0f75c22941e9b24a538454c8a39b8bbf}
+      \strng{fullhashraw}{0f75c22941e9b24a538454c8a39b8bbf}
+      \strng{bibnamehash}{0f75c22941e9b24a538454c8a39b8bbf}
+      \strng{authorbibnamehash}{0f75c22941e9b24a538454c8a39b8bbf}
+      \strng{authornamehash}{0f75c22941e9b24a538454c8a39b8bbf}
+      \strng{authorfullhash}{0f75c22941e9b24a538454c8a39b8bbf}
+      \strng{authorfullhashraw}{0f75c22941e9b24a538454c8a39b8bbf}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. ICSE-NIER}
+      \field{title}{Breaking the Silence: the Threats of Using LLMs in Software Engineering}
+      \field{year}{2024}
+    \endentry
+    \entry{salman2025a}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=046af861898e1cdcc2e80f81a799b0ac}{%
+           family={Salman},
+           familyi={S\bibinitperiod},
+           given={I.},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fefe714ab361ff61847e7fd8835d1cde}{%
+           family={Waseem},
+           familyi={W\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=590ea780f54e458efa2c7b50f30b4658}{%
+           family={Mandić},
+           familyi={M\bibinitperiod},
+           given={V.},
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4a5ab7ccb0e60d35e5afe0ed254ae5d6}{%
+           family={Alwis},
+           familyi={A\bibinitperiod},
+           given={R.\bibnamedelimi D.\bibnamedelimi De},
+           giveni={R\bibinitperiod\bibinitdelim D\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{74752d2050a53480bb6cac024f518e9b}
+      \strng{fullhash}{e3b420eb31f622b241fe13a6f4d383aa}
+      \strng{fullhashraw}{e3b420eb31f622b241fe13a6f4d383aa}
+      \strng{bibnamehash}{74752d2050a53480bb6cac024f518e9b}
+      \strng{authorbibnamehash}{74752d2050a53480bb6cac024f518e9b}
+      \strng{authornamehash}{74752d2050a53480bb6cac024f518e9b}
+      \strng{authorfullhash}{e3b420eb31f622b241fe13a6f4d383aa}
+      \strng{authorfullhashraw}{e3b420eb31f622b241fe13a6f4d383aa}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Background: Large language models (LLM) suffer from various forms of biases due to the biased datasets used to train the models. At the same time, human cognitive biases have an equal propensity to express themselves when using LLMs for software engineering tasks. Software testing is a critical phase of the software development life cycle. Confirmation bias is reported to have deteriorated software testing by designing more specification-consistent test cases compared to specificationinconsisten...}
+      \field{booktitle}{2025 ACM/IEEE International Symposium on Empirical Software Engineering and Measurement (ESEM)}
+      \field{title}{A Vision for Debiasing Confirmation Bias in Software Testing via LLM}
+      \field{year}{2025}
+    \endentry
+    \entry{srinivasan2025dura}{inproceedings}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d1f8d99fbf07da2bdd107ea1d8812b12}{%
+           family={Srinivasan},
+           familyi={S\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{2671538ea398a4245c5c9de81c95534d}
+      \strng{fullhash}{2671538ea398a4245c5c9de81c95534d}
+      \strng{fullhashraw}{2671538ea398a4245c5c9de81c95534d}
+      \strng{bibnamehash}{2671538ea398a4245c5c9de81c95534d}
+      \strng{authorbibnamehash}{2671538ea398a4245c5c9de81c95534d}
+      \strng{authornamehash}{2671538ea398a4245c5c9de81c95534d}
+      \strng{authorfullhash}{2671538ea398a4245c5c9de81c95534d}
+      \strng{authorfullhashraw}{2671538ea398a4245c5c9de81c95534d}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. DSN-W}
+      \field{title}{DURA-CPS: A Multi-Role Orchestrator for Dependability Assurance in LLM-Enabled Cyber-Physical Systems}
+      \field{year}{2025}
+    \endentry
+    \entry{sternak2025automating}{inproceedings}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=407c5e46b962f4a6714e4a2cef1d278e}{%
+           family={Sternak},
+           familyi={S\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{39c97f4738f6f151d97ed1f1e94426bb}
+      \strng{fullhash}{39c97f4738f6f151d97ed1f1e94426bb}
+      \strng{fullhashraw}{39c97f4738f6f151d97ed1f1e94426bb}
+      \strng{bibnamehash}{39c97f4738f6f151d97ed1f1e94426bb}
+      \strng{authorbibnamehash}{39c97f4738f6f151d97ed1f1e94426bb}
+      \strng{authornamehash}{39c97f4738f6f151d97ed1f1e94426bb}
+      \strng{authorfullhash}{39c97f4738f6f151d97ed1f1e94426bb}
+      \strng{authorfullhashraw}{39c97f4738f6f151d97ed1f1e94426bb}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. MIPRO}
+      \field{title}{Automating Prompt Leakage Attacks on Large Language Models Using Agentic Approach}
+      \field{year}{2025}
+    \endentry
+    \entry{stojanović2024unit}{inproceedings}{}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=175aa75d63ade4b1a7286e1152d24188}{%
+           family={Stojanović},
+           familyi={S\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2ea4fc20b3175558d18c83d09b70afd0}{%
+           family={Pavković},
+           familyi={P\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=57c81bd320a33fbd3f42d31ba6529caa}{%
+           family={Četić},
+           familyi={Č\bibinitperiod},
+           given={N.},
+           giveni={N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=54eb4f8455050cda9b5d7c06e16819ad}{%
+           family={Krunić},
+           familyi={K\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0469aeb0359a0b56ae3a88f9e5512c1e}{%
+           family={Vidaković},
+           familyi={V\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{c95c525be7f01b46fd9d83a29df3cb22}
+      \strng{fullhash}{34a0071ee8c476ce7513dc9f73f68757}
+      \strng{fullhashraw}{34a0071ee8c476ce7513dc9f73f68757}
+      \strng{bibnamehash}{c95c525be7f01b46fd9d83a29df3cb22}
+      \strng{authorbibnamehash}{c95c525be7f01b46fd9d83a29df3cb22}
+      \strng{authornamehash}{c95c525be7f01b46fd9d83a29df3cb22}
+      \strng{authorfullhash}{34a0071ee8c476ce7513dc9f73f68757}
+      \strng{authorfullhashraw}{34a0071ee8c476ce7513dc9f73f68757}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Software development necessitates a robust testing plan though test development can be laborious and nonappealing task. We explore the utilization of the application artificial intelligence agents for generating and executing unit tests, enhancing the “Mostly Basic Python Problems” dataset. We employ behavior-driven development within a three-agent system to generate user stories and unit tests. Empirical results indicate improvements in branch coverage, illustrating the effective utilization of...}
+      \field{booktitle}{2024 32nd Telecommunications Forum (TELFOR)}
+      \field{title}{Unit Test Generation Multi-Agent AI System for Enhancing Software Documentation and Code Coverage}
+      \field{year}{2024}
+    \endentry
+    \entry{sulaiman2025an}{inproceedings}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=85ecc1e96fbf24db09e80791f61d2153}{%
+           family={Sulaiman},
+           familyi={S\bibinitperiod},
+           given={N.\bibnamedelimi A.\bibnamedelimi A.},
+           giveni={N\bibinitperiod\bibinitdelim A\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6ae067246bcdb0b4fb2dbb8f26b1b34b}{%
+           family={Haron},
+           familyi={H\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=efd0610af72cc8249177790caf3addb5}{%
+           family={Mahfuz},
+           familyi={M\bibinitperiod},
+           given={N.\bibnamedelimi M.},
+           giveni={N\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5e075b2dbe6c0b75db96c0ad13e893ee}{%
+           family={Saat},
+           familyi={S\bibinitperiod},
+           given={N.\bibnamedelimi A.\bibnamedelimi M.},
+           giveni={N\bibinitperiod\bibinitdelim A\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=291f090342ef83a7961f6941891d0d2b}{%
+           family={Daud},
+           familyi={D\bibinitperiod},
+           given={S.\bibnamedelimi N.},
+           giveni={S\bibinitperiod\bibinitdelim N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3bfaa14e59f8f3ae3b30b8a2adb5353a}{%
+           family={Alias},
+           familyi={A\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{72f5c65f3790740f8fa68721ed3f10e1}
+      \strng{fullhash}{90f00a572b19b547c142058689f646f2}
+      \strng{fullhashraw}{90f00a572b19b547c142058689f646f2}
+      \strng{bibnamehash}{72f5c65f3790740f8fa68721ed3f10e1}
+      \strng{authorbibnamehash}{72f5c65f3790740f8fa68721ed3f10e1}
+      \strng{authornamehash}{72f5c65f3790740f8fa68721ed3f10e1}
+      \strng{authorfullhash}{90f00a572b19b547c142058689f646f2}
+      \strng{authorfullhashraw}{90f00a572b19b547c142058689f646f2}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This study introduces Explain-then-Grade, an automated feedback framework designed for programming lab assignments using agent reasoning and large language models (LLMs). Unlike conventional auto-graders, which provide marks directly and general feedback, the proposed framework requires the agent to explain detected errors prior to assigning marks, thereby enhancing pedagogical value and transparency. The framework integrates sandboxed execution, on-the-fly test generation, and structured, stepw...}
+      \field{booktitle}{2025 IEEE 11th International Conference on Computing, Engineering and Design (ICCED)}
+      \field{title}{An Agentic Reasoning-Based Feedback System for Programming Assignments}
+      \field{year}{2025}
+    \endentry
+    \entry{tiwari2025intellitest}{inproceedings}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=186678adf264e6af1cb176b036e0ee37}{%
+           family={Tiwari},
+           familyi={T\bibinitperiod},
+           given={A.\bibnamedelimi S.},
+           giveni={A\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fb13ed4a3e5f2134cb351c4b3ba3e7ed}{%
+           family={C},
+           familyi={C\bibinitperiod},
+           given={S.\bibnamedelimi Ganesh\bibnamedelimb Nutan\bibnamedelima Dev},
+           giveni={S\bibinitperiod\bibinitdelim G\bibinitperiod\bibinitdelim N\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=85c81538728407c9acf53d0c34d8a95a}{%
+           family={Patole},
+           familyi={P\bibinitperiod},
+           given={P.\bibnamedelimi M.},
+           giveni={P\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0620b090e1665db4de7615d24f73597c}{%
+           family={Ponnamreddy},
+           familyi={P\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e4984fbaf4ae050d701fdbdfc2ac41fa}{%
+           family={Chinthalapudi},
+           familyi={C\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1192b9c5cae338eaf3d5714fae921846}{%
+           family={Kattamanchi},
+           familyi={K\bibinitperiod},
+           given={D.\bibnamedelimi P.},
+           giveni={D\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{5160d217ae8dc2085414280980e5891a}
+      \strng{fullhash}{347c24711bb27477faa17812e5212f27}
+      \strng{fullhashraw}{347c24711bb27477faa17812e5212f27}
+      \strng{bibnamehash}{5160d217ae8dc2085414280980e5891a}
+      \strng{authorbibnamehash}{5160d217ae8dc2085414280980e5891a}
+      \strng{authornamehash}{5160d217ae8dc2085414280980e5891a}
+      \strng{authorfullhash}{347c24711bb27477faa17812e5212f27}
+      \strng{authorfullhashraw}{347c24711bb27477faa17812e5212f27}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{IntelliTest is an end-to-end, locally deployable framework that automates functional test generation and selection for complex embedded systems from two input modes: Software Change Artifacts (SCAs)—multimodal changelist data combining code diffs with textual metadata—and Natural-Language Queries (NLQs) for direct test requests. It employs a domainagnostic ontology defining procedural semantics, compiled into a structured procedural database and a specification knowledge graph for retrieval-augm...}
+      \field{booktitle}{2025 IEEE Future Networks World Forum (FNWF)}
+      \field{title}{IntelliTest: An Intelligent Framework for Agentic Functional Test Generation Using Multimodal Data and Domain Knowledge}
+      \field{year}{2025}
+    \endentry
+    \entry{tomic2025evaluation}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=6c35d5cf617e9e8a9d7c11ec3d54630d}{%
+           family={Tomic},
+           familyi={T\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0ddda861247e1b1c8e3f701fd5aafc38}{%
+           family={Alégroth},
+           familyi={A\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=041f88e4876fb279ef8ef1462e9a3c6c}{%
+           family={Isaac},
+           familyi={I\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{1c76bd39f65de1a8d2c0332e066d1d86}
+      \strng{fullhash}{1c76bd39f65de1a8d2c0332e066d1d86}
+      \strng{fullhashraw}{1c76bd39f65de1a8d2c0332e066d1d86}
+      \strng{bibnamehash}{1c76bd39f65de1a8d2c0332e066d1d86}
+      \strng{authorbibnamehash}{1c76bd39f65de1a8d2c0332e066d1d86}
+      \strng{authornamehash}{1c76bd39f65de1a8d2c0332e066d1d86}
+      \strng{authorfullhash}{1c76bd39f65de1a8d2c0332e066d1d86}
+      \strng{authorfullhashraw}{1c76bd39f65de1a8d2c0332e066d1d86}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Automated testing, particularly for GUI-based systems, remains a costly and labor-intensive process and prone to errors. Despite advancements in automation, manual testing still dominates in industrial practice, resulting in delays, higher costs, and increased error rates. Large Language Models (LLMs) have shown great potential to automate tasks traditionally requiring human intervention, leveraging their cognitive-like abilities for test generation and evaluation. In this study, we present Path...}
+      \field{booktitle}{2025 IEEE Conference on Software Testing, Verification and Validation (ICST)}
+      \field{title}{Evaluation of the Choice of LLM in a Multi-Agent Solution for GUI-Test Generation}
+      \field{year}{2025}
+    \endentry
+    \entry{vaswani2017attention}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=072e3ef6ef802a7535ce240c07eaaabc}{%
+           family={Vaswani},
+           familyi={V\bibinitperiod},
+           given={Ashish\bibnamedelimb et\bibnamedelima al.},
+           giveni={A\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{fullhash}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{fullhashraw}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{bibnamehash}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{authorbibnamehash}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{authornamehash}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{authorfullhash}{072e3ef6ef802a7535ce240c07eaaabc}
+      \strng{authorfullhashraw}{072e3ef6ef802a7535ce240c07eaaabc}
+      \field{sortinit}{V}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Attention is all you need}
+      \field{year}{2017}
+    \endentry
+    \entry{wang2023software}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=1,uniquepart=given,hash=1c8264acf3b46d6f4fed6eba96a50b12}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Junjie\bibnamedelimb et\bibnamedelima al.},
+           giveni={J\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=1}}%
+      }
+      \strng{namehash}{1c8264acf3b46d6f4fed6eba96a50b12}
+      \strng{fullhash}{1c8264acf3b46d6f4fed6eba96a50b12}
+      \strng{fullhashraw}{1c8264acf3b46d6f4fed6eba96a50b12}
+      \strng{bibnamehash}{1c8264acf3b46d6f4fed6eba96a50b12}
+      \strng{authorbibnamehash}{1c8264acf3b46d6f4fed6eba96a50b12}
+      \strng{authornamehash}{1c8264acf3b46d6f4fed6eba96a50b12}
+      \strng{authorfullhash}{1c8264acf3b46d6f4fed6eba96a50b12}
+      \strng{authorfullhashraw}{1c8264acf3b46d6f4fed6eba96a50b12}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Software Testing with Large Language Model: Survey, Landscape, and Vision}
+      \field{year}{2023}
+    \endentry
+    \entry{wang2024agents}{inproceedings}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{un=1,uniquepart=given,hash=33b4ceeaa068e0ff0791079d2b905b6d}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod},
+           givenun=1}}%
+      }
+      \strng{namehash}{84ccd237c6af78730db98de8bfe909a8}
+      \strng{fullhash}{84ccd237c6af78730db98de8bfe909a8}
+      \strng{fullhashraw}{84ccd237c6af78730db98de8bfe909a8}
+      \strng{bibnamehash}{84ccd237c6af78730db98de8bfe909a8}
+      \strng{authorbibnamehash}{84ccd237c6af78730db98de8bfe909a8}
+      \strng{authornamehash}{84ccd237c6af78730db98de8bfe909a8}
+      \strng{authorfullhash}{84ccd237c6af78730db98de8bfe909a8}
+      \strng{authorfullhashraw}{84ccd237c6af78730db98de8bfe909a8}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. QRS-C}
+      \field{title}{Do Agents Behave Aligned with Human Instructions? - An Automated Assessment Approach}
+      \field{year}{2024}
+    \endentry
+    \entry{wang2025supply}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=1,uniquepart=given,hash=cd6c1d35aed39fa11fcfba0d353120d6}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=1}}%
+        {{un=0,uniquepart=base,hash=d5ff4bd5ca210dc62374b1352daac212}{%
+           family={Zhao},
+           familyi={Z\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b90a01785689c75a7c23f2223cf86f3c}{%
+           family={Hou},
+           familyi={H\bibinitperiod},
+           given={X.},
+           giveni={X\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=39856f0439f35f79a8eed8b12d26166c}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{2d747210d2be67eb06c500d09866b8ab}
+      \strng{fullhash}{eea5d6636c5de095654ea5ffe6ef44a7}
+      \strng{fullhashraw}{eea5d6636c5de095654ea5ffe6ef44a7}
+      \strng{bibnamehash}{2d747210d2be67eb06c500d09866b8ab}
+      \strng{authorbibnamehash}{2d747210d2be67eb06c500d09866b8ab}
+      \strng{authornamehash}{2d747210d2be67eb06c500d09866b8ab}
+      \strng{authorfullhash}{eea5d6636c5de095654ea5ffe6ef44a7}
+      \strng{authorfullhashraw}{eea5d6636c5de095654ea5ffe6ef44a7}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Defines and analyzes the "supply chain" of LLMs, including infrastructure, foundation models, and downstream applications like autonomous agents and testing tools.}
+      \field{journaltitle}{TOSEM '25}
+      \field{title}{Large Language Model Supply Chain: A Research Agenda}
+      \field{year}{2025}
+    \endentry
+    \entry{winters2020software}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=726a77b2c0c9e2331047428dbfded3cf}{%
+           family={Winters},
+           familyi={W\bibinitperiod},
+           given={Titus\bibnamedelimb et\bibnamedelima al.},
+           giveni={T\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{fullhash}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{fullhashraw}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{bibnamehash}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{authorbibnamehash}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{authornamehash}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{authorfullhash}{726a77b2c0c9e2331047428dbfded3cf}
+      \strng{authorfullhashraw}{726a77b2c0c9e2331047428dbfded3cf}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Software Engineering at Google: Lessons Learned from Programming Over Time}
+      \field{year}{2020}
+    \endentry
+    \entry{xia2024agentless}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=ffe8b04c5c80790ca8aa4eb742b4a135}{%
+           family={Xia},
+           familyi={X\bibinitperiod},
+           given={Chunqiu\bibnamedelima Steven},
+           giveni={C\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b8388ada898085df60c10b7115b2cf48}{%
+           family={Deng},
+           familyi={D\bibinitperiod},
+           given={Yinlin},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=735bde8e9489ddeb2ff169d7774bdafd}{%
+           family={Dunn},
+           familyi={D\bibinitperiod},
+           given={Soren},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d4bc38109c3bdedeccb478acb4c658b9}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Lingming},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{ef095bd6b8af283cc8865d11bc60d056}
+      \strng{fullhash}{a93e84d70404b6f9c285dee47adbe9da}
+      \strng{fullhashraw}{a93e84d70404b6f9c285dee47adbe9da}
+      \strng{bibnamehash}{ef095bd6b8af283cc8865d11bc60d056}
+      \strng{authorbibnamehash}{ef095bd6b8af283cc8865d11bc60d056}
+      \strng{authornamehash}{ef095bd6b8af283cc8865d11bc60d056}
+      \strng{authorfullhash}{a93e84d70404b6f9c285dee47adbe9da}
+      \strng{authorfullhashraw}{a93e84d70404b6f9c285dee47adbe9da}
+      \field{sortinit}{X}
+      \field{sortinithash}{1965c258adceecf23ce3d67b05113442}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{International Symposium on the Foundations of Software Engineering (FSE)}
+      \field{title}{Agentless: Demystifying LLM-based Software Engineering Agents}
+      \field{year}{2025}
+    \endentry
+    \entry{yang2024sweagent}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=34723b92afdd99d1b5be49e67d5edc80}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={John\bibnamedelimb et\bibnamedelima al.},
+           giveni={J\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{fullhash}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{fullhashraw}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{bibnamehash}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{authorbibnamehash}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{authornamehash}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{authorfullhash}{34723b92afdd99d1b5be49e67d5edc80}
+      \strng{authorfullhashraw}{34723b92afdd99d1b5be49e67d5edc80}
+      \field{sortinit}{Y}
+      \field{sortinithash}{fd67ad5a9ef0f7456bdd9aab10fe1495}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Conference on Neural Information Processing Systems (NeurIPS)}
+      \field{title}{SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering}
+      \field{year}{2024}
+    \endentry
+    \entry{zhao2024models}{inproceedings}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=326e7e67b0b4605a06b13d7b7d37ab75}{%
+           family={Zhao},
+           familyi={Z\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b61c2a35e46354fd1be77b3a4cdbecd5}
+      \strng{fullhash}{b61c2a35e46354fd1be77b3a4cdbecd5}
+      \strng{fullhashraw}{b61c2a35e46354fd1be77b3a4cdbecd5}
+      \strng{bibnamehash}{b61c2a35e46354fd1be77b3a4cdbecd5}
+      \strng{authorbibnamehash}{b61c2a35e46354fd1be77b3a4cdbecd5}
+      \strng{authornamehash}{b61c2a35e46354fd1be77b3a4cdbecd5}
+      \strng{authorfullhash}{b61c2a35e46354fd1be77b3a4cdbecd5}
+      \strng{authorfullhashraw}{b61c2a35e46354fd1be77b3a4cdbecd5}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. ASE}
+      \field{title}{Models Are Codes: Towards Measuring Malicious Code Poisoning Attacks on Pre-trained Model Hubs}
+      \field{year}{2024}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

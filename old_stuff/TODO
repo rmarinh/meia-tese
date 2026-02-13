@@ -1,0 +1,81 @@
+* Prof Constantino 
+
+* Propota prisma
+  * Como feito em INVINIA 
+
+
+* Como fazer po prisma 
+
+Prompt
+-----
+
+**Role:**
+Act as a Senior Researcher and PhD Supervisor specializing in Software Engineering, specifically in Software Testing (QA), Generative AI (LLMs), and Multi-Agent Systems. You are an expert in conducting Systematic Literature Reviews (SLR) following the PRISMA 2020 guidelines.
+
+**Context:**
+I am a Master's student writing a dissertation on automating software testing using a Multi-Agent System (MAS) powered by LLMs.
+Here is the description of my project:
+
+"""
+Breve descrição do Projeto/Dissertação/Estágio:
+No atual ecossistema de desenvolvimento da empresa acolhedora, a garantia de qualidade é
+suportada por uma framework de automação madura, rica em componentes reutilizáveis.
+Contudo, a composição manual destes componentes para formar cenários de teste coesos (ex:
+fluxos end-to-end) representa um gargalo operacional, exigindo elevado esforço cognitivo e
+temporal.
+Esta dissertação propõe uma abordagem inovadora baseada na orquestração de Modelos de
+Linguagem de Grande Porte (LLMs) em arquitetura de Agentes. O sistema mimetizará o fluxo
+de trabalho de um engenheiro de QA: perante um requisito em linguagem natural, um agente
+de planeamento decomporá a tarefa; um agente de recuperação (Retriever) consultará a
+biblioteca interna para identificar os objetos de teste precisos; e um agente de codificação
+consolidará estes elementos num script final. O projeto integrará ainda um módulo de
+avaliação automatizada (LLM-as-a-Judge ou métricas de similaridade de código) para garantir
+que os testes gerados não só são sintaticamente corretos, mas também funcionalmente
+válidos e alinhados com a arquitetura de software da organização.
+Objetivos:
+O presente projeto visa a investigação e desenvolvimento de um sistema de automação de
+testes assistido por Inteligência Artificial Generativa, com os seguintes objetivos:
+Arquitetar um Sistema Multi-Agente (MAS): Desenvolver um ecossistema colaborativo onde
+agentes especializados (ex: Planner, Retriever, Coder) interagem para converter intenções de
+teste em scripts executáveis.
+Orquestração Semântica e Tool Use: Implementar mecanismos que permitam ao modelo
+utilizar ferramentas externas (o indexador da empresa) via RAG (Retrieval-Augmented
+Generation), garantindo a reutilização correta de componentes de API e Web proprietários.
+Refinamento via Few-Shot Learning: Otimizar a precisão sintática do código gerado através da
+injeção dinâmica de "exemplos dourados" (golden examples), assegurando conformidade com
+as normas da equipa de QA.
+Implementar Pipelines de Avaliação (Evals): Estabelecer métricas rigorosas para validar a
+solução, combinando avaliação baseada em execução (Execution-based evaluation) com
+análise estática de código, comparando a eficácia do sistema proposto face ao
+desenvolvimento manual.
+"""
+
+**Objective:**
+I need to conduct a Systematic Literature Review (SLR) to support this dissertation. Based on the project description above, please generate a complete **PRISMA Review Protocol**.
+
+**Tasks:**
+Please provide the following four outputs, formatted clearly:
+
+**1. Refined Research Questions (RQs)**
+Formulate 3-4 specific, academic Research Questions using the PICO (Population, Intervention, Comparison, Outcome) or PICOC framework.
+- The questions must address the specific architecture (Multi-Agent: Planner/Retriever/Coder).
+- They must address the specific technique (RAG for proprietary frameworks/tools).
+- They must address the evaluation methods (Execution-based vs. Static analysis).
+
+**2. Boolean Search Strings**
+Create sophisticated Boolean search strings optimized for the following databases: **Scopus**, **IEEE Xplore**, and **ACM Digital Library**.
+- Include synonyms for key terms (e.g., "Software Testing" OR "QA"; "LLM" OR "Generative AI"; "Multi-Agent" OR "Autonomous Agents").
+- Ensure the strings focus on the intersection of **Testing** AND **Generative AI** AND **Agents/RAG**.
+
+**3. Inclusion and Exclusion Criteria**
+Create a detailed table defining what papers to keep and what to reject.
+- Pay attention to the timeline (since LLM Agents are new, suggest an appropriate year range, e.g., 2022-2025).
+- Differentiate between general code generation papers and specific *test* generation papers.
+
+**4. Data Extraction Form**
+Create a list of specific columns/fields I should extract from the papers I find.
+- Don't just list standard fields (Author/Year).
+- List technical fields specific to my topic (e.g., "Agent Architecture Type," "Context Injection Method (RAG vs Fine-tuning)," "Evaluation Metric Used," "LLM Model Used").
+
+**Output Format:**
+Please format the response in Markdown with clear headings. Explain the reasoning behind your choices briefly.
