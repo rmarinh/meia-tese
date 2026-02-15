@@ -47,25 +47,25 @@ To all software engineers striving to build more reliable and secure systems.
 
 \begin{abstract}
 
-Software testing remains a critical yet resource-intensive activity in modern software development. While Large Language Models (LLMs) have demonstrated promising capabilities for automated test generation, their deployment in enterprise environments raises significant security and privacy concerns. This thesis investigates the application of Multi-Agent Systems (MAS) powered by LLMs for automated software testing, with particular emphasis on security and privacy protection.
+The manual creation of software tests is costly, slow, and difficult to scale when seeking comprehensive coverage of complex applications. This dissertation addresses the problem through automated test generation supported by Multi-Agent Systems (MAS) powered by Large Language Models (LLMs), combining two complementary approaches: learning from existing test examples and observing application behaviour through black-box traffic capture.
 
-Following the PRISMA methodology, we conduct a systematic literature review addressing six research questions spanning security risks, mitigation strategies, testing effectiveness, architectural patterns, practical deployment challenges, and LLM configuration impacts. Based on the findings, we propose a secure-by-design reference architecture incorporating defense-in-depth security controls, including sandboxed execution environments, PII scrubbing mechanisms, Agent-Computer Interface hardening, and comprehensive audit logging.
+The central contribution is the implementation of a modular platform, TestForge, that integrates six specialised agents (Observer, Mapper, Analyser, Generator, Executor, Validator) in a dual-pipeline architecture. The Golden Examples pipeline analyses existing test files using Tree-sitter AST parsing to extract patterns, conventions, and testing strategies, then uses LLM few-shot prompting to generate new tests that go beyond trivial assertions---targeting state integrity, boundary conditions, business logic, and error handling. The Black-Box Observer pipeline captures HTTP traffic from running applications, maps the API surface through endpoint normalisation and schema inference, and generates tests without requiring source code access.
 
-A prototype implementation demonstrates the feasibility of the proposed architecture through six specialized agents: planning, code analysis, test generation, execution, validation, and security. Experimental evaluation assesses testing effectiveness against established benchmarks, security control efficacy against simulated attacks, and cost-performance trade-offs.
+A persistent memory layer, implemented through the Letta framework with local LLM inference (Ollama), enables the system to progressively learn about target applications across sessions. The platform runs entirely locally, ensuring that no application code or test data leaves the user's environment.
 
-The thesis contributes a taxonomy of MAS testing architectures, a comprehensive security analysis, practical deployment guidelines aligned with GDPR and EU AI Act requirements, and empirical evidence supporting the viability of privacy-preserving autonomous testing systems.
+Following the PRISMA methodology, a systematic literature review of 55 studies covers MAS architectures for testing, LLM-driven test generation, and security considerations. Experimental evaluation on a Flask CRUD API demonstrates that the Golden Examples pipeline generates insightful tests: of 9 generated tests, 4 found genuine application deficiencies (validation ordering bugs, missing type checks, inconsistent error handling) that were not caught by the 23 original golden tests. The results highlight the potential of combining AST-based pattern extraction with LLM generation for producing high-quality automated tests.
 
 \end{abstract}
 
 \begin{abstractotherlanguage}
 
-Os testes de software permanecem uma atividade crítica mas intensiva em recursos no desenvolvimento moderno de software. Embora os Modelos de Linguagem de Grande Escala (LLMs) tenham demonstrado capacidades promissoras para geração automatizada de testes, a sua implementação em ambientes empresariais levanta preocupações significativas de segurança e privacidade. Esta tese investiga a aplicação de Sistemas Multi-Agente (MAS) alimentados por LLMs para testes automatizados de software, com ênfase particular na proteção de segurança e privacidade.
+A criação manual de testes de software é dispendiosa, lenta e difícil de escalar quando se pretende uma cobertura abrangente de aplicações complexas. Esta dissertação aborda o problema através da geração automatizada de testes suportada por Sistemas Multi-Agente (MAS) alimentados por Modelos de Linguagem de Grande Escala (LLMs), combinando duas abordagens complementares: aprendizagem a partir de exemplos de testes existentes e observação do comportamento da aplicação através de captura de tráfego black-box.
 
-Seguindo a metodologia PRISMA, realizamos uma revisão sistemática da literatura abordando seis questões de investigação que abrangem riscos de segurança, estratégias de mitigação, eficácia dos testes, padrões arquiteturais, desafios de implementação prática e impactos da configuração de LLMs. Com base nos resultados, propomos uma arquitetura de referência segura por design, incorporando controlos de segurança em profundidade, incluindo ambientes de execução isolados, mecanismos de remoção de dados pessoais, hardening da Interface Agente-Computador e logging de auditoria abrangente.
+O contributo central é a implementação de uma plataforma modular, TestForge, que integra seis agentes especializados (Observador, Mapeador, Analisador, Gerador, Executor, Validador) numa arquitetura de duplo pipeline. O pipeline de Exemplos Golden analisa ficheiros de teste existentes usando análise AST via Tree-sitter para extrair padrões, convenções e estratégias de teste, utilizando depois prompting few-shot com LLMs para gerar novos testes que vão além de asserções triviais---visando integridade de estado, condições limite, lógica de negócio e tratamento de erros. O pipeline de Observação Black-Box captura tráfego HTTP de aplicações em execução, mapeia a superfície API através de normalização de endpoints e inferência de esquemas, e gera testes sem necessitar de acesso ao código-fonte.
 
-Uma implementação de protótipo demonstra a viabilidade da arquitetura proposta através de seis agentes especializados: planeamento, análise de código, geração de testes, execução, validação e segurança. A avaliação experimental analisa a eficácia dos testes contra benchmarks estabelecidos, a eficácia dos controlos de segurança contra ataques simulados e os trade-offs custo-desempenho.
+Uma camada de memória persistente, implementada através do framework Letta com inferência LLM local (Ollama), permite ao sistema aprender progressivamente sobre as aplicações alvo entre sessões. A plataforma executa inteiramente de forma local, garantindo que nenhum código ou dados de teste saem do ambiente do utilizador.
 
-A tese contribui com uma taxonomia de arquiteturas de testes MAS, uma análise de segurança abrangente, diretrizes práticas de implementação alinhadas com os requisitos do RGPD e do Regulamento Europeu de IA, e evidências empíricas que suportam a viabilidade de sistemas de testes autónomos que preservam a privacidade.
+Seguindo a metodologia PRISMA, uma revisão sistemática da literatura de 55 estudos cobre arquiteturas MAS para testes, geração de testes baseada em LLMs e considerações de segurança. A avaliação experimental numa API Flask CRUD demonstra que o pipeline de Exemplos Golden gera testes perspicazes: de 9 testes gerados, 4 encontraram deficiências genuínas na aplicação (erros de ordenação de validação, verificações de tipo em falta, tratamento inconsistente de erros) que não foram detetadas pelos 23 testes golden originais. Os resultados evidenciam o potencial da combinação de extração de padrões baseada em AST com geração LLM para a produção de testes automatizados de alta qualidade.
 
 \end{abstractotherlanguage}
 
@@ -95,11 +95,11 @@ Finally, I extend my deepest appreciation to my family and friends for their und
 
 \listoftables % Prints the list of tables
 
-\iflanguage{portuguese}{
-\renewcommand{\listalgorithmname}{Lista de Algor\'itmos}
-}
-\listofalgorithms % Prints the list of algorithms
-\addchaptertocentry{\listalgorithmname}
+%\iflanguage{portuguese}{
+%\renewcommand{\listalgorithmname}{Lista de Algor\'itmos}
+%}
+%\listofalgorithms % Prints the list of algorithms (no algorithms in this thesis)
+%\addchaptertocentry{\listalgorithmname}
 
 
 \renewcommand{\lstlistlistingname}{List of Source Code}

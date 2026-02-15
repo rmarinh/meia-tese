@@ -1,0 +1,57 @@
+% Chapter 8 - Conclusions and Future Work
+
+\chapter{Conclusions and Future Work}
+\label{chap:conclusions}
+
+%----------------------------------------------------------------------------------------
+
+\section{Conclusions}
+\label{sec:conclusions}
+
+This section summarises the work accomplished in this iteration, reflecting on the prototype development, the experimental findings, and the overall progress toward the dissertation objective.
+
+This dissertation set out to design, implement, and evaluate a multi-agent platform for automated test generation. The current iteration delivered a functional proof of concept, TestForge, that demonstrates the viability of combining LLM-powered test generation with AST-based pattern extraction from existing test files. The platform was built from the ground up as a modular Python package comprising six specialised agents organised into two complementary pipelines, with a persistent memory layer and full support for local LLM inference.
+
+The Golden Examples pipeline, which was the primary focus of this iteration, was evaluated end-to-end against a Flask CRUD API. The Analyser agent successfully parsed 23 golden test functions using Tree-sitter, extracting a comprehensive style guide that captured the project's testing framework, HTTP client, fixture patterns, and assertion conventions. The Generator agent used this style guide together with the golden file source code as few-shot context to produce 9 new test functions that covered diverse testing categories including state integrity, boundary probing, business logic, type safety, and idempotency. Of these 9 tests, 4 passed and verified correct application behaviour, while 4 of the 5 failures exposed genuine application deficiencies (a validation ordering bug, missing input type validation, inconsistent error handling, and an incomplete search feature) that had not been detected by the original 23 hand-written tests. This 44\% bug-finding rate demonstrates that the approach is capable of producing tests with real diagnostic value, going well beyond the trivial status code assertions that characterise most existing automated test generators.
+
+The experiment also confirmed that local LLM execution using an 8B-parameter open-weight model (llama3.1:8b via Ollama) produces test code of sufficient quality for practical use, with all 9 generated tests being syntactically valid, properly structured, and executable by pytest. The generation latency of approximately 45 seconds for 9 tests, while slower than cloud-based inference, is acceptable for batch generation scenarios. Critically, the entire workflow ran on local infrastructure without transmitting any application code or test data to external services, validating the platform's suitability for organisations with strict data privacy requirements.
+
+The multi-agent pipeline architecture proved effective for decomposing the test generation problem into manageable stages. The typed interfaces between agents, implemented as Pydantic data models, prevented the cascading ambiguity issues that affect unstructured multi-agent communication and enabled independent development and debugging of each agent. The modular design also facilitated the implementation of the Black-Box Observer pipeline alongside the Golden Examples pipeline without requiring changes to the shared Generator, Executor, and Validator agents.
+
+\subsection{Summary of Contributions}
+
+The work completed in this iteration makes five concrete contributions. First, a systematic literature review of 55 studies following PRISMA methodology surveyed the state of the art in MAS-based software testing, LLM-driven test generation, and related security considerations, identifying research gaps that informed the platform design. Second, a golden examples approach using Tree-sitter AST parsing and few-shot prompting was implemented and evaluated, demonstrating the ability to generate tests that find real bugs by learning from existing high-quality test files. Third, the TestForge platform was developed as a modular, open-source prototype with six specialised agents, persistent memory via Letta, and fully local execution using open-weight models. Fourth, an experimental evaluation against a real-world application demonstrated a 44\% pass rate and a 44\% bug-finding rate, with a composite quality score of 0.65 out of 1.00. Fifth, a practical assessment of local LLM inference confirmed that effective test generation is feasible without cloud dependencies, addressing both privacy and cost concerns.
+
+%----------------------------------------------------------------------------------------
+
+\section{Limitations}
+\label{sec:limitations}
+
+This section acknowledges the limitations of the current iteration, distinguishing between constraints that stem from the scope of this delivery and those that represent fundamental challenges.
+
+The most significant limitation is the scope of the experimental evaluation. The results are derived from a single target application (a Flask CRUD API with 7 endpoints) and generalisation to other application types, frameworks, authentication patterns, data models, and complexity levels has not been tested. Only the llama3.1:8b model (8 billion parameters) was evaluated; larger models such as llama3.1:70b, or cloud-hosted models like GPT-4 and Claude, may produce significantly better results with richer assertions and fewer incorrect assumptions. The results represent a single pipeline run without statistical analysis; multiple runs with different random seeds and statistical tests would provide more robust conclusions. No direct baseline comparison with existing test generation tools such as Pynguin or EvoSuite, nor with human-written tests for the same application, was performed in this iteration.
+
+On the implementation side, the current prototype supports only Python with pytest and the requests library, and generalisation to other languages and testing frameworks requires additional development. Test execution relies on subprocess isolation rather than container-based sandboxing, which limits security guarantees when running untrusted generated code. The Black-Box Observer pipeline, while implemented at the architectural level, was not evaluated end-to-end in this iteration. Similarly, the persistent memory integration via Letta was validated at the infrastructure level but not tested across multiple sessions to measure its impact on progressive test quality improvement. These limitations define the scope of the next iteration.
+
+%----------------------------------------------------------------------------------------
+
+\section{Next Iteration and Future Work}
+\label{sec:future_work}
+
+This section outlines the work planned for the next iteration, which will complete the components that were not fully evaluated in the current delivery, as well as longer-term research directions that extend beyond the immediate scope of the dissertation.
+
+\subsection{Planned for the Next Iteration}
+
+Several components that were implemented but not fully evaluated in the current iteration are priorities for the next development cycle. The most immediate task is the end-to-end evaluation of the Black-Box Observer pipeline, which will involve capturing HTTP traffic from the target application via proxy interception, mapping the discovered endpoints, generating tests from the observed behaviour, and comparing the results against those obtained from the Golden Examples pipeline. This evaluation will determine whether traffic-based test generation produces tests of comparable quality to those generated from golden examples, and whether it can serve as a viable alternative when no reference tests are available.
+
+The combined pipeline mode, which uses golden examples for style extraction and observer data for endpoint discovery, will also be evaluated against each individual pipeline to measure the benefit of complementary data sources. This comparison is central to the dissertation's dual-pipeline thesis and will provide empirical evidence on whether combining both approaches produces higher-quality test suites than either approach alone.
+
+A multi-session longitudinal evaluation of the persistent memory system is also planned. This study will run the platform against the same target application across 5 to 10 sessions, measuring whether the ContextStore and Letta memory lead to progressively better tests as the platform accumulates knowledge about discovered endpoints, coverage gaps, and previously identified bugs. This evaluation will provide the empirical evidence needed to assess the value of persistent agent memory in automated test generation.
+
+Additionally, a multi-model evaluation comparing generation quality across different LLMs (including llama3.1:70b, Mistral, and cloud-hosted GPT-4) will be conducted with controlled experiments to clarify the impact of model capability on test quality. A baseline comparison with existing test generation tools such as Pynguin and EvoSuite, as well as with human-written tests for the same application, will provide a more rigorous assessment of the platform's relative effectiveness.
+
+\subsection{Longer-Term Research Directions}
+
+Beyond the next iteration, several directions for future research emerge from this work. The Observer Agent could be extended to capture browser interactions via Playwright, enabling a UI-focused Generator to produce test scripts from recorded user flows rather than API calls alone. Support for intercepting LLM API calls within target applications would allow generating evaluation tests that assess response quality, consistency, and safety in AI-powered applications. On the security front, container-based test execution with resource limits, network isolation, and read-only filesystem mounts would provide production-grade sandboxing for running untrusted generated code.
+
+A flakiness detection module that runs test suites multiple times would identify tests with inconsistent results, which is particularly important for generated tests that may depend on timing, ordering, or external state. The platform should also be tested against diverse real-world applications including Django REST APIs, FastAPI services, microservice architectures, and applications with complex authentication schemes such as OAuth 2.0 and JWT tokens. Integration with CI/CD systems through plugins for GitHub Actions and GitLab CI would enable automatic test generation for new or modified endpoints on each pull request, embedding TestForge into the development workflow. Finally, formal benchmarking against established datasets such as HumanEval and SWE-bench adapted for testing, and comparison with state-of-the-art test generation tools under controlled conditions, would provide rigorous effectiveness evaluation and position the platform within the broader research landscape.

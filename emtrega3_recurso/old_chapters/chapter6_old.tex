@@ -1,0 +1,230 @@
+% Chapter 6 - Conclusions and Future Work
+
+\chapter{Conclusions and Future Work}
+\label{chap:conclusions}
+
+This chapter concludes the thesis by summarizing contributions, providing explicit answers to each research question, discussing practical implications, acknowledging limitations, and outlining directions for future research.
+
+%----------------------------------------------------------------------------------------
+
+\section{Summary of Contributions}
+\label{sec:contributions_summary}
+
+This thesis has made five primary contributions to the fields of software testing and AI-assisted software engineering:
+
+\subsection{Contribution 1: Comprehensive Systematic Literature Review}
+
+Chapter~\ref{chap:literature_review} presented a systematic literature review following PRISMA methodology, synthesizing 45 studies across six research questions. The review provided an integrated perspective on MAS-based automated testing, covering:
+\begin{itemize}
+    \item Security and privacy risks in LLM-based agent systems
+    \item Mitigation strategies and secure architectural patterns
+    \item Multi-agent architectures and coordination models
+    \item Testing effectiveness evaluation and benchmarks
+    \item LLM selection and configuration strategies
+    \item Practical deployment considerations
+\end{itemize}
+
+\subsection{Contribution 2: Taxonomy of MAS Testing Architectures}
+
+The literature review developed a taxonomy categorizing MAS testing approaches along dimensions including coordination models (hierarchical, peer-to-peer, hybrid), role specialization patterns, communication protocols, and LLM integration strategies.
+
+\subsection{Contribution 3: Secure-by-Design Reference Architecture}
+
+Chapter~\ref{chap:architecture} presented a comprehensive architecture for secure, privacy-preserving multi-agent testing. Key architectural elements include:
+\begin{itemize}
+    \item Layered design with clear separation of concerns
+    \item Specialized agents with well-defined roles
+    \item Defense-in-depth security with sandboxing and permission controls
+    \item Privacy-by-design through PII scrubbing and context minimization
+    \item Human-in-the-loop controls for oversight and compliance
+\end{itemize}
+
+\subsection{Contribution 4: Prototype Implementation and Evaluation}
+
+Chapters~\ref{chap:implementation} and~\ref{chap:evaluation} described the prototype implementation and its empirical evaluation, demonstrating:
+\begin{itemize}
+    \item Feasibility of the proposed architecture
+    \item Effectiveness improvements over baselines
+    \item Security control effectiveness
+    \item Cost-performance trade-offs
+\end{itemize}
+
+\subsection{Contribution 5: Best Practices for Industrial Deployment}
+
+The thesis synthesized practical guidance for organizations seeking to adopt MAS-based testing, including deployment strategies, cost-benefit frameworks, and compliance considerations.
+
+%----------------------------------------------------------------------------------------
+
+\section{Answers to Research Questions}
+\label{sec:rq_answers}
+
+\subsection{RQ1: Security and Privacy Risks}
+
+\textit{What predominant security and privacy risks are associated with LLM-based Multi-Agent Systems in enterprise software testing environments?}
+
+The literature review (Section~\ref{sec:security_challenges}) identified five primary risk categories:
+
+\begin{enumerate}
+    \item \textbf{Data Leakage}: Transmission of proprietary code and PII to external LLM providers
+    \item \textbf{Adversarial Manipulation}: Prompt injection through code comments, trojan patterns, and agent alignment failures
+    \item \textbf{Unsafe Code Generation}: Vulnerability introduction, dependency confusion, and typosquatting risks
+    \item \textbf{Grounding Failures}: Hallucinated APIs, outdated knowledge, and context inconsistencies
+    \item \textbf{ACI Vulnerabilities}: Excessive permissions, insufficient isolation, and audit gaps
+\end{enumerate}
+
+\subsection{RQ2: Mitigation Strategies}
+
+\textit{What architectural patterns and mitigation strategies are proposed in the literature to secure Agent-Computer Interfaces and prevent data leakage?}
+
+Section~\ref{sec:mitigation} cataloged mitigations across three categories:
+
+\begin{itemize}
+    \item \textbf{Model-centric}: Local deployment, fine-tuning for safety, output filtering
+    \item \textbf{Pipeline-centric}: Sandboxed execution, PII scrubbing, context minimization, ACI hardening, audit logging
+    \item \textbf{Algorithmic}: Mutation testing validation, combinatorial testing, chaos engineering
+\end{itemize}
+
+\subsection{RQ3: Effectiveness}
+
+\textit{How effective are Multi-Agent Systems powered by Large Language Models in automated software testing compared to traditional testing approaches?}
+
+The experimental evaluation (Chapter~\ref{chap:evaluation}) demonstrated:
+\begin{itemize}
+    \item Coverage improvements of 15--25\% over single-agent baselines on complex codebases
+    \item Bug detection rates comparable to or exceeding traditional search-based tools (EvoSuite, Pynguin)
+    \item Higher mutation scores indicating stronger assertion quality compared to automatically generated tests from traditional tools
+    \item Generated tests exhibit better readability and maintainability than search-based approaches, though slightly below human-written test quality
+\end{itemize}
+
+\subsection{RQ4: Architecture and Design}
+
+\textit{What architectural patterns and design principles are most effective for implementing MAS-based automated testing systems?}
+
+The literature review (Section~\ref{sec:mas_testing}) and proposed architecture (Chapter~\ref{chap:architecture}) identified:
+\begin{itemize}
+    \item Hierarchical coordination for clear task decomposition
+    \item Role specialization enabling focused agent capabilities
+    \item Structured communication through typed message passing
+    \item Principled ACI design balancing autonomy and safety
+\end{itemize}
+
+\subsection{RQ5: Practical Implementation}
+
+\textit{What are the practical challenges and solutions for deploying MAS-based testing in real-world software development workflows?}
+
+Section~\ref{sec:industrial_deployment} and the implementation experience identified:
+\begin{itemize}
+    \item Shadow deployment strategies for gradual adoption
+    \item CI/CD integration patterns
+    \item Cost optimization through model selection and caching
+    \item Organizational change management requirements
+\end{itemize}
+
+\subsection{RQ6: LLM Selection and Configuration}
+
+\textit{How do different Large Language Model choices and configurations impact the performance of Multi-Agent testing systems?}
+
+Section~\ref{sec:llm_selection} and experimental evaluation revealed:
+\begin{itemize}
+    \item Trade-offs between capability (proprietary) and privacy (local)
+    \item Context management critical for large codebases
+    \item Prompt engineering patterns significantly impact results
+    \item Hybrid deployment balancing cost, capability, and privacy
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\section{Practical Implications}
+\label{sec:practical_implications}
+
+\subsection{For Practitioners}
+
+Organizations considering MAS-based testing should:
+
+\begin{enumerate}
+    \item Begin with shadow deployments to build confidence before production adoption
+    \item Implement defense-in-depth security rather than relying on single controls
+    \item Consider hybrid LLM deployment to balance capability and privacy
+    \item Establish clear policies for human review of agent outputs
+    \item Plan for ongoing model and prompt optimization
+\end{enumerate}
+
+\subsection{For Researchers}
+
+The identified research gaps suggest priorities:
+\begin{enumerate}
+    \item Long-term production deployment studies
+    \item Standardized benchmarks for MAS testing evaluation
+    \item Formal methods for agent security verification
+    \item Cost optimization techniques
+\end{enumerate}
+
+\subsection{For Regulators}
+
+The regulatory analysis suggests:
+\begin{enumerate}
+    \item Clearer guidance on AI Act classification for development tools
+    \item Standards for demonstrating compliance in agentic systems
+    \item Frameworks for liability allocation
+\end{enumerate}
+
+%----------------------------------------------------------------------------------------
+
+\section{Limitations}
+\label{sec:limitations}
+
+This thesis has several limitations that should be acknowledged:
+
+\begin{itemize}
+    \item \textbf{Prototype scope}: The implementation covers Python testing; generalization to other languages requires additional work.
+
+    \item \textbf{Benchmark limitations}: Evaluation benchmarks may not fully represent industrial complexity and diversity.
+
+    \item \textbf{Rapidly evolving field}: LLM capabilities and best practices continue to evolve rapidly; some findings may become outdated.
+
+    \item \textbf{Security evaluation}: While attack simulations were conducted, real-world adversarial conditions may present additional challenges.
+
+    \item \textbf{Cost estimates}: Token pricing and model availability change frequently; cost analyses should be updated for current conditions.
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\section{Future Research Directions}
+\label{sec:future_work}
+
+\subsection{Self-Healing Testing Pipelines}
+
+Future work could explore agents that automatically diagnose and repair failing tests, maintaining test suites as code evolves without human intervention.
+
+\subsection{Explainability and Transparency}
+
+Enhanced chain-of-thought logging and explanation generation would improve trust and enable debugging of agent decisions.
+
+\subsection{Multi-Modal Testing}
+
+Extending agents to handle UI testing through vision capabilities, combining code analysis with visual understanding.
+
+\subsection{Specialized Security Benchmarks}
+
+Development of standardized benchmarks specifically for evaluating security properties of agentic systems.
+
+\subsection{Long-Term Industrial Studies}
+
+Longitudinal studies of MAS testing deployment in production environments would provide valuable evidence on real-world effectiveness and challenges.
+
+\subsection{Formal Verification}
+
+Application of formal methods to verify security properties of agent permission systems and interaction protocols.
+
+\subsection{Federated Learning for Privacy}
+
+Exploring federated learning approaches that improve model capabilities without centralizing sensitive code data.
+
+%----------------------------------------------------------------------------------------
+
+\section{Closing Remarks}
+\label{sec:closing}
+
+The convergence of Large Language Models and Multi-Agent Systems opens new possibilities for automated software testing. This thesis has demonstrated that with careful architectural design, these powerful capabilities can be deployed securely and effectively. While challenges remain, the foundations laid here provide a path toward realizing the potential of autonomous testing agents while maintaining the security and privacy protections that enterprise environments require.
+
+The journey from research prototype to production deployment requires continued collaboration between researchers advancing capabilities and practitioners addressing real-world constraints. This thesis contributes to that journey by providing both the theoretical understanding and practical guidance necessary for secure, effective MAS-based automated testing.

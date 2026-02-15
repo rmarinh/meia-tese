@@ -44,6 +44,7 @@ headsepline, % Uncomment to get a line under the header
 ]{meia-style} % The class file specifying the document structure
 
 \usepackage{tikz} % Required for creating graphics programmatically (can be removed if not used)
+\usetikzlibrary{positioning,calc} % Required for relative node positioning and coordinate calculations in TiKZ
 %\usetikzlibrary{arrows} % Required for fancy arrows in TiKZ graphics (can be removed if not used)
 
 \usepackage{pgfplots} % Required for drawing high--quality function plots (can be removed if not used)
@@ -65,6 +66,9 @@ headsepline, % Uncomment to get a line under the header
 %\usepackage[style=alphabetic,sorting=none,backend=biber]{biblatex} % Bibtex backend with the alphabetic citation style (alphabetic citations, bibliography ordered by appearance)
 
 \usepackage{makecell}
+\usepackage{threeparttable}
+\usepackage{amssymb} % For \mathbb and other math symbols
+\usepackage{amsmath} % For math environments
 
 \addbibresource{mainbibliography.bib} % The filename of the bibliography
 
@@ -78,7 +82,7 @@ headsepline, % Uncomment to get a line under the header
 
 \thesistitle{Automated Software Testing using Multi-Agent Systems (MAS) and Large Language Models (LLMs)} % Your thesis title, this is used in the title, print it elsewhere with \ttitle
 
-\thesissubtitle{A Privacy-Preserving Approach} % Your thesis title, this is used in the title, print it elsewhere with \tsubtitle
+\thesissubtitle{A Multi-Agent Approach with Golden Examples and Black-Box Observation} % Your thesis title, this is used in the title, print it elsewhere with \tsubtitle
 
 \author{Rui Marinho} % Your name, this is used in the title page, print it elsewhere with \authorname
 
@@ -94,7 +98,7 @@ headsepline, % Uncomment to get a line under the header
 
 \committeemembers{[To be defined upon thesis defense scheduling]} % Name of the evaluation committee members (up to four), print it elsewhere with \committee
 
-\keywords{Multi-Agent Systems, Large Language Models, Software Testing, Privacy, Security, GDPR} % Please define up to 6 keywords that better describe your work, print it elsewhere with \keywordnames
+\keywords{Multi-Agent Systems, Large Language Models, Automated Test Generation, Golden Examples, Black-Box Testing, Few-Shot Learning} % Please define up to 6 keywords that better describe your work, print it elsewhere with \keywordnames
 
 \university{\href{https://www.ipp.pt}{Polit\'ecnico do Porto}} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
 
@@ -122,12 +126,14 @@ headsepline, % Uncomment to get a line under the header
 % Include the chapters of the thesis as separate folder for each chapter
 % Uncomment the lines as you write the chapters
 
-\input{ch1/chapter1}
-\input{ch2/chapter2}
-\input{ch3/chapter3}
-\input{ch4/chapter4}
-\input{ch5/chapter5}
-\input{ch6/chapter6}
+\input{ch1/chapter1}  % Introduction
+\input{ch2/chapter2}  % Systematic Review of the Literature
+\input{ch3/chapter3}  % Data Collection and Pre-processing
+\input{ch4/chapter4}  % Methods and Tools
+\input{ch5/chapter5}  % Solution Implementation
+\input{ch6/chapter6}  % Experimentation and Discussion
+\input{ch7/chapter7}  % Data Protection, Security and Ethics
+\input{ch8/chapter8}  % Conclusions and Future Work
 
 
 %----------------------------------------------------------------------------------------
@@ -146,7 +152,6 @@ headsepline, % Uncomment to get a line under the header
 % Include the appendices of the thesis as separate files from the Appendices folder
 % Uncomment the lines as you write the Appendices
 
-\input{appendices/appendixA}
 \input{appendices/appendixB}
 \input{appendices/appendixC}
 

@@ -1,727 +1,132 @@
-% Chapter 3 - Proposed Architecture
+% Chapter 3 - Data Collection and Pre-processing
 
-\chapter{Proposed Architecture}
-\label{chap:architecture}
+\chapter{Data Collection and Pre-processing}
+\label{chap:data_collection}
 
-This chapter presents the design of a secure multi-agent system architecture for automated software testing. The architecture addresses the security and privacy concerns identified in the literature review while maintaining testing effectiveness. The chapter begins with requirements analysis, followed by high-level architectural design, detailed agent specifications, security-by-design patterns, and LLM integration strategies.
-
-%----------------------------------------------------------------------------------------
-
-\section{Requirements Analysis}
-\label{sec:requirements}
-
-The proposed architecture must satisfy functional, non-functional, and regulatory requirements derived from the research questions and literature findings.
-
-\subsection{Functional Requirements}
-
-The system must support the complete testing workflow from requirements analysis through test validation:
-
-\begin{enumerate}[label=\textbf{FR\arabic*}]
-    \item \textbf{Test Planning}: The system shall analyze testing requirements and decompose them into actionable tasks for specialized agents.
-
-    \item \textbf{Code Analysis}: The system shall analyze the system under test to understand code structure, identify testable units, and extract relevant context.
-
-    \item \textbf{Test Generation}: The system shall generate executable test code appropriate for the identified testing objectives, including unit tests, integration tests, and property-based tests.
-
-    \item \textbf{Test Execution}: The system shall execute generated tests in controlled environments and capture execution results.
-
-    \item \textbf{Result Validation}: The system shall validate test quality, assess coverage, and identify potential issues with generated tests.
-
-    \item \textbf{Iterative Refinement}: The system shall iteratively improve test suites based on coverage analysis, mutation testing, and validation feedback.
-
-    \item \textbf{Human Oversight}: The system shall support human review and approval at configurable checkpoints.
-
-    \item \textbf{CI/CD Integration}: The system shall integrate with existing continuous integration and deployment pipelines.
-\end{enumerate}
-
-\subsection{Non-Functional Requirements}
-
-\subsubsection{Security Requirements}
-
-\begin{enumerate}[label=\textbf{SR\arabic*}]
-    \item \textbf{Data Confidentiality}: Source code and test data shall not be transmitted to unauthorized parties. When using external LLM providers, data exposure shall be minimized through context filtering and PII scrubbing.
-
-    \item \textbf{Execution Isolation}: Test execution shall occur in isolated environments preventing impact on production systems or unauthorized resource access.
-
-    \item \textbf{Access Control}: Agent actions shall be governed by explicit permission policies enforcing least-privilege access.
-
-    \item \textbf{Audit Logging}: All agent actions, LLM interactions, and system events shall be logged for security monitoring and forensic analysis.
-
-    \item \textbf{Input Validation}: All inputs from LLMs shall be validated before execution to prevent injection attacks and unsafe operations.
-\end{enumerate}
-
-\subsubsection{Privacy Requirements}
-
-\begin{enumerate}[label=\textbf{PR\arabic*}]
-    \item \textbf{PII Protection}: Personal data shall be identified and scrubbed before transmission to LLM providers.
-
-    \item \textbf{Data Minimization}: Only information necessary for the current task shall be included in LLM context.
-
-    \item \textbf{Purpose Limitation}: Data processed by the system shall be used only for testing purposes.
-
-    \item \textbf{Retention Limits}: Logs and cached data shall be retained only as long as necessary for operational and compliance purposes.
-\end{enumerate}
-
-\subsubsection{Performance Requirements}
-
-\begin{enumerate}[label=\textbf{PER\arabic*}]
-    \item \textbf{Throughput}: The system shall generate tests at a rate suitable for integration into development workflows.
-
-    \item \textbf{Latency}: Interactive operations shall complete within acceptable response times for developer experience.
-
-    \item \textbf{Scalability}: The system shall scale to handle codebases of varying sizes through appropriate context management.
-
-    \item \textbf{Cost Efficiency}: The system shall optimize LLM token usage to balance effectiveness with operational costs.
-\end{enumerate}
-
-\subsection{Regulatory Requirements}
-
-\begin{enumerate}[label=\textbf{RR\arabic*}]
-    \item \textbf{GDPR Compliance}: The system shall comply with GDPR requirements for data minimization, purpose limitation, and data subject rights.
-
-    \item \textbf{AI Act Compliance}: The system shall satisfy applicable EU AI Act requirements for transparency, documentation, and human oversight.
-
-    \item \textbf{Audit Support}: The system shall maintain records sufficient to demonstrate compliance with applicable regulations.
-\end{enumerate}
+This chapter describes the data sources, collection methods, and pre-processing steps that feed the two pipelines of the TestForge platform. The Golden Examples pipeline relies on existing test files as its primary data source, while the Black-Box Observer pipeline captures HTTP traffic from running applications. Both pipelines transform raw inputs into structured representations suitable for LLM-based test generation.
 
 %----------------------------------------------------------------------------------------
 
-\section{High-Level Architecture}
-\label{sec:high_level_architecture}
+\section{Data Sources and Selection}
+\label{sec:data_sources}
 
-\subsection{System Overview}
+\subsection{Selection Criteria and Objectives}
 
-The proposed architecture employs a layered design with clear separation between orchestration, agent execution, security controls, and external integrations.
+The quality of generated tests depends critically on the quality and representativeness of input data. For the Golden Examples pipeline, this means selecting reference test files that demonstrate good testing practices. For the Observer pipeline, it means capturing sufficiently diverse HTTP interactions to cover the application's API surface.
 
-The architecture comprises four primary layers:
+Several criteria guided data source selection for both pipelines. Input data should be representative, covering the range of testing patterns and API behaviours that the platform will encounter in practice. Golden test examples should demonstrate quality through meaningful assertions, proper fixture usage, and comprehensive scenario coverage rather than trivial smoke tests. Sources should offer diversity, spanning different testing styles, HTTP methods, error handling patterns, and application domains to prevent overfitting to a single pattern. Finally, traceability requires that each data source be documented with its origin, collection method, and any transformations applied.
 
-\begin{enumerate}
-    \item \textbf{Integration Layer}: Interfaces with external systems including code repositories, CI/CD pipelines, and development tools.
+\subsection{Golden Test Examples}
+\label{sec:golden_examples}
 
-    \item \textbf{Orchestration Layer}: Manages workflow execution, task distribution, and agent coordination.
+Golden examples are existing, human-written test files that serve as reference patterns for the generation process. These files encode implicit knowledge about testing framework conventions such as pytest fixtures, parametrize decorators, and assertion styles, as well as HTTP client usage patterns including requests library calls, authentication headers, and response parsing. They also capture test naming conventions and documentation practices, fixture design patterns covering setup/teardown semantics, dependency injection, and scope management, and assertion strategies ranging from status code checking through response body validation to error message verification.
 
-    \item \textbf{Agent Layer}: Contains specialized agents performing testing tasks with LLM assistance.
+For the evaluation presented in Chapter~\ref{chap:experimentation}, golden examples were collected from a Flask CRUD API application comprising 23 test functions across 3 test files. These tests cover all CRUD operations (Create, Read, Update, Delete) and include both happy-path and error scenarios. All tests make consistent use of pytest fixtures with the \texttt{requests} HTTP client, and include search endpoint testing with query parameter validation.
 
-    \item \textbf{Infrastructure Layer}: Provides execution environments, LLM integration, and security services.
-\end{enumerate}
+\subsection{HTTP Traffic Captures}
+\label{sec:http_captures}
 
-\subsection{Component Identification}
+The Observer pipeline accepts HTTP traffic data from three sources: pre-captured exchange data in the form of JSON arrays of HTTP request/response pairs provided directly via the API, HAR (HTTP Archive) files \parencite{w3char2012} in the industry-standard format exported from browser developer tools or proxy servers, and live traffic capture through real-time interception via mitmproxy.
 
-\subsubsection{Integration Layer Components}
-
-\begin{itemize}
-    \item \textbf{Repository Connector}: Interfaces with Git repositories to access source code and submit generated tests.
-
-    \item \textbf{CI/CD Adapter}: Integrates with pipeline systems (GitHub Actions, Jenkins, GitLab CI) to trigger testing workflows and report results.
-
-    \item \textbf{IDE Plugin}: Provides developer-facing interfaces for interactive test generation and review.
-
-    \item \textbf{API Gateway}: Exposes programmatic interfaces for system integration.
-\end{itemize}
-
-\subsubsection{Orchestration Layer Components}
-
-\begin{itemize}
-    \item \textbf{Workflow Engine}: Manages execution of testing workflows, coordinating agent activities and handling state transitions.
-
-    \item \textbf{Task Queue}: Distributes work items to available agents with priority management and load balancing.
-
-    \item \textbf{State Manager}: Maintains workflow state, agent context, and intermediate results.
-
-    \item \textbf{Human Review Interface}: Presents artifacts for human review and captures approval decisions.
-\end{itemize}
-
-\subsubsection{Agent Layer Components}
-
-\begin{itemize}
-    \item \textbf{Planning Agent}: Analyzes requirements and decomposes testing objectives.
-
-    \item \textbf{Code Analysis Agent}: Examines source code to extract context and identify testing targets.
-
-    \item \textbf{Test Generation Agent}: Produces test code using LLM capabilities.
-
-    \item \textbf{Execution Agent}: Runs tests in sandboxed environments.
-
-    \item \textbf{Validation Agent}: Assesses test quality and coverage.
-
-    \item \textbf{Security Agent}: Scans generated code for vulnerabilities and policy violations.
-\end{itemize}
-
-\subsubsection{Infrastructure Layer Components}
-
-\begin{itemize}
-    \item \textbf{LLM Gateway}: Manages LLM provider interactions with caching, rate limiting, and failover.
-
-    \item \textbf{Sandbox Manager}: Provisions and manages isolated execution environments.
-
-    \item \textbf{Security Services}: Provides PII scrubbing, permission enforcement, and audit logging.
-
-    \item \textbf{Observability Stack}: Collects metrics, traces, and logs for monitoring and debugging.
-\end{itemize}
-
-\subsection{Communication Flows}
-
-The architecture employs asynchronous message passing for inter-component communication, enabling:
-
-\begin{itemize}
-    \item Loose coupling between components
-    \item Scalable distribution of workload
-    \item Resilience through message persistence
-    \item Observability through message tracing
-\end{itemize}
-
-Key communication patterns include:
-
-\begin{itemize}
-    \item \textbf{Request-Response}: Synchronous operations requiring immediate results (e.g., LLM queries).
-
-    \item \textbf{Publish-Subscribe}: Event distribution for workflow state changes and notifications.
-
-    \item \textbf{Task Queue}: Work distribution with acknowledgment and retry semantics.
-\end{itemize}
-
-\subsection{Trust Boundaries}
-
-The architecture defines explicit trust boundaries separating:
-
-\begin{enumerate}
-    \item \textbf{Trusted Zone}: Internal components with verified behavior (orchestration, security services).
-
-    \item \textbf{Semi-Trusted Zone}: Agent components whose outputs require validation (LLM-powered agents).
-
-    \item \textbf{Untrusted Zone}: External systems and user inputs (repositories, LLM providers, CI/CD systems).
-\end{enumerate}
-
-All data crossing trust boundaries undergoes validation and sanitization appropriate to the transition.
+Each captured exchange includes: HTTP method, URL, path, query parameters, request headers, request body, response status code, response headers, response body, and timing information.
 
 %----------------------------------------------------------------------------------------
 
-\section{Agent Architecture and Role Design}
-\label{sec:agent_design}
+\section{Pre-processing: Golden Examples Pipeline}
+\label{sec:preprocessing_golden}
 
-This section details the design of individual agents, their responsibilities, capabilities, and interaction patterns.
+\subsection{AST Parsing with Tree-sitter}
+\label{sec:ast_parsing}
 
-\subsection{Agent Base Architecture}
+The Analyser Agent uses Tree-sitter, an incremental parsing library \parencite{treesitter}, to perform \acrfull{AST} analysis on golden test files. Tree-sitter was selected over Python's built-in \texttt{ast} module for its ability to handle partial or syntactically incomplete code gracefully, a practical consideration when processing real-world test files that may contain syntax variations.
 
-All agents share a common base architecture providing:
+The parsing process extracts the following structural elements from each test file:
 
-\begin{itemize}
-    \item \textbf{Identity and Configuration}: Unique agent identifier, role specification, and configurable parameters.
+\begin{description}
+    \item[Imports] All import statements, distinguishing between standard library, third-party, and local imports. This information determines which libraries the generated tests should reference.
 
-    \item \textbf{LLM Interface}: Standardized interface for LLM interactions with prompt management and response parsing.
+    \item[Fixtures] Functions decorated with \texttt{@pytest.fixture}, including their names, parameter lists, scope declarations, and whether they use \texttt{yield} for setup/teardown semantics.
 
-    \item \textbf{Tool Registry}: Available tools and capabilities the agent can invoke.
+    \item[Test Functions] Functions whose names begin with \texttt{test\_}, including their docstrings, parameter dependencies (fixture injection), and the HTTP methods and endpoints they target.
 
-    \item \textbf{Memory Management}: Short-term context and long-term knowledge persistence.
+    \item[Assertions] All assertion statements within test functions, classified by type: status code checks (\texttt{assert response.status\_code == ...}), response body validations, collection membership tests, and exception assertions.
 
-    \item \textbf{Action Executor}: Secure execution of agent-generated actions with permission checking.
+    \item[Helper Functions] Non-test, non-fixture functions that provide utility support (e.g., data factories, response parsers).
+\end{description}
 
-    \item \textbf{Logging and Metrics}: Instrumentation for observability and audit.
-\end{itemize}
+\subsection{HTTP Endpoint Detection}
+\label{sec:endpoint_detection}
 
-\subsection{Planning Agent}
+A critical pre-processing step is extracting the HTTP methods and endpoints targeted by each test function. The analyser employs a multi-strategy approach. The first strategy, direct method call detection, identifies calls to \texttt{requests.get()}, \texttt{requests.post()}, \texttt{requests.put()}, \texttt{requests.delete()}, and \texttt{requests.patch()} within each test function body. The second strategy, f-string URL extraction, parses f-string arguments to HTTP client calls (e.g., \texttt{f"\{base\_url\}/api/users/\{user\_id\}"}) using regular expressions to extract the path component after the base URL variable. The third strategy handles non-f-string URL arguments where the path is embedded as a plain string literal.
 
-\subsubsection{Responsibilities}
+For each detected HTTP call, the analyser records the HTTP method (GET, POST, PUT, DELETE, PATCH), the endpoint path (e.g., \texttt{/api/users}, \texttt{/api/users/\{id\}}), and the position within the test function, distinguishing setup calls from assertion targets.
 
-The Planning Agent initiates testing workflows by:
-\begin{itemize}
-    \item Analyzing testing requirements from user input or CI triggers
-    \item Identifying testing scope and objectives
-    \item Decomposing high-level objectives into specific tasks
-    \item Prioritizing tasks based on risk and coverage considerations
-    \item Assigning tasks to appropriate specialized agents
-\end{itemize}
+\subsection{Pattern Aggregation into Style Guide}
+\label{sec:style_guide}
 
-\subsubsection{Inputs}
-
-\begin{itemize}
-    \item Testing requirements (natural language or structured)
-    \item Repository metadata and project structure
-    \item Existing test coverage information
-    \item Historical testing results and defect patterns
-\end{itemize}
-
-\subsubsection{Outputs}
-
-\begin{itemize}
-    \item Structured test plan with prioritized tasks
-    \item Task assignments for specialized agents
-    \item Success criteria and completion conditions
-\end{itemize}
-
-\subsubsection{LLM Interactions}
-
-The Planning Agent uses LLM capabilities for:
-\begin{itemize}
-    \item Understanding natural language requirements
-    \item Reasoning about testing strategy
-    \item Generating structured task decompositions
-\end{itemize}
-
-\subsection{Code Analysis Agent}
-
-\subsubsection{Responsibilities}
-
-The Code Analysis Agent examines the system under test to:
-\begin{itemize}
-    \item Parse and understand code structure
-    \item Identify testable units (functions, classes, modules)
-    \item Extract relevant context for test generation
-    \item Analyze dependencies and call graphs
-    \item Identify edge cases and boundary conditions
-\end{itemize}
-
-\subsubsection{Tools}
-
-\begin{itemize}
-    \item Abstract Syntax Tree (AST) parsers
-    \item Static analysis tools
-    \item Dependency analyzers
-    \item Code search and navigation utilities
-\end{itemize}
-
-\subsubsection{Outputs}
-
-\begin{itemize}
-    \item Code summaries and documentation
-    \item Identified testing targets with context
-    \item Suggested test scenarios and edge cases
-    \item Dependency graphs and call trees
-\end{itemize}
-
-\subsection{Test Generation Agent}
-
-\subsubsection{Responsibilities}
-
-The Test Generation Agent produces executable test code by:
-\begin{itemize}
-    \item Generating test cases based on planning and analysis outputs
-    \item Producing appropriate assertions for expected behavior
-    \item Creating test fixtures and mock objects
-    \item Ensuring generated code follows project conventions
-\end{itemize}
-
-\subsubsection{Specialization}
-
-Multiple Test Generation Agent instances may be specialized for:
-\begin{itemize}
-    \item Different programming languages (Python, Java, JavaScript)
-    \item Different test types (unit, integration, property-based)
-    \item Different frameworks (pytest, JUnit, Jest)
-\end{itemize}
-
-\subsubsection{Quality Controls}
-
-Generated tests undergo validation including:
-\begin{itemize}
-    \item Syntax verification through compilation/parsing
-    \item Security scanning for vulnerable patterns
-    \item Style checking against project conventions
-    \item Assertion quality assessment
-\end{itemize}
-
-\subsection{Execution Agent}
-
-\subsubsection{Responsibilities}
-
-The Execution Agent runs tests in controlled environments:
-\begin{itemize}
-    \item Provisioning isolated execution environments
-    \item Installing dependencies and configuring test runners
-    \item Executing test suites and capturing results
-    \item Collecting coverage data and execution traces
-    \item Reporting outcomes and artifacts
-\end{itemize}
-
-\subsubsection{Security Constraints}
-
-The Execution Agent operates under strict constraints:
-\begin{itemize}
-    \item Execution only in sandboxed containers
-    \item Network access limited to allowlisted endpoints
-    \item File system access restricted to designated directories
-    \item Resource limits (CPU, memory, time) enforced
-    \item No persistent state between executions
-\end{itemize}
-
-\subsection{Validation Agent}
-
-\subsubsection{Responsibilities}
-
-The Validation Agent assesses test quality:
-\begin{itemize}
-    \item Analyzing test coverage against requirements
-    \item Evaluating assertion quality and meaningfulness
-    \item Identifying flaky or non-deterministic tests
-    \item Detecting test code smells and anti-patterns
-    \item Recommending improvements
-\end{itemize}
-
-\subsubsection{Validation Techniques}
-
-\begin{itemize}
-    \item Coverage analysis (line, branch, mutation)
-    \item Assertion density and quality metrics
-    \item Test isolation verification
-    \item Execution stability assessment
-\end{itemize}
-
-\subsection{Security Agent}
-
-\subsubsection{Responsibilities}
-
-The Security Agent provides security oversight:
-\begin{itemize}
-    \item Scanning generated code for vulnerabilities
-    \item Verifying dependency safety
-    \item Checking for credential exposure
-    \item Validating compliance with security policies
-    \item Blocking unsafe operations
-\end{itemize}
-
-\subsubsection{Integration Points}
-
-The Security Agent integrates at multiple points:
-\begin{itemize}
-    \item Pre-generation: Validating inputs and context
-    \item Post-generation: Scanning generated code
-    \item Pre-execution: Verifying sandbox configuration
-    \item Post-execution: Analyzing execution artifacts
-\end{itemize}
-
-\subsection{Agent Collaboration Protocol}
-
-Agents collaborate through structured message passing:
-
-\begin{enumerate}
-    \item \textbf{Task Assignment}: Orchestrator assigns tasks with context and constraints.
-
-    \item \textbf{Progress Reporting}: Agents report status and intermediate results.
-
-    \item \textbf{Artifact Handoff}: Completed artifacts are passed to downstream agents.
-
-    \item \textbf{Feedback Loops}: Validation results feed back to generation agents for refinement.
-
-    \item \textbf{Escalation}: Agents escalate to human review when confidence is low.
-\end{enumerate}
+After parsing all golden examples, the Analyser Agent aggregates the extracted patterns into a \texttt{TestStyleGuide}, a structured summary of the testing conventions observed across the example files. The style guide captures the detected testing framework (e.g., \texttt{pytest}) and HTTP client library (e.g., \texttt{requests}), along with the test function naming pattern (e.g., \texttt{test\_<action>\_<scenario>}). It also records the set of common imports shared across multiple golden files, common fixtures that indicate reusable test infrastructure, and the most frequently used assertion forms with their relative frequencies. Finally, it includes average metrics such as assertions per test, test length, and the proportion of tests containing docstrings. This style guide serves as structured context for the Generator Agent's LLM prompt, enabling few-shot generation that aligns with the project's existing conventions.
 
 %----------------------------------------------------------------------------------------
 
-\section{Security-by-Design Implementation}
-\label{sec:security_implementation}
+\section{Pre-processing: Observer Pipeline}
+\label{sec:preprocessing_observer}
 
-This section details the security controls integrated throughout the architecture.
+\subsection{HTTP Exchange Normalisation}
+\label{sec:exchange_normalisation}
 
-\subsection{Sandbox Architecture}
+Raw HTTP traffic data varies significantly in format depending on the capture method. The Observer Agent normalises all inputs into a common \texttt{HTTPExchange} representation through several transformations. Method normalisation uppercases HTTP methods and validates them against the standard set. URL decomposition splits full URLs into base URL, path, and query parameters. Body parsing processes request and response bodies as JSON where the content type indicates \texttt{application/json}, storing them as raw text otherwise. Header filtering removes headers irrelevant to API semantics (e.g., \texttt{Connection}, \texttt{Accept-Encoding}) while preserving authentication-related headers.
 
-\subsubsection{Container Isolation}
+For HAR file input, the parser follows the W3C HTTP Archive specification, which contains detailed timing, cookie, and redirect information beyond what is needed for test generation. The HAR parser extracts only the fields relevant to API testing: it iterates over the \texttt{log.entries} array, extracting for each entry the \texttt{request.method}, \texttt{request.url}, \texttt{request.headers}, and \texttt{request.postData}, along with the \texttt{response.status}, \texttt{response.headers}, and \texttt{response.content.text}. Non-API requests (static assets, tracking pixels) are filtered out based on content type and URL patterns.
 
-Test execution occurs in Docker containers with security configurations:
+\subsection{Endpoint Mapping and Schema Inference}
+\label{sec:endpoint_mapping}
 
-\begin{itemize}
-    \item \textbf{User namespace isolation}: Containers run as unprivileged users mapped to unique UIDs.
+The Mapper Agent transforms normalised HTTP exchanges into an \texttt{EndpointMap}, a structured representation of the application's API surface. This process involves four key operations.
 
-    \item \textbf{Capability dropping}: All unnecessary Linux capabilities removed.
+\textbf{Path normalisation} detects dynamic path segments and replaces them with parameter placeholders. Numeric segments (e.g., \texttt{/users/42}) are replaced with \texttt{\{id\}}, and UUID segments are replaced with \texttt{\{uuid\}}. The resulting normalised paths group exchanges that target the same logical endpoint.
 
-    \item \textbf{Seccomp profiles}: System call filtering restricts dangerous operations.
+\textbf{Schema inference} examines multiple exchanges to the same endpoint to infer JSON schemas for request and response bodies. It records field names, types, and whether fields appear consistently (required) or intermittently (optional), and detects common patterns such as pagination fields, error response structures, and nested objects.
 
-    \item \textbf{AppArmor/SELinux}: Mandatory access control policies enforce constraints.
+\textbf{Authentication pattern detection} analyses request headers across all exchanges to identify authentication mechanisms. Bearer token authentication is detected via \texttt{Authorization: Bearer ...} headers, while basic authentication is identified through \texttt{Authorization: Basic ...} headers. API key authentication is recognised by common header names such as \texttt{X-API-Key} and \texttt{api-key}, and cookie-based sessions are detected through \texttt{Cookie} or \texttt{Set-Cookie} headers.
 
-    \item \textbf{Read-only root filesystem}: Prevents persistent modifications.
-\end{itemize}
-
-\subsubsection{Network Isolation}
-
-Network access is controlled through:
-
-\begin{itemize}
-    \item \textbf{Network namespace isolation}: Containers have isolated network stacks.
-
-    \item \textbf{Allowlist-based egress}: Only explicitly permitted external connections allowed.
-
-    \item \textbf{Internal DNS}: Name resolution controlled and logged.
-
-    \item \textbf{No inter-container communication}: Sandboxes cannot reach each other.
-\end{itemize}
-
-\subsubsection{Resource Limits}
-
-Containers are constrained by:
-
-\begin{itemize}
-    \item CPU quota limiting execution time
-    \item Memory limits preventing exhaustion
-    \item Disk quota for temporary files
-    \item Process count limits
-    \item Execution timeout with forced termination
-\end{itemize}
-
-\subsection{Data Flow Security}
-
-\subsubsection{PII Scrubbing Pipeline}
-
-Before code reaches LLM providers, a scrubbing pipeline:
-
-\begin{enumerate}
-    \item \textbf{Pattern Detection}: Regular expressions identify emails, phone numbers, API keys, and common credential formats.
-
-    \item \textbf{Named Entity Recognition}: ML models identify names, addresses, and other PII.
-
-    \item \textbf{Secret Scanning}: Tools like truffleHog detect embedded secrets.
-
-    \item \textbf{Redaction}: Identified PII is replaced with placeholder tokens.
-
-    \item \textbf{Logging}: Scrubbing actions are logged for audit purposes.
-\end{enumerate}
-
-\subsubsection{Context Minimization}
-
-Context sent to LLMs is minimized through:
-
-\begin{itemize}
-    \item Including only files relevant to the current task
-    \item Summarizing large files rather than including full content
-    \item Excluding configuration, infrastructure, and deployment code
-    \item Filtering comments and documentation to essential elements
-\end{itemize}
-
-\subsection{ACI Hardening}
-
-\subsubsection{Permission Model}
-
-Agent actions are governed by explicit permissions:
-
-\begin{verbatim}
-permissions:
-  file_system:
-    read:
-      - "/project/src/**"
-      - "/project/tests/**"
-    write:
-      - "/project/tests/generated/**"
-  network:
-    - "https://pypi.org/*"
-    - "https://api.openai.com/*"
-  execute:
-    - "pytest"
-    - "python"
-\end{verbatim}
-
-\subsubsection{Action Validation}
-
-Before execution, all actions are validated:
-
-\begin{enumerate}
-    \item Parse action into structured representation
-    \item Check against permission policy
-    \item Validate parameters against allowlists
-    \item Log action attempt
-    \item Execute only if all checks pass
-\end{enumerate}
-
-\subsubsection{Rate Limiting}
-
-Operations are rate-limited to prevent:
-\begin{itemize}
-    \item Runaway agents consuming excessive resources
-    \item Denial of service against external systems
-    \item Cost overruns from excessive LLM usage
-\end{itemize}
-
-\subsection{Audit and Logging}
-
-\subsubsection{Comprehensive Logging}
-
-The system logs:
-
-\begin{itemize}
-    \item All LLM prompts and responses (with PII redacted)
-    \item All agent actions and outcomes
-    \item All file accesses and modifications
-    \item All network communications
-    \item All permission checks and enforcement decisions
-    \item Workflow state transitions
-    \item Human review decisions
-\end{itemize}
-
-\subsubsection{Log Security}
-
-Logs are protected through:
-
-\begin{itemize}
-    \item Cryptographic integrity verification
-    \item Access control limiting who can read logs
-    \item Encryption at rest and in transit
-    \item Retention policies aligned with compliance requirements
-\end{itemize}
-
-\subsubsection{Anomaly Detection}
-
-Automated analysis identifies:
-
-\begin{itemize}
-    \item Unusual action patterns suggesting compromise
-    \item Repeated permission denials indicating probing
-    \item Unexpected network connections
-    \item Resource usage anomalies
-\end{itemize}
-
-\subsection{Human-in-the-Loop Controls}
-
-\subsubsection{Approval Gates}
-
-Configurable approval gates require human review for:
-
-\begin{itemize}
-    \item First execution of newly generated tests
-    \item Tests modifying shared resources or state
-    \item Tests exceeding complexity thresholds
-    \item Any operations flagged by security scanning
-\end{itemize}
-
-\subsubsection{Override Mechanisms}
-
-Humans can:
-
-\begin{itemize}
-    \item Approve or reject generated tests
-    \item Modify tests before execution
-    \item Adjust agent parameters
-    \item Terminate workflows
-    \item Update permission policies
-\end{itemize}
+\textbf{Dependency chain detection} identifies relationships between endpoints by analysing the flow of identifiers. A \texttt{POST} endpoint that returns an \texttt{id} field is linked to subsequent \texttt{GET}, \texttt{PUT}, and \texttt{DELETE} endpoints that use the same identifier as a path parameter. These dependencies inform the test generation order, ensuring that tests create required resources before attempting to read, update, or delete them.
 
 %----------------------------------------------------------------------------------------
 
-\section{LLM Integration Strategy}
-\label{sec:llm_integration}
+\section{Data Representation Models}
+\label{sec:data_models}
 
-\subsection{Model Selection Framework}
+All data flowing through the TestForge pipelines is represented using Pydantic v2 models \parencite{pydantic2017}, which provide runtime type validation, serialisation, and documentation. The key data models are:
 
-Model selection balances multiple factors:
+\begin{description}
+    \item[\texttt{GoldenExample}] A parsed test file containing lists of imports, fixtures, test functions, helper functions, and class definitions. Each test function includes its name, docstring, HTTP method, endpoint, parameter list, and assertions.
 
-\begin{table}[ht]
-\caption{Model selection criteria and trade-offs}
-\label{tab:model_selection}
-\centering
-\small
-\begin{tabular}{l l l l}
-\toprule
-\tabhead{Criterion} & \tabhead{Proprietary} & \tabhead{Open-Weight} & \tabhead{Recommendation} \\
-\midrule
-Capability & Higher & Lower & Task-dependent \\
-Privacy & Requires transfer & Local deployment & Privacy-sensitive: local \\
-Cost & Per-token & Infrastructure & High volume: local \\
-Control & Limited & Full & Customization: local \\
-Maintenance & Provider & Self-managed & Resources: proprietary \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \item[\texttt{TestStyleGuide}] An aggregated summary of testing conventions extracted from multiple golden examples, as described in Section~\ref{sec:style_guide}.
 
-\subsection{Hybrid Deployment}
+    \item[\texttt{HTTPExchange}] A single HTTP request/response pair with method, URL, headers, body, status code, and timing.
 
-The architecture supports hybrid deployment combining:
+    \item[\texttt{EndpointInfo}] A single API endpoint with its method, path, request/response schemas, authentication requirements, and sample exchanges.
 
-\begin{itemize}
-    \item \textbf{Local models}: For privacy-sensitive operations and high-volume tasks
-    \item \textbf{Cloud models}: For complex reasoning tasks where capability is critical
-    \item \textbf{Fallback chains}: Automatic failover between providers
-\end{itemize}
+    \item[\texttt{EndpointMap}] The complete API surface of a target application: a collection of \texttt{EndpointInfo} objects with detected authentication patterns and endpoint dependencies.
 
-\subsection{Prompt Engineering Patterns}
+    \item[\texttt{TestSuite}] A collection of generated tests with metadata, quality scores, and a method for rendering the suite as executable Python code.
 
-\subsubsection{Structured Output}
-
-Prompts request structured JSON output for reliable parsing:
-
-\begin{verbatim}
-Generate a test for the following function.
-Respond in JSON format:
-{
-  "test_name": "descriptive name",
-  "test_code": "the test code",
-  "rationale": "why this test is important"
-}
-\end{verbatim}
-
-\subsubsection{Few-Shot Examples}
-
-Prompts include examples demonstrating expected output format and quality level.
-
-\subsubsection{Chain-of-Thought}
-
-Complex reasoning tasks use chain-of-thought prompting:
-
-\begin{verbatim}
-Analyze this function step by step:
-1. Identify the function's purpose
-2. List input parameters and their constraints
-3. Identify edge cases
-4. Generate test cases for each edge case
-\end{verbatim}
-
-\subsection{Context Management}
-
-\subsubsection{Retrieval-Augmented Generation}
-
-RAG retrieves relevant code snippets based on the current task:
-
-\begin{enumerate}
-    \item Index codebase with embeddings
-    \item Query index with task description
-    \item Retrieve top-k relevant snippets
-    \item Include snippets in LLM context
-\end{enumerate}
-
-\subsubsection{Hierarchical Summarization}
-
-Large codebases are summarized hierarchically:
-
-\begin{itemize}
-    \item Function-level summaries
-    \item Class-level summaries aggregating functions
-    \item Module-level summaries aggregating classes
-    \item Project-level overview
-\end{itemize}
-
-\subsection{Error Handling and Recovery}
-
-\subsubsection{LLM Failure Modes}
-
-The system handles:
-
-\begin{itemize}
-    \item API errors and timeouts with retry logic
-    \item Rate limiting with backoff and queue management
-    \item Malformed responses with re-prompting
-    \item Refusals with alternative prompting strategies
-\end{itemize}
-
-\subsubsection{Output Validation}
-
-LLM outputs are validated before use:
-
-\begin{itemize}
-    \item JSON parsing with error handling
-    \item Schema validation for required fields
-    \item Syntax checking for generated code
-    \item Security scanning for unsafe patterns
-\end{itemize}
+    \item[\texttt{AppContext}] A persistent per-application record of discovered endpoints, coverage status, previous run results, and learned patterns, enabling progressive improvement across sessions.
+\end{description}
 
 %----------------------------------------------------------------------------------------
 
-\section{Summary}
-\label{sec:architecture_summary}
+\section{Risk Analysis and Data Bias}
+\label{sec:risk_analysis}
 
-This chapter has presented a comprehensive architecture for secure, privacy-preserving multi-agent testing. Key design decisions include:
+\subsection{Golden Example Bias}
 
-\begin{itemize}
-    \item Layered architecture with clear separation of concerns
-    \item Specialized agents with well-defined roles and responsibilities
-    \item Defense-in-depth security with sandboxing, permission controls, and audit logging
-    \item Privacy-by-design through PII scrubbing and context minimization
-    \item Flexible LLM integration supporting both local and cloud deployment
-    \item Human-in-the-loop controls for oversight and compliance
-\end{itemize}
+The quality and diversity of golden examples directly constrain the quality of generated tests. Several bias risks were identified. First, style overfitting may occur if golden examples use a narrow range of assertion patterns, causing the generator to produce tests limited to the same patterns and missing opportunities for more insightful test strategies. Second, coverage bias arises when golden examples disproportionately cover happy-path scenarios, leading to underrepresentation of error cases, boundary conditions, and security-related tests in generated output. Third, framework lock-in is a concern because the current implementation assumes pytest and the requests library; golden examples using other frameworks such as unittest or aiohttp would require adapter support.
 
-The following chapter details the implementation of this architecture as a functional prototype.
+\subsection{Observer Data Limitations}
+
+HTTP traffic captures may not represent the full API surface. Incomplete coverage is a primary concern: if the observed session does not exercise all endpoints, the Mapper Agent will produce an incomplete endpoint map. Sampling bias compounds this problem, as traffic captures may overrepresent frequently-used endpoints and underrepresent administrative or edge-case operations. Additionally, state dependency poses a challenge because some API behaviours depend on prior state (e.g., deleting a resource requires first creating it), and a single observation session may not capture all state transitions.
+
+\subsection{Mitigation Strategies}
+
+To address these biases, the platform implements several countermeasures. The LLM prompt explicitly instructs the generator to produce tests in eight insightful categories (state integrity, boundary probing, business logic, error quality, concurrency hints, authorisation boundaries, data leakage, and regression traps) regardless of the patterns observed in golden examples. The persistent memory system (\texttt{AppContext}) tracks which endpoints have been tested and which remain untested, guiding subsequent generation runs toward coverage gaps. Furthermore, the combined pipeline mode allows golden examples and observer data to be used together, compensating for the limitations of each approach individually.

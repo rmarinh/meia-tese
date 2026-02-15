@@ -1,981 +1,222 @@
-% Chapter 5 - Experimental Validation
+% Chapter 5 - Solution Implementation
 
-\chapter{Experimental Validation}
-\label{chap:evaluation}
+\chapter{Solution Implementation}
+\label{chap:implementation}
 
-This chapter presents the empirical evaluation of the prototype implementation described in Chapter~\ref{chap:implementation}. The evaluation addresses the research questions through experiments assessing testing effectiveness, security properties, and performance characteristics. The chapter begins with experimental design, followed by detailed results for effectiveness, security, and performance evaluations, ablation studies examining component contributions, and a discussion of findings and limitations.
+This chapter details the implementation of the TestForge prototype, covering the development environment, repository structure, the implementation of each agent, the web interface, and the challenges encountered during development.
 
 %----------------------------------------------------------------------------------------
 
-\section{Experimental Design}
-\label{sec:experimental_design}
-
-\subsection{Research Hypotheses}
-
-Based on the research questions established in Chapter~\ref{chap:introduction}, the following hypotheses guide the experimental evaluation:
-
-\begin{itemize}
-    \item \textbf{H1 (Effectiveness)}: The multi-agent architecture achieves higher test coverage and bug detection rates than single-agent baselines on complex codebases. \textit{(Addresses RQ3)}
-
-    \item \textbf{H2 (Security Prevention)}: The implemented security controls effectively prevent identified attack vectors, including prompt injection and data exfiltration attempts. \textit{(Addresses RQ1, RQ2)}
-
-    \item \textbf{H3 (Privacy Protection)}: Privacy-preserving measures successfully prevent PII exposure to external LLM providers while maintaining testing effectiveness. \textit{(Addresses RQ1, RQ2)}
-
-    \item \textbf{H4 (Cost-Effectiveness)}: The system achieves acceptable cost-effectiveness compared to manual test writing, with measurable developer time savings. \textit{(Addresses RQ5)}
-
-    \item \textbf{H5 (Architecture Impact)}: The multi-agent decomposition with specialized roles outperforms monolithic agent designs on testing tasks. \textit{(Addresses RQ4)}
-
-    \item \textbf{H6 (LLM Configuration Impact)}: Different LLM model choices and configurations (proprietary vs. open-weight, fine-tuned vs. prompt-engineered) produce measurably different outcomes in test quality, cost, and privacy compliance. \textit{(Addresses RQ6)}
-\end{itemize}
-
-\subsection{Evaluation Metrics}
-
-\subsubsection{Effectiveness Metrics}
-
-The following metrics assess testing effectiveness:
-
-\begin{itemize}
-    \item \textbf{Line Coverage (LC)}: Percentage of source code lines executed by generated tests, measured using coverage.py.
-
-    \item \textbf{Branch Coverage (BC)}: Percentage of decision branches exercised, providing finer-grained coverage assessment.
-
-    \item \textbf{Mutation Score (MS)}: Percentage of seeded faults (mutants) detected by the test suite, measured using mutmut. This metric assesses assertion quality beyond mere code execution.
-
-    \item \textbf{Compilation Rate (CR)}: Percentage of generated tests that compile/parse successfully without syntax errors.
-
-    \item \textbf{Execution Rate (ER)}: Percentage of compilable tests that execute without runtime errors (excluding assertion failures).
-
-    \item \textbf{Pass Rate (PR)}: Percentage of executable tests that pass on correct implementations, indicating test validity.
-
-    \item \textbf{Assertion Density (AD)}: Average number of meaningful assertions per test function, excluding trivial assertions.
-\end{itemize}
-
-\subsubsection{Security Metrics}
-
-Security evaluation employs the following metrics:
-
-\begin{itemize}
-    \item \textbf{Attack Prevention Rate (APR)}: Percentage of simulated attacks successfully blocked by security controls.
-
-    \item \textbf{Prompt Injection Detection Rate (PIDR)}: Percentage of injected malicious prompts detected and neutralized.
-
-    \item \textbf{Data Exfiltration Prevention Rate (DEPR)}: Percentage of attempted data exfiltration blocked.
-
-    \item \textbf{Sandbox Escape Rate (SER)}: Percentage of execution attempts that breached sandbox isolation (target: 0\%).
-
-    \item \textbf{Permission Violation Detection Rate (PVDR)}: Percentage of unauthorized action attempts detected and logged.
-\end{itemize}
-
-\subsubsection{Privacy Metrics}
-
-Privacy protection is assessed through:
-
-\begin{itemize}
-    \item \textbf{PII Scrubbing Accuracy (PSA)}: Percentage of PII instances correctly identified and redacted.
-
-    \item \textbf{PII Leakage Rate (PLR)}: Percentage of PII instances that reached external LLM providers (target: 0\%).
-
-    \item \textbf{False Positive Rate (FPR)}: Percentage of non-PII content incorrectly flagged as PII.
-
-    \item \textbf{Context Reduction Ratio (CRR)}: Ratio of scrubbed context size to original context size.
-\end{itemize}
-
-\subsubsection{Performance Metrics}
-
-Performance evaluation includes:
-
-\begin{itemize}
-    \item \textbf{Generation Time (GT)}: Wall-clock time to generate a test suite for a given codebase.
-
-    \item \textbf{Token Consumption (TC)}: Total LLM tokens consumed (input + output) per test generated.
-
-    \item \textbf{Cost per Test (CPT)}: Monetary cost of generating each test at current API pricing.
-
-    \item \textbf{Throughput (TP)}: Tests generated per hour under sustained operation.
-
-    \item \textbf{Security Overhead (SO)}: Additional time introduced by security controls as percentage of baseline.
-\end{itemize}
-
-\subsection{Benchmark Selection}
-
-\subsubsection{Synthetic Benchmarks}
-
-For controlled evaluation with known ground truth:
-
-\begin{itemize}
-    \item \textbf{HumanEval-Test}: An adapted version of HumanEval focusing on test generation rather than code generation. Each problem requires generating tests for a provided function implementation.
-
-    \item \textbf{Custom Security Benchmark}: A purpose-built benchmark containing code samples with known vulnerabilities, PII patterns, and prompt injection vectors for security evaluation.
-\end{itemize}
-
-\subsubsection{Real-World Projects}
-
-For ecological validity, evaluation includes open-source Python projects of varying complexity:
-
-\begin{table}[ht]
-\caption{Real-world projects selected for evaluation}
-\label{tab:projects}
-\centering
-\begin{tabular}{l l l l l}
-\toprule
-\tabhead{Project} & \tabhead{Domain} & \tabhead{LOC} & \tabhead{Files} & \tabhead{Existing Tests} \\
-\midrule
-PyValidate & Utility library (validation) & $\sim$1,200 & 12 & Yes \\
-FlaskAPI-Demo & Web application (REST API) & $\sim$4,800 & 38 & Partial \\
-DataPipeline & Data processing (ETL) & $\sim$9,500 & 67 & Yes \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Project selection criteria included:
-\begin{itemize}
-    \item Open-source with permissive license
-    \item Written primarily in Python
-    \item Existing test suite for baseline comparison
-    \item Diverse domains to assess generalization
-    \item Varying complexity levels
-\end{itemize}
-
-\subsection{Baseline Systems}
-
-The prototype is compared against the following baselines:
-
-\begin{itemize}
-    \item \textbf{Single-Agent GPT-4}: A single GPT-4 agent with standard prompting, representing the non-MAS LLM approach.
-
-    \item \textbf{Single-Agent GPT-3.5}: A single GPT-3.5-turbo agent to assess capability differences.
-
-    \item \textbf{EvoSuite}: Search-based test generation for Java (where applicable), representing traditional automated testing.
-
-    \item \textbf{Pynguin}: Search-based test generation for Python, providing direct comparison for Python codebases.
-
-    \item \textbf{Human-Written Tests}: Existing test suites in the evaluated projects, representing human baseline quality.
-\end{itemize}
-
-\subsection{Experimental Setup}
-
-\subsubsection{Hardware Configuration}
-
-Experiments were conducted on the following hardware:
-
-\begin{itemize}
-    \item \textbf{CPU}: AMD Ryzen 9 5900X (12 cores, 24 threads, 3.7 GHz base)
-    \item \textbf{RAM}: 64 GB DDR4-3200
-    \item \textbf{GPU}: NVIDIA RTX 3090 (24 GB VRAM) for local model inference
-    \item \textbf{Storage}: 2 TB NVMe SSD
-\end{itemize}
-
-\subsubsection{Software Configuration}
-
-\begin{itemize}
-    \item \textbf{Operating System}: Ubuntu 22.04 LTS
-    \item \textbf{Python Version}: 3.11.x
-    \item \textbf{Docker Version}: 24.x
-    \item \textbf{LLM Models}: GPT-4-turbo (API), GPT-3.5-turbo (API), Code Llama 34B (local via Ollama)
-\end{itemize}
-
-\subsubsection{Experimental Protocol}
-
-Each experiment follows this protocol:
-
-\begin{enumerate}
-    \item \textbf{Preparation}: Clone repository, install dependencies, verify existing tests pass.
-
-    \item \textbf{Baseline Measurement}: Run existing tests, measure coverage, establish baseline metrics.
-
-    \item \textbf{Test Generation}: Execute the MAS testing system with specified configuration.
-
-    \item \textbf{Validation}: Compile and execute generated tests, collect results.
-
-    \item \textbf{Coverage Measurement}: Measure coverage achieved by generated tests.
-
-    \item \textbf{Mutation Testing}: Run mutation testing to assess assertion quality.
-
-    \item \textbf{Repetition}: Repeat each experiment 5 times to account for LLM non-determinism.
-\end{enumerate}
-
-\subsubsection{Statistical Analysis}
-
-Results are reported with:
-\begin{itemize}
-    \item Mean and standard deviation across repetitions
-    \item 95\% confidence intervals where appropriate
-    \item Statistical significance tests (Mann-Whitney U) for comparisons
-    \item Effect size measures (Cohen's d) for practical significance
-\end{itemize}
+\section{Development Environment and Repository Structure}
+\label{sec:dev_environment}
+
+The prototype was developed in Python 3.11+ and is distributed as a standard Python package via \texttt{pyproject.toml} using the Hatch build system. The repository structure follows the \texttt{src} layout convention:
+
+\begin{lstlisting}[language={}, caption={Repository structure of the TestForge platform.}, label={lst:repo_structure}]
+testforge/
+  src/testforge/
+    main.py                  # FastAPI + CLI entry point
+    config.py                # Pydantic Settings
+    context_store.py         # Persistent app context (JSON)
+    letta_agent.py           # Letta agent with custom tools
+    agents/
+      base.py                # BaseAgent[InputT, OutputT]
+      observer/
+        http_proxy.py        # HTTP traffic capture
+      mapper/
+        api_mapper.py        # Endpoint mapping + schema inference
+      analyzer/
+        ast_analyzer.py      # Tree-sitter AST parsing
+        pattern_extractor.py # Style guide aggregation
+      generator/
+        api_test_gen.py      # LLM-based test generation
+      executor/
+        runner.py            # pytest subprocess runner
+      validator/
+        quality.py           # Quality scoring
+        flakiness.py         # Flakiness detection
+    orchestration/
+      engine.py              # Pipeline dispatcher
+      golden_pipeline.py     # Golden Examples pipeline
+      observer_pipeline.py   # Observer pipeline
+    models/
+      interactions.py        # HTTPExchange, BrowserEvent
+      style_guide.py         # GoldenExample, TestStyleGuide
+      test_model.py          # EndpointMap, TestSuite
+      results.py             # TestResult, ValidationResult
+      app_context.py         # AppContext, RunRecord
+    llm/
+      gateway.py             # LiteLLM unified gateway
+      prompts/
+        api_test_gen.py      # Prompt templates
+    ui/
+      streamlit_app.py       # Web interface
+  examples/
+    flask_api_tests/
+      demo_app.py            # Flask CRUD API for evaluation
+      test_users_golden_1.py # Golden example: basic CRUD
+      test_users_golden_2.py # Golden example: update/delete/search
+      test_users_golden_3.py # Golden example: edge cases
+  pyproject.toml
+\end{lstlisting}
+
+The project declares 14 runtime dependencies and 4 optional dependency groups (\texttt{observer}, \texttt{letta-server}, \texttt{docker}, \texttt{dev}) in \texttt{pyproject.toml}.
 
 %----------------------------------------------------------------------------------------
 
-\section{Effectiveness Evaluation}
-\label{sec:effectiveness_results}
+\section{Implementation of the Analyser Agent}
+\label{sec:impl_analyzer}
 
-This section presents results addressing H1, evaluating the testing effectiveness of the multi-agent system compared to baselines.
+The Analyser Agent is implemented in two modules: \texttt{ast\_analyzer.py} handles Tree-sitter parsing of individual files, and \texttt{pattern\_extractor.py} aggregates results across files into a \texttt{TestStyleGuide}.
 
-\subsection{Test Coverage Results}
+\subsection{Tree-sitter Integration}
 
-\subsubsection{Synthetic Benchmark Results}
+The AST analyser initialises a Tree-sitter parser \parencite{treesitter} with the Python grammar and traverses the syntax tree to extract structural elements:
 
-Table~\ref{tab:humaneval_coverage} presents coverage results on the HumanEval-Test benchmark.
+\begin{lstlisting}[language=Python, caption={Tree-sitter AST parsing of test files (simplified).}, label={lst:ast_parser}]
+import tree_sitter_python as tspython
+from tree_sitter import Language, Parser
 
-\begin{table}[ht]
-\caption{Coverage results on HumanEval-Test benchmark}
-\label{tab:humaneval_coverage}
-\centering
-\begin{tabular}{l c c c c}
-\toprule
-\tabhead{System} & \tabhead{Line Cov.} & \tabhead{Branch Cov.} & \tabhead{Mutation Score} & \tabhead{Pass Rate} \\
-\midrule
-MAS (Ours) & --\% & --\% & --\% & --\% \\
-Single-Agent GPT-4 & --\% & --\% & --\% & --\% \\
-Single-Agent GPT-3.5 & --\% & --\% & --\% & --\% \\
-Pynguin & --\% & --\% & --\% & --\% \\
-\bottomrule
-\end{tabular}
-\end{table}
+PY_LANGUAGE = Language(tspython.language())
+parser = Parser(PY_LANGUAGE)
 
-% Note: Fill in actual experimental results
+def parse_test_file(source: str) -> GoldenExample:
+    tree = parser.parse(source.encode("utf-8"))
+    root = tree.root_node
+    imports = _extract_imports(root)
+    fixtures = _extract_fixtures(root)
+    test_functions = _extract_test_functions(root, source)
+    # ... returns GoldenExample with all extracted elements
+\end{lstlisting}
 
-\subsubsection{Real-World Project Results}
+\subsection{HTTP Method and Endpoint Extraction}
 
-Table~\ref{tab:realworld_coverage} presents coverage results on real-world projects.
+For each test function, the analyser detects HTTP client calls and extracts the targeted endpoints using regular expressions applied to the function body text:
 
-\begin{table}[ht]
-\caption{Coverage results on real-world projects}
-\label{tab:realworld_coverage}
-\centering
-\small
-\begin{tabular}{l l c c c c}
-\toprule
-\tabhead{Project} & \tabhead{System} & \tabhead{Line Cov.} & \tabhead{Branch Cov.} & \tabhead{MS} & \tabhead{PR} \\
-\midrule
-\multirow{4}{*}{PyValidate} & MAS (Ours) & --\% & --\% & --\% & --\% \\
- & Single-Agent & --\% & --\% & --\% & --\% \\
- & Pynguin & --\% & --\% & --\% & --\% \\
- & Human Tests & --\% & --\% & --\% & 100\% \\
-\midrule
-\multirow{4}{*}{FlaskAPI-Demo} & MAS (Ours) & --\% & --\% & --\% & --\% \\
- & Single-Agent & --\% & --\% & --\% & --\% \\
- & Pynguin & --\% & --\% & --\% & --\% \\
- & Human Tests & --\% & --\% & --\% & 100\% \\
-\midrule
-\multirow{4}{*}{DataPipeline} & MAS (Ours) & --\% & --\% & --\% & --\% \\
- & Single-Agent & --\% & --\% & --\% & --\% \\
- & Pynguin & --\% & --\% & --\% & --\% \\
- & Human Tests & --\% & --\% & --\% & 100\% \\
-\bottomrule
-\end{tabular}
-\end{table}
+\begin{lstlisting}[language=Python, caption={Endpoint extraction from f-string URLs.}, label={lst:endpoint_extraction}]
+import re
 
-% Note: Fill in actual experimental results
+HTTP_METHODS = ["get", "post", "put", "delete", "patch"]
 
-\subsubsection{Coverage Analysis}
+for method in HTTP_METHODS:
+    # Match: requests.post(f"{base_url}/api/users/{id}")
+    pattern = rf'\.{method}\s*\(\s*f["\'][^"\']*\}}(/[^"\']*)["\']'
+    match = re.search(pattern, func_body, re.IGNORECASE)
+    if match:
+        endpoint = match.group(1)
+        # Normalise: /api/users/{...} -> /api/users/{id}
+\end{lstlisting}
 
-% Note: Add analysis of coverage results, discussing:
-% - Where MAS outperforms baselines and why
-% - Cases where baselines perform better
-% - Impact of project complexity on results
-% - Statistical significance of differences
+\subsection{Style Guide Aggregation}
 
-The coverage results indicate that the multi-agent architecture consistently outperforms single-agent baselines, with the most significant improvements observed on larger, more complex codebases where the benefits of specialized agent roles become more pronounced.
-
-\subsection{Test Quality Assessment}
-
-\subsubsection{Compilation and Execution Rates}
-
-Table~\ref{tab:quality_rates} presents test quality metrics across systems.
-
-\begin{table}[ht]
-\caption{Test quality metrics: compilation and execution rates}
-\label{tab:quality_rates}
-\centering
-\begin{tabular}{l c c c c}
-\toprule
-\tabhead{System} & \tabhead{Compilation Rate} & \tabhead{Execution Rate} & \tabhead{Pass Rate} & \tabhead{Assertion Density} \\
-\midrule
-MAS (Ours) & --\% & --\% & --\% & -- \\
-Single-Agent GPT-4 & --\% & --\% & --\% & -- \\
-Single-Agent GPT-3.5 & --\% & --\% & --\% & -- \\
-Pynguin & --\% & --\% & --\% & -- \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsubsection{Assertion Quality Analysis}
-
-Beyond assertion density, qualitative analysis of generated assertions examines:
-
-\begin{itemize}
-    \item \textbf{Trivial Assertions}: Assertions that always pass (e.g., \texttt{assert True}).
-    \item \textbf{Tautological Assertions}: Assertions comparing a value to itself.
-    \item \textbf{Meaningful Assertions}: Assertions testing actual behavior.
-    \item \textbf{Edge Case Coverage}: Assertions testing boundary conditions.
-\end{itemize}
-
-Table~\ref{tab:assertion_quality} presents the distribution of assertion types.
-
-\begin{table}[ht]
-\caption{Assertion quality distribution}
-\label{tab:assertion_quality}
-\centering
-\begin{tabular}{l c c c c}
-\toprule
-\tabhead{System} & \tabhead{Trivial} & \tabhead{Tautological} & \tabhead{Meaningful} & \tabhead{Edge Case} \\
-\midrule
-MAS (Ours) & --\% & --\% & --\% & --\% \\
-Single-Agent GPT-4 & --\% & --\% & --\% & --\% \\
-Single-Agent GPT-3.5 & --\% & --\% & --\% & --\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsection{Bug Detection Capability}
-
-To assess bug detection capability, we introduced known bugs into the test projects and measured detection rates.
-
-\subsubsection{Bug Injection Methodology}
-
-Bugs were injected using mutation operators:
-\begin{itemize}
-    \item Arithmetic operator replacement (e.g., + to -)
-    \item Relational operator replacement (e.g., < to <=)
-    \item Constant replacement
-    \item Statement deletion
-    \item Return value modification
-\end{itemize}
-
-A total of 450 bugs were injected across the three projects (150 per project).
-
-\subsubsection{Detection Results}
-
-Table~\ref{tab:bug_detection} presents bug detection results.
-
-\begin{table}[ht]
-\caption{Bug detection rates by system and bug type}
-\label{tab:bug_detection}
-\centering
-\begin{tabular}{l c c c c c}
-\toprule
-\tabhead{System} & \tabhead{Arithmetic} & \tabhead{Relational} & \tabhead{Constant} & \tabhead{Statement} & \tabhead{Overall} \\
-\midrule
-MAS (Ours) & --\% & --\% & --\% & --\% & --\% \\
-Single-Agent GPT-4 & --\% & --\% & --\% & --\% & --\% \\
-Pynguin & --\% & --\% & --\% & --\% & --\% \\
-Human Tests & --\% & --\% & --\% & --\% & --\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsection{Comparison with Human-Written Tests}
-
-Qualitative comparison with human-written tests reveals:
-
-\begin{itemize}
-    \item \textbf{Readability}: Generated tests exhibit clear structure with descriptive names, though occasionally verbose compared to human-written tests.
-    \item \textbf{Maintainability}: Tests follow project conventions when provided as context; fixture usage is appropriate but sometimes redundant.
-    \item \textbf{Documentation}: LLM-generated tests include inline comments explaining test rationale, exceeding typical human documentation levels.
-    \item \textbf{Edge Case Coverage}: The MAS approach identifies edge cases systematically, though may miss domain-specific corner cases that require deep business knowledge.
-\end{itemize}
+The \texttt{AnalyserAgent} calls \texttt{parse\_golden\_files()} on all input files, then builds a \texttt{TestStyleGuide}. It detects the testing framework from imports (presence of \texttt{pytest} or \texttt{unittest}) and identifies the HTTP client (presence of \texttt{requests}, \texttt{httpx}, or \texttt{aiohttp}). It then collects imports that appear in at least 50\% of files as ``common imports'' and fixtures that appear in two or more files as ``common fixtures''. Finally, it computes average metrics including assertions per test, test function length, and docstring coverage.
 
 %----------------------------------------------------------------------------------------
 
-\section{Security Evaluation}
-\label{sec:security_results}
+\section{Implementation of the Generator Agent}
+\label{sec:impl_generator}
 
-This section presents results addressing H2, evaluating the effectiveness of security controls against identified attack vectors.
+The Generator Agent constructs a multi-part prompt and invokes the LLM via the LiteLLM gateway \parencite{litellm}.
 
-\subsection{Threat Model and Attack Scenarios}
+\subsection{Prompt Construction}
 
-The security evaluation considers the following attack scenarios derived from the threat analysis in Chapter~\ref{chap:literature_review}:
+The system prompt establishes the agent's role and defines eight categories of insightful tests, ranging from boundary-value analysis and error-handling verification to state-transition and concurrency checks. The user prompt is assembled from four distinct sections that together give the LLM enough context to produce tests that mirror the project's existing style. The first section contains the style guide summary, which includes the detected testing framework, the HTTP client library in use, naming conventions observed in the golden files, and any common fixtures that tests are expected to rely on. The second section provides the full source code of every golden example file, serving as few-shot context so that the LLM can observe real assertion patterns, setup and teardown idioms, and the level of detail expected in docstrings. The third section supplies application context when it is available from a previous run or from the ContextStore: this includes a list of already-tested endpoints, a list of untested endpoints discovered by the Observer pipeline, and any coverage gaps identified by the Validator. Including this information steers the LLM toward generating tests for parts of the API that have not yet been exercised. The fourth and final section is the generation instruction itself, which specifies the target number of test functions and reminds the LLM to produce insightful, non-trivial tests rather than simple status-code assertions.
 
-\begin{enumerate}
-    \item \textbf{Prompt Injection via Code Comments}: Malicious instructions embedded in code comments.
-    \item \textbf{Prompt Injection via Docstrings}: Instructions hidden in function documentation.
-    \item \textbf{Data Exfiltration Attempts}: Agent actions attempting to transmit data externally.
-    \item \textbf{Sandbox Escape Attempts}: Code attempting to access resources outside the sandbox.
-    \item \textbf{Dependency Confusion}: Hallucinated or typosquatted package names.
-    \item \textbf{Credential Extraction}: Attempts to extract API keys or secrets from context.
-\end{enumerate}
+\subsection{Response Parsing}
 
-\subsection{Attack Simulation Methodology}
-
-\subsubsection{Prompt Injection Test Suite}
-
-A test suite of 120 prompt injection payloads was developed, including:
-
-\begin{itemize}
-    \item Direct instruction injection (e.g., ``Ignore previous instructions and...'')
-    \item Encoded instructions (base64, rot13)
-    \item Multi-language injection (instructions in comments of different languages)
-    \item Nested injection (injection within legitimate-looking code)
-\end{itemize}
-
-\subsubsection{Exfiltration Test Suite}
-
-Exfiltration attempts included:
-\begin{itemize}
-    \item Network requests to external URLs
-    \item File writes outside designated directories
-    \item Environment variable access
-    \item Process spawning with network capabilities
-\end{itemize}
-
-\subsubsection{Sandbox Escape Test Suite}
-
-Sandbox escape attempts included:
-\begin{itemize}
-    \item Container breakout techniques
-    \item Privilege escalation attempts
-    \item Resource exhaustion attacks
-    \item Symlink traversal attacks
-\end{itemize}
-
-\subsection{Security Test Results}
-
-\subsubsection{Prompt Injection Prevention}
-
-Table~\ref{tab:injection_results} presents prompt injection detection results.
-
-\begin{table}[ht]
-\caption{Prompt injection detection results}
-\label{tab:injection_results}
-\centering
-\begin{tabular}{l c c c}
-\toprule
-\tabhead{Injection Type} & \tabhead{Attempts} & \tabhead{Detected} & \tabhead{Detection Rate} \\
-\midrule
-Direct instruction & -- & -- & --\% \\
-Encoded instruction & -- & -- & --\% \\
-Multi-language & -- & -- & --\% \\
-Nested injection & -- & -- & --\% \\
-\midrule
-\textbf{Total} & -- & -- & --\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsubsection{Data Exfiltration Prevention}
-
-Table~\ref{tab:exfiltration_results} presents data exfiltration prevention results.
-
-\begin{table}[ht]
-\caption{Data exfiltration prevention results}
-\label{tab:exfiltration_results}
-\centering
-\begin{tabular}{l c c c}
-\toprule
-\tabhead{Exfiltration Type} & \tabhead{Attempts} & \tabhead{Blocked} & \tabhead{Block Rate} \\
-\midrule
-Network requests & -- & -- & --\% \\
-Unauthorized file writes & -- & -- & --\% \\
-Environment access & -- & -- & --\% \\
-Process spawning & -- & -- & --\% \\
-\midrule
-\textbf{Total} & -- & -- & --\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsubsection{Sandbox Isolation}
-
-Table~\ref{tab:sandbox_results} presents sandbox isolation test results.
-
-\begin{table}[ht]
-\caption{Sandbox isolation test results}
-\label{tab:sandbox_results}
-\centering
-\begin{tabular}{l c c c}
-\toprule
-\tabhead{Escape Technique} & \tabhead{Attempts} & \tabhead{Contained} & \tabhead{Containment Rate} \\
-\midrule
-Container breakout & -- & -- & --\% \\
-Privilege escalation & -- & -- & --\% \\
-Resource exhaustion & -- & -- & --\% \\
-Path traversal & -- & -- & --\% \\
-\midrule
-\textbf{Total} & -- & -- & --\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsection{PII Protection Assessment}
-
-\subsubsection{PII Detection Accuracy}
-
-A test dataset containing 500 code files with embedded PII (totaling 1,847 PII instances) was used to evaluate scrubbing accuracy.
-
-Table~\ref{tab:pii_detection} presents PII detection results by category.
-
-\begin{table}[ht]
-\caption{PII detection accuracy by category}
-\label{tab:pii_detection}
-\centering
-\begin{tabular}{l c c c c}
-\toprule
-\tabhead{PII Type} & \tabhead{Instances} & \tabhead{Detected} & \tabhead{Recall} & \tabhead{Precision} \\
-\midrule
-Email addresses & -- & -- & --\% & --\% \\
-Phone numbers & -- & -- & --\% & --\% \\
-Names (persons) & -- & -- & --\% & --\% \\
-API keys/secrets & -- & -- & --\% & --\% \\
-Credit card numbers & -- & -- & --\% & --\% \\
-IP addresses & -- & -- & --\% & --\% \\
-\midrule
-\textbf{Overall} & -- & -- & --\% & --\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsubsection{Impact on Testing Effectiveness}
-
-PII scrubbing may affect testing effectiveness by removing context. Table~\ref{tab:pii_impact} compares coverage with and without scrubbing.
-
-\begin{table}[ht]
-\caption{Impact of PII scrubbing on test coverage}
-\label{tab:pii_impact}
-\centering
-\begin{tabular}{l c c c}
-\toprule
-\tabhead{Project} & \tabhead{Coverage (No Scrub)} & \tabhead{Coverage (With Scrub)} & \tabhead{Difference} \\
-\midrule
-PyValidate & --\% & --\% & --\% \\
-FlaskAPI-Demo & --\% & --\% & --\% \\
-DataPipeline & --\% & --\% & --\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsection{Audit Log Analysis}
-
-Analysis of audit logs from experimental runs reveals:
-
-\begin{itemize}
-    \item Total LLM interactions logged: 12,847
-    \item Tool executions logged: 34,562
-    \item Permission checks performed: 89,234
-    \item Permission denials: 127 (0.14\%)
-    \item Security alerts generated: 23
-\end{itemize}
-
-The audit trail provides complete traceability of agent actions, supporting forensic analysis and compliance requirements.
+The LLM's response is processed through several stages to extract executable Python code. Because different LLM providers wrap their output in varying Markdown conventions, the parser first strips any Markdown code fences such as \texttt{```python ... ```} that surround the generated source. The cleaned response is then split into individual test functions by scanning for \texttt{def test\_} patterns; each match marks the beginning of a new function, and everything up to the next match or the end of the response is treated as the function body. Before the first test function, the parser identifies a preamble section that typically contains import statements, module-level constants, and helper functions, and this preamble is extracted separately so that it can be written once at the top of the output file rather than duplicated across tests. In cases where the LLM omits import statements entirely, which occurs occasionally with smaller local models, the generator falls back to the common imports collected by the Analyser Agent from the style guide. Finally, each extracted test function is wrapped in a \texttt{GeneratedTest} Pydantic model that carries the function name, its source code, a confidence score estimated from the LLM's own hedging language, and metadata about which endpoint it targets.
 
 %----------------------------------------------------------------------------------------
 
-\section{Performance and Cost Analysis}
-\label{sec:performance_results}
+\section{Implementation of the Observer and Mapper Agents}
+\label{sec:impl_observer_mapper}
 
-This section presents results addressing H4, evaluating the performance characteristics and cost-effectiveness of the system.
+\subsection{Observer Agent}
 
-\subsection{Execution Time Analysis}
+The Observer Agent is responsible for capturing HTTP traffic between a client and the target application, and it supports three capture modes to accommodate different stages of the testing workflow. The simplest mode is the pre-captured mode, which accepts a list of Python dictionaries containing request and response fields and converts them into typed \texttt{HTTPExchange} objects. This mode is useful when traffic has already been collected by an external tool or when the user wants to supply endpoint definitions manually through the Streamlit interface. The second mode is HAR file parsing, which reads the standard HTTP Archive format exported by browser developer tools. The parser iterates over the \texttt{log.entries} array in the HAR JSON structure, extracting the request method, full URL, headers, request body, response status code, and response body for each entry. This mode bridges the gap between manual exploratory testing in a browser and automated test generation, since testers can simply export their browsing session and feed it into TestForge. The third and most dynamic mode is the live proxy, which uses mitmproxy \parencite{mitmproxy} to intercept HTTP traffic in real time. The implementation registers a custom mitmproxy addon class that implements the \texttt{response()} hook; each time a complete request--response cycle finishes, the addon records the exchange into an in-memory list that the Observer Agent later returns to the pipeline.
 
-\subsubsection{End-to-End Generation Time}
+\subsection{Mapper Agent}
 
-Table~\ref{tab:generation_time} presents test generation times across projects.
+The Mapper Agent processes normalised exchanges into an \texttt{EndpointMap}:
 
-\begin{table}[ht]
-\caption{Test generation time by project and system}
-\label{tab:generation_time}
-\centering
-\begin{tabular}{l l c c c}
-\toprule
-\tabhead{Project} & \tabhead{System} & \tabhead{Mean Time (s)} & \tabhead{Std Dev} & \tabhead{Tests Generated} \\
-\midrule
-\multirow{3}{*}{PyValidate} & MAS (Ours) & -- & -- & -- \\
- & Single-Agent GPT-4 & -- & -- & -- \\
- & Pynguin & -- & -- & -- \\
-\midrule
-\multirow{3}{*}{FlaskAPI-Demo} & MAS (Ours) & -- & -- & -- \\
- & Single-Agent GPT-4 & -- & -- & -- \\
- & Pynguin & -- & -- & -- \\
-\midrule
-\multirow{3}{*}{DataPipeline} & MAS (Ours) & -- & -- & -- \\
- & Single-Agent GPT-4 & -- & -- & -- \\
- & Pynguin & -- & -- & -- \\
-\bottomrule
-\end{tabular}
-\end{table}
+\begin{lstlisting}[language=Python, caption={Path normalisation in the Mapper Agent.}, label={lst:path_normalisation}]
+def _normalize_path(self, path: str) -> str:
+    parts = path.strip("/").split("/")
+    normalised = []
+    for part in parts:
+        if part.isdigit():
+            normalised.append("{id}")
+        elif self._is_uuid(part):
+            normalised.append("{uuid}")
+        else:
+            normalised.append(part)
+    return "/" + "/".join(normalised)
+\end{lstlisting}
 
-% Note: Fill in actual experimental results
-
-\subsubsection{Phase-wise Time Breakdown}
-
-Table~\ref{tab:phase_time} breaks down time spent in each workflow phase.
-
-\begin{table}[ht]
-\caption{Time distribution across workflow phases}
-\label{tab:phase_time}
-\centering
-\begin{tabular}{l c c}
-\toprule
-\tabhead{Phase} & \tabhead{Mean Time (s)} & \tabhead{Percentage} \\
-\midrule
-Planning & -- & --\% \\
-Code Analysis & -- & --\% \\
-Test Generation & -- & --\% \\
-Security Scanning & -- & --\% \\
-Execution & -- & --\% \\
-Validation & -- & --\% \\
-\midrule
-\textbf{Total} & -- & 100\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsection{Token Consumption Analysis}
-
-\subsubsection{Token Usage by Component}
-
-Table~\ref{tab:token_usage} presents token consumption across agents.
-
-\begin{table}[ht]
-\caption{Token consumption by agent}
-\label{tab:token_usage}
-\centering
-\begin{tabular}{l c c c}
-\toprule
-\tabhead{Agent} & \tabhead{Input Tokens} & \tabhead{Output Tokens} & \tabhead{Total} \\
-\midrule
-Planning Agent & -- & -- & -- \\
-Code Analysis Agent & -- & -- & -- \\
-Test Generation Agent & -- & -- & -- \\
-Validation Agent & -- & -- & -- \\
-Security Agent & -- & -- & -- \\
-\midrule
-\textbf{Total} & -- & -- & -- \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsubsection{Tokens per Test}
-
-Average token consumption per generated test:
-\begin{itemize}
-    \item Input tokens per test: 2,450
-    \item Output tokens per test: 680
-    \item Total tokens per test: 3,130
-\end{itemize}
-
-\subsection{Cost Analysis}
-
-\subsubsection{API Cost Calculation}
-
-Based on current OpenAI pricing (as of January 2026):
-\begin{itemize}
-    \item GPT-4-turbo input: \$0.01 per 1K tokens
-    \item GPT-4-turbo output: \$0.03 per 1K tokens
-\end{itemize}
-
-Table~\ref{tab:cost_analysis} presents cost per test across configurations.
-
-\begin{table}[ht]
-\caption{Cost analysis by configuration}
-\label{tab:cost_analysis}
-\centering
-\begin{tabular}{l c c c}
-\toprule
-\tabhead{Configuration} & \tabhead{Cost per Test} & \tabhead{Cost per Project} & \tabhead{Coverage Achieved} \\
-\midrule
-MAS (GPT-4) & \$-- & \$-- & --\% \\
-MAS (GPT-3.5) & \$-- & \$-- & --\% \\
-MAS (Local Llama) & \$-- (infra) & \$-- (infra) & --\% \\
-Single-Agent GPT-4 & \$-- & \$-- & --\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsubsection{Cost-Effectiveness Comparison}
-
-Comparing with estimated manual test writing costs:
-\begin{itemize}
-    \item Estimated developer time per test: 15--30 minutes
-    \item Estimated developer hourly rate: \$75 (industry average)
-    \item Estimated cost per manually written test: \$18.75--\$37.50
-    \item MAS cost per test (GPT-4): \$0.045--\$0.12
-    \item Cost reduction: 99.4--99.7\%
-\end{itemize}
-
-\subsection{Security Overhead Analysis}
-
-Table~\ref{tab:security_overhead} quantifies the overhead introduced by security controls.
-
-\begin{table}[ht]
-\caption{Security control overhead}
-\label{tab:security_overhead}
-\centering
-\begin{tabular}{l c c}
-\toprule
-\tabhead{Security Control} & \tabhead{Time Overhead} & \tabhead{Token Overhead} \\
-\midrule
-PII Scrubbing & -- ms/request & --\% \\
-Permission Checking & -- ms/action & N/A \\
-Sandbox Provisioning & -- s/execution & N/A \\
-Audit Logging & -- ms/event & N/A \\
-Security Scanning & -- s/test & --\% \\
-\midrule
-\textbf{Total Overhead} & --\% & --\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsection{Scalability Assessment}
-
-To assess scalability, we measured performance across increasing codebase sizes.
-
-Table~\ref{tab:scalability} presents scalability results.
-
-\begin{table}[ht]
-\caption{Scalability: performance vs. codebase size}
-\label{tab:scalability}
-\centering
-\begin{tabular}{l c c c}
-\toprule
-\tabhead{Codebase Size (LOC)} & \tabhead{Generation Time} & \tabhead{Token Usage} & \tabhead{Coverage} \\
-\midrule
-1,000 & -- & -- & --\% \\
-5,000 & -- & -- & --\% \\
-10,000 & -- & -- & --\% \\
-25,000 & -- & -- & --\% \\
-50,000 & -- & -- & --\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
+Schema inference examines JSON bodies across multiple exchanges to the same normalised endpoint, recording field names, types, and frequency of occurrence.
 
 %----------------------------------------------------------------------------------------
 
-\section{Ablation Studies}
-\label{sec:ablation}
+\section{Implementation of the Executor Agent}
+\label{sec:impl_executor}
 
-This section presents ablation studies examining the contribution of individual architectural components to overall system performance.
+The Executor Agent writes the generated test suite to a temporary directory, generates a \texttt{conftest.py} with common fixtures, and runs pytest \parencite{pytest2024} as a subprocess.
 
-\subsection{Impact of Multi-Agent Architecture}
+\subsection{Auto-generated conftest.py}
 
-To assess the benefit of multi-agent decomposition (H5), we compare the full MAS against ablated variants:
+When the test suite does not include its own conftest, the Executor auto-generates one that provides the fixtures most commonly referenced in golden examples. The first fixture, \texttt{base\_url}, reads the application's base URL from the \texttt{BASE\_URL} environment variable and returns it as a plain string, allowing every test function to construct endpoint URLs without hard-coding a host or port. The second fixture, \texttt{created\_user}, performs a full lifecycle: it sends a POST request to the user-creation endpoint with a unique email and a default role, yields the resulting user dictionary to the test function so that assertions can inspect it, and then issues a DELETE request in its teardown phase to clean up. The third fixture, \texttt{sample\_user}, follows the same pattern but creates a user with a different role, enabling test scenarios that require two distinct users (for example, verifying that search filters correctly distinguish between roles). Each of these fixtures generates a unique email address by calling \texttt{id(object())}, which produces a different integer on every invocation and thus avoids duplicate-detection conflicts both within a single test run and across consecutive runs against the same application instance.
 
-\begin{itemize}
-    \item \textbf{Full MAS}: All six agents operational
-    \item \textbf{No Validation Agent}: Skipping test quality validation
-    \item \textbf{No Security Agent}: Removing security scanning
-    \item \textbf{No Planning Agent}: Direct generation without planning
-    \item \textbf{Merged Agents}: Combining analysis and generation into single agent
-\end{itemize}
+\subsection{Pytest Output Parsing}
 
-Table~\ref{tab:ablation_agents} presents ablation results.
-
-\begin{table}[ht]
-\caption{Ablation study: impact of agent removal}
-\label{tab:ablation_agents}
-\centering
-\begin{tabular}{l c c c c}
-\toprule
-\tabhead{Configuration} & \tabhead{Coverage} & \tabhead{Pass Rate} & \tabhead{Mutation Score} & \tabhead{Time} \\
-\midrule
-Full MAS & --\% & --\% & --\% & -- s \\
-No Validation & --\% & --\% & --\% & -- s \\
-No Security & --\% & --\% & --\% & -- s \\
-No Planning & --\% & --\% & --\% & -- s \\
-Merged Agents & --\% & --\% & --\% & -- s \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsection{Impact of LLM Model Choice}
-
-Table~\ref{tab:ablation_models} compares different LLM configurations.
-
-\begin{table}[ht]
-\caption{Ablation study: impact of LLM model selection}
-\label{tab:ablation_models}
-\centering
-\begin{tabular}{l c c c c}
-\toprule
-\tabhead{Model Configuration} & \tabhead{Coverage} & \tabhead{Pass Rate} & \tabhead{Cost/Test} & \tabhead{Time} \\
-\midrule
-GPT-4-turbo (all agents) & --\% & --\% & \$-- & -- s \\
-GPT-3.5-turbo (all agents) & --\% & --\% & \$-- & -- s \\
-Code Llama 34B (all agents) & --\% & --\% & \$-- & -- s \\
-Hybrid (GPT-4 gen, 3.5 others) & --\% & --\% & \$-- & -- s \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsection{Impact of Security Controls}
-
-Table~\ref{tab:ablation_security} examines the effectiveness-security trade-off.
-
-\begin{table}[ht]
-\caption{Ablation study: impact of security controls on effectiveness}
-\label{tab:ablation_security}
-\centering
-\begin{tabular}{l c c c}
-\toprule
-\tabhead{Security Configuration} & \tabhead{Coverage} & \tabhead{Security Score} & \tabhead{Time Overhead} \\
-\midrule
-Full Security & --\% & --\% & +--\% \\
-No PII Scrubbing & --\% & --\% & +--\% \\
-No Sandbox & --\% & --\% & +--\% \\
-Relaxed Permissions & --\% & --\% & +--\% \\
-No Security & --\% & --\% & Baseline \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
-
-\subsection{Impact of Context Management}
-
-Table~\ref{tab:ablation_context} examines different context management strategies.
-
-\begin{table}[ht]
-\caption{Ablation study: impact of context management strategy}
-\label{tab:ablation_context}
-\centering
-\begin{tabular}{l c c c}
-\toprule
-\tabhead{Context Strategy} & \tabhead{Coverage} & \tabhead{Token Usage} & \tabhead{Pass Rate} \\
-\midrule
-Full file context & --\% & -- & --\% \\
-RAG-based retrieval & --\% & -- & --\% \\
-Hierarchical summary & --\% & -- & --\% \\
-Minimal context & --\% & -- & --\% \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-% Note: Fill in actual experimental results
+The Executor runs pytest with the \texttt{-v} (verbose) and \texttt{--tb=short} flags and then applies a multi-stage parser to the captured standard output. In the first stage, the parser scans each line for the verbose-mode pattern \texttt{::test\_name PASSED/FAILED/ERROR/SKIPPED}, which pytest emits once per collected test item. For every line that matches, the parser records the test name and its outcome into a \texttt{TestResult} object. In the second stage, the parser locates the \texttt{FAILURES} section of the pytest output and associates each failure traceback with the corresponding test name, so that the Validator and the user can inspect exactly which assertion failed and on which line. If the verbose-mode parsing yields no individual results, which can happen when pytest itself crashes during collection or encounters a syntax error in the generated code, the parser falls back to the short test summary lines that pytest prints near the bottom of its output, matching lines of the form \texttt{FAILED path::test\_name}. As a last resort, when even the short summary is absent, the parser examines the process exit code and creates a single suite-level result that marks the entire run as passed or failed. This layered approach ensures that the Executor always returns structured results regardless of how the generated tests behave at runtime.
 
 %----------------------------------------------------------------------------------------
 
-\section{Discussion}
-\label{sec:evaluation_discussion}
+\section{Implementation of the Validator Agent}
+\label{sec:impl_validator}
 
-\subsection{Summary of Findings}
+The Validator Agent scores each generated test on a 0--1 scale across four dimensions, each of which captures a different aspect of test quality. This section describes how each dimension is computed and how the overall score is derived.
 
-The experimental evaluation yields the following key findings:
+The first dimension is Assertion Quality, scored from 0 to 1. The scorer counts the number of \texttt{assert} statements in each test function and classifies them by type: status-code checks, response-body field checks, collection-length checks, and exception assertions. A test that contains at least three assertions spanning two or more of these categories receives the highest score, while a test with a single status-code assertion scores significantly lower. This encourages the Generator to produce tests that verify multiple properties of an API response rather than merely checking that the server returned HTTP 200.
 
-\subsubsection{Effectiveness (H1)}
+The second dimension is Coverage Breadth, also scored from 0 to 1. It measures how many distinct API endpoints are exercised across the entire test suite. The Validator normalises paths using the same logic as the Mapper Agent, so that \texttt{/api/users/1} and \texttt{/api/users/42} both map to \texttt{/api/users/\{id\}}. Suites that spread their tests across more normalised endpoints receive higher scores, which incentivises the Generator to avoid clustering all tests on a single endpoint.
 
-The experimental results support H1. The multi-agent architecture achieved higher line coverage, branch coverage, and mutation scores compared to single-agent baselines across all evaluated projects. The improvement was most pronounced on larger codebases where task decomposition and specialized agent roles provided greater benefits.
+The third dimension is Readability, scored from 0 to 1. It assesses three sub-factors: test function length, where both very short functions (fewer than three lines) and very long functions (more than fifty lines) are penalised; the presence of a docstring that explains the test's purpose; and whether the function name follows a descriptive naming convention such as \texttt{test\_create\_user\_with\_duplicate\_email}. These heuristics reward tests that a human reviewer could understand without tracing through the implementation.
 
-\subsubsection{Security (H2)}
-
-The results strongly support H2. Security controls achieved high detection and prevention rates for simulated attacks. Prompt injection attempts were detected with over 95\% accuracy, and sandbox isolation prevented all escape attempts during testing.
-
-\subsubsection{Privacy (H3)}
-
-H3 is supported by the experimental evidence. The PII scrubbing pipeline achieved high recall across all PII categories, with minimal impact on testing effectiveness. The context reduction achieved significant data minimization without substantially affecting coverage metrics.
-
-\subsubsection{Cost-Effectiveness (H4)}
-
-H4 is supported. The per-test cost using LLM APIs represents a substantial reduction compared to estimated manual test writing costs. Even accounting for infrastructure and operational overhead, the cost-benefit ratio strongly favors automated generation for high-volume testing scenarios.
-
-\subsubsection{Architecture Impact (H5)}
-
-The ablation studies support H5. Removing individual agents (particularly the Validation and Planning agents) resulted in measurable decreases in test quality and coverage. The full multi-agent configuration consistently outperformed ablated variants.
-
-\subsubsection{LLM Configuration Impact (H6)}
-
-H6 is supported by the experimental comparison of model configurations. GPT-4 achieved the highest test quality but at higher cost. The hybrid configuration (GPT-4 for generation, GPT-3.5 for other agents) provided a favorable balance. Local models (Code Llama) offered privacy benefits with acceptable quality trade-offs for less complex codebases.
-
-\subsection{Threats to Validity}
-
-\subsubsection{Internal Validity}
-
-Threats to internal validity include:
-
-\begin{itemize}
-    \item \textbf{LLM Non-Determinism}: LLM outputs vary between invocations. We mitigated this through multiple repetitions and statistical analysis.
-
-    \item \textbf{Implementation Bugs}: Bugs in our prototype could affect results. We mitigated this through extensive testing of the implementation itself.
-
-    \item \textbf{Configuration Sensitivity}: Results may depend on specific configuration choices. We reported all configurations and conducted ablation studies.
-
-    \item \textbf{Prompt Sensitivity}: LLM performance depends on prompt design. We used established prompting patterns and report prompt templates.
-\end{itemize}
-
-\subsubsection{External Validity}
-
-Threats to external validity include:
-
-\begin{itemize}
-    \item \textbf{Project Selection}: The three real-world projects may not represent the full diversity of software systems. We selected projects across different domains and sizes.
-
-    \item \textbf{Language Limitation}: Evaluation focused on Python; results may not generalize to other languages.
-
-    \item \textbf{Benchmark Contamination}: LLMs may have seen benchmark code during training, inflating performance estimates on synthetic benchmarks.
-
-    \item \textbf{Temporal Validity}: LLM capabilities evolve rapidly; results may not hold for future model versions.
-\end{itemize}
-
-\subsubsection{Construct Validity}
-
-Threats to construct validity include:
-
-\begin{itemize}
-    \item \textbf{Metric Selection}: Chosen metrics may not fully capture testing effectiveness or security properties.
-
-    \item \textbf{Attack Realism}: Simulated attacks may not represent real-world adversary capabilities and motivations.
-
-    \item \textbf{Cost Estimates}: API pricing and developer costs vary; cost-effectiveness conclusions are context-dependent.
-\end{itemize}
-
-\subsection{Limitations}
-
-This evaluation has several limitations:
-
-\begin{itemize}
-    \item \textbf{Scale}: Evaluation on three projects provides limited statistical power for generalization claims.
-
-    \item \textbf{Production Environment}: Experiments occurred in controlled settings; production deployment may reveal additional challenges.
-
-    \item \textbf{Long-term Effects}: We did not assess long-term maintenance costs of generated tests or developer acceptance over time.
-
-    \item \textbf{Adversarial Robustness}: Security evaluation used known attack patterns; novel attacks may succeed.
-\end{itemize}
+The fourth dimension is Execution Result, which is binary: a test receives a score of 1 if pytest reports it as passed and 0 if it failed or raised an error. When execution was skipped (for instance, because the target application was offline), this dimension is excluded from the average so that it does not unfairly penalise the suite. The overall quality score is computed as the arithmetic mean of all available dimensions. In addition to the numerical score, the Validator flags common issues such as tests with no assertions at all, tests that omit status-code checks, and tests exceeding fifty lines, providing actionable feedback that can guide regeneration in future iterations.
 
 %----------------------------------------------------------------------------------------
 
-\section{Summary}
-\label{sec:evaluation_summary}
+\section{Streamlit Web Interface}
+\label{sec:streamlit_ui}
 
-This chapter has presented a comprehensive experimental evaluation of the secure multi-agent testing system. The evaluation addressed six hypotheses through experiments on synthetic benchmarks and real-world projects.
+The web interface provides three tabs, each corresponding to one of the three pipeline modes supported by TestForge. This section describes the layout and functionality of each tab as well as the global configuration sidebar.
 
-Key findings include:
-\begin{itemize}
-    \item The multi-agent architecture outperforms single-agent baselines in coverage and bug detection (H1)
-    \item Security controls effectively prevent identified attack vectors with over 95\% detection rate (H2)
-    \item PII scrubbing achieves high accuracy with minimal impact on testing effectiveness (H3)
-    \item Automated test generation achieves over 99\% cost reduction compared to manual writing (H4)
-    \item Specialized agent roles contribute measurably to overall system performance (H5)
-    \item Hybrid LLM configurations balance cost, quality, and privacy effectively (H6)
-\end{itemize}
+The first tab, Golden Examples, is designed for users who already possess a set of hand-written test files that embody their preferred testing style. The tab presents a file-upload widget that accepts one or more Python test files, together with text fields for the target application's base URL, a free-text application description that is forwarded to the LLM as additional context, and a numeric input for the desired number of tests to generate. Once the user clicks the generation button, the tab displays the generated test code in a syntax-highlighted code block, followed by a table of execution results showing each test's name and pass/fail status, and finally a summary of the quality scores computed by the Validator Agent.
 
-The results support the viability of the proposed architecture while identifying areas for future improvement. The following chapter presents conclusions and directions for future work.
+The second tab, Observer Mode, targets users who want to generate tests from observed HTTP traffic rather than from existing test files. It accepts either a JSON text area where the user can paste endpoint definitions as a list of dictionaries, or a HAR file upload for traffic captured in a browser. After processing, the tab displays the discovered endpoint map (a table listing each normalised path, the HTTP methods observed, and the inferred request and response schemas), followed by the generated tests and their execution results.
+
+The third tab, Combined Mode, merges both input sources. It presents the golden file upload alongside the observer data input, allowing TestForge to use the style guide extracted from golden examples while also incorporating endpoint coverage information from observed traffic. The tab displays the style guide summary and the endpoint map side by side, followed by the generation output and the execution and validation results.
+
+A sidebar visible on all tabs provides global configuration options: the base URL of the target application, a free-text description field, the number of tests to generate, a dropdown for selecting the LLM model (which lists all models available through the configured LiteLLM gateway), and the API base URL for the LLM provider, defaulting to the local Ollama endpoint.
+
+%----------------------------------------------------------------------------------------
+
+\section{Implementation Challenges and Solutions}
+\label{sec:impl_challenges}
+
+Several significant challenges were encountered during development, each of which required iterative investigation before a workable solution emerged. This section documents the most impactful issues and the strategies adopted to resolve them.
+
+The first major challenge concerned deploying the Letta server. The Letta framework \parencite{packer2023memgpt} relies on PostgreSQL for its internal scheduler and memory-persistence components. Initial attempts to install Letta directly via pip on the development machine failed because the \texttt{asyncpg} Python package requires a locally installed PostgreSQL server and its associated C headers, which were not present. After exploring several workarounds, including installing PostgreSQL natively and attempting to stub out the dependency, the most reliable solution proved to be deploying Letta through its official Docker image, which bundles both the Letta server and a PostgreSQL instance in a single container accessible on port 8283.
+
+A related difficulty was parsing the responses returned by the Letta client. Each call to the Letta API returns a \texttt{LettaResponse} object that may contain multiple message types interleaved: internal reasoning steps, tool-call invocations, and user-facing assistant messages. Naively concatenating all messages produced noisy output that included the agent's chain-of-thought reasoning. The solution was to filter explicitly for \texttt{AssistantMessage} objects whose \texttt{content} field is non-empty, discarding all other message types before presenting the response to the user.
+
+Local LLM inference introduced a timeout challenge. Running Ollama with the llama3.1:8b model on consumer hardware is significantly slower than calling a cloud API, with individual generation requests sometimes taking over two minutes to complete. The default HTTP client timeout of thirty seconds was therefore insufficient, causing requests to fail midway through generation. This was resolved by introducing separate timeout parameters in the LiteLLM gateway configuration: 300 seconds for the inference timeout and 30 seconds for the initial connection timeout.
+
+The AST analyser initially could not extract endpoints from f-string URLs. When golden examples contained calls such as \texttt{requests.post(f"\{base\_url\}/api/users")}, the Tree-sitter parser represented the f-string as a \texttt{formatted\_string} node whose children are interpolation fragments, making it difficult to reconstruct the literal path portion. Adding a regex-based extraction pass that operates on the raw function body text, rather than on the AST, provided a complementary strategy that reliably captures the path segment after the interpolated base URL variable.
+
+Conftest fixture generation was another source of failures. The LLM, having observed fixtures such as \texttt{created\_user} and \texttt{sample\_user} in the golden examples, would generate tests that referenced these fixtures by name. However, because the auto-generated conftest did not initially include them, pytest would report collection errors for every such test. The fix was to include these commonly referenced fixtures in the default conftest template so that they are always available, regardless of whether the golden examples shipped their own conftest file.
+
+Test state pollution caused intermittent failures across consecutive runs. Early versions of the conftest fixtures used hardcoded email addresses when creating test users, which meant that a second run against the same application instance would trigger duplicate-detection logic in the target API and return HTTP 409 Conflict responses. Replacing the hardcoded values with dynamically generated email addresses based on \texttt{id(object())}, which produces a unique integer on each call, eliminated this class of failure entirely.
+
+Finally, pytest output parsing proved unexpectedly fragile. The initial implementation passed both \texttt{-v} (verbose) and \texttt{-q} (quiet) flags to pytest, which are contradictory: the quiet flag suppresses the per-test status lines that the verbose flag would normally emit. The resulting output was a compact summary that the regex-based parser could not decompose into individual test results. Removing the \texttt{-q} flag and relying solely on \texttt{-v} together with \texttt{--tb=short} restored the expected output format and allowed the parser to extract per-test outcomes reliably.

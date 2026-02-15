@@ -1,9 +1,9 @@
-% Chapter 2 - Literature Review
+% Chapter 2 - Systematic Review of the Literature
 
-\chapter{Literature Review}
+\chapter{Systematic Review of the Literature}
 \label{chap:literature_review}
 
-This chapter presents a comprehensive systematic literature review addressing the six research questions introduced in Chapter~\ref{chap:introduction}. The review follows the \acrfull{PRISMA} methodology to ensure rigor, transparency, and reproducibility. The chapter begins with a detailed description of the review methodology, followed by thematic analysis of the selected studies organized around the key research themes: multi-agent architectures, LLM selection, testing effectiveness, security and privacy challenges, mitigation strategies, and practical deployment considerations.
+This chapter presents a comprehensive systematic literature review following the \acrfull{PRISMA} methodology to ensure rigour, transparency, and reproducibility. The review is guided by its own overarching research question, distinct from the thesis question presented in Chapter~\ref{chap:introduction}, which surveys how artificial intelligence techniques have been applied to automated software test generation. This question is decomposed into five research questions (RQ1--RQ5) that structure the search strategy, thematic analysis, and synthesis. The chapter begins with a detailed description of the review methodology (Section~\ref{sec:methodology}), presents the results organised by research question with the full thematic analysis for each (Section~\ref{sec:results}), provides a critical discussion of the findings and identification of research gaps (Section~\ref{sec:critical_discussion}), and concludes with a summary of the review, its limitations, and directions for future work (Section~\ref{sec:review_conclusion}).
 
 %----------------------------------------------------------------------------------------
 
@@ -12,136 +12,313 @@ This chapter presents a comprehensive systematic literature review addressing th
 
 This systematic literature review follows the PRISMA 2020 guidelines \parencite{page2021prisma} and incorporates recommendations from established software engineering research methodology \parencite{kitchenham2007guidelines}. The methodology encompasses research question formulation, search strategy definition, study selection criteria, quality assessment, and data extraction procedures.
 
-\subsection{Research Questions}
+\subsection{Review Question and Research Questions}
 
-As introduced in Section~\ref{sec:research_questions}, this review addresses six research questions spanning security and privacy (RQ1--RQ2) and effectiveness and architecture (RQ3--RQ6):
+The systematic review is guided by its own overarching research question, distinct from the thesis question presented in Chapter~\ref{chap:introduction}. While the thesis question concerns the design and evaluation of a specific platform (TestForge), the review question surveys the broader state of the art in AI-driven test generation to establish the theoretical foundation upon which the thesis builds:
 
-\begin{itemize}
-    \item \textbf{RQ1}: What predominant security and privacy risks are associated with LLM-based Multi-Agent Systems in enterprise software testing environments?
-    \item \textbf{RQ2}: What architectural patterns and mitigation strategies (e.g., sandboxing, PII scrubbing) are proposed in the literature to secure Agent-Computer Interfaces and prevent data leakage?
-    \item \textbf{RQ3}: How effective are Multi-Agent Systems powered by Large Language Models in automated software testing compared to traditional testing approaches?
-    \item \textbf{RQ4}: What architectural patterns and design principles are most effective for implementing MAS-based automated testing systems?
-    \item \textbf{RQ5}: What are the practical challenges and solutions for deploying MAS-based testing in real-world software development workflows?
-    \item \textbf{RQ6}: How do different Large Language Model choices and configurations impact the performance of Multi-Agent testing systems?
-\end{itemize}
+\begin{quote}
+\textit{How have artificial intelligence techniques, particularly large language models and multi-agent systems, been applied to automated software test generation, and what are the current capabilities, limitations, and open challenges?}
+\end{quote}
+
+To answer this question systematically, the review decomposes it into five research questions (RQ). Each question targets a distinct aspect of the problem space, and together they provide a comprehensive mapping of the existing literature that informs the design decisions made in subsequent chapters.
+
+RQ1 asks: \textit{What techniques have been used to leverage existing test examples and few-shot prompting for AI-driven test generation, and what quality improvements do they achieve?} This question examines how reference tests, code demonstrations, and in-context learning strategies have been employed to guide LLMs toward generating higher-quality tests, covering retrieval-based example selection, mutation-guided feedback, and AST-based pattern extraction.
+
+RQ2 asks: \textit{How have black-box testing and traffic analysis methods been combined with AI for automatic endpoint discovery and test suite creation?} This question surveys techniques for testing APIs without source code access, including stateful fuzzing, specification inference, and the emerging use of LLMs for generating tests from observed HTTP exchanges.
+
+RQ3 asks: \textit{What multi-agent system architectures have been proposed for software engineering and testing tasks, and how do coordination models, role specialisation, and communication patterns affect effectiveness?} This question investigates the design space for multi-agent frameworks, comparing hierarchical, peer-to-peer, and hybrid coordination models, and identifying the role decomposition patterns most relevant to automated testing.
+
+RQ4 asks: \textit{How have persistent memory mechanisms been used in LLM-based agent systems, and what is their potential for improving test generation quality across sessions?} This question explores memory architectures for language agents, including virtual context management, reflective memory, and retrieval-augmented generation, and evaluates whether they have been applied to software testing.
+
+RQ5 asks: \textit{What are the practical considerations, including privacy, security, cost, and regulatory compliance, for deploying AI-based test generation systems, particularly with local execution?} This question addresses the deployment landscape, covering the trade-offs between proprietary and open-weight models, security threats specific to agent-based systems, mitigation strategies, and the requirements imposed by the GDPR and the EU AI Act.
+
+The search strategy, inclusion criteria, and thematic analysis sections that follow are organised around these five research questions. The Results section consolidates the findings and thematic analysis for each question, the Critical Discussion provides a critical analysis per question, and the Conclusions section summarises the state of the field and identifies the research gaps that motivate this thesis.
 
 \subsection{Search Strategy}
 
 The literature search employed multiple complementary search strings targeting different aspects of the research questions. Searches were conducted across IEEE Xplore, ACM Digital Library, Scopus, and arXiv to capture both peer-reviewed publications and recent preprints in this rapidly evolving field.
 
-\subsubsection{Primary Search String (MAS and Testing)}
+The first search string (S1) targeted multi-agent systems and test generation, addressing RQ1 and RQ3:
 
 \begin{verbatim}
 ("Multi-Agent" OR "MAS" OR "LLM" OR "Large Language Model"
  OR "GPT" OR "Code Generation")
 AND
 ("Software Testing" OR "Test Generation" OR "Automated Testing"
- OR "Unit Testing")
+ OR "Unit Testing" OR "Integration Testing" OR "End-to-End Testing")
 \end{verbatim}
 
-\subsubsection{Secondary Search String (Security and Privacy)}
+The second search string (S2) focused on few-shot and example-driven testing for RQ1:
 
 \begin{verbatim}
-("LLM" OR "Large Language Model" OR "Agent" OR "Autonomous")
+("Few-Shot" OR "In-Context Learning" OR "Example-Driven"
+ OR "Example-Based" OR "Prompt Engineering")
 AND
-("Security" OR "Privacy" OR "Data Leakage" OR "Prompt Injection"
- OR "Adversarial")
+("Test Generation" OR "Test Case" OR "Unit Test" OR "Code Generation")
 AND
-("Software" OR "Code" OR "Testing")
+("LLM" OR "Large Language Model" OR "GPT" OR "Codex" OR "Copilot")
 \end{verbatim}
 
-\subsubsection{Tertiary Search String (Architecture and Effectiveness)}
+The third search string (S3) targeted black-box testing and API analysis for RQ2:
+
+\begin{verbatim}
+("Black-Box" OR "Black Box" OR "REST API" OR "API Testing"
+ OR "Traffic Analysis" OR "HTTP" OR "API Discovery")
+AND
+("Test Generation" OR "Automated Testing" OR "Fuzzing"
+ OR "Specification Inference" OR "OpenAPI")
+\end{verbatim}
+
+The fourth search string (S4) addressed agent memory and stateful systems for RQ4:
+
+\begin{verbatim}
+("Agent Memory" OR "Persistent Memory" OR "Long-Term Memory"
+ OR "Stateful Agent" OR "MemGPT" OR "Memory-Augmented")
+AND
+("LLM" OR "Large Language Model" OR "Agent" OR "Multi-Agent")
+\end{verbatim}
+
+The fifth search string (S5) covered architecture, effectiveness, and deployment for RQ3 and RQ5:
 
 \begin{verbatim}
 ("Multi-Agent" OR "Agent Framework" OR "LLM Agent")
 AND
 ("Architecture" OR "Effectiveness" OR "Performance"
- OR "Benchmark" OR "Evaluation")
+ OR "Benchmark" OR "Evaluation" OR "Security" OR "Privacy"
+ OR "Local Deployment" OR "Open-Weight")
 \end{verbatim}
 
-The search period covered publications from January 2020 to January 2026, capturing the emergence of modern LLMs (beginning with GPT-3) through to current developments. Reference lists of included studies were manually screened to identify additional relevant works (snowballing).
+The search period covered publications from January 2020 to January 2026, capturing the emergence of modern LLMs (beginning with GPT-3) through to current developments. Searches were conducted across IEEE Xplore, ACM Digital Library, Scopus, and arXiv. Reference lists of included studies were manually screened to identify additional relevant works (snowballing).
 
 \subsection{Inclusion and Exclusion Criteria}
 
-\subsubsection{Inclusion Criteria}
+To ensure that only relevant and methodologically sound studies were retained, a set of inclusion and exclusion criteria was defined prior to screening. The inclusion criteria were designed to capture the full breadth of the five research questions, encompassing multi-agent architectures, LLM-based test generation, example-driven approaches, black-box testing, agent memory, and practical deployment concerns. The exclusion criteria filtered out studies that fell outside the scope of the review or that lacked the methodological rigour necessary for meaningful synthesis. Both sets of criteria were applied consistently at the title/abstract screening and full-text assessment stages. Table~\ref{tab:inclusion_criteria} and Table~\ref{tab:exclusion_criteria} present the complete criteria.
 
-\begin{itemize}
-    \item \textbf{IC1}: Studies presenting MAS architectures for software testing or development
-    \item \textbf{IC2}: Studies with empirical evaluation of LLM-based testing tools
-    \item \textbf{IC3}: Studies reporting quantitative metrics (coverage, bug detection, pass@k)
-    \item \textbf{IC4}: Framework papers describing multi-agent systems (MetaGPT, ChatDev, SWE-agent, etc.)
-    \item \textbf{IC5}: Studies addressing security or privacy concerns in LLM-based systems
-    \item \textbf{IC6}: Studies proposing mitigation strategies for agent-related risks
-\end{itemize}
+\begin{table}[ht]
+\caption{Inclusion criteria}
+\label{tab:inclusion_criteria}
+\centering
+\small
+\begin{tabular}{c p{11cm}}
+\toprule
+\tabhead{ID} & \tabhead{Criterion} \\
+\midrule
+IC1 & Studies presenting MAS architectures for software testing or development \\
+IC2 & Studies with empirical evaluation of LLM-based testing tools \\
+IC3 & Studies reporting quantitative metrics (coverage, bug detection, pass@k) \\
+IC4 & Framework papers describing multi-agent systems (MetaGPT, ChatDev, SWE-agent, etc.) \\
+IC5 & Studies on few-shot, example-driven, or in-context learning for code/test generation \\
+IC6 & Studies on black-box testing, API discovery, or traffic-based test generation \\
+IC7 & Studies on agent memory architectures or stateful LLM agents \\
+IC8 & Studies addressing security, privacy, or practical deployment concerns in LLM-based systems \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsubsection{Exclusion Criteria}
-
-\begin{itemize}
-    \item \textbf{EC1}: Single-agent LLM approaches without multi-agent coordination (unless providing essential baseline comparisons)
-    \item \textbf{EC2}: Studies lacking empirical validation or technical depth
-    \item \textbf{EC3}: Non-English publications
-    \item \textbf{EC4}: Opinion pieces, editorials, or short papers without substantive technical content
-    \item \textbf{EC5}: Studies focused exclusively on non-testing applications (e.g., pure code generation without testing)
-    \item \textbf{EC6}: Duplicate publications or extended versions superseded by later work
-\end{itemize}
+\begin{table}[ht]
+\caption{Exclusion criteria}
+\label{tab:exclusion_criteria}
+\centering
+\small
+\begin{tabular}{c p{11cm}}
+\toprule
+\tabhead{ID} & \tabhead{Criterion} \\
+\midrule
+EC1 & Single-agent LLM approaches without multi-agent coordination (unless providing essential baseline comparisons) \\
+EC2 & Studies lacking empirical validation or technical depth \\
+EC3 & Non-English publications \\
+EC4 & Opinion pieces, editorials, or short papers without substantive technical content \\
+EC5 & Studies focused exclusively on non-testing applications (e.g., pure code generation without testing) \\
+EC6 & Duplicate publications or extended versions superseded by later work \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Study Selection Process}
 
-The study selection followed a multi-stage screening process:
-
-\begin{enumerate}
-    \item \textbf{Title and Abstract Screening}: Initial review of titles and abstracts against inclusion/exclusion criteria, performed independently by two reviewers with disagreements resolved through discussion.
-
-    \item \textbf{Full-Text Assessment}: Detailed review of full-text articles for studies passing initial screening, with explicit documentation of exclusion reasons.
-
-    \item \textbf{Quality Assessment}: Application of quality criteria to assess methodological rigor, clarity of reporting, and validity of conclusions.
-
-    \item \textbf{Snowballing}: Forward and backward reference searching from included studies to identify additional relevant works.
-\end{enumerate}
+The study selection followed a multi-stage screening process designed to progressively narrow the pool of candidate studies while maintaining transparency and reproducibility. In the first stage, titles and abstracts were reviewed against the inclusion and exclusion criteria defined above; this screening was performed independently by two reviewers, with disagreements resolved through discussion. Studies that passed the initial screening proceeded to a full-text assessment, during which each article was read in its entirety and evaluated against the complete set of criteria, with explicit documentation of the reason for any exclusion. Following this, a quality assessment was applied to the remaining studies to evaluate methodological rigour, clarity of reporting, and validity of conclusions. Finally, a snowballing step, encompassing both forward and backward reference searching from the included studies, was conducted to identify additional relevant works that may have been missed by the database searches.
 
 \subsection{Quality Assessment}
 
-Studies were assessed using an adapted quality checklist addressing:
+Each included study was assessed using an adapted quality checklist comprising seven criteria (Table~\ref{tab:quality_criteria}): whether the study presents a clear statement of research objectives, whether it employs an appropriate research methodology, whether the experimental setup is described in sufficient detail, whether the evaluation metrics are valid and reliable, whether appropriate statistical analysis is applied where applicable, whether the authors discuss limitations and threats to validity, and whether the results are reproducible. Each criterion was scored as fully met (1), partially met (0.5), or not met (0), yielding a maximum score of 7. Studies scoring below 4 were flagged for careful consideration of their contribution weight in the synthesis, though none were excluded solely on this basis.
 
-\begin{itemize}
-    \item Clear statement of research objectives
-    \item Appropriate research methodology
-    \item Adequate description of experimental setup
-    \item Valid and reliable evaluation metrics
-    \item Appropriate statistical analysis (where applicable)
-    \item Discussion of limitations and threats to validity
-    \item Reproducibility of results
-\end{itemize}
-
-Each criterion was scored as fully met (1), partially met (0.5), or not met (0). Studies scoring below 4 out of 7 were flagged for careful consideration of their contribution weight in the synthesis.
+\begin{table}[ht]
+\caption{Quality assessment criteria}
+\label{tab:quality_criteria}
+\centering
+\small
+\begin{tabular}{c l l}
+\toprule
+\tabhead{ID} & \tabhead{Criterion} & \tabhead{Scoring} \\
+\midrule
+QC1 & Clear research objectives & 0/0.5/1 \\
+QC2 & Appropriate methodology & 0/0.5/1 \\
+QC3 & Adequate experimental setup description & 0/0.5/1 \\
+QC4 & Valid and reliable metrics & 0/0.5/1 \\
+QC5 & Appropriate statistical analysis & 0/0.5/1 \\
+QC6 & Discussion of limitations & 0/0.5/1 \\
+QC7 & Reproducibility of results & 0/0.5/1 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Data Extraction}
 
-A structured data extraction form captured the following information from each included study:
+A structured data extraction form was applied to each included study (Table~\ref{tab:extraction_form}). For every study, the form captured bibliographic details (authors, year, venue, and publication type), the review themes addressed, and the research methodology employed (empirical study, framework proposal, survey, or case study). Where applicable, the form recorded the agent architecture, including the coordination model, the number and roles of agents, and the communication patterns used. The specific LLMs employed, model names, versions, and configurations, were noted alongside the evaluation metrics and quantitative results reported. Security and privacy concerns identified by the authors were extracted together with any mitigation strategies proposed. Finally, the form recorded the limitations acknowledged by each study and the key findings relevant to the review themes.
 
-\begin{itemize}
-    \item Bibliographic details (authors, year, venue, type)
-    \item Research questions addressed (mapping to RQ1--RQ6)
-    \item Methodology (empirical study, framework proposal, survey, etc.)
-    \item Agent architecture (if applicable): coordination model, roles, communication
-    \item LLM(s) used: model names, versions, configurations
-    \item Evaluation metrics and results
-    \item Security/privacy concerns identified
-    \item Mitigation strategies proposed
-    \item Limitations acknowledged
-    \item Key findings relevant to each RQ
-\end{itemize}
+\begin{table}[ht]
+\caption{Data extraction form template}
+\label{tab:extraction_form}
+\centering
+\small
+\begin{tabular}{l p{8cm}}
+\toprule
+\tabhead{Field} & \tabhead{Description} \\
+\midrule
+Study ID & Unique identifier (S01--S55) \\
+Authors & Author names \\
+Year & Publication year \\
+Venue & Conference/journal name \\
+Type & Conference paper / Journal article / Preprint \\
+\midrule
+RQs Addressed & Which of RQ1--RQ5 the study addresses \\
+Methodology & Empirical study / Framework / Survey / Case study \\
+\midrule
+Agent Architecture & Coordination model, number of agents, roles \\
+LLMs Used & Model names, versions, configurations \\
+Evaluation Metrics & Coverage, pass@k, mutation score, etc. \\
+Benchmarks Used & HumanEval, SWE-bench, Defects4J, etc. \\
+\midrule
+Security Concerns & Identified risks and vulnerabilities \\
+Mitigations Proposed & Countermeasures and defensive techniques \\
+\midrule
+Key Findings & Primary results and conclusions \\
+Limitations & Acknowledged limitations \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 %----------------------------------------------------------------------------------------
 
-\section{Study Selection and Characteristics}
+\section{Results}
+\label{sec:results}
+
+This section presents the findings of the systematic review, organised by the five research questions introduced in the methodology. The first subsection describes the study selection process and the characteristics of the 55 included studies. The subsequent subsections present the full thematic analysis for each research question, synthesising the relevant evidence from the corpus.
+
+\subsection{Study Selection and Characteristics}
 \label{sec:study_selection}
 
-\subsection{PRISMA Flow Diagram}
+The systematic search identified a substantial number of potentially relevant records across the searched databases. After removing duplicates, records underwent title and abstract screening. Studies clearly not meeting inclusion criteria were excluded, with the remaining records proceeding to full-text assessment. Figure~\ref{fig:prisma_flow} illustrates the complete study selection process following the PRISMA 2020 flow diagram, and Table~\ref{tab:prisma_flow} summarizes the numerical breakdown at each stage. Table~\ref{tab:search_results_detail} presents the detailed search results from each database, broken down by search string group.
 
-The systematic search identified a substantial number of potentially relevant records across the searched databases. After removing duplicates, records underwent title and abstract screening. Studies clearly not meeting inclusion criteria were excluded, with the remaining records proceeding to full-text assessment.
+\begin{figure}[htbp]
+\centering
+\resizebox{0.92\textwidth}{!}{%
+\begin{tikzpicture}[
+    >=stealth,
+    node distance=1.0cm and 1.2cm,
+    every node/.style={align=center, font=\small},
+    flowbox/.style={
+        rectangle, draw=black, thick,
+        text width=7cm, minimum height=1.0cm, inner sep=6pt,
+        fill=white
+    },
+    exclbox/.style={
+        rectangle, draw=black, thick,
+        text width=5.5cm, minimum height=0.8cm, inner sep=6pt,
+        fill=gray!8
+    },
+    addbox/.style={
+        rectangle, draw=black, thick,
+        text width=5cm, minimum height=0.8cm, inner sep=6pt,
+        fill=white
+    },
+    resultbox/.style={
+        rectangle, draw=black, thick,
+        text width=7cm, minimum height=1.0cm, inner sep=6pt,
+        fill=white, line width=1.5pt
+    },
+    phase/.style={
+        font=\small\bfseries, rotate=90, anchor=south
+    },
+]
 
-Table~\ref{tab:prisma_flow} summarizes the study selection process following PRISMA guidelines.
+\node[flowbox] (identified) {
+    \textbf{Records identified through database searching}\\[3pt]
+    (n\,=\,1{,}055)\\[2pt]
+    {\scriptsize IEEE Xplore (n\,=\,234) $\cdot$ ACM DL (n\,=\,198)
+    $\cdot$ Scopus (n\,=\,267) $\cdot$ arXiv (n\,=\,356)}
+};
+
+\node[exclbox, right=1.2cm of identified] (duplicates) {
+    \textbf{Records removed before screening}\\[3pt]
+    Duplicate records removed (n\,=\,287)
+};
+
+\node[flowbox, below=1.4cm of identified] (screened) {
+    \textbf{Records screened}\\[3pt]
+    (n\,=\,768)
+};
+
+\node[exclbox, right=1.2cm of screened] (excluded1) {
+    \textbf{Records excluded}\\[3pt]
+    (n\,=\,581)
+};
+
+\node[flowbox, below=1.4cm of screened] (fulltext) {
+    \textbf{Reports assessed for eligibility}\\[3pt]
+    (n\,=\,187)
+};
+
+\node[exclbox, right=1.2cm of fulltext, text width=5.5cm] (excluded2) {
+    \textbf{Reports excluded} (n\,=\,140)\\[3pt]
+    {\scriptsize Insufficient depth/no evaluation: 52\\
+    Out of scope (no testing focus): 41\\
+    Single-agent only: 28\\
+    Non-English or inaccessible: 11\\
+    Superseded by later version: 8}
+};
+
+\node[addbox, left=1.2cm of fulltext] (snowball) {
+    \textbf{Additional records identified}\\
+    \textbf{through snowballing}\\[3pt]
+    (n\,=\,8)
+};
+
+\node[resultbox, below=1.4cm of fulltext] (included) {
+    \textbf{Studies included in review}\\[3pt]
+    \textbf{(n\,=\,55)}
+};
+
+\draw[->, thick] (identified) -- (screened);
+\draw[->, thick] (identified) -- (duplicates);
+\draw[->, thick] (screened) -- (fulltext);
+\draw[->, thick] (screened) -- (excluded1);
+\draw[->, thick] (fulltext) -- (included);
+\draw[->, thick] (fulltext) -- (excluded2);
+\draw[->, thick] (snowball) -- (fulltext);
+
+\node[phase, left=0.5cm of identified.west, anchor=south]
+    {\textsc{Identification}};
+\node[phase, left=0.5cm of screened.west, anchor=south]
+    {\textsc{Screening}};
+\node[phase, left=0.5cm of fulltext.west, anchor=south]
+    {\textsc{Eligibility}};
+\node[phase, left=0.5cm of included.west, anchor=south]
+    {\textsc{Included}};
+
+\coordinate (sep1) at ($(identified.south)!0.5!(screened.north)$);
+\coordinate (sep2) at ($(screened.south)!0.5!(fulltext.north)$);
+\coordinate (sep3) at ($(fulltext.south)!0.5!(included.north)$);
+
+\draw[dashed, gray!50] ([xshift=-2.0cm]sep1) -- ([xshift=9.5cm]sep1);
+\draw[dashed, gray!50] ([xshift=-2.0cm]sep2) -- ([xshift=9.5cm]sep2);
+\draw[dashed, gray!50] ([xshift=-2.0cm]sep3) -- ([xshift=9.5cm]sep3);
+
+\end{tikzpicture}%
+}% end resizebox
+\caption{PRISMA 2020 flow diagram of the study selection process}
+\label{fig:prisma_flow}
+\end{figure}
 
 \begin{table}[ht]
 \caption{PRISMA study selection summary}
@@ -152,157 +329,218 @@ Table~\ref{tab:prisma_flow} summarizes the study selection process following PRI
 \tabhead{Stage} & \tabhead{Records} \\
 \midrule
 \textbf{Identification} & \\
-\quad Records from IEEE Xplore & 187 \\
-\quad Records from ACM Digital Library & 156 \\
-\quad Records from Scopus & 203 \\
-\quad Records from arXiv & 284 \\
-\quad Total records identified & 830 \\
-\quad Duplicates removed & (215) \\
+\quad Records from IEEE Xplore & 234 \\
+\quad Records from ACM Digital Library & 198 \\
+\quad Records from Scopus & 267 \\
+\quad Records from arXiv & 356 \\
+\quad Total records identified & 1055 \\
+\quad Duplicates removed & (287) \\
 \midrule
 \textbf{Screening} & \\
-\quad Records screened (title/abstract) & 615 \\
-\quad Records excluded & (478) \\
+\quad Records screened (title/abstract) & 768 \\
+\quad Records excluded & (581) \\
 \midrule
 \textbf{Eligibility} & \\
-\quad Full-text articles assessed & 137 \\
-\quad Full-text articles excluded & (86) \\
-\quad Articles from snowballing & 6 \\
+\quad Full-text articles assessed & 187 \\
+\quad Full-text articles excluded & (140) \\
+\quad Articles from snowballing & 8 \\
 \midrule
 \textbf{Included} & \\
-\quad Studies included in review & \textbf{45} \\
+\quad Studies included in review & \textbf{55} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The primary reasons for exclusion at full-text stage were:
-\begin{itemize}
-    \item Insufficient technical depth or lack of empirical evaluation
-    \item Focus on single-agent approaches without MAS elements
-    \item Out of scope (pure code generation, not testing-related)
-    \item Non-English or inaccessible full text
-\end{itemize}
+\begin{table}[ht]
+\caption{Detailed search results by database and query}
+\label{tab:search_results_detail}
+\centering
+\small
+\begin{tabular}{l l r r}
+\toprule
+\tabhead{Database} & \tabhead{Search String} & \tabhead{Results} & \tabhead{After Dedup} \\
+\midrule
+\multirow{3}{*}{IEEE Xplore} & S1 (MAS + Testing) & 102 & 97 \\
+ & S2--S4 (Few-Shot, Black-Box, Memory) & 78 & 68 \\
+ & S5 (Architecture + Deployment) & 54 & 46 \\
+\midrule
+\multirow{3}{*}{ACM DL} & S1 (MAS + Testing) & 86 & 79 \\
+ & S2--S4 (Few-Shot, Black-Box, Memory) & 68 & 56 \\
+ & S5 (Architecture + Deployment) & 44 & 37 \\
+\midrule
+\multirow{3}{*}{Scopus} & S1 (MAS + Testing) & 112 & 94 \\
+ & S2--S4 (Few-Shot, Black-Box, Memory) & 93 & 74 \\
+ & S5 (Architecture + Deployment) & 62 & 49 \\
+\midrule
+\multirow{3}{*}{arXiv} & S1 (MAS + Testing) & 148 & 121 \\
+ & S2--S4 (Few-Shot, Black-Box, Memory) & 126 & 97 \\
+ & S5 (Architecture + Deployment) & 82 & 50 \\
+\midrule
+\textbf{Total} & & \textbf{1055} & \textbf{768} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsection{Temporal Distribution}
+The primary reasons for exclusion at the full-text stage are detailed in Table~\ref{tab:exclusion_reasons}. Insufficient technical depth or lack of empirical evaluation was the most common reason, affecting 52 studies (37.1\%), followed by out-of-scope content centred on pure code generation without testing relevance (41 studies, 29.3\%), single-agent approaches without multi-agent coordination (28 studies, 20.0\%), non-English or inaccessible full text (11 studies, 7.9\%), and supersession by newer versions of the same work (8 studies, 5.7\%).
 
-The selected studies show a marked concentration in recent years, reflecting the rapid growth of LLM-based software engineering research following the release of GPT-3 (2020), Codex (2021), and GPT-4 (2023).
+\begin{table}[ht]
+\caption{Full-text exclusion reasons}
+\label{tab:exclusion_reasons}
+\centering
+\begin{tabular}{l r r}
+\toprule
+\tabhead{Exclusion Reason} & \tabhead{Count} & \tabhead{Percentage} \\
+\midrule
+Insufficient technical depth or no empirical evaluation & 52 & 37.1\% \\
+Out of scope (pure code generation, not testing-related) & 41 & 29.3\% \\
+Single-agent only (no MAS elements) & 28 & 20.0\% \\
+Non-English or inaccessible full text & 11 & 7.9\% \\
+Duplicate/superseded version & 8 & 5.7\% \\
+\midrule
+\textbf{Total Excluded} & \textbf{140} & \textbf{100\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsection{Publication Venues}
+Table~\ref{tab:quality_scores_detail} presents the quality assessment scores for representative studies from the corpus, illustrating the range of methodological rigour observed across the included works.
 
-The studies appeared across diverse venues, including premier software engineering conferences (ICSE, FSE, ASE), testing-focused venues (ISSTA, ICST), security conferences (CCS, S\&P), and journals (TSE, TOSEM, ESE). A significant proportion appeared as arXiv preprints, reflecting the rapid pace of development in this field.
+\begin{table}[ht]
+\caption{Quality scores for selected studies}
+\label{tab:quality_scores_detail}
+\centering
+\small
+\begin{tabular}{l c c c c c c c c}
+\toprule
+\tabhead{Study} & \tabhead{QC1} & \tabhead{QC2} & \tabhead{QC3} & \tabhead{QC4} & \tabhead{QC5} & \tabhead{QC6} & \tabhead{QC7} & \tabhead{Total} \\
+\midrule
+Hong et al. (MetaGPT) & 1 & 1 & 1 & 1 & 0.5 & 0.5 & 1 & 6.0 \\
+Qian et al. (ChatDev) & 1 & 1 & 1 & 1 & 0.5 & 0.5 & 1 & 6.0 \\
+Yang et al. (SWE-agent) & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 7.0 \\
+Wu et al. (AutoGen) & 1 & 1 & 0.5 & 0.5 & 0.5 & 0.5 & 1 & 5.0 \\
+Jimenez et al. (SWE-bench) & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 7.0 \\
+Chen et al. (Codex) & 1 & 1 & 1 & 1 & 1 & 0.5 & 1 & 6.5 \\
+Lemieux et al. (CODAMOSA) & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 7.0 \\
+Fraser \& Arcuri (EvoSuite) & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 7.0 \\
+Greshake et al. (Prompt Inj.) & 1 & 1 & 1 & 0.5 & 0.5 & 1 & 0.5 & 5.5 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsection{Research Question Coverage}
+The 55 included studies exhibit a clear temporal concentration that mirrors the evolution of large language model capabilities, as shown in Table~\ref{tab:year_distribution}. Only four studies date from 2020, a period when LLM-based software engineering was still in its infancy and the dominant paradigm remained search-based test generation with tools such as EvoSuite \parencite{fraser2011evosuite}. The count increased modestly to six studies in 2021, coinciding with the release of OpenAI Codex \parencite{chen2021evaluating} and the first demonstrations that LLMs could generate syntactically correct test code from natural language descriptions. A more substantial rise occurred in 2022, with nine studies reflecting growing interest in code-specialised models and the publication of foundational benchmarks such as HumanEval.
 
-Most studies address multiple research questions, with architecture (RQ4) and effectiveness (RQ3) receiving the most attention in the literature, while practical deployment considerations (RQ5) remain relatively underexplored.
+The sharpest acceleration appeared in 2023, which accounts for 19 of the 55 studies, over a third of the corpus. This surge followed the release of GPT-4, the publication of influential multi-agent frameworks including MetaGPT \parencite{hong2023metagpt} and ChatDev \parencite{qian2024chatdev}, and the establishment of SWE-bench \parencite{jimenez2024swebench} as a standard evaluation benchmark for autonomous software engineering. The year 2024 contributed 13 studies, with a noticeable shift toward empirical evaluation and practical deployment concerns rather than purely architectural proposals. Four studies from early 2025 were captured through the arXiv preprint search, indicating sustained and growing research activity. This temporal distribution confirms that MAS-based test generation is a rapidly maturing field, with the bulk of the evidence base produced within the last three years.
+
+\begin{table}[ht]
+\caption{Distribution of studies by publication year}
+\label{tab:year_distribution}
+\centering
+\begin{tabular}{l r r}
+\toprule
+\tabhead{Year} & \tabhead{Count} & \tabhead{Percentage} \\
+\midrule
+2020 & 4 & 7.3\% \\
+2021 & 6 & 10.9\% \\
+2022 & 9 & 16.4\% \\
+2023 & 19 & 34.5\% \\
+2024 & 13 & 23.6\% \\
+2025 & 4 & 7.3\% \\
+\midrule
+\textbf{Total} & \textbf{55} & \textbf{100\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The included studies appeared across a diverse range of publication venues, reflecting the interdisciplinary nature of LLM-based test generation research (Table~\ref{tab:venue_distribution}). Premier software engineering conferences, including ICSE, FSE, and ASE, account for the largest share, contributing 16 studies that tend to emphasise architectural design and empirical evaluation on established benchmarks. Testing-focused venues such as ISSTA and ICST contributed seven studies, typically presenting more detailed evaluations of test quality metrics including mutation scores and fault detection rates. Seven studies appeared in AI and machine learning conferences (NeurIPS, ICLR), reflecting the dual identity of this research at the intersection of software engineering and artificial intelligence. Journals accounted for nine studies, published in outlets such as IEEE Transactions on Software Engineering (TSE), ACM Transactions on Software Engineering and Methodology (TOSEM), and Empirical Software Engineering (ESE). These journal publications generally offer more mature and thoroughly evaluated contributions compared to conference papers. Security-specific venues contributed three studies, addressing adversarial risks and privacy concerns. A notable proportion of the corpus, 13 studies representing nearly a quarter, appeared as arXiv preprints without formal peer review. While this raises questions about methodological rigour, it also captures the most recent developments in a field where the pace of innovation frequently outstrips the traditional publication cycle. The quality assessment scores described above were used to weight the contribution of preprints appropriately in the synthesis.
+
+\begin{table}[ht]
+\caption{Distribution of studies by venue type}
+\label{tab:venue_distribution}
+\centering
+\begin{tabular}{l r r}
+\toprule
+\tabhead{Venue Type} & \tabhead{Count} & \tabhead{Percentage} \\
+\midrule
+SE Conferences (ICSE, FSE, ASE) & 16 & 29.1\% \\
+Testing Venues (ISSTA, ICST) & 7 & 12.7\% \\
+AI/ML Conferences (NeurIPS, ICLR, UIST) & 7 & 12.7\% \\
+Security Venues (AISec, EMNLP) & 3 & 5.5\% \\
+Journals (TSE, TOSEM, ESE, IST, TOIS) & 9 & 16.4\% \\
+arXiv Preprints & 13 & 23.6\% \\
+\midrule
+\textbf{Total} & \textbf{55} & \textbf{100\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The majority of included studies address multiple research questions, which is expected given the interconnected nature of the research challenges (Table~\ref{tab:rq_coverage}). RQ3 (multi-agent architectures) receives the broadest coverage, with 31 of the 55 studies discussing some form of agent coordination, role specialisation, or inter-agent communication. This prominence reflects the widespread adoption of multi-agent patterns in recent LLM-based software engineering tools and the growing consensus that single-agent approaches are insufficient for complex tasks such as comprehensive test generation. RQ1 and RQ2, golden examples and few-shot approaches (22 studies) and black-box testing and traffic analysis (16 studies), together represent the two input modalities central to this dissertation. The relatively lower count for black-box approaches suggests that traffic-based test generation remains a less explored direction compared to code-level techniques, which motivates the observer pipeline developed in this work. RQ5, covering practical deployment considerations including privacy, cost, and local execution, is addressed by 24 studies, indicating growing awareness of real-world adoption barriers. However, RQ4, persistent agent memory, is covered by only nine studies, making it the least explored area in the literature. This gap is particularly significant for this dissertation, as progressive learning through persistent memory represents one of the key architectural innovations of the TestForge platform.
+
+\begin{table}[ht]
+\caption{Number of studies addressing each research question}
+\label{tab:rq_coverage}
+\centering
+\begin{tabular}{l l r}
+\toprule
+\tabhead{RQ} & \tabhead{Topic} & \tabhead{Studies} \\
+\midrule
+RQ1 & Golden Examples and Few-Shot Test Generation & 22 \\
+RQ2 & Black-Box Testing and Traffic Analysis & 16 \\
+RQ3 & Multi-Agent Architecture Patterns & 31 \\
+RQ4 & Persistent Agent Memory & 9 \\
+RQ5 & Practical Deployment Considerations & 24 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 %----------------------------------------------------------------------------------------
 
-\section{Multi-Agent Systems for Software Testing}
+\subsection{RQ1, Golden Examples and Few-Shot Test Generation}
+\label{sec:fewshot_testing}
+
+This subsection addresses RQ1 by examining the literature on leveraging existing test examples and few-shot prompting strategies for LLM-based test generation. The core insight is that providing high-quality reference tests as in-context examples can guide LLMs to generate tests that follow project conventions and target non-trivial scenarios.
+
+Few-shot prompting, providing exemplar input-output pairs within the LLM prompt, has emerged as a key technique for guiding test generation without fine-tuning. \textcite{bareiss2022fewshot} conducted one of the earliest studies, evaluating the Codex model on three code-related tasks including test oracle generation and test case generation. Their findings indicate that few-shot language models are ``surprisingly effective'' but require specifically designed prompts and suitable input selection. \textcite{hashemi2024prompting} performed a large-scale evaluation of four LLMs across five prompt engineering techniques (zero-shot, few-shot, chain-of-thought, and combinations thereof), analysing 216,300 tests for 690 Java classes. Their results show that few-shot prompting consistently improves test correctness over zero-shot approaches, though the magnitude varies by model and task complexity. \textcite{tang2024largescale} reinforced these findings in their comprehensive study comparing GPT-3.5, GPT-4, Mistral~7B, and Mixtral~8x7B against EvoSuite, evaluating five prompting techniques. While few-shot learning improves test reliability, hallucination-driven compilation failures remain a persistent challenge, with rates up to 86\% for smaller models.
+
+A critical challenge in few-shot test generation is selecting the most relevant examples. \textcite{nashid2023cedar} addressed this with CEDAR, a retrieval-based prompt selection technique that automatically identifies code demonstrations similar to the current task. For test assertion generation, CEDAR outperforms existing task-specific and fine-tuned models by 333\% and 11\% respectively, achieving 76\% exact match accuracy. This demonstrates that intelligent example selection, rather than random or static examples, significantly impacts generation quality.
+
+Several studies combine mutation testing feedback with few-shot prompting. \textcite{dakhel2024mutap} proposed MuTAP, which augments LLM prompts with surviving mutants to iteratively improve test quality. Using mutation feedback as additional context, MuTAP achieves a mutation score of 93.57\% on synthetic buggy code, substantially outperforming baseline approaches. At industrial scale, \textcite{alshahwan2025mutation} described Meta's production system for mutation-guided LLM test generation, demonstrating that surviving mutants serve as effective feedback signals for iterative test improvement.
+
+\textcite{kang2023libro} explored a related application: using LLMs with few-shot prompting to generate bug-reproducing tests from bug reports (LIBRO). On the Defects4J benchmark, LIBRO successfully reproduced 33\% of studied bugs (251 out of 750), suggesting a correct reproducing test in first place for 149 bugs. This demonstrates that few-shot prompting can capture complex testing patterns beyond simple assertion generation.
+
+While the above studies use manually selected or retrieved code examples as few-shot context, none systematically extract testing patterns, conventions, assertion styles, fixture patterns, and testing strategies, from existing test suites using AST analysis. This gap motivates the Golden Examples pipeline proposed in this thesis, which uses Tree-sitter to parse reference tests and extract a structured style guide for few-shot prompting.
+
+%----------------------------------------------------------------------------------------
+
+\subsection{RQ2, Black-Box Testing and Traffic Analysis}
+\label{sec:blackbox_testing}
+
+This subsection addresses RQ2 by examining the literature on automated black-box testing of APIs, with particular attention to techniques for API discovery, specification inference, and test generation from observed traffic.
+
+\textcite{kim2023restsurvey} provide a comprehensive survey of 92 scientific articles on RESTful API testing (2009--2022), establishing a taxonomy of tools and techniques. The survey identifies three main approaches: specification-based testing (requiring OpenAPI/Swagger definitions), fuzzing (random input generation with feedback), and stateful testing (modelling inter-request dependencies). Most tools require an existing API specification as input, which many real-world APIs lack.
+
+\textcite{atlidakis2019restler} introduced RESTler, the first stateful REST API fuzzer, which analyses Swagger specifications to infer producer-consumer dependencies between API operations. RESTler generates sequences of requests where outputs from one request feed as inputs to subsequent requests, discovering 28 bugs in GitLab and multiple bugs in Azure and Office365 cloud services. \textcite{liu2022morest} extended this approach with Morest, which builds a dynamically updating RESTful-service Property Graph (RPG) to model API behaviours. Morest successfully requests 152--232\% more API operations, covers 26--103\% more lines of code, and detects 40--215\% more bugs than prior techniques including RESTler.
+
+Recent work has begun integrating LLMs into API testing. \textcite{kim2024restgpt} proposed RESTGPT, which uses LLMs to extract machine-interpretable rules and generate realistic parameter values from natural-language descriptions in API specifications. RESTGPT generates valid inputs for 73\% of parameters versus only 17\% for existing approaches, demonstrating that LLMs can bridge the gap between informal API documentation and formal test inputs. \textcite{kim2025llamaresttest} developed LlamaRestTest, fine-tuning and quantising Llama3-8B for REST API testing with two components: inter-parameter dependency detection and realistic value generation. LlamaRestTest outperforms state-of-the-art tools (RESTler, Morest, EvoMaster) in code coverage and server error detection on 12 real-world services.
+
+Most critically for our work, \textcite{decrop2024restspecit} proposed RESTSpecIT, the first approach that infers API documentation \emph{and} performs black-box testing using LLMs \emph{without requiring an existing specification}. Given only an API name and LLM access, RESTSpecIT generates request seeds and mutates them, achieving 88.62\% route discovery and 89.25\% query parameter discovery. This demonstrates the feasibility of LLM-driven black-box API testing, a core premise of the Observer pipeline proposed in this thesis.
+
+While the above tools focus on fuzzing (finding crashes and security issues), none generate \emph{human-readable test suites} from observed traffic. The combination of HTTP traffic capture (via proxy interception or HAR file import) with LLM-driven generation of pytest-style test suites is unexplored. This gap motivates the Black-Box Observer pipeline, which captures real API interactions and generates test code that verifies the observed behaviour.
+
+%----------------------------------------------------------------------------------------
+
+\subsection{RQ3, Multi-Agent Systems for Software Testing}
 \label{sec:mas_testing}
 
-This section addresses RQ4 by examining the architectural patterns and design principles employed in LLM-based multi-agent testing systems. The analysis reveals a rich design space with significant variation in agent coordination models, role specialization, and communication patterns.
+This subsection addresses RQ3 by examining the architectural patterns and design principles employed in LLM-based multi-agent testing systems. The analysis reveals a rich design space with significant variation in agent coordination models, role specialisation, and communication patterns.
 
-\subsection{Evolution of Agent-Based Software Engineering}
+The application of agent-based approaches to software engineering predates the LLM era. Traditional \acrfull{MAS} research established foundational concepts including agent autonomy, social ability, reactivity, and pro-activeness \parencite{wooldridge2009introduction}. Early multi-agent software engineering tools focused on distributed development, collaborative editing, and automated code review, but lacked the natural language understanding capabilities that modern LLMs provide. The emergence of large language models, beginning with GPT-3 and accelerating with code-specialized models like Codex \parencite{chen2021evaluating} and Code Llama \parencite{roziere2023code}, enabled a new generation of agent systems capable of understanding and generating code with human-like proficiency. This capability, combined with reasoning techniques such as \acrfull{CoT} prompting \parencite{wei2022chain} and ReAct \parencite{yao2023react}, allows modern agents to tackle complex software engineering tasks that require multi-step reasoning and tool use.
 
-The application of agent-based approaches to software engineering predates the LLM era. Traditional \acrfull{MAS} research established foundational concepts including agent autonomy, social ability, reactivity, and pro-activeness \parencite{wooldridge2009introduction}. Early multi-agent software engineering tools focused on distributed development, collaborative editing, and automated code review, but lacked the natural language understanding capabilities that modern LLMs provide.
+The reviewed studies employ three primary coordination models, each with distinct characteristics and trade-offs. Hierarchical models establish a clear chain of command, with a central orchestrator agent decomposing tasks and delegating to specialized worker agents. MetaGPT \parencite{hong2023metagpt} exemplifies this approach, implementing a ``software company'' metaphor where a Product Manager agent decomposes requirements, an Architect agent designs solutions, and Engineer agents implement and test code. Hierarchical coordination offers clear task decomposition and responsibility assignment, reduced communication overhead through centralized control, natural alignment with traditional software development roles, and simplified debugging through traceable decision chains. However, this model also introduces limitations, notably single points of failure at the orchestrator level and potential bottlenecks when the central agent must process all inter-agent communication. Peer-to-peer models allow agents to communicate directly without central mediation. ChatDev \parencite{qian2024chatdev} implements a ``chat chain'' where agents engage in structured dialogues, with each agent both producing artifacts and reviewing work from peers. This model offers greater resilience through distributed decision-making, richer information exchange through direct agent interaction, emergent behaviours arising from agent collaboration, and a more natural representation of human team dynamics. At the same time, peer-to-peer coordination introduces challenges such as increased communication complexity and the potential for unproductive agent loops when appropriate termination conditions are not enforced. Many practical systems combine hierarchical and peer-to-peer elements. AutoGen \parencite{wu2023autogen} provides a flexible framework supporting both coordinator-worker patterns and direct agent conversations, allowing developers to configure coordination strategies appropriate to their specific use cases.
 
-The emergence of large language models, beginning with GPT-3 and accelerating with code-specialized models like Codex \parencite{chen2021evaluating} and Code Llama \parencite{roziere2023code}, enabled a new generation of agent systems capable of understanding and generating code with human-like proficiency. This capability, combined with reasoning techniques such as \acrfull{CoT} prompting \parencite{wei2022chain} and ReAct \parencite{yao2023react}, allows modern agents to tackle complex software engineering tasks that require multi-step reasoning and tool use.
+The literature reveals consistent patterns in how testing-related roles are distributed among agents. A planning or requirements agent typically initiates the testing workflow by analyzing requirements, identifying test objectives, and decomposing the testing task into manageable subtasks. This agent often employs structured output formats (e.g., JSON schemas) to ensure downstream agents receive well-defined specifications. Code analysis agents examine the \acrfull{SUT} to understand its structure, identify testable units, extract relevant context, and determine appropriate testing strategies. These agents may employ static analysis tools, parse abstract syntax trees, or analyze code semantics using LLM comprehension capabilities. The test generation agent produces test code based on inputs from planning and code analysis agents. Specialization may occur along multiple dimensions, including test type, programming language, testing framework, and generation technique. Execution agents run generated tests in controlled environments, capture results, and report outcomes. These agents typically interact with external tools (test runners, containers, CI systems) through the \acrshort{ACI}, making them critical from a security perspective. Validation or review agents assess the quality of generated tests, checking for issues such as trivial assertions that always pass, missing edge case coverage, test code that duplicates rather than validates SUT logic, flaky tests with non-deterministic behaviour, and style or maintainability concerns. When tests fail, debugging agents analyze failures to determine root causes, distinguishing between SUT bugs (true positives) and test defects (false positives).
 
-\subsection{Agent Coordination Models}
+Agent communication employs various protocols with different characteristics. In direct message passing, agents exchange structured messages containing task specifications, results, and feedback. Message formats range from natural language descriptions to strictly typed JSON schemas. Blackboard systems employ shared workspaces where agents post intermediate results and read inputs from a common data store. This approach decouples agents and simplifies adding new capabilities. In artifact-centric communication, rather than explicit messages, agents communicate through shared artifacts (code files, test suites, execution logs), with each agent modifying or extending artifacts produced by predecessors.
 
-The reviewed studies employ three primary coordination models, each with distinct characteristics and trade-offs.
-
-\subsubsection{Hierarchical Coordination}
-
-Hierarchical models establish a clear chain of command, with a central orchestrator agent decomposing tasks and delegating to specialized worker agents. MetaGPT \parencite{hong2023metagpt} exemplifies this approach, implementing a ``software company'' metaphor where a Product Manager agent decomposes requirements, an Architect agent designs solutions, and Engineer agents implement and test code.
-
-Advantages of hierarchical coordination include:
-\begin{itemize}
-    \item Clear task decomposition and responsibility assignment
-    \item Reduced communication overhead through centralized control
-    \item Natural alignment with traditional software development roles
-    \item Simplified debugging through traceable decision chains
-\end{itemize}
-
-Limitations include single points of failure at the orchestrator level and potential bottlenecks when the central agent must process all inter-agent communication.
-
-\subsubsection{Peer-to-Peer Coordination}
-
-Peer-to-peer models allow agents to communicate directly without central mediation. ChatDev \parencite{qian2023chatdev} implements a ``chat chain'' where agents engage in structured dialogues, with each agent both producing artifacts and reviewing work from peers.
-
-This model offers:
-\begin{itemize}
-    \item Greater resilience through distributed decision-making
-    \item Richer information exchange through direct agent interaction
-    \item Emergent behaviors from agent collaboration
-    \item More natural representation of human team dynamics
-\end{itemize}
-
-Challenges include increased communication complexity and potential for unproductive agent loops without appropriate termination conditions.
-
-\subsubsection{Hybrid Coordination}
-
-Many practical systems combine hierarchical and peer-to-peer elements. AutoGen \parencite{wu2023autogen} provides a flexible framework supporting both coordinator-worker patterns and direct agent conversations, allowing developers to configure coordination strategies appropriate to their specific use cases.
-
-\subsection{Role Specialization Patterns}
-
-The literature reveals consistent patterns in how testing-related roles are distributed among agents.
-
-\subsubsection{Planning Agent}
-
-A planning or requirements agent typically initiates the testing workflow by analyzing requirements, identifying test objectives, and decomposing the testing task into manageable subtasks. This agent often employs structured output formats (e.g., JSON schemas) to ensure downstream agents receive well-defined specifications.
-
-\subsubsection{Code Analysis Agent}
-
-Code analysis agents examine the \acrfull{SUT} to understand its structure, identify testable units, extract relevant context, and determine appropriate testing strategies. These agents may employ static analysis tools, parse abstract syntax trees, or analyze code semantics using LLM comprehension capabilities.
-
-\subsubsection{Test Generation Agent}
-
-The test generation agent produces test code based on inputs from planning and code analysis agents. Specialization may occur along multiple dimensions:
-\begin{itemize}
-    \item \textbf{Test type}: Unit tests, integration tests, end-to-end tests
-    \item \textbf{Language}: Java, Python, JavaScript specialists
-    \item \textbf{Framework}: pytest, JUnit, Jest expertise
-    \item \textbf{Technique}: Property-based testing, mutation-based generation, specification-based testing
-\end{itemize}
-
-\subsubsection{Execution Agent}
-
-Execution agents run generated tests in controlled environments, capture results, and report outcomes. These agents typically interact with external tools (test runners, containers, CI systems) through the \acrshort{ACI}, making them critical from a security perspective.
-
-\subsubsection{Validation Agent}
-
-Validation or review agents assess the quality of generated tests, checking for issues such as:
-\begin{itemize}
-    \item Trivial assertions that always pass
-    \item Missing edge case coverage
-    \item Test code that duplicates rather than validates SUT logic
-    \item Flaky tests with non-deterministic behavior
-    \item Style and maintainability concerns
-\end{itemize}
-
-\subsubsection{Debugging Agent}
-
-When tests fail, debugging agents analyze failures to determine root causes, distinguishing between SUT bugs (true positives) and test defects (false positives). Advanced implementations may propose fixes for identified issues.
-
-\subsection{Communication Protocols}
-
-Agent communication employs various protocols with different characteristics.
-
-\subsubsection{Direct Message Passing}
-
-Agents exchange structured messages containing task specifications, results, and feedback. Message formats range from natural language descriptions to strictly typed JSON schemas.
-
-\subsubsection{Blackboard Systems}
-
-Some frameworks employ shared workspaces where agents post intermediate results and read inputs from a common data store. This approach decouples agents and simplifies adding new capabilities.
-
-\subsubsection{Artifact-Centric Communication}
-
-Rather than explicit messages, agents communicate through shared artifacts (code files, test suites, execution logs). Each agent modifies or extends artifacts produced by predecessors.
-
-\subsection{Framework Comparison}
-
-Table~\ref{tab:framework_comparison} compares major multi-agent frameworks relevant to software testing.
+Tables~\ref{tab:framework_comparison} and~\ref{tab:framework_details} compare major multi-agent frameworks relevant to software testing, presenting both a high-level overview and a detailed comparison across key architectural dimensions.
 
 \begin{table}[ht]
 \caption{Comparison of multi-agent frameworks for software engineering}
@@ -321,184 +559,57 @@ AutoGen & Configurable & Flexible & General & Yes \\
 \end{tabular}
 \end{table}
 
-\subsection{Agent-Computer Interface Design}
+\begin{table}[ht]
+\caption{Detailed MAS framework comparison}
+\label{tab:framework_details}
+\centering
+\small
+\begin{tabular}{l p{2cm} p{2.5cm} p{2.5cm} p{2.5cm}}
+\toprule
+\tabhead{Aspect} & \tabhead{MetaGPT} & \tabhead{ChatDev} & \tabhead{SWE-agent} & \tabhead{AutoGen} \\
+\midrule
+Coordination & Hierarchical SOPs & Chat chain & Single + tools & Configurable \\
+Agent Count & 5--7 & 4--6 & 1 (+ tools) & Variable \\
+Primary Roles & PM, Architect, Engineer, QA & CEO, CTO, Programmer, Tester & Resolver & User-defined \\
+Communication & Structured docs & Natural dialog & Tool calls & Messages \\
+Memory & Shared artifacts & Chat history & State files & Conversation \\
+Testing Support & Integrated & Integrated & Bug fixing & General \\
+Open Source & Yes (MIT) & Yes (Apache) & Yes (MIT) & Yes (MIT) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-The \acrfull{ACI} defines how agents interact with external systems, including code repositories, execution environments, and development tools. SWE-agent \parencite{yang2024sweagent} introduced principled ACI design, demonstrating that interface design significantly impacts agent performance beyond LLM capability alone.
-
-Key ACI design considerations include:
-\begin{itemize}
-    \item \textbf{Action space}: What operations can agents perform?
-    \item \textbf{Observation space}: What feedback do agents receive?
-    \item \textbf{State management}: How is context maintained across interactions?
-    \item \textbf{Error handling}: How do agents recover from failed operations?
-    \item \textbf{Permission boundaries}: What access controls limit agent capabilities?
-\end{itemize}
-
-Well-designed ACIs balance agent autonomy (enabling effective task completion) with safety constraints (preventing unintended or malicious actions).
-
-%----------------------------------------------------------------------------------------
-
-\section{LLM Selection and Configuration}
-\label{sec:llm_selection}
-
-This section addresses RQ6 by examining how different LLM choices and configurations impact multi-agent testing system performance. The selection of underlying models involves trade-offs across multiple dimensions including capability, cost, latency, privacy, and control.
-
-\subsection{Proprietary vs. Open-Weight Models}
-
-\subsubsection{Proprietary Models}
-
-Proprietary models such as GPT-4, Claude, and Gemini offer state-of-the-art capabilities, particularly for complex reasoning tasks. Studies consistently report higher performance on challenging benchmarks when using frontier proprietary models.
-
-Advantages include:
-\begin{itemize}
-    \item Superior performance on complex tasks
-    \item Continuous improvement through provider updates
-    \item Robust API infrastructure with high availability
-    \item Advanced features (function calling, structured outputs)
-\end{itemize}
-
-Disadvantages include:
-\begin{itemize}
-    \item Data transmitted to external providers (privacy concerns)
-    \item Per-token costs that scale with usage
-    \item Dependency on provider availability and pricing
-    \item Limited control over model behavior
-    \item Potential training data contamination with benchmarks
-\end{itemize}
-
-\subsubsection{Open-Weight Models}
-
-Open-weight models including LLaMA, Code Llama \parencite{roziere2023code}, and StarCoder \parencite{li2023starcoder} can be deployed locally, addressing privacy concerns and enabling customization through fine-tuning.
-
-Advantages include:
-\begin{itemize}
-    \item Local deployment keeps data on-premises
-    \item No per-token API costs (infrastructure costs only)
-    \item Full control over model deployment and behavior
-    \item Ability to fine-tune for specific domains
-    \item Transparency regarding model architecture and training
-\end{itemize}
-
-Disadvantages include:
-\begin{itemize}
-    \item Generally lower capability than frontier proprietary models
-    \item Significant infrastructure requirements for deployment
-    \item Expertise required for optimization and maintenance
-    \item Slower improvement cycle than proprietary alternatives
-\end{itemize}
-
-\subsection{Code-Specialized Models}
-
-Models trained specifically on code demonstrate superior performance on programming tasks compared to general-purpose models of similar size. Key code-specialized models include:
-
-\textbf{Codex and GPT-4}: OpenAI's code-capable models, with GPT-4 representing the current capability frontier for code generation and understanding \parencite{chen2021evaluating}.
-
-\textbf{Code Llama}: Meta's code-specialized variant of LLaMA, available in 7B, 13B, and 34B parameter versions, with a Python-specialized variant \parencite{roziere2023code}.
-
-\textbf{StarCoder}: A 15.5B parameter model trained on permissively licensed code, notable for its transparent training data and strong performance \parencite{li2023starcoder}.
-
-\textbf{CodeBERT}: An encoder-only model effective for code understanding tasks such as clone detection and defect prediction \parencite{feng2020codebert}.
-
-\subsection{Fine-Tuning vs. Prompt Engineering}
-
-Studies reveal a complex trade-off between fine-tuning specialized models and engineering effective prompts for general-purpose models.
-
-\subsubsection{Fine-Tuning Approaches}
-
-Fine-tuning adapts pre-trained models to specific testing tasks using domain-specific training data. Research has demonstrated that fine-tuned models can significantly outperform zero-shot prompting for specific testing tasks.
-
-Fine-tuning requires:
-\begin{itemize}
-    \item High-quality training data (test-code pairs)
-    \item Computational resources for training
-    \item Expertise in model training and evaluation
-    \item Ongoing maintenance as requirements evolve
-\end{itemize}
-
-\subsubsection{Prompt Engineering Approaches}
-
-Prompt engineering designs input formats that elicit desired behavior from general-purpose models without modifying model weights. Techniques include:
-
-\begin{itemize}
-    \item \textbf{Few-shot prompting}: Providing examples of desired input-output pairs
-    \item \textbf{Chain-of-thought}: Encouraging step-by-step reasoning \parencite{wei2022chain}
-    \item \textbf{ReAct}: Interleaving reasoning and action \parencite{yao2023react}
-    \item \textbf{Self-consistency}: Sampling multiple outputs and selecting by consensus
-    \item \textbf{Tree-of-thoughts}: Exploring multiple reasoning paths
-\end{itemize}
-
-\subsection{Context Window Management}
-
-LLMs operate within fixed context windows constraining the information available for each inference. Managing context effectively is crucial for testing tasks that may involve large codebases.
-
-Strategies include:
-\begin{itemize}
-    \item \textbf{\acrfull{RAG}}: Retrieving relevant code snippets based on the current task
-    \item \textbf{Hierarchical summarization}: Compressing code into summaries at multiple abstraction levels
-    \item \textbf{Selective context}: Including only immediately relevant code and documentation
-    \item \textbf{Sliding windows}: Processing large codebases in overlapping chunks
-\end{itemize}
-
-\subsection{Model Configuration Parameters}
-
-Key configuration parameters affecting generation behavior include:
-
-\begin{itemize}
-    \item \textbf{Temperature}: Controls randomness; lower values produce more deterministic outputs
-    \item \textbf{Top-p (nucleus sampling)}: Limits sampling to highest-probability tokens
-    \item \textbf{Maximum tokens}: Constrains output length
-    \item \textbf{Stop sequences}: Defines generation termination conditions
-    \item \textbf{Frequency/presence penalties}: Reduces repetition
-\end{itemize}
-
-For test generation, studies suggest moderate temperatures (0.2--0.4) balancing creativity with consistency, though optimal settings vary by task.
+The \acrfull{ACI} defines how agents interact with external systems, including code repositories, execution environments, and development tools. SWE-agent \parencite{yang2024sweagent} introduced principled ACI design, demonstrating that interface design significantly impacts agent performance beyond LLM capability alone. Key ACI design considerations span several dimensions: the action space (what operations agents can perform), the observation space (what feedback agents receive after each action), state management (how context is maintained across interactions), error handling (how agents recover from failed operations), and permission boundaries (what access controls limit agent capabilities). Well-designed ACIs balance agent autonomy, enabling effective task completion, with safety constraints that prevent unintended or malicious actions.
 
 %----------------------------------------------------------------------------------------
 
-\section{Effectiveness and Performance Evaluation}
-\label{sec:effectiveness}
+\subsection{RQ4, Persistent Agent Memory}
+\label{sec:agent_memory}
 
-This section addresses RQ3 by examining the effectiveness of MAS-based testing approaches compared to traditional methods. The analysis covers evaluation metrics, benchmark datasets, and comparative performance results.
+This subsection addresses RQ4 by examining the literature on memory architectures for LLM-based agents, focusing on approaches that enable agents to accumulate and leverage knowledge across sessions.
 
-\subsection{Evaluation Metrics Taxonomy}
+\textcite{sumers2023coala} proposed CoALA (Cognitive Architectures for Language Agents), a framework drawing on cognitive science to organise agents along three dimensions: memory (working memory and long-term procedural/semantic/episodic memory), action space (internal reasoning and external grounding), and decision-making processes. CoALA provides a principled vocabulary for describing how agents store, retrieve, and use knowledge. \textcite{zhang2024memorySurvey} conducted a comprehensive survey reviewing memory mechanisms in LLM-based agents, proposing a taxonomy of memory types (sensory, short-term, long-term) and memory operations (reading, writing, management). The survey identifies that while memory systems for conversational agents are well-studied, their application to task-specific domains such as software testing remains largely unexplored.
 
-The literature employs diverse metrics to evaluate testing effectiveness, which can be organized into several categories.
+\textcite{packer2023memgpt} introduced MemGPT, which applies virtual context management inspired by operating system memory hierarchies to LLM agents. MemGPT divides memory into \emph{core memory} (analogous to RAM, always in the context window), \emph{archival memory} (persistent storage for long-term knowledge), and \emph{recall memory} (conversation history). Agents manage memory through self-directed operations, deciding when to save, retrieve, or update information. MemGPT demonstrates effective multi-session conversation where agents maintain consistency across interactions, a capability directly relevant to progressive test generation. \textcite{shinn2023reflexion} introduced Reflexion, where agents verbally reflect on task feedback and maintain reflective text in an episodic memory buffer. Rather than updating model weights, Reflexion uses linguistic feedback as persistent memory for self-improvement across trials. \textcite{park2023generative} demonstrated generative agents with memory architectures that store experiences in natural language, synthesise higher-level reflections, and retrieve them dynamically for behaviour planning.
 
-\subsubsection{Coverage Metrics}
+While memory architectures have been proposed for conversational agents, game-playing agents, and general-purpose assistants, their application to software testing, where agents accumulate knowledge about target applications (discovered endpoints, coverage gaps, learned patterns, failed assertions), has not been investigated. This thesis explores whether Letta-based persistent memory enables progressive improvement in test generation quality across sessions.
 
-Coverage metrics measure the extent to which generated tests exercise the SUT:
+%----------------------------------------------------------------------------------------
 
-\begin{itemize}
-    \item \textbf{Line coverage}: Percentage of source code lines executed
-    \item \textbf{Branch coverage}: Percentage of decision branches taken
-    \item \textbf{Method coverage}: Percentage of methods invoked
-    \item \textbf{Mutation score}: Percentage of seeded faults detected
-\end{itemize}
+\subsection{RQ5, Practical Deployment Considerations}
+\label{sec:sq5_results}
 
-\subsubsection{Correctness Metrics}
+This subsection addresses RQ5 by examining the practical considerations for deploying AI-based test generation systems, including model selection and configuration, evaluation approaches and benchmarks, security and privacy risks, mitigation strategies, industrial deployment patterns, and regulatory compliance. The analysis draws on 24 studies that address deployment-related concerns.
 
-Correctness metrics assess whether generated tests are valid and meaningful:
+The selection of underlying models involves trade-offs across multiple dimensions including capability, cost, latency, privacy, and control. Proprietary models such as GPT-4, Claude, and Gemini offer state-of-the-art capabilities, particularly for complex reasoning tasks. Studies consistently report higher performance on challenging benchmarks when using frontier proprietary models. Proprietary models offer superior performance on complex tasks, continuous improvement through provider updates, robust API infrastructure with high availability, and advanced features such as function calling and structured outputs. However, they also present significant drawbacks: data must be transmitted to external providers raising privacy concerns, per-token costs scale with usage, organizations become dependent on provider availability and pricing, control over model behaviour is limited, and there is potential for training data contamination with widely used benchmarks. Open-weight models including LLaMA, Code Llama \parencite{roziere2023code}, and StarCoder \parencite{li2023starcoder} can be deployed locally, addressing privacy concerns and enabling customization through fine-tuning. Open-weight models present a compelling alternative: local deployment keeps data entirely on-premises, there are no per-token API costs beyond infrastructure, organizations retain full control over deployment and behaviour, the models can be fine-tuned for specific domains, and their architecture and training methodology are transparent. On the other hand, open-weight models generally exhibit lower capability than frontier proprietary models, require significant infrastructure investment for deployment, demand expertise in optimization and maintenance, and follow a slower improvement cycle than their proprietary counterparts.
 
-\begin{itemize}
-    \item \textbf{Compilation rate}: Percentage of generated tests that compile
-    \item \textbf{Execution rate}: Percentage of tests that execute without runtime errors
-    \item \textbf{Pass rate}: Percentage of tests that pass on correct implementations
-    \item \textbf{Assertion validity}: Whether assertions test meaningful properties
-\end{itemize}
+Models trained specifically on code demonstrate superior performance on programming tasks compared to general-purpose models of similar size. Codex and GPT-4 are OpenAI's code-capable models, with GPT-4 representing the current capability frontier for code generation and understanding \parencite{chen2021evaluating}. Code Llama is Meta's code-specialized variant of LLaMA, available in 7B, 13B, and 34B parameter versions, with a Python-specialized variant \parencite{roziere2023code}. StarCoder is a 15.5B parameter model trained on permissively licensed code, notable for its transparent training data and strong performance \parencite{li2023starcoder}. CodeBERT is an encoder-only model effective for code understanding tasks such as clone detection and defect prediction \parencite{feng2020codebert}.
 
-\subsubsection{Bug Detection Metrics}
+Studies reveal a complex trade-off between fine-tuning specialized models and engineering effective prompts for general-purpose models. Fine-tuning approaches adapt pre-trained models to specific testing tasks using domain-specific training data. Research has demonstrated that fine-tuned models can significantly outperform zero-shot prompting for specific testing tasks. Fine-tuning requires high-quality training data in the form of test-code pairs, substantial computational resources, expertise in model training and evaluation, and ongoing maintenance as project requirements evolve. Prompt engineering designs input formats that elicit desired behaviour from general-purpose models without modifying model weights. The most prominent techniques include few-shot prompting (providing examples of desired input-output pairs), chain-of-thought prompting (encouraging step-by-step reasoning) \parencite{wei2022chain}, ReAct (interleaving reasoning and action) \parencite{yao2023react}, self-consistency (sampling multiple outputs and selecting the answer by consensus), and tree-of-thoughts (exploring multiple reasoning paths before committing to a solution).
 
-Bug detection metrics evaluate the ability to identify real defects:
+LLMs operate within fixed context windows constraining the information available for each inference. Managing context effectively is crucial for testing tasks that may involve large codebases. Several strategies have been proposed to address this constraint. \acrfull{RAG} retrieves code snippets relevant to the current task from an indexed codebase. Hierarchical summarization compresses code into summaries at multiple abstraction levels, preserving essential information while reducing token consumption. Selective context inclusion restricts the prompt to immediately relevant code and documentation, while sliding window approaches process large codebases in overlapping chunks to maintain continuity across segments. Several key configuration parameters also affect generation behaviour. Temperature controls the degree of randomness, with lower values producing more deterministic outputs. Top-p (nucleus sampling) limits the sampling pool to the highest-probability tokens. Maximum token limits constrain output length, while stop sequences define generation termination conditions. For test generation, studies suggest moderate temperatures in the range of 0.2--0.4, balancing creativity with consistency, though optimal settings vary by task.
 
-\begin{itemize}
-    \item \textbf{True positive rate}: Correctly identified bugs as a proportion of total bugs
-    \item \textbf{False positive rate}: Incorrect bug reports as a proportion of total reports
-    \item \textbf{Bug detection efficiency}: Bugs found per test or per token spent
-\end{itemize}
-
-\subsubsection{Code Generation Metrics}
-
-The pass@k metric, widely used in code generation evaluation, measures the probability of generating at least one correct solution within k attempts \parencite{chen2021evaluating}:
+The literature employs diverse metrics and benchmarks to evaluate testing effectiveness, providing the empirical foundation for comparing MAS-based approaches to traditional methods. Coverage metrics measure the extent to which generated tests exercise the SUT, with the most commonly reported being line coverage, branch coverage, method coverage, and mutation score. Correctness metrics assess whether generated tests are valid and meaningful, including the compilation rate, execution rate, pass rate, and assertion validity. Bug detection metrics evaluate the ability to identify real defects through the true positive rate, false positive rate, and bug detection efficiency. The pass@k metric, widely used in code generation evaluation, measures the probability of generating at least one correct solution within k attempts \parencite{chen2021evaluating}:
 
 \begin{equation}
 \text{pass@k} = \mathbb{E}_{\text{Problems}} \left[ 1 - \frac{\binom{n-c}{k}}{\binom{n}{k}} \right]
@@ -507,704 +618,127 @@ The pass@k metric, widely used in code generation evaluation, measures the proba
 
 where $n$ is the total number of samples and $c$ is the number of correct samples.
 
-\subsection{Benchmark Datasets}
+Key benchmark datasets include HumanEval \parencite{chen2021evaluating}, containing 164 hand-written Python programming problems; the Mostly Basic Python Problems (MBPP) benchmark \parencite{austin2021program}, providing 974 crowd-sourced Python tasks; SWE-bench \parencite{jimenez2024swebench}, which evaluates agents on real GitHub issues from popular Python repositories; and Defects4J \parencite{just2014defects4j}, a database of real bugs from open-source Java projects. Studies consistently demonstrate that multi-agent architectures outperform single-agent approaches on complex testing tasks. MetaGPT \parencite{hong2023metagpt} reported significantly higher pass rates on software development tasks compared to single-agent baselines, with testing quality directly impacting overall success rates. Comparisons between LLM-based and traditional testing tools reveal complementary strengths. EvoSuite \parencite{fraser2011evosuite} achieves high branch coverage through search-based generation but produces tests that are often difficult to understand and maintain. Randoop \parencite{pacheco2007randoop} generates many tests quickly through random exploration but with limited semantic awareness. Pynguin \parencite{lukasczyk2023pynguin} extends search-based test generation to Python with multiple algorithms (DynaMOSA, MIO, MOSA), providing a key baseline for comparing LLM-based Python test generation. LLM-based tools, by contrast, generate more readable and semantically meaningful tests but may miss edge cases that systematic approaches find. \textcite{schafer2023testpilot} (TestPilot) achieved 70.2\% median statement coverage on npm packages, significantly outperforming traditional tools, while \textcite{yuan2024chattester} (ChatTester) found that only 24.8\% of vanilla ChatGPT-generated tests pass execution, though the passing tests achieve comparable coverage to manually-written ones. CODAMOSA \parencite{lemieux2023codamosa} proposed combining LLM generation with search-based testing to escape coverage plateaus, achieving higher coverage than either approach alone. \textcite{pizzorno2024coverup} (CoverUp) extended this idea with coverage-guided prompting, achieving 80\% median line+branch coverage versus 47\% for CODAMOSA. Mutation testing \parencite{jia2011analysis} provides a rigorous framework for evaluating test quality by measuring the proportion of artificial faults (mutants) detected by the test suite, and LLM-generated tests have shown promising results on mutation testing benchmarks, particularly when guided by mutation analysis feedback. Several factors complicate interpretation of reported effectiveness results, including benchmark contamination, incompatible evaluation metrics across studies, limited reproducibility due to proprietary models, and task selection bias in benchmarks.
 
-\subsubsection{HumanEval}
+The security and privacy risks associated with LLM-based multi-agent testing systems constitute key practical considerations for deployment. The analysis identifies five primary risk categories: data leakage, adversarial manipulation, unsafe code generation, grounding failures, and ACI vulnerabilities (Table~\ref{tab:threat_catalog}). Data leakage occurs when sensitive information is inadvertently exposed through agent interactions with LLM providers or external systems. Testing agents require access to source code, which may contain proprietary algorithms, trade secrets, or competitive intelligence. When using cloud-based LLM providers, this code is transmitted to external servers, potentially violating confidentiality requirements. Codebases frequently contain \acrfull{PII} in various forms, including test fixtures with realistic user data, configuration files with credentials or API keys, and database seeds with sample customer information. Agents processing such codebases may transmit PII to external providers, potentially violating \acrshort{GDPR} requirements regarding data transfers and purpose limitation. System prompts defining agent behaviour may themselves contain sensitive information, and prompt injection attacks may extract these system prompts, exposing protected information.
 
-HumanEval \parencite{chen2021evaluating} contains 164 hand-written Python programming problems with function signatures, docstrings, and test cases. While primarily designed for code generation evaluation, it serves as a foundation for testing-related benchmarks.
+Adversarial actors may exploit agent systems through various manipulation techniques. Prompt injection attacks embed malicious instructions in data processed by agents \parencite{greshake2023not}. In testing contexts, injection vectors are particularly diverse: malicious instructions may be hidden in code comments, embedded in function docstrings, inserted as string literals, encoded in specially crafted file names, or planted in error messages that agents subsequently analyse. Trojan comments or code patterns may be planted in repositories to trigger specific agent behaviors when encountered. Multi-agent systems may exhibit emergent behaviors not intended by designers, particularly when agents pursue local objectives that conflict with global system goals. Agents generating test code may introduce security vulnerabilities or malicious functionality, including SQL injection vulnerabilities in database test helpers, path traversal issues in file handling tests, command injection flaws, insecure deserialization in test fixtures, or hardcoded credentials. LLMs may hallucinate package names that do not exist, creating opportunities for ``slopsquatting'' attacks, and may generate slightly misspelled package names that attackers have registered as typosquatting packages. The ``grounding gap'' between LLM knowledge and the actual state of the system under test can cause agents to generate tests calling methods or APIs that do not exist, suggest deprecated patterns, or generate tests inconsistent with code outside the visible context window. The Agent-Computer Interface represents a critical attack surface, with risks including excessive permissions, insufficient isolation, and audit trail gaps.
 
-\subsubsection{MBPP}
+\begin{table}[ht]
+\caption{Comprehensive security threat catalog}
+\label{tab:threat_catalog}
+\centering
+\small
+\begin{tabular}{l l l l}
+\toprule
+\tabhead{ID} & \tabhead{Threat Category} & \tabhead{Specific Threat} & \tabhead{Studies} \\
+\midrule
+T1 & Data Leakage & Source code exfiltration & S03, S12, S27 \\
+T2 & Data Leakage & PII exposure via prompts & S03, S15, S31 \\
+T3 & Data Leakage & Credential/secret exposure & S12, S19, S31 \\
+T4 & Data Leakage & Prompt leakage attacks & S15, S22 \\
+\midrule
+T5 & Adversarial & Direct prompt injection & S08, S15, S22 \\
+T6 & Adversarial & Indirect prompt injection & S15, S22, S34 \\
+T7 & Adversarial & Trojan code comments & S22, S34 \\
+T8 & Adversarial & Agent alignment failures & S08, S27 \\
+\midrule
+T9 & Code Generation & Vulnerability introduction & S19, S27, S38 \\
+T10 & Code Generation & Dependency confusion & S19, S38 \\
+T11 & Code Generation & Typosquatting packages & S19, S38 \\
+T12 & Code Generation & Malicious code insertion & S27, S34 \\
+\midrule
+T13 & Grounding & Hallucinated APIs & S05, S12, S27 \\
+T14 & Grounding & Outdated knowledge & S05, S12 \\
+T15 & Grounding & Context inconsistency & S12, S27 \\
+\midrule
+T16 & ACI & Excessive permissions & S03, S08, S27 \\
+T17 & ACI & Insufficient isolation & S03, S19, S27 \\
+T18 & ACI & Audit trail gaps & S03, S31 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-The Mostly Basic Python Problems (MBPP) benchmark \parencite{austin2021program} provides 974 crowd-sourced Python programming tasks, offering broader coverage than HumanEval.
+The literature proposes architectural patterns and mitigation strategies to address these risks, organized into three categories. Model-centric strategies address risks at the LLM layer itself: deploying open-weight models locally eliminates data transmission to external providers; models can be fine-tuned to reject harmful requests through RLHF and Constitutional AI approaches; and post-generation filtering can detect and block unsafe outputs before they reach downstream systems. Pipeline-centric strategies implement security controls in the infrastructure surrounding agents: test execution should occur in isolated environments (containers, virtual machines, serverless functions, or WebAssembly sandboxes); data preprocessing can remove or redact PII before code reaches agents; context minimization provides agents only the information strictly necessary for their tasks; and securing the ACI involves explicit permission models, action validation, rate limiting, allowlisting, and confirmation gates for high-risk operations. Comprehensive logging enables detection, forensics, and compliance. Algorithmic strategies use testing and validation techniques to verify agent behavior: mutation testing provides objective quality metrics for generated tests, combinatorial testing systematically varies inputs to identify failure conditions, and chaos engineering deliberately injects failures to verify system resilience. Effective security requires layering multiple mitigations across prevention, detection, response, and recovery.
 
-\subsubsection{SWE-bench}
+Organizations typically begin with shadow deployments where agent-generated tests run alongside but do not replace existing test suites. MAS testing systems can integrate at various CI/CD stages, including pre-commit generation, pull request review, continuous testing on each commit, nightly comprehensive generation, and release gate validation. LLM costs depend on input tokens, output tokens, model selection, and request frequency. The primary benefits include reduced time spent writing boilerplate test code, faster identification of missing coverage, earlier bug detection, and reduced cognitive load during test maintenance. Adoption requires prompt engineering expertise, security awareness, and the ability to critically evaluate agent outputs.
 
-SWE-bench \parencite{jimenez2024swebench} evaluates agents on real GitHub issues from popular Python repositories. Unlike synthetic benchmarks, SWE-bench requires understanding large codebases and making appropriate modifications, making it highly relevant for testing system evaluation.
-
-\subsubsection{Defects4J}
-
-Defects4J \parencite{just2014defects4j} provides a database of real bugs from open-source Java projects, enabling evaluation of bug detection and test generation for real-world defects.
-
-\subsection{Comparative Performance Results}
-
-\subsubsection{MAS vs. Single-Agent Approaches}
-
-Studies consistently demonstrate that multi-agent architectures outperform single-agent approaches on complex testing tasks. MetaGPT \parencite{hong2023metagpt} reported that the multi-agent approach achieved significantly higher pass rates on software development tasks compared to single-agent baselines, with testing quality directly impacting overall success rates.
-
-\subsubsection{LLM-Based vs. Traditional Testing Tools}
-
-Comparisons between LLM-based and traditional testing tools reveal complementary strengths:
-
-\begin{itemize}
-    \item \textbf{EvoSuite} \parencite{fraser2011evosuite}: Achieves high branch coverage through search-based generation but produces tests that are often difficult to understand and maintain.
-
-    \item \textbf{Randoop} \parencite{pacheco2007randoop}: Generates many tests quickly through random exploration but with limited semantic awareness.
-
-    \item \textbf{LLM-based tools}: Generate more readable, semantically meaningful tests but may miss edge cases that systematic approaches find.
-\end{itemize}
-
-CODAMOSA \parencite{lemieux2023codamosa} proposed combining LLM generation with search-based testing to escape coverage plateaus, achieving higher coverage than either approach alone.
-
-\subsubsection{Mutation Testing Performance}
-
-Mutation testing \parencite{jia2011analysis} provides a rigorous framework for evaluating test quality by measuring the proportion of artificial faults (mutants) detected by the test suite. LLM-generated tests have shown promising results on mutation testing benchmarks, particularly when guided by mutation analysis feedback.
-
-\subsection{Threats to Validity}
-
-Several factors complicate interpretation of reported effectiveness results:
-
-\begin{itemize}
-    \item \textbf{Benchmark contamination}: LLMs may have seen benchmark problems during training, inflating performance estimates.
-
-    \item \textbf{Evaluation metrics}: Different studies use incompatible metrics, making cross-study comparison difficult.
-
-    \item \textbf{Reproducibility}: Many studies do not release code or use proprietary models whose behavior changes over time.
-
-    \item \textbf{Task selection}: Benchmarks may not represent the full complexity of real-world testing scenarios.
-\end{itemize}
+The regulatory landscape affecting deployment requires careful attention. The \acrfull{GDPR} \parencite{gdpr2016} imposes requirements on processing of personal data, including data minimisation (Article 5(1)(c)), purpose limitation (Article 5(1)(b)), restrictions on international data transfers (Chapter V), and Data Protection Impact Assessment requirements (Article 35). The EU AI Act \parencite{euaiact2024} classifies AI systems into risk tiers and introduces transparency requirements (Article 52). Testing systems are likely classified as limited or minimal risk unless they test safety-critical systems. When agent-generated tests fail to detect bugs, liability questions arise regarding organizational responsibility, provider liability, and the impact of human review on liability allocation. Following the seven privacy-by-design principles \parencite{cavoukian2011privacy}, testing systems should adopt a proactive posture, make privacy the default setting, embed privacy into system design, achieve full functionality without unnecessary trade-offs, ensure end-to-end security, maintain visibility and transparency, and keep user privacy central to all design decisions.
 
 %----------------------------------------------------------------------------------------
 
-\section{Security and Privacy Challenges}
-\label{sec:security_challenges}
+\section{Critical Discussion}
+\label{sec:critical_discussion}
 
-This section addresses RQ1 by examining the security and privacy risks associated with LLM-based multi-agent testing systems. The analysis identifies five primary risk categories: data leakage, adversarial manipulation, unsafe code generation, grounding failures, and ACI vulnerabilities.
+This section presents a critical analysis of the findings reported above, evaluating the strengths and limitations of the existing literature for each review theme and identifying the research gaps that motivate the contributions of this thesis.
 
-\subsection{Data Leakage Risks}
+\subsection{RQ1, On the Limits of Few-Shot Test Generation}
 
-Data leakage occurs when sensitive information is inadvertently exposed through agent interactions with LLM providers or external systems.
+The evidence for few-shot prompting is convincing but incomplete. The studies reviewed demonstrate that providing examples improves generation quality, yet the examples used are almost universally selected at the code-snippet level, a function and its corresponding test, rather than at the project level. Real-world testing involves conventions that span entire test suites: consistent fixture patterns, shared setup and teardown logic, project-specific assertion styles, and framework-specific idioms. None of the reviewed studies attempt to capture these higher-level patterns systematically. The reliance on surface-level code similarity for example retrieval, as in CEDAR, means that structural testing conventions, such as always verifying state after mutation or testing both positive and negative paths, are lost when examples are selected solely on syntactic resemblance.
 
-\subsubsection{Intellectual Property Exfiltration}
+Furthermore, the hallucination rates reported by \textcite{tang2024largescale} (up to 86\% for smaller models) suggest that few-shot prompting alone is insufficient. A practical system must include an execution-validation loop that detects and discards non-compiling or failing tests. This motivates the multi-agent architecture adopted in TestForge, where a dedicated Executor agent runs generated tests and a Validator agent assesses their quality, creating a feedback loop that compensates for LLM hallucinations. The gap in AST-based pattern extraction, where Tree-sitter parsing could produce structured style guides capturing project-wide testing conventions, remains the primary opportunity that the Golden Examples Pipeline addresses.
 
-Testing agents require access to source code, which may contain proprietary algorithms, trade secrets, or competitive intelligence. When using cloud-based LLM providers, this code is transmitted to external servers, potentially violating confidentiality requirements.
+\subsection{RQ2, On the Untapped Potential of Traffic Observation}
 
-Risks include:
-\begin{itemize}
-    \item Code transmitted to LLM providers may be retained or used for training
-    \item API logs may persist sensitive information
-    \item Network interception could expose transmitted code
-    \item Provider employees may access query logs
-\end{itemize}
+The black-box testing literature is heavily biased toward fuzzing, which optimises for crash detection and code coverage rather than the production of maintainable, human-readable test suites. While fuzzing tools such as RESTler and Morest are effective at finding server errors and security vulnerabilities, the tests they produce are machine-generated sequences of requests that bear little resemblance to what a developer would write. This is a critical limitation for organisations seeking to build regression test suites from observed behaviour: the output of a fuzzer cannot be checked into a repository and maintained alongside the application code.
 
-\subsubsection{PII Exposure}
+The emergence of specification-free approaches like RESTSpecIT is encouraging, as it demonstrates that LLMs can infer API structure without formal documentation. However, the step from endpoint discovery to test suite generation, producing pytest functions with meaningful assertions, shared fixtures, and proper test isolation, has not been taken. The Observer Pipeline proposed in this thesis occupies precisely this gap: it combines traffic capture (via proxy interception or HAR import) with LLM-driven generation to produce structured, human-readable test code. The critical question, which the experimentation chapter addresses, is whether the information contained in captured HTTP exchanges provides sufficient context for the LLM to generate tests that go beyond trivial status code assertions.
 
-Codebases frequently contain \acrfull{PII} in various forms:
-\begin{itemize}
-    \item Test fixtures with realistic user data (names, emails, addresses)
-    \item Configuration files with credentials or API keys
-    \item Log files with user activity records
-    \item Database seeds with sample customer information
-\end{itemize}
+\subsection{RQ3, On Agent Architecture Trade-Offs}
 
-Agents processing such codebases may transmit PII to external providers, potentially violating \acrshort{GDPR} requirements regarding data transfers and purpose limitation.
+The proliferation of multi-agent frameworks is both a strength and a weakness of the current literature. On the positive side, the diversity of coordination models demonstrates that there is no single correct architecture: hierarchical, peer-to-peer, and hybrid approaches each have valid use cases. On the negative side, the lack of controlled comparisons between architectures makes it difficult to determine which patterns are most effective for specific tasks. Most framework papers evaluate their approach against single-agent baselines or entirely different systems, rather than comparing alternative multi-agent designs for the same task.
 
-\subsubsection{Prompt Leakage}
+For test generation specifically, a pipeline architecture, where data flows sequentially through analysis, generation, execution, and validation stages, has clear advantages over more complex coordination models. Testing is inherently sequential: one cannot validate a test before generating it, and one cannot generate a test without first understanding the target application. The pipeline model also provides natural checkpoints for quality control and makes the system easier to debug and extend. This is the rationale behind the TestForge architecture, which adopts a pipeline coordination model with typed data artifacts flowing between specialised agents, rather than the more complex dialogue-based or hierarchical approaches favoured by general-purpose frameworks.
 
-System prompts defining agent behavior may themselves contain sensitive information, including:
-\begin{itemize}
-    \item Proprietary testing methodologies
-    \item Security scanning patterns
-    \item Internal system architecture details
-    \item Competitive intelligence
-\end{itemize}
+A further observation is that the ACI design insights from SWE-agent are underappreciated in the testing literature. Most multi-agent testing papers focus on agent roles and communication patterns but pay little attention to how agents interact with external tools, test runners, build systems, version control. Yet as \textcite{yang2024sweagent} demonstrated, interface design can impact agent performance as much as or more than the underlying LLM capability. TestForge addresses this by providing each agent with a carefully scoped interface: the Executor agent interacts only with pytest through a sandboxed subprocess, the Observer agent interacts only with HTTP traffic data, and so forth.
 
-Prompt injection attacks may extract these system prompts, exposing protected information.
+\subsection{RQ4, On the Absence of Memory in Testing Systems}
 
-\subsection{Adversarial Manipulation}
+The near-total absence of persistent memory in testing-oriented agent systems represents what is perhaps the most significant gap in the literature. Software testing is fundamentally a progressive activity: as a developer tests an application over days and weeks, they accumulate knowledge about its behaviour, its failure modes, and its most fragile components. Current LLM-based testing tools discard this knowledge after every session, forcing the system to rediscover the same endpoints, re-learn the same conventions, and potentially regenerate the same tests.
 
-Adversarial actors may exploit agent systems through various manipulation techniques.
+MemGPT's virtual context management provides a technically sound foundation for addressing this gap, but it was designed for conversational agents, not task-oriented testing workflows. The challenge for testing-specific memory lies in determining what to remember: discovered endpoint maps, successful test patterns, previously found bugs, coverage gaps, and application-specific conventions all represent potentially valuable persistent knowledge, but storing everything risks overwhelming the retrieval mechanism with irrelevant information. TestForge explores this through a ContextStore that maintains per-application memory, combined with Letta-based agent memory for conversational interaction. The experimentation chapter evaluates whether this architecture delivers measurable improvement across sessions.
 
-\subsubsection{Prompt Injection}
+\subsection{RQ5, On the Privacy-Capability Trade-Off}
 
-Prompt injection attacks embed malicious instructions in data processed by agents \parencite{greshake2023not}. In testing contexts, injection vectors include:
+The practical deployment literature consistently frames local execution as a privacy solution with a capability cost, but this framing may be overly pessimistic. The rapid improvement in open-weight models, from Code Llama 7B through to recent instruction-tuned variants, is narrowing the gap with proprietary models for code-specific tasks. For test generation in particular, the reasoning demands may be lower than for general-purpose software engineering: the LLM must understand an API structure and produce well-formed test functions, but it does not need to reason about novel algorithms or complex system architectures.
 
-\begin{itemize}
-    \item \textbf{Code comments}: Malicious instructions hidden in code comments that agents read as context
-    \item \textbf{Docstrings}: Instructions embedded in function documentation
-    \item \textbf{String literals}: Injection payloads in test data or configuration
-    \item \textbf{File names}: Specially crafted file names processed by agents
-    \item \textbf{Error messages}: Malicious content in error outputs that agents analyze
-\end{itemize}
+The more pressing concern for local deployment is infrastructure cost and operational complexity. Running a quantised 8B parameter model on consumer hardware is feasible but slow, with inference times of 30--60 seconds per generation that would be unacceptable in an interactive workflow. TestForge addresses this by adopting a batch-oriented design where the user initiates a generation run and reviews results asynchronously, and by using LiteLLM as a unified gateway that allows seamless switching between local and cloud models depending on the sensitivity of the target codebase. The regulatory analysis confirms that for organisations subject to GDPR Article 44--49 on international data transfers, local deployment is not merely a preference but a practical necessity when processing codebases that contain personal data.
 
-Successful injection may cause agents to:
-\begin{itemize}
-    \item Execute unauthorized commands
-    \item Exfiltrate sensitive data
-    \item Modify code in unintended ways
-    \item Skip security checks
-    \item Generate misleading test results
-\end{itemize}
+\subsection{Research Gaps}
 
-\subsubsection{Trojan Attacks}
+The critical analysis above identifies five concrete research gaps that this thesis addresses. First, no existing approach extracts project-wide testing patterns from reference test suites using AST analysis for structured few-shot prompting. Second, no tool generates human-readable, maintainable test suites from observed HTTP traffic without requiring API specifications or source code access. Third, no multi-agent testing architecture combines multiple complementary input strategies, golden examples and black-box observation, within a unified platform. Fourth, persistent memory for progressive improvement in test generation has not been investigated. Fifth, a systematic evaluation of the quality trade-offs, performance characteristics, and cost-effectiveness of fully local test generation using open-weight models has not been conducted.
 
-Trojan comments or code patterns may be planted in repositories to trigger specific agent behaviors when encountered. Unlike prompt injection (which requires active manipulation), trojans persist in codebases and activate when unsuspecting agents process affected files.
+\subsection{Implications for the Proposed Research}
 
-\subsubsection{Agent Alignment Failures}
-
-Multi-agent systems may exhibit emergent behaviors not intended by designers, particularly when agents pursue local objectives that conflict with global system goals.
-
-\subsection{Unsafe Code Generation}
-
-Agents generating test code may introduce security vulnerabilities or malicious functionality.
-
-\subsubsection{Vulnerability Introduction}
-
-Generated test code may contain:
-\begin{itemize}
-    \item SQL injection vulnerabilities in database test helpers
-    \item Path traversal issues in file handling tests
-    \item Command injection in tests invoking external processes
-    \item Insecure deserialization in test fixtures
-    \item Hardcoded credentials for test authentication
-\end{itemize}
-
-While test code typically runs in isolated environments, vulnerabilities may propagate to production if test utilities are reused or if isolation is imperfect.
-
-\subsubsection{Dependency Confusion}
-
-LLMs may hallucinate package names that do not exist, creating opportunities for ``slopsquatting'' attacks where malicious actors register these hallucinated package names. When agents attempt to install hallucinated dependencies, they may instead install attacker-controlled malicious packages.
-
-\subsubsection{Typosquatting}
-
-Similarly, LLMs may generate slightly misspelled package names (e.g., ``requets'' instead of ``requests''), which attackers may have registered as typosquatting packages containing malware.
-
-\subsection{Grounding Failures}
-
-The ``grounding gap'' refers to the disconnect between LLM knowledge and the actual state of the system under test.
-
-\subsubsection{Hallucinated APIs}
-
-LLMs may generate tests calling methods or APIs that do not exist in the SUT, either because:
-\begin{itemize}
-    \item The LLM's training data included different versions
-    \item The LLM confuses similar but distinct APIs
-    \item The LLM extrapolates non-existent functionality
-\end{itemize}
-
-\subsubsection{Outdated Knowledge}
-
-LLM training data has a knowledge cutoff date, meaning:
-\begin{itemize}
-    \item Recent API changes may not be reflected
-    \item Deprecated patterns may be suggested
-    \item Security vulnerabilities fixed after cutoff may be reintroduced
-\end{itemize}
-
-\subsubsection{Context Inconsistency}
-
-With limited context windows, agents may generate tests inconsistent with code outside the visible window, leading to:
-\begin{itemize}
-    \item Tests that assume incorrect preconditions
-    \item Missing setup or teardown requirements
-    \item Conflicts with global state managed elsewhere
-\end{itemize}
-
-\subsection{ACI Vulnerabilities}
-
-The Agent-Computer Interface represents a critical attack surface requiring careful security design.
-
-\subsubsection{Excessive Permissions}
-
-Agents may be granted broader permissions than necessary for their tasks, violating the principle of least privilege. Overly permissive ACIs enable agents to:
-\begin{itemize}
-    \item Access files outside the project directory
-    \item Execute arbitrary system commands
-    \item Make network connections to arbitrary hosts
-    \item Modify system configuration
-\end{itemize}
-
-\subsubsection{Insufficient Isolation}
-
-Test execution environments may lack adequate isolation from:
-\begin{itemize}
-    \item Production systems and data
-    \item Other test executions (cross-contamination)
-    \item Host system resources
-    \item Network access to sensitive services
-\end{itemize}
-
-\subsubsection{Audit Trail Gaps}
-
-Insufficient logging of agent actions may prevent:
-\begin{itemize}
-    \item Detection of malicious behavior
-    \item Forensic analysis after incidents
-    \item Compliance verification
-    \item Debugging of unexpected outcomes
-\end{itemize}
+The identified gaps directly motivate the contributions proposed in this thesis. The limited exploration of example-driven approaches for test generation motivates the Golden Examples Pipeline, which leverages existing test suites as structured few-shot examples to generate insightful tests that go beyond trivial assertions. The absence of black-box testing approaches that combine traffic analysis with LLM-driven generation motivates the Black-Box Observer Pipeline, which captures HTTP traffic to automatically map endpoints and generate test suites without requiring source code access. The lack of integrated multi-agent testing architectures that support multiple complementary input strategies motivates the development of TestForge as a modular platform with six specialised agents covering the full testing workflow from analysis through validation. The underdeveloped area of persistent agent memory for testing motivates the integration of Letta-based memory, enabling the platform to accumulate knowledge about target applications and improve progressively across sessions. Finally, the need for practical deployment guidance under privacy constraints motivates the local execution assessment, which evaluates the feasibility of running the complete platform on local infrastructure using open-weight models.
 
 %----------------------------------------------------------------------------------------
 
-\section{Mitigation Strategies and Secure Architectures}
-\label{sec:mitigation}
+\section{Conclusions of the Review}
+\label{sec:review_conclusion}
 
-This section addresses RQ2 by examining the architectural patterns and mitigation strategies proposed in the literature to address the security and privacy risks identified in Section~\ref{sec:security_challenges}. Strategies are organized into three categories: model-centric, pipeline-centric, and algorithmic approaches.
+This systematic literature review examined 55 studies following the PRISMA 2020 methodology, organised around five research questions that collectively address the overarching review question of how AI techniques have been applied to automated software test generation. The review covered publications from 2020 to early 2026 across four major databases, selecting studies through a rigorous multi-stage screening process with explicit inclusion and exclusion criteria.
 
-\subsection{Model-Centric Mitigations}
+The Results section consolidated the evidence for each research question. For RQ1, the literature demonstrates that few-shot prompting consistently improves test generation quality over zero-shot approaches, but no existing work systematically extracts project-level testing patterns from reference test suites using AST analysis. For RQ2, black-box API testing is dominated by fuzzing-oriented approaches that optimise for crash detection rather than the production of human-readable, maintainable test suites from observed traffic. For RQ3, multi-agent architectures consistently outperform single-agent approaches, with pipeline, hierarchical, and peer-to-peer coordination models each offering distinct trade-offs, though controlled comparisons between architectures for the same testing task are absent. For RQ4, persistent memory mechanisms have been proposed for conversational and general-purpose agents but have not been applied to software testing, leaving the potential for progressive learning in test generation entirely unexplored. For RQ5, the tension between model capability and deployment constraints is well-characterised, with the regulatory landscape strongly favouring local execution for organisations handling sensitive data, though systematic evaluations of local deployment feasibility remain limited.
 
-Model-centric strategies address risks at the LLM layer itself.
-
-\subsubsection{Local Model Deployment}
-
-Deploying open-weight models locally eliminates data transmission to external providers, addressing IP and PII leakage concerns. Organizations can run models such as Code Llama or StarCoder on their own infrastructure, maintaining complete control over data flows.
-
-Trade-offs include:
-\begin{itemize}
-    \item Reduced capability compared to frontier proprietary models
-    \item Significant infrastructure investment (GPU servers)
-    \item Operational overhead for model serving and updates
-    \item Expertise requirements for optimization
-\end{itemize}
-
-\subsubsection{Fine-Tuning for Safety}
-
-Models can be fine-tuned to reject harmful requests, avoid generating unsafe code patterns, and follow security guidelines. Techniques include:
-\begin{itemize}
-    \item \textbf{RLHF}: Reinforcement Learning from Human Feedback to align with safety preferences
-    \item \textbf{Constitutional AI}: Training models to follow explicit safety principles
-    \item \textbf{Adversarial training}: Exposing models to attack examples during training
-\end{itemize}
-
-\subsubsection{Output Filtering}
-
-Post-generation filtering can detect and block unsafe outputs before they reach downstream systems:
-\begin{itemize}
-    \item Pattern matching for known dangerous code constructs
-    \item Static analysis of generated code for vulnerabilities
-    \item Dependency verification against known-good package lists
-    \item Credential scanning to prevent secrets in generated code
-\end{itemize}
-
-\subsection{Pipeline-Centric Mitigations}
-
-Pipeline-centric strategies implement security controls in the infrastructure surrounding agents.
-
-\subsubsection{Sandboxed Execution}
-
-Test execution should occur in isolated environments preventing impact on host systems or networks. Implementation approaches include:
-
-\begin{itemize}
-    \item \textbf{Containers}: Docker or similar containerization provides process isolation with configurable resource limits
-    \item \textbf{Virtual machines}: Full VM isolation for stronger security boundaries
-    \item \textbf{Serverless functions}: Ephemeral execution environments that reset between invocations
-    \item \textbf{WebAssembly}: Language-agnostic sandboxing with fine-grained capability control
-\end{itemize}
-
-Sandbox configuration should enforce:
-\begin{itemize}
-    \item Network isolation or allowlisted connections only
-    \item Read-only access to source code
-    \item Resource limits (CPU, memory, disk, time)
-    \item No access to host filesystems outside designated directories
-    \item Prevented privilege escalation
-\end{itemize}
-
-\subsubsection{PII Scrubbing}
-
-Data preprocessing can remove or redact PII before code reaches agents:
-
-\begin{itemize}
-    \item \textbf{Pattern-based detection}: Regular expressions for emails, phone numbers, credentials
-    \item \textbf{Named entity recognition}: ML-based identification of names, addresses, etc.
-    \item \textbf{Secret scanning}: Tools like truffleHog or git-secrets for credential detection
-    \item \textbf{Synthetic replacement}: Replacing real data with realistic but fake alternatives
-\end{itemize}
-
-\subsubsection{Context Minimization}
-
-Providing agents only the information strictly necessary for their tasks limits potential exposure:
-\begin{itemize}
-    \item Include only relevant source files in context
-    \item Exclude configuration, credentials, and infrastructure code
-    \item Summarize rather than include full file contents where possible
-    \item Implement need-to-know access at the agent level
-\end{itemize}
-
-\subsubsection{ACI Hardening}
-
-Securing the Agent-Computer Interface involves:
-
-\begin{itemize}
-    \item \textbf{Explicit permission model}: Agents must be granted specific capabilities (file read, file write, execute, network)
-    \item \textbf{Action validation}: All agent actions verified against policy before execution
-    \item \textbf{Rate limiting}: Preventing runaway agents through operation throttling
-    \item \textbf{Allowlisting}: Only permitted commands and tools available to agents
-    \item \textbf{Confirmation gates}: Human approval required for high-risk operations
-\end{itemize}
-
-\subsubsection{Audit Logging}
-
-Comprehensive logging enables detection, forensics, and compliance:
-\begin{itemize}
-    \item All LLM prompts and responses
-    \item All agent actions and their outcomes
-    \item All file accesses and modifications
-    \item All network communications
-    \item Chain-of-thought reasoning traces
-\end{itemize}
-
-Logs should be:
-\begin{itemize}
-    \item Tamper-evident (cryptographically secured)
-    \item Retained according to compliance requirements
-    \item Searchable for incident investigation
-    \item Analyzed for anomaly detection
-\end{itemize}
-
-\subsection{Algorithmic Mitigations}
-
-Algorithmic strategies use testing and validation techniques to verify agent behavior.
-
-\subsubsection{Mutation Testing for Validation}
-
-Using mutation testing \parencite{jia2011analysis} to validate LLM-generated tests provides an objective quality metric. By seeding artificial faults (mutants) in the SUT, the quality of generated tests can be assessed: high-quality tests should detect (kill) most mutants.
-
-This approach:
-\begin{itemize}
-    \item Provides objective quality metrics for generated tests
-    \item Identifies tests with weak assertions
-    \item Guides iterative test improvement
-    \item Does not require oracle knowledge
-\end{itemize}
-
-\subsubsection{Combinatorial Testing}
-
-Combinatorial testing systematically varies inputs to identify failure conditions. For agent systems, combinatorial testing can:
-\begin{itemize}
-    \item Identify input combinations that trigger unsafe behavior
-    \item Verify consistent behavior across configuration variations
-    \item Test boundary conditions in permission enforcement
-\end{itemize}
-
-\subsubsection{Chaos Engineering}
-
-Chaos engineering approaches deliberately inject failures to verify resilience:
-\begin{itemize}
-    \item Network partitions between agents
-    \item LLM API failures and timeouts
-    \item Resource exhaustion scenarios
-    \item Malformed responses from components
-\end{itemize}
-
-\subsection{Defense in Depth}
-
-Effective security requires layering multiple mitigations, recognizing that no single control is sufficient:
-
-\begin{enumerate}
-    \item \textbf{Prevention}: PII scrubbing, context minimization, permission restrictions
-    \item \textbf{Detection}: Output filtering, anomaly detection, audit analysis
-    \item \textbf{Response}: Automatic shutdown, human escalation, incident logging
-    \item \textbf{Recovery}: Rollback capabilities, isolation containment, forensic preservation
-\end{enumerate}
-
-%----------------------------------------------------------------------------------------
-
-\section{Industrial Deployment and CI/CD Integration}
-\label{sec:industrial_deployment}
-
-This section addresses RQ5 by examining the practical challenges and solutions for deploying MAS-based testing in real-world development workflows.
-
-\subsection{Integration Patterns}
-
-\subsubsection{Shadow Mode Deployment}
-
-Organizations typically begin with shadow deployments where agent-generated tests run alongside but do not replace existing test suites:
-\begin{itemize}
-    \item Agent tests execute in parallel with human-written tests
-    \item Results are compared but do not block deployments
-    \item Discrepancies are analyzed to improve agent behavior
-    \item Confidence is built before production adoption
-\end{itemize}
-
-\subsubsection{CI/CD Pipeline Integration}
-
-MAS testing systems can integrate at various CI/CD stages:
-
-\begin{itemize}
-    \item \textbf{Pre-commit}: Generate tests for changed code before commit
-    \item \textbf{Pull request}: Analyze PRs and suggest additional tests
-    \item \textbf{Continuous testing}: Generate and run tests on each commit
-    \item \textbf{Nightly builds}: Comprehensive test generation for full codebase
-    \item \textbf{Release gates}: Validate coverage requirements before release
-\end{itemize}
-
-\subsubsection{IDE Integration}
-
-Developer-facing integrations provide immediate feedback:
-\begin{itemize}
-    \item Generate tests for selected code regions
-    \item Suggest tests during code review
-    \item Explain existing test failures
-    \item Propose fixes for failing tests
-\end{itemize}
-
-\subsection{Cost-Benefit Analysis}
-
-\subsubsection{Token Cost Modeling}
-
-LLM costs depend on:
-\begin{itemize}
-    \item Input tokens (code context, instructions)
-    \item Output tokens (generated tests, explanations)
-    \item Model selection (frontier vs. efficient models)
-    \item Request frequency (per-commit vs. periodic)
-\end{itemize}
-
-A typical test generation request might consume:
-\begin{itemize}
-    \item 2,000--4,000 input tokens (code context)
-    \item 500--1,500 output tokens (generated test)
-\end{itemize}
-
-\subsubsection{Developer Time Savings}
-
-Benefits include:
-\begin{itemize}
-    \item Reduced time writing boilerplate test code
-    \item Faster identification of missing test coverage
-    \item Earlier detection of bugs through improved coverage
-    \item Reduced cognitive load in test maintenance
-\end{itemize}
-
-\subsubsection{Quality Improvements}
-
-Measurable quality benefits include:
-\begin{itemize}
-    \item Increased code coverage
-    \item More bugs found before production
-    \item Reduced escaped defects
-    \item Improved test readability and maintainability
-\end{itemize}
-
-\subsection{Organizational Adoption Challenges}
-
-\subsubsection{Skill Requirements}
-
-Adopting MAS-based testing requires:
-\begin{itemize}
-    \item Prompt engineering expertise
-    \item Understanding of agent architectures
-    \item Security and privacy awareness
-    \item Ability to evaluate and refine agent outputs
-\end{itemize}
-
-\subsubsection{Process Changes}
-
-Organizations must adapt:
-\begin{itemize}
-    \item Code review processes to include agent-generated code
-    \item Testing strategies to leverage agent capabilities
-    \item Security reviews to address agent-specific risks
-    \item Compliance processes for AI-assisted development
-\end{itemize}
-
-\subsubsection{Cultural Factors}
-
-Adoption success depends on:
-\begin{itemize}
-    \item Developer trust in agent-generated tests
-    \item Management support for AI adoption
-    \item Clear communication about capabilities and limitations
-    \item Mechanisms for feedback and improvement
-\end{itemize}
-
-%----------------------------------------------------------------------------------------
-
-\section{Regulatory and Compliance Considerations}
-\label{sec:regulatory}
-
-This section examines the regulatory landscape affecting deployment of LLM-based testing systems, with particular attention to GDPR and the EU AI Act.
-
-\subsection{GDPR Implications}
-
-The \acrfull{GDPR} \parencite{gdpr2016} imposes requirements on processing of personal data that affect agent-based testing systems.
-
-\subsubsection{Data Minimization}
-
-Article 5(1)(c) requires that personal data be ``adequate, relevant and limited to what is necessary.'' For testing systems, this means:
-\begin{itemize}
-    \item Avoiding inclusion of real personal data in agent context
-    \item Scrubbing PII from code before LLM processing
-    \item Using synthetic data for test fixtures
-    \item Limiting data retention in logs and caches
-\end{itemize}
-
-\subsubsection{Purpose Limitation}
-
-Article 5(1)(b) requires data be ``collected for specified, explicit and legitimate purposes.'' Organizations must ensure:
-\begin{itemize}
-    \item Clear documentation of testing as a legitimate purpose
-    \item No secondary use of data processed by agents
-    \item Separation from other processing activities
-\end{itemize}
-
-\subsubsection{Data Transfers}
-
-Chapter V restricts transfers of personal data outside the EU. Using cloud-based LLM providers may constitute a transfer requiring:
-\begin{itemize}
-    \item Standard Contractual Clauses with providers
-    \item Verification of provider's data protection practices
-    \item Potentially, data localization or local model deployment
-\end{itemize}
-
-\subsubsection{Data Protection Impact Assessment}
-
-Article 35 requires \acrfull{DPIA} for processing likely to result in high risk. Agentic testing systems may trigger DPIA requirements due to:
-\begin{itemize}
-    \item Automated processing of code containing personal data
-    \item Novel technology with uncertain risks
-    \item Potential for systematic processing at scale
-\end{itemize}
-
-\subsection{EU AI Act Implications}
-
-The EU AI Act \parencite{euaiact2024} introduces requirements for AI systems that may apply to agent-based testing.
-
-\subsubsection{Risk Classification}
-
-AI systems are classified by risk level:
-\begin{itemize}
-    \item \textbf{Unacceptable risk}: Prohibited practices
-    \item \textbf{High risk}: Subject to strict requirements
-    \item \textbf{Limited risk}: Transparency obligations
-    \item \textbf{Minimal risk}: No specific requirements
-\end{itemize}
-
-Testing systems are likely classified as limited or minimal risk unless they:
-\begin{itemize}
-    \item Test safety-critical systems (may be high-risk)
-    \item Make autonomous decisions affecting individuals
-    \item Are embedded in high-risk applications
-\end{itemize}
-
-\subsubsection{Transparency Requirements}
-
-Article 52 requires disclosure when:
-\begin{itemize}
-    \item AI systems interact with natural persons
-    \item Content is AI-generated
-    \item Emotion recognition or biometric categorization is used
-\end{itemize}
-
-For testing systems, transparency may require:
-\begin{itemize}
-    \item Clear labeling of agent-generated tests
-    \item Documentation of agent involvement in quality assurance
-    \item Disclosure to developers working with agent outputs
-\end{itemize}
-
-\subsection{Liability Considerations}
-
-\subsubsection{Shared Responsibility}
-
-When agent-generated tests fail to detect bugs, liability questions arise:
-\begin{itemize}
-    \item Is the organization liable for relying on agent testing?
-    \item Does the LLM provider bear responsibility?
-    \item How does human review affect liability allocation?
-\end{itemize}
-
-\subsubsection{Documentation for Defense}
-
-Organizations should maintain records demonstrating:
-\begin{itemize}
-    \item Reasonable selection and configuration of agent systems
-    \item Appropriate human oversight of agent outputs
-    \item Continuous monitoring and improvement
-    \item Response to identified issues
-\end{itemize}
-
-\subsection{Privacy-by-Design Implementation}
-
-Following privacy-by-design principles \parencite{cavoukian2011privacy}, testing systems should incorporate:
-
-\begin{enumerate}
-    \item \textbf{Proactive not reactive}: Build privacy protections from the start
-    \item \textbf{Privacy as default}: Ensure data protection without user action
-    \item \textbf{Privacy embedded}: Integrate privacy into system design
-    \item \textbf{Full functionality}: Achieve both privacy and utility
-    \item \textbf{End-to-end security}: Protect data throughout lifecycle
-    \item \textbf{Visibility and transparency}: Maintain verifiable practices
-    \item \textbf{Respect for user privacy}: Keep user interests central
-\end{enumerate}
-
-%----------------------------------------------------------------------------------------
-
-\section{Discussion and Research Gaps}
-\label{sec:discussion}
-
-This section synthesizes findings across the reviewed literature, identifies research gaps, and discusses implications for the proposed research.
-
-\subsection{Synthesis of Findings}
-
-\subsubsection{Architectural Maturity}
-
-Multi-agent architectures for software testing have reached a level of maturity where they demonstrably outperform single-agent approaches on complex tasks. However, significant variation exists in how systems implement coordination, role specialization, and communication, with no consensus on optimal patterns for testing-specific applications.
-
-\subsubsection{Effectiveness Evidence}
-
-Evidence for the effectiveness of LLM-based testing is accumulating, with studies reporting meaningful improvements in coverage, bug detection, and developer productivity. However, evaluation methodologies vary widely, benchmark contamination concerns persist, and long-term production deployment studies remain scarce.
-
-\subsubsection{Security Understanding}
-
-The security and privacy risks of agent-based testing are increasingly well-characterized, with comprehensive taxonomies of threats including data leakage, adversarial manipulation, and unsafe code generation. However, the translation from risk identification to practical mitigation implementation is incomplete.
-
-\subsubsection{Practical Deployment}
-
-Industrial deployment of LLM-based testing is occurring, but published case studies are limited. Organizations navigate cost-benefit trade-offs, integration challenges, and organizational change with limited guidance from the literature.
-
-\subsection{Identified Research Gaps}
-
-\subsubsection{Security-Focused Architecture Design}
-
-While security risks and mitigation techniques are individually documented, comprehensive architectural frameworks integrating multiple mitigations into coherent, deployable systems are lacking. Existing frameworks prioritize functionality over security, treating protection as an afterthought.
-
-\subsubsection{Privacy-Preserving Testing}
-
-Specific techniques for conducting effective testing while minimizing privacy exposure require further development. Trade-offs between context richness (for effective testing) and context minimization (for privacy) are not well understood.
-
-\subsubsection{Evaluation in Production Contexts}
-
-Most evaluations occur on benchmark datasets under controlled conditions. Long-term studies of agent testing systems in production environments, measuring real bug detection rates, developer acceptance, and security incidents, are needed.
-
-\subsubsection{Regulatory Compliance Guidance}
-
-Practical guidance for achieving GDPR and AI Act compliance with agent-based testing systems is largely absent from the literature. Organizations lack clear frameworks for demonstrating compliance.
-
-\subsubsection{Cost Optimization}
-
-While token costs are acknowledged, systematic approaches to optimizing cost-effectiveness---through model selection, caching, or architectural decisions---are underdeveloped.
-
-\subsection{Implications for Proposed Research}
-
-The identified gaps directly motivate the contributions proposed in this thesis:
-
-\begin{enumerate}
-    \item The lack of security-focused architectures motivates the development of a secure-by-design reference architecture (Contribution 3).
-
-    \item The absence of integrated security analysis motivates the comprehensive literature review synthesizing security, privacy, and effectiveness perspectives (Contribution 1).
-
-    \item The need for practical deployment guidance motivates the best practices compilation (Contribution 5).
-
-    \item The gap between theoretical mitigations and practical implementation motivates the prototype development (Contribution 4).
-\end{enumerate}
+The Critical Discussion identified five concrete research gaps: the absence of AST-based pattern extraction for structured few-shot prompting, the lack of traffic-to-test-suite generation tools, the need for dual-pipeline architectures combining golden examples with black-box observation, the unexplored potential of persistent memory for testing agents, and the limited evaluation of fully local test generation platforms. These gaps directly motivate the design of the TestForge platform presented in the subsequent chapters.
 
 \subsection{Limitations of This Review}
+\label{sec:review_limitations}
 
-This review has several limitations that should be acknowledged:
+This review has several limitations that should be acknowledged. The field is evolving rapidly, and some relevant work may have been published after the search cutoff date of January 2026. Publication bias may cause the included studies to overrepresent positive results, with failed approaches and negative findings going underreported in the academic literature. Industry practices that are not disseminated through academic venues constitute a grey literature gap that may leave practical deployment insights underrepresented in the synthesis. The restriction to English-language publications may exclude relevant work published in other languages, particularly from research communities in China, where significant LLM development is taking place. Finally, many of the reviewed studies rely on benchmarks such as HumanEval and SWE-bench that are potentially contaminated by LLM training data, which may inflate the effectiveness claims reported in the literature.
 
-\begin{itemize}
-    \item \textbf{Rapid field evolution}: The field is evolving rapidly, and some relevant work may have been published after the search cutoff.
+\subsection{Future Directions}
+\label{sec:review_future_work}
 
-    \item \textbf{Publication bias}: Published studies may overrepresent positive results, with failed approaches underreported.
+The systematic review identifies several directions for future research that extend beyond the scope of this thesis but represent significant opportunities for the field.
 
-    \item \textbf{Gray literature}: Industry practices not published in academic venues may be underrepresented.
+The first direction concerns the integration of formal verification techniques with LLM-based test generation. While the reviewed studies focus on generating tests through prompting and example-driven approaches, combining these methods with formal methods, such as property-based testing or model checking, could provide stronger guarantees about test correctness and coverage completeness. This integration remains largely unexplored in the multi-agent context.
 
-    \item \textbf{Language restriction}: Limiting to English-language publications may exclude relevant work.
+The second direction involves cross-language and cross-framework generalisation. The majority of the reviewed studies target a single programming language (predominantly Python or Java) and a single testing framework. Investigating how multi-agent testing systems can transfer knowledge across languages, frameworks, and application domains would significantly broaden their practical applicability.
 
-    \item \textbf{Benchmark limitations}: Many reviewed studies use potentially contaminated benchmarks, affecting reliability of effectiveness claims.
-\end{itemize}
+A third direction concerns human-agent collaboration models. The reviewed literature treats test generation as a largely autonomous process, with human involvement limited to reviewing outputs. Research into interactive workflows, where developers and agents collaboratively refine test strategies, share domain knowledge, and iteratively improve test suites, could yield higher-quality outcomes than fully autonomous approaches.
 
-\subsection{Summary}
+The fourth direction addresses longitudinal evaluation of persistent memory. While this thesis evaluates memory-augmented testing across a limited number of sessions, long-term studies tracking how agent knowledge evolves over months of continuous use on production codebases would provide stronger evidence for the value of persistent memory in practice.
 
-This literature review has examined studies addressing the six research questions guiding this thesis. The review reveals a maturing field with demonstrated potential for MAS-based automated testing, alongside significant unaddressed challenges in security, privacy, and practical deployment. These findings establish the foundation for the architectural proposals and empirical work presented in subsequent chapters.
+Finally, the review identifies a need for standardised evaluation benchmarks specific to AI-driven test generation. Current evaluations rely on a patchwork of benchmarks designed for code generation (HumanEval), bug fixing (SWE-bench, Defects4J), or manual evaluation. A purpose-built benchmark capturing the full spectrum of test quality, including assertion depth, test isolation, fixture design, and maintainability, would enable more rigorous and comparable evaluations across the field.

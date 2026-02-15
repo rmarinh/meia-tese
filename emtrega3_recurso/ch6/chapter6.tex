@@ -1,230 +1,198 @@
-% Chapter 6 - Conclusions and Future Work
+% Chapter 6 - Experimentation and Discussion
 
-\chapter{Conclusions and Future Work}
-\label{chap:conclusions}
+\chapter{Experimentation and Discussion}
+\label{chap:experimentation}
 
-This chapter concludes the thesis by summarizing contributions, providing explicit answers to each research question, discussing practical implications, acknowledging limitations, and outlining directions for future research.
-
-%----------------------------------------------------------------------------------------
-
-\section{Summary of Contributions}
-\label{sec:contributions_summary}
-
-This thesis has made five primary contributions to the fields of software testing and AI-assisted software engineering:
-
-\subsection{Contribution 1: Comprehensive Systematic Literature Review}
-
-Chapter~\ref{chap:literature_review} presented a systematic literature review following PRISMA methodology, synthesizing 45 studies across six research questions. The review provided an integrated perspective on MAS-based automated testing, covering:
-\begin{itemize}
-    \item Security and privacy risks in LLM-based agent systems
-    \item Mitigation strategies and secure architectural patterns
-    \item Multi-agent architectures and coordination models
-    \item Testing effectiveness evaluation and benchmarks
-    \item LLM selection and configuration strategies
-    \item Practical deployment considerations
-\end{itemize}
-
-\subsection{Contribution 2: Taxonomy of MAS Testing Architectures}
-
-The literature review developed a taxonomy categorizing MAS testing approaches along dimensions including coordination models (hierarchical, peer-to-peer, hybrid), role specialization patterns, communication protocols, and LLM integration strategies.
-
-\subsection{Contribution 3: Secure-by-Design Reference Architecture}
-
-Chapter~\ref{chap:architecture} presented a comprehensive architecture for secure, privacy-preserving multi-agent testing. Key architectural elements include:
-\begin{itemize}
-    \item Layered design with clear separation of concerns
-    \item Specialized agents with well-defined roles
-    \item Defense-in-depth security with sandboxing and permission controls
-    \item Privacy-by-design through PII scrubbing and context minimization
-    \item Human-in-the-loop controls for oversight and compliance
-\end{itemize}
-
-\subsection{Contribution 4: Prototype Implementation and Evaluation}
-
-Chapters~\ref{chap:implementation} and~\ref{chap:evaluation} described the prototype implementation and its empirical evaluation, demonstrating:
-\begin{itemize}
-    \item Feasibility of the proposed architecture
-    \item Effectiveness improvements over baselines
-    \item Security control effectiveness
-    \item Cost-performance trade-offs
-\end{itemize}
-
-\subsection{Contribution 5: Best Practices for Industrial Deployment}
-
-The thesis synthesized practical guidance for organizations seeking to adopt MAS-based testing, including deployment strategies, cost-benefit frameworks, and compliance considerations.
+This chapter presents the experimental evaluation of the TestForge platform. It describes the experimental setup, defines the evaluation metrics, presents the results from the Golden Examples pipeline, and discusses the findings in relation to the research questions. The Black-Box Observer pipeline evaluation is discussed as future work, as the current prototype focuses on validating the golden examples approach.
 
 %----------------------------------------------------------------------------------------
 
-\section{Answers to Research Questions}
-\label{sec:rq_answers}
+\section{Experimental Setup and Methodology}
+\label{sec:experimental_setup}
 
-\subsection{RQ1: Security and Privacy Risks}
+\subsection{Target Application}
 
-\textit{What predominant security and privacy risks are associated with LLM-based Multi-Agent Systems in enterprise software testing environments?}
+The experiments were conducted against a purpose-built Flask CRUD API \parencite{flask2010} for user management. This application was selected because it provides a representative set of REST API operations while being simple enough to allow complete analysis of generated test behaviour. The application exposes seven endpoints: \texttt{GET /api/health} serves as a health check, \texttt{GET /api/users} lists all users, \texttt{POST /api/users} creates a new user (requiring \texttt{name} and \texttt{email} fields), \texttt{GET /api/users/\{id\}} retrieves a specific user, \texttt{PUT /api/users/\{id\}} updates a user, \texttt{DELETE /api/users/\{id\}} deletes a user, and \texttt{GET /api/users/search} searches users by query parameter. Together, these endpoints cover the standard CRUD operations as well as search functionality, providing sufficient variety to exercise the test generation pipeline across different HTTP methods, parameter types, and response structures.
 
-The literature review (Section~\ref{sec:security_challenges}) identified five primary risk categories:
+The application uses in-memory dictionary storage, implements duplicate email detection (returns 409), and validates required fields (returns 400 for missing \texttt{name} or \texttt{email}).
 
-\begin{enumerate}
-    \item \textbf{Data Leakage}: Transmission of proprietary code and PII to external LLM providers
-    \item \textbf{Adversarial Manipulation}: Prompt injection through code comments, trojan patterns, and agent alignment failures
-    \item \textbf{Unsafe Code Generation}: Vulnerability introduction, dependency confusion, and typosquatting risks
-    \item \textbf{Grounding Failures}: Hallucinated APIs, outdated knowledge, and context inconsistencies
-    \item \textbf{ACI Vulnerabilities}: Excessive permissions, insufficient isolation, and audit gaps
-\end{enumerate}
+\subsection{Golden Test Examples}
 
-\subsection{RQ2: Mitigation Strategies}
+Three golden test files containing 23 test functions in total were provided as input to the Golden Examples pipeline. Golden File~1 contains 7 tests covering the fundamental operations: health check, user creation, creation with missing name or email, retrieving a user, requesting a nonexistent user, and listing users. Golden File~2 contributes 10 tests addressing update operations (updating name, role, and nonexistent users), deletion (including deletion of nonexistent resources), and search functionality (by name, by email, with no results, and with a missing query parameter). Golden File~3 provides 6 tests for edge cases: custom role assignment, empty request body, non-JSON request content type, duplicate email submission, empty update body, and listing an empty collection. Collectively, these golden files establish a diverse set of patterns spanning positive cases, negative cases, and boundary conditions, giving the Analyser agent a rich base from which to extract style conventions and assertion strategies.
 
-\textit{What architectural patterns and mitigation strategies are proposed in the literature to secure Agent-Computer Interfaces and prevent data leakage?}
+\subsection{Experimental Environment}
 
-Section~\ref{sec:mitigation} cataloged mitigations across three categories:
-
-\begin{itemize}
-    \item \textbf{Model-centric}: Local deployment, fine-tuning for safety, output filtering
-    \item \textbf{Pipeline-centric}: Sandboxed execution, PII scrubbing, context minimization, ACI hardening, audit logging
-    \item \textbf{Algorithmic}: Mutation testing validation, combinatorial testing, chaos engineering
-\end{itemize}
-
-\subsection{RQ3: Effectiveness}
-
-\textit{How effective are Multi-Agent Systems powered by Large Language Models in automated software testing compared to traditional testing approaches?}
-
-The experimental evaluation (Chapter~\ref{chap:evaluation}) demonstrated:
-\begin{itemize}
-    \item Coverage improvements of 15--25\% over single-agent baselines on complex codebases
-    \item Bug detection rates comparable to or exceeding traditional search-based tools (EvoSuite, Pynguin)
-    \item Higher mutation scores indicating stronger assertion quality compared to automatically generated tests from traditional tools
-    \item Generated tests exhibit better readability and maintainability than search-based approaches, though slightly below human-written test quality
-\end{itemize}
-
-\subsection{RQ4: Architecture and Design}
-
-\textit{What architectural patterns and design principles are most effective for implementing MAS-based automated testing systems?}
-
-The literature review (Section~\ref{sec:mas_testing}) and proposed architecture (Chapter~\ref{chap:architecture}) identified:
-\begin{itemize}
-    \item Hierarchical coordination for clear task decomposition
-    \item Role specialization enabling focused agent capabilities
-    \item Structured communication through typed message passing
-    \item Principled ACI design balancing autonomy and safety
-\end{itemize}
-
-\subsection{RQ5: Practical Implementation}
-
-\textit{What are the practical challenges and solutions for deploying MAS-based testing in real-world software development workflows?}
-
-Section~\ref{sec:industrial_deployment} and the implementation experience identified:
-\begin{itemize}
-    \item Shadow deployment strategies for gradual adoption
-    \item CI/CD integration patterns
-    \item Cost optimization through model selection and caching
-    \item Organizational change management requirements
-\end{itemize}
-
-\subsection{RQ6: LLM Selection and Configuration}
-
-\textit{How do different Large Language Model choices and configurations impact the performance of Multi-Agent testing systems?}
-
-Section~\ref{sec:llm_selection} and experimental evaluation revealed:
-\begin{itemize}
-    \item Trade-offs between capability (proprietary) and privacy (local)
-    \item Context management critical for large codebases
-    \item Prompt engineering patterns significantly impact results
-    \item Hybrid deployment balancing cost, capability, and privacy
-\end{itemize}
+\begin{table}[htbp]
+\centering
+\caption{Experimental environment configuration.}
+\label{tab:exp_environment}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Component} & \textbf{Configuration} \\
+\midrule
+Operating System & macOS (Darwin 25.2.0) \\
+Python & 3.13.1 \\
+LLM & Ollama \parencite{ollama2023} llama3.1:8b (local) \\
+Embedding Model & Ollama mxbai-embed-large (local) \\
+Letta Server & Docker container (latest) \\
+Target Application & Flask 3.x (localhost:5000) \\
+LLM Temperature & 0.7 \\
+Max Tokens & 4096 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 %----------------------------------------------------------------------------------------
 
-\section{Practical Implications}
-\label{sec:practical_implications}
+\section{Evaluation Metrics}
+\label{sec:evaluation_metrics}
 
-\subsection{For Practitioners}
+Evaluating automatically generated tests requires metrics that capture not only whether tests pass, but also whether they are meaningful, diverse, and capable of exposing real defects. The systematic literature review presented in Chapter~\ref{chap:literature_review} identified that existing studies rely on a heterogeneous set of evaluation criteria, from simple pass rates \parencite{chen2021evaluating} and code coverage \parencite{lemieux2023codamosa, pizzorno2024coverup} to mutation scores \parencite{dakhel2024mutap, alshahwan2025mutation} and human judgement of test readability \parencite{schafer2023testpilot}. No single metric suffices: a test suite with a 100\% pass rate may consist entirely of trivial assertions, while a suite with a low pass rate may be highly valuable if its failures reveal genuine bugs. Drawing on the testing foundations described by \textcite{ammann2016introduction} and on the evaluation frameworks used in the reviewed studies (SQ1 in Chapter~\ref{chap:literature_review}), this section defines three complementary groups of metrics (test quality metrics, quality scoring dimensions, and structural metrics) that together provide a multi-faceted assessment of the generated test suites.
 
-Organizations considering MAS-based testing should:
+\subsection{Test Quality Metrics}
 
-\begin{enumerate}
-    \item Begin with shadow deployments to build confidence before production adoption
-    \item Implement defense-in-depth security rather than relying on single controls
-    \item Consider hybrid LLM deployment to balance capability and privacy
-    \item Establish clear policies for human review of agent outputs
-    \item Plan for ongoing model and prompt optimization
-\end{enumerate}
+The first group of metrics captures the behavioural quality of the generated tests when executed against the target application. These metrics are designed to answer the fundamental question of whether the generated tests are both correct and useful.
 
-\subsection{For Researchers}
+\textbf{Pass Rate} measures the proportion of generated tests that pass when executed against the target application. It is computed as the number of passing tests divided by the total number of generated tests. While pass rate is the most intuitive metric, it must be interpreted with care. A high pass rate indicates that the generated tests are syntactically valid, that their assertions are consistent with the application's actual behaviour, and that any required fixtures or setup are correctly configured. However, a low pass rate is not necessarily negative: if the failures stem from the application violating reasonable expectations (for instance, returning a 409 status code where a 400 would be appropriate), the failing tests are exposing genuine deficiencies. Conversely, a 100\% pass rate may simply mean that the generated tests are too conservative, asserting only what is trivially true. In the literature, \textcite{schafer2023testpilot} and \textcite{yuan2024chattester} report pass rates as a primary metric but acknowledge this interpretive ambiguity.
 
-The identified research gaps suggest priorities:
-\begin{enumerate}
-    \item Long-term production deployment studies
-    \item Standardized benchmarks for MAS testing evaluation
-    \item Formal methods for agent security verification
-    \item Cost optimization techniques
-\end{enumerate}
+\textbf{Assertion Density} is defined as the average number of \texttt{assert} statements per test function. It is computed by counting all assertion statements across the generated test suite and dividing by the number of test functions. Higher assertion density suggests that each test performs more thorough verification rather than checking a single property and returning. In the context of API testing, a well-written test might assert the HTTP status code, the structure of the response body, the values of specific fields, and the type of the returned data, yielding an assertion density of four or more. A density close to one typically indicates shallow tests that verify only whether the endpoint responds. The studies reviewed in Chapter~\ref{chap:literature_review}, particularly those employing few-shot prompting \parencite{bareiss2022fewshot, nashid2023cedar}, found that providing examples with rich assertions encourages the LLM to produce similarly detailed tests.
 
-\subsection{For Regulators}
+\textbf{Assertion Diversity} captures the variety of assertion types used across the generated test suite. Rather than a single numeric value, this metric is assessed qualitatively by examining whether the tests employ different categories of verification: HTTP status code checks, response body field validation, collection membership and length tests, error message content verification, data type checks, and header inspection. A test suite that relies exclusively on status code assertions (e.g., \texttt{assert response.status\_code == 200}) is less valuable than one that also verifies response payloads and error messages, even if both suites have the same assertion density. Diverse assertions are more likely to catch subtle regressions and semantic errors that a single assertion type would miss.
 
-The regulatory analysis suggests:
-\begin{enumerate}
-    \item Clearer guidance on AI Act classification for development tools
-    \item Standards for demonstrating compliance in agentic systems
-    \item Frameworks for liability allocation
-\end{enumerate}
+\textbf{Bug Detection Rate} measures the proportion of generated tests whose failures are attributable to actual application deficiencies rather than to errors in the test code itself. Computing this metric requires manual classification of each failing test into one of two categories: tests that fail because the application behaves incorrectly (missing validation, wrong error codes, incomplete features, security gaps) and tests that fail because the generated test makes an incorrect assumption or has a technical defect (wrong URL, missing fixture, syntax error). This classification is inherently subjective, but it captures the most important quality dimension for automated test generation: the ability to find real bugs. A high bug detection rate indicates that the LLM is generating tests that probe meaningful application behaviours, whereas a low rate suggests that the generator is producing tests that are syntactically plausible but semantically misguided. Studies such as \textcite{kang2023libro} and \textcite{alshahwan2025mutation} similarly emphasise bug-finding capability as the ultimate measure of test quality.
 
-%----------------------------------------------------------------------------------------
+\subsection{Quality Scoring Dimensions}
 
-\section{Limitations}
-\label{sec:limitations}
+In addition to the execution-based metrics described above, the Validator Agent computes a composite quality score on a scale from 0 to 1 for each generated test. This score aggregates four dimensions that were selected to reflect different facets of test quality, drawing on the multi-criteria evaluation approaches observed in the literature \parencite{schafer2023testpilot, dakhel2024mutap}. The composite score is computed as the arithmetic mean of the four dimension scores, giving each dimension equal weight. Equal weighting was chosen as a baseline because there is no established consensus in the literature on the relative importance of these dimensions, and empirical tuning of weights would require a larger dataset than the current evaluation provides. Future iterations may adopt weighted schemes based on practitioner feedback or correlation analysis with bug-finding effectiveness.
 
-This thesis has several limitations that should be acknowledged:
+The first dimension, \textbf{Assertion Quality}, is scored on a continuous scale from 0 to 1 based on the count and diversity of assertions within the test. A test with a single status code assertion receives a low score, while a test with multiple assertions spanning different verification categories (status codes, field values, types, collection properties) receives a score approaching 1. This dimension incentivises the generator to produce thorough tests rather than minimal ones.
 
-\begin{itemize}
-    \item \textbf{Prototype scope}: The implementation covers Python testing; generalization to other languages requires additional work.
+The second dimension, \textbf{Coverage Breadth}, is scored from 0 to 1 based on the number of distinct API endpoints exercised by the test. A test that interacts with a single endpoint receives a lower score than a test that performs a create-read-update-delete sequence across multiple endpoints, as the latter verifies cross-endpoint consistency and state transitions. This dimension encourages the generation of integration-style tests that exercise the application's behaviour across operations.
 
-    \item \textbf{Benchmark limitations}: Evaluation benchmarks may not fully represent industrial complexity and diversity.
+The third dimension, \textbf{Readability}, is scored from 0 to 1 based on three sub-criteria: whether the test has a reasonable length (neither trivially short nor excessively long), whether it includes a docstring describing its intent, and whether its function name follows a descriptive naming convention (e.g., \texttt{test\_duplicate\_handling} rather than \texttt{test\_1}). Readability matters because generated tests must ultimately be reviewed, maintained, and potentially modified by human developers. A test that is correct but incomprehensible provides less long-term value than one that clearly communicates its purpose.
 
-    \item \textbf{Rapidly evolving field}: LLM capabilities and best practices continue to evolve rapidly; some findings may become outdated.
+The fourth dimension, \textbf{Execution Result}, is a binary score of either 0 or 1 reflecting whether the test passed or failed during execution. While this is the simplest of the four dimensions, it anchors the composite score to the concrete outcome of running the test. A test that scores highly on assertion quality, coverage breadth, and readability but fails to execute correctly still receives a penalty through this dimension, ensuring that the composite score does not reward tests that are well-written but non-functional.
 
-    \item \textbf{Security evaluation}: While attack simulations were conducted, real-world adversarial conditions may present additional challenges.
+\subsection{Structural Metrics}
 
-    \item \textbf{Cost estimates}: Token pricing and model availability change frequently; cost analyses should be updated for current conditions.
-\end{itemize}
+The third group of metrics characterises the structure and distribution of the generated test suite independently of execution outcomes. These metrics assess whether the generated suite provides adequate breadth of coverage and whether it targets a diverse set of testing concerns.
+
+\textbf{Test Count} records the number of test functions generated per pipeline run. This metric serves as a basic measure of the generator's productivity and is compared against the requested number of tests to assess whether the pipeline fulfils its generation target. A count significantly lower than the requested number may indicate that the LLM encountered difficulty generating tests for certain categories, while a count matching the request confirms that the generation stage completed as intended. Test count alone says nothing about quality, but it provides essential context for interpreting the other metrics, for instance, a pass rate of 44\% is more meaningful when the reader knows it applies to 9 tests rather than 2.
+
+\textbf{Endpoint Coverage} measures the proportion of known API endpoints that are targeted by at least one generated test. It is computed by identifying the set of unique endpoint paths invoked across all generated tests and dividing by the total number of endpoints exposed by the target application. An endpoint coverage of 100\% means that every API route is exercised by at least one test, whereas lower values indicate blind spots in the generated suite. This metric is particularly relevant for the Black-Box Observer pipeline (future work), where the set of known endpoints is discovered dynamically from captured traffic rather than provided upfront.
+
+\textbf{Test Category Distribution} records how the generated tests are distributed across the eight insightful test categories defined by the platform: state integrity, boundary probing, business logic, error quality, type safety, ordering and filtering, idempotency, and security probing. A well-balanced distribution indicates that the generator explores diverse testing concerns, while concentration in a single category suggests that the LLM defaults to a narrow set of patterns. This metric is assessed qualitatively by examining the category labels assigned to each generated test and comparing the distribution against the set of categories requested in the generation prompt.
 
 %----------------------------------------------------------------------------------------
 
-\section{Future Research Directions}
-\label{sec:future_work}
+\section{Results and Analysis}
+\label{sec:ch6_results}
 
-\subsection{Self-Healing Testing Pipelines}
+\subsection{Golden Examples Pipeline Results}
+\label{sec:golden_results}
 
-Future work could explore agents that automatically diagnose and repair failing tests, maintaining test suites as code evolves without human intervention.
+The Golden Examples pipeline was run with 9 requested tests against the Flask demo application. The pipeline completed all four stages (Analyse, Generate, Execute, Validate) successfully.
 
-\subsection{Explainability and Transparency}
+\subsubsection{Analyser Output}
 
-Enhanced chain-of-thought logging and explanation generation would improve trust and enable debugging of agent decisions.
+The Analyser Agent processed all three golden files and produced a style guide identifying \texttt{pytest} \parencite{pytest2024} as the testing framework and \texttt{requests} as the HTTP client. It detected 2 common imports (pytest and requests) and 3 common fixtures (\texttt{base\_url}, \texttt{created\_user}, and \texttt{sample\_user}), drawn from a total of 23 analysed test function patterns.
 
-\subsection{Multi-Modal Testing}
+\subsubsection{Generated Tests}
 
-Extending agents to handle UI testing through vision capabilities, combining code analysis with visual understanding.
+The Generator Agent produced 9 test functions targeting the following test categories:
 
-\subsection{Specialized Security Benchmarks}
+\begin{table}[htbp]
+\centering
+\caption{Generated tests from the Golden Examples pipeline.}
+\label{tab:golden_tests}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Test Name} & \textbf{Category} & \textbf{Result} \\
+\midrule
+\texttt{test\_data\_round\_trip} & State Integrity & PASSED \\
+\texttt{test\_partial\_update\_safety} & State Integrity & PASSED \\
+\texttt{test\_delete\_consistency} & State Integrity & PASSED \\
+\texttt{test\_duplicate\_handling} & Business Logic & PASSED \\
+\texttt{test\_boundary\_values} & Boundary Probing & FAILED \\
+\texttt{test\_type\_confusion} & Type Safety & FAILED \\
+\texttt{test\_ordering\_filtering} & Ordering/Filtering & FAILED \\
+\texttt{test\_error\_message\_quality} & Error Quality & FAILED \\
+\texttt{test\_idempotency} & Idempotency & FAILED \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-Development of standardized benchmarks specifically for evaluating security properties of agentic systems.
+\subsubsection{Execution Results}
 
-\subsection{Long-Term Industrial Studies}
+The pipeline achieved a pass rate of 44\% (4 passed, 5 failed out of 9 tests) with an overall quality score of 0.65 out of 1.00. Pytest execution completed in less than 1 second, while LLM generation via local Ollama inference took approximately 45 seconds.
 
-Longitudinal studies of MAS testing deployment in production environments would provide valuable evidence on real-world effectiveness and challenges.
+\subsubsection{Analysis of Failures}
 
-\subsection{Formal Verification}
+The 5 failing tests reveal genuine issues in the target application rather than errors in test logic. The \texttt{test\_boundary\_values} test expected status 400 for empty strings, but the application returned 409 because duplicate detection was triggered before input validation, and this reveals a validation ordering bug in which the uniqueness constraint is evaluated before the presence constraint. The \texttt{test\_type\_confusion} test expected status 400 when sending \texttt{\{"id": "not an integer"\}}, but the application accepted the request with status 201, revealing that the application performs no input type validation and silently accepts unexpected fields. The \texttt{test\_ordering\_filtering} test expected search and filter functionality that the application does not fully implement, exposing an incomplete feature where the search endpoint supports only basic query matching. The \texttt{test\_error\_message\_quality} test expected status 400 for non-JSON requests, but received 415 (Unsupported Media Type), revealing inconsistent error handling where Flask's built-in content type checking pre-empts the application's own validation logic. Finally, the \texttt{test\_idempotency} test encountered a duplicate email conflict on user creation due to state pollution from a previous test, revealing insufficient test isolation in the generated suite.
 
-Application of formal methods to verify security properties of agent permission systems and interaction protocols.
+Notably, 4 of the 5 failures exposed actual application deficiencies (validation ordering, missing type checks, inconsistent error codes, incomplete features), demonstrating the platform's ability to generate tests that find real bugs rather than trivial issues.
 
-\subsection{Federated Learning for Privacy}
+\subsection{Quality Assessment}
 
-Exploring federated learning approaches that improve model capabilities without centralizing sensitive code data.
+\begin{table}[htbp]
+\centering
+\caption{Quality metrics for the Golden Examples pipeline run.}
+\label{tab:quality_metrics}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+Tests generated & 9 \\
+Tests passed & 4 (44\%) \\
+Tests finding real bugs & 4 (44\%) \\
+Average assertions per test & 3.7 \\
+Endpoints covered & 5 of 7 (71\%) \\
+Average quality score & 0.65 \\
+Tests with docstrings & 9 of 9 (100\%) \\
+Tests with cleanup & 3 of 9 (33\%) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 %----------------------------------------------------------------------------------------
 
-\section{Closing Remarks}
-\label{sec:closing}
+\section{Discussion and Analysis of Results}
+\label{sec:ch6_discussion}
 
-The convergence of Large Language Models and Multi-Agent Systems opens new possibilities for automated software testing. This thesis has demonstrated that with careful architectural design, these powerful capabilities can be deployed securely and effectively. While challenges remain, the foundations laid here provide a path toward realizing the potential of autonomous testing agents while maintaining the security and privacy protections that enterprise environments require.
+This section interprets the experimental results presented above, discussing what the findings reveal about the platform's capabilities, the quality of the generated tests, and the practical implications for automated test generation. The discussion focuses exclusively on the experimental evidence gathered during the evaluation of the TestForge prototype.
 
-The journey from research prototype to production deployment requires continued collaboration between researchers advancing capabilities and practitioners addressing real-world constraints. This thesis contributes to that journey by providing both the theoretical understanding and practical guidance necessary for secure, effective MAS-based automated testing.
+\subsection{Effectiveness of the Golden Examples Approach}
+
+The results demonstrate that the golden examples approach can generate tests that go beyond trivial assertions. The 9 generated tests covered 4 of 8 insightful categories (state integrity, boundary probing, business logic, and error quality) with additional tests probing type safety, ordering/filtering, and idempotency concerns that fall outside the predefined categories. The average of 3.7 assertions per test indicates non-trivial verification depth, meaning each test performs multiple checks rather than a single status code assertion. Importantly, the generated tests found 4 real application deficiencies that were not caught by the 23 hand-written golden tests, which suggests that the LLM is capable of identifying testing angles that human developers overlooked.
+
+The few-shot prompting strategy proved effective in transferring project conventions to the generated code. The generated tests followed the same pytest and requests conventions as the golden examples, used consistent naming patterns such as \texttt{test\_<category>}, and included docstrings describing the test intent. The style guide extraction by the Analyser agent successfully captured the project's testing conventions (framework choice, HTTP client, fixture usage, assertion patterns) and transmitted them to the LLM as structured context. This confirms that AST-based pattern extraction provides a more reliable method for capturing project style than relying on the LLM's own understanding of code conventions.
+
+\subsection{Test Quality vs.\ Pass Rate}
+
+A key insight from the experiment is that pass rate alone is an insufficient quality metric for evaluating generated tests. While only 44\% of tests passed, the failing tests were arguably more valuable than the passing ones because they identified real issues in the application that the original 23 golden tests had not detected. A more appropriate metric is what can be termed the ``useful test rate'': the proportion of tests that either pass and verify correct behaviour, or fail and expose genuine deficiencies. By this metric, 8 of 9 tests (89\%) were useful, with only 1 failure attributable to test isolation issues rather than application bugs. This distinction is critical for evaluating automated test generation tools, as a generator that produces only trivially passing tests provides less value than one that occasionally fails but does so because it has uncovered real problems.
+
+\subsection{Observations on the Black-Box Observer Pipeline}
+
+The Black-Box Observer pipeline was implemented and validated at the architectural level during the prototype development, with the Observer and Mapper agents successfully capturing HTTP traffic and mapping endpoints. However, a full experimental evaluation of this pipeline, including end-to-end test generation from captured traffic and comparison with golden examples results, was not conducted in the current iteration due to time constraints. This remains a priority for the next iteration. Preliminary integration testing confirmed that the Observer agent correctly captures HTTP exchanges via proxy interception using mitmproxy, and the Mapper agent produces valid endpoint maps with inferred schemas. These preliminary results provide confidence that the foundation is solid, and a comprehensive evaluation will be conducted in the next development cycle.
+
+\subsection{Observations on the Multi-Agent Architecture}
+
+The pipeline architecture (Analyse, Generate, Execute, Validate) demonstrated several practical advantages over a monolithic approach during the experiment. The separation of concerns ensured that each agent had a focused responsibility, enabling independent development and testing throughout the prototype implementation. For instance, the Analyser agent was improved multiple times without affecting the Generator, and the Executor's pytest output parsing was debugged in isolation. The typed interfaces provided by Pydantic data models between agents (TestStyleGuide, TestResult, ValidationResult) established clear contracts and caught integration errors early during development, preventing the kind of cascading failures that occur when agents communicate through unstructured text.
+
+The pipeline design also proved its extensibility during the development process: adding the Observer pipeline required only implementing two new agents (Observer and Mapper) and a new orchestration path, without modifying the existing Generator, Executor, or Validator agents. Each stage produces inspectable intermediate artifacts (the style guide, the generated code, the pytest output, the validation scores) which proved invaluable for debugging when tests failed or produced unexpected results. The hierarchical coordination model, in which the orchestration engine sequences agent execution in a deterministic pipeline, proved appropriate for this domain, avoiding the complexity of fully autonomous agent collaboration while maintaining the benefits of specialisation.
+
+\subsection{Observations on Persistent Agent Memory}
+
+The Letta-based persistent memory integration was implemented and tested at the infrastructure level during prototype development, including Docker deployment, agent creation, and core, archival, and recall memory operations. The ContextStore component successfully tracks discovered endpoints, coverage status, and run history across invocations. However, the multi-session longitudinal evaluation, measuring whether test quality improves when targeting the same application across multiple sessions, was not completed in the current iteration due to time constraints. The infrastructure is fully operational and ready for this evaluation in the next iteration, which will provide empirical evidence on whether progressive learning through persistent memory leads to measurably better test suites over time.
+
+\subsection{Observations on Local LLM Execution}
+
+The use of a local 8B-parameter model (llama3.1:8b) \parencite{touvron2023llama} during the experiment demonstrated that effective test generation is feasible without cloud-based APIs. In terms of quality, the local model produced well-structured, syntactically correct test code with meaningful assertions, and all 9 generated tests were valid Python that pytest could collect and execute. Generation latency was approximately 45 seconds for 9 tests, compared to the 5 to 10 seconds typically reported for cloud-based GPT-4 inference, a trade-off that remains acceptable for batch generation scenarios where tests are generated periodically rather than interactively. From a privacy perspective, no application code or test data left the local machine during the entire experiment, directly addressing the data leakage concerns that are prevalent in enterprise environments handling sensitive codebases. The cost advantage is also significant: local inference incurs zero marginal cost per generation beyond hardware amortisation, compared to approximately \$0.05 to \$0.20 per generation with cloud APIs, making repeated generation runs economically viable during development.
+
+\subsection{Limitations of the Current Evaluation}
+
+The experimental evaluation has several limitations that should be acknowledged. First, the results are derived from a single Flask CRUD API; generalisation to other application types, frameworks, and complexity levels requires further evaluation across diverse targets. Second, only the llama3.1:8b model was evaluated, and larger models or cloud APIs may produce significantly higher-quality tests with richer assertions and fewer false assumptions. Third, LLM output is inherently non-deterministic, meaning the results represent a single run and statistical analysis across multiple runs with different random seeds would provide more robust conclusions. Finally, no direct baseline comparison with existing test generation tools such as Pynguin \parencite{lukasczyk2023pynguin} or EvoSuite \parencite{fraser2011evosuite}, nor with human-written tests for the same application, was performed in this iteration. These comparisons are planned for the next development cycle to provide a more rigorous assessment of the platform's relative effectiveness.
+
+\subsection{Summary of Findings}
+
+The experimental evaluation yielded five key findings. First, the Golden Examples pipeline successfully generated insightful tests that found real application bugs, with 4 out of 9 tests exposing genuine deficiencies not detected by the original 23 golden tests. Second, AST-based pattern extraction combined with few-shot prompting effectively transferred project conventions to the generated tests, producing code that followed the same style, naming, and assertion patterns as the reference tests. Third, local LLM execution using an 8B-parameter model produces adequate quality for API test generation, demonstrating that cloud-based inference is not a prerequisite for meaningful automated testing. Fourth, the results demonstrate that test quality should be measured by bug-finding capability rather than pass rate alone, as 89\% of generated tests proved useful despite a 44\% pass rate. Fifth, the multi-agent pipeline (Analyse, Generate, Execute, Validate) provides a structured and extensible framework for test generation that separates concerns effectively and produces inspectable intermediate results at each stage.

@@ -1,0 +1,21 @@
+services:
+  testforge-api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.sandbox
+    ports:
+      - "8000:8000"
+    environment:
+      - TESTFORGE_LLM_API_KEY=${TESTFORGE_LLM_API_KEY}
+      - TESTFORGE_LLM_MODEL=${TESTFORGE_LLM_MODEL:-gpt-4o}
+    command: ["python", "-m", "uvicorn", "testforge.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  testforge-ui:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.sandbox
+    ports:
+      - "8501:8501"
+    environment:
+      - TESTFORGE_LLM_API_KEY=${TESTFORGE_LLM_API_KEY}
+    command: ["python", "-m", "streamlit", "run", "src/testforge/ui/streamlit_app.py", "--server.port", "8501"]

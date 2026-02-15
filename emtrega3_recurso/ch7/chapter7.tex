@@ -1,0 +1,91 @@
+% Chapter 7 - Data Protection, Security and Ethics
+
+\chapter{Data Protection, Security and Ethics}
+\label{chap:data_protection}
+
+This chapter discusses the privacy, security, and ethical considerations relevant to deploying an LLM-based test generation platform. While the primary contribution of this thesis is the test generation methodology, responsible deployment requires careful attention to these concerns, particularly when the platform processes application code and generates executable test scripts.
+
+%----------------------------------------------------------------------------------------
+
+\section{Current State of the Literature}
+\label{sec:dp_literature}
+
+The systematic literature review presented in Chapter~\ref{chap:literature_review} identified five categories of security and privacy risks associated with LLM-based multi-agent systems in software testing:
+
+These risks include data leakage, where agents may transmit proprietary source code, PII embedded in test fixtures, or configuration credentials to external LLM providers. Adversarial manipulation through prompt injection attacks via code comments or strings may alter agent behaviour. Unsafe code generation can occur when generated test code introduces vulnerabilities or executes dangerous operations. Grounding failures arise when LLMs hallucinate non-existent APIs, reference outdated library versions, or produce context-inconsistent code. Finally, ACI vulnerabilities in the Agent-Computer Interface through which agents interact with the environment represent an attack surface requiring permission controls and audit trails.
+
+The literature proposes three categories of mitigation: model-centric (local deployment, fine-tuning), pipeline-centric (sandboxing, PII scrubbing, context minimisation), and algorithmic (mutation testing, output validation). TestForge incorporates elements from all three categories.
+
+%----------------------------------------------------------------------------------------
+
+\section{Privacy-by-Design in Test Generation}
+\label{sec:privacy_by_design}
+
+\subsection{Local Execution as Primary Mitigation}
+
+The most effective privacy protection in TestForge is architectural: the entire platform (LLM inference, agent orchestration, and test execution) runs locally. By using Ollama \parencite{ollama2023} for LLM inference and Letta (formerly MemGPT) \parencite{packer2023memgpt} (Docker) for agent memory, no application code, test data, or generated content leaves the user's machine.
+
+This design directly addresses the data leakage concern identified in the literature. Unlike cloud-based approaches where code is transmitted to external servers, the local execution model ensures that proprietary source code remains on the local machine, that golden test examples, which may contain domain-specific business logic, are not shared externally, that HTTP traffic captures containing authentication tokens or personal data are processed locally, and that generated tests referencing application internals are stored locally.
+
+\subsection{Data Minimisation}
+
+The platform follows privacy-by-design principles \parencite{cavoukian2011privacy} and the principle of data minimisation at multiple levels. At the AST level, the Analyser Agent extracts only the structural patterns needed for the style guide (imports, fixture names, assertion types, and naming conventions) rather than sending entire test files to the LLM. The Observer Agent applies header filtering, stripping irrelevant HTTP headers (e.g., \texttt{Connection}, \texttt{Accept-Encoding}) from captured traffic before further processing. The Generator Agent practises context windowing by including only the most relevant golden examples in the LLM prompt rather than the entire test corpus.
+
+\subsection{Pseudonymisation and Identity Management}
+
+The auto-generated \texttt{conftest.py} uses dynamic email addresses (\texttt{f"test\_\{id(object())\}@example.com"}) rather than realistic personal data, reducing the risk of PII appearing in test execution.
+
+%----------------------------------------------------------------------------------------
+
+\section{Security and System Integrity}
+\label{sec:security_integrity}
+
+\subsection{Execution Isolation}
+
+Generated tests are executed in a subprocess with controlled environment variables. The Executor Agent writes tests to a temporary directory with limited scope, sets explicit environment variables (\texttt{BASE\_URL}, \texttt{TESTFORGE\_RUN}), and enforces execution timeouts (default: 60 seconds). Standard output and standard error are captured without granting the test process access to the parent process's state.
+
+Future work includes Docker-based sandboxing for stronger isolation (see Chapter~\ref{chap:conclusions}).
+
+\subsection{Prompt Injection Resilience}
+
+The platform's susceptibility to prompt injection attacks \parencite{greshake2023not} is limited by design. Golden examples are parsed via AST (Tree-sitter) rather than interpreted as LLM instructions, meaning that malicious comments in golden files are extracted as docstrings and not as prompt directives. Similarly, HTTP exchanges captured by the Observer are treated as structured data rather than as text to be interpreted by the LLM. The Generator Agent's system prompt includes explicit instructions about its role, constraining the LLM's behaviour even if user-supplied content contains injection attempts.
+
+%----------------------------------------------------------------------------------------
+
+\section{Ethical Considerations}
+\label{sec:ethical_considerations}
+
+\subsection{Transparency}
+
+The platform provides full transparency into the generation process. The raw LLM response is preserved and available for inspection, and the Validator Agent provides per-test quality scores with explicit dimension breakdowns. Execution results include complete pytest output (both stdout and stderr), and the Letta agent's conversation history is accessible, showing the reasoning behind generation decisions.
+
+\subsection{Human Oversight}
+
+TestForge is designed as a tool to assist developers, not to replace human judgement. Generated tests are presented for review before being added to a project's test suite, and the Validator Agent flags potential issues, such as missing assertions or suspicious patterns, for human attention. The conversational Letta interface further allows developers to guide, refine, and iterate on generated tests.
+
+\subsection{AI Tool Disclosure}
+
+This dissertation was produced with the assistance of AI tools (Claude, Ollama/llama3.1). AI was used for code generation, text drafting, and research exploration. All AI-generated content was reviewed, validated, and edited by the author. The Statement of Integrity at the front of this document provides full disclosure.
+
+%----------------------------------------------------------------------------------------
+
+\section{Regulatory Compliance}
+\label{sec:regulatory_compliance}
+
+\subsection{General Data Protection Regulation (GDPR)}
+
+The GDPR \parencite{gdpr2016} establishes comprehensive requirements for the processing of personal data within the European Union. TestForge's architecture aligns with key GDPR principles:
+
+\begin{description}
+    \item[Data minimisation (Art. 5(1)(c))] The platform processes only the data necessary for test generation, structural patterns from golden examples and endpoint schemas from traffic captures, rather than entire codebases.
+
+    \item[Purpose limitation (Art. 5(1)(b))] Captured data is used exclusively for test generation and is not repurposed for model training, analytics, or other secondary uses.
+
+    \item[Storage limitation (Art. 5(1)(e))] The \texttt{AppContext} stores only aggregated metadata (endpoint names, coverage percentages, run timestamps), not raw code or traffic data.
+
+    \item[Data protection by design (Art. 25)] Local execution eliminates cross-border data transfers, addressing one of GDPR's most operationally challenging requirements.
+\end{description}
+
+\subsection{EU AI Act}
+
+The EU AI Act \parencite{euaiact2024} (2024) classifies AI systems by risk level. An automated test generation tool is unlikely to fall into the ``high-risk'' category, as it does not directly affect fundamental rights, safety, or critical infrastructure. However, the platform's design nonetheless aligns with the Act's transparency requirements by providing full auditability of generated content and human oversight of the generation process.

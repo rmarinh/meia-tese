@@ -1,1543 +1,318 @@
-% Chapter 4 - Implementation
+% Chapter 4 - Methods and Tools
 
-\chapter{Implementation}
-\label{chap:implementation}
+\chapter{Methods and Tools}
+\label{chap:methods_tools}
 
-This chapter details the prototype implementation of the secure multi-agent testing architecture proposed in Chapter~\ref{chap:architecture}. The implementation serves as a proof-of-concept demonstrating the feasibility of the proposed design while providing a foundation for the experimental evaluation presented in Chapter~\ref{chap:evaluation}. The chapter covers technology stack selection, core component implementation, security controls, workflow design, and integration with development environments.
+This chapter presents the system architecture of TestForge, describing the dual-pipeline design, the multi-agent architecture, the LLM integration strategy, and the persistent memory mechanism. It also describes the development stack and deployment environment.
 
 %----------------------------------------------------------------------------------------
 
-\section{Technology Stack}
-\label{sec:tech_stack}
+\section{System Overview and Architecture}
+\label{sec:system_overview}
 
-The technology stack was selected to balance implementation efficiency, ecosystem maturity, and alignment with the architectural requirements defined in Section~\ref{sec:requirements}.
+TestForge is organised around two complementary pipelines that can operate independently or in combination. The Golden Examples Pipeline analyses existing test files to learn patterns, then generates new tests in the same style while targeting untested scenarios. The Black-Box Observer Pipeline captures HTTP traffic from a running application, maps the API surface, and generates tests based on observed behaviour.
 
-\subsection{Programming Language}
+Both pipelines share a common downstream path through the Generator, Executor, and Validator agents. The architecture follows a pipeline pattern where data flows sequentially through specialised processing stages, with each stage implemented as an autonomous agent.
 
-Python 3.11+ serves as the primary implementation language, selected for several reasons:
+Figure~\ref{fig:architecture_overview} illustrates the high-level architecture.
 
-\begin{itemize}
-    \item \textbf{LLM Ecosystem}: Python dominates the LLM tooling ecosystem, with first-class support from major providers (OpenAI, Anthropic, Hugging Face) and comprehensive libraries (LangChain, LlamaIndex).
+\begin{figure}[htbp]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tikzpicture}[
+        node distance=0.8cm and 1.4cm,
+        box/.style={rectangle, draw, rounded corners, minimum width=2.2cm, minimum height=0.7cm, text centered, font=\footnotesize},
+        arrow/.style={->, thick, >=stealth},
+    ]
+        % Golden pipeline (top row)
+        \node[box, fill=blue!10] (golden) {Golden Examples};
+        \node[box, fill=blue!20, right=of golden] (analyzer) {Analyser Agent};
 
-    \item \textbf{Asynchronous Support}: Python's \texttt{asyncio} library enables efficient handling of concurrent LLM API calls and agent interactions, critical for system performance.
+        % Observer pipeline (second row)
+        \node[box, fill=green!10, below=of golden] (traffic) {HTTP Traffic};
+        \node[box, fill=green!20, right=of traffic] (observer) {Observer Agent};
+        \node[box, fill=green!20, right=of observer] (mapper) {Mapper Agent};
 
-    \item \textbf{Testing Ecosystem}: Python's testing tools (pytest, coverage.py, mutmut) are mature and widely adopted, simplifying integration.
+        % Shared pipeline (third row, centred)
+        \node[box, fill=orange!20, below=1.2cm of mapper] (generator) {Generator Agent};
+        \node[box, fill=red!15, right=of generator] (executor) {Executor Agent};
+        \node[box, fill=purple!15, right=of executor] (validator) {Validator Agent};
+        \node[box, fill=gray!15, right=of validator] (results) {Results};
 
-    \item \textbf{Type Safety}: Type hints with \texttt{mypy} static checking improve code quality and enable better IDE support for the complex agent interactions.
-\end{itemize}
+        % Arrows
+        \draw[arrow] (golden) -- (analyzer);
+        \draw[arrow] (analyzer.south) -- ++(0,-0.4) -| (generator.north);
+        \draw[arrow] (traffic) -- (observer);
+        \draw[arrow] (observer) -- (mapper);
+        \draw[arrow] (mapper) -- (generator);
 
-\subsection{Project Structure}
+        \draw[arrow] (generator) -- (executor);
+        \draw[arrow] (executor) -- (validator);
+        \draw[arrow] (validator) -- (results);
+    \end{tikzpicture}}
+    \caption{High-level architecture of TestForge showing the dual-pipeline design.}
+    \label{fig:architecture_overview}
+\end{figure}
 
-The implementation follows a modular structure organized by architectural layer:
+%----------------------------------------------------------------------------------------
 
-\begin{verbatim}
-mas-testing/
-+-- src/
-|   +-- agents/           # Agent implementations
-|   |   +-- base.py       # Base agent class
-|   |   +-- planning.py   # Planning agent
-|   |   +-- analysis.py   # Code analysis agent
-|   |   +-- generation.py # Test generation agent
-|   |   +-- execution.py  # Execution agent
-|   |   +-- validation.py # Validation agent
-|   |   +-- security.py   # Security agent
-|   +-- orchestration/    # Workflow orchestration
-|   |   +-- engine.py     # Workflow engine
-|   |   +-- scheduler.py  # Task scheduler
-|   |   +-- state.py      # State management
-|   +-- llm/              # LLM integration
-|   |   +-- gateway.py    # LLM gateway
-|   |   +-- providers/    # Provider implementations
-|   |   +-- prompts/      # Prompt templates
-|   +-- security/         # Security controls
-|   |   +-- sandbox.py    # Sandbox management
-|   |   +-- scrubber.py   # PII scrubbing
-|   |   +-- permissions.py# Permission enforcement
-|   |   +-- audit.py      # Audit logging
-|   +-- integration/      # External integrations
-|   |   +-- git.py        # Git repository connector
-|   |   +-- ci.py         # CI/CD integration
-|   |   +-- cli.py        # Command-line interface
-|   +-- utils/            # Shared utilities
-+-- config/               # Configuration files
-+-- docker/               # Docker configurations
-+-- tests/                # Test suite
-+-- docs/                 # Documentation
-\end{verbatim}
+\section{Multi-Agent Architecture}
+\label{sec:multi_agent_architecture}
 
-\subsection{Dependencies}
+The platform employs six specialised agents, each implemented as a subclass of a common \texttt{BaseAgent} abstract class with typed input and output models (Pydantic v2) \parencite{pydantic2017}. This design ensures clear contracts between agents and enables independent testing of each component.
 
-Table~\ref{tab:dependencies} lists the primary dependencies and their purposes.
+\subsection{Agent Roles and Responsibilities}
 
-\begin{table}[ht]
-\caption{Primary implementation dependencies}
-\label{tab:dependencies}
+\begin{description}
+    \item[Observer Agent] Captures HTTP traffic from running applications via three modes: pre-captured exchange data, HAR file import, or live mitmproxy interception. Outputs normalised \texttt{HTTPExchange} records.
+
+    \item[Mapper Agent] Transforms captured HTTP exchanges into a structured \texttt{EndpointMap}. Performs path normalisation, schema inference, authentication pattern detection, and dependency chain identification.
+
+    \item[Analyser Agent] Parses golden test files using Tree-sitter \parencite{treesitter} AST analysis. Extracts imports, fixtures, test functions, assertions, and helper functions. Aggregates patterns into a \texttt{TestStyleGuide}.
+
+    \item[Generator Agent] Produces new test code using LLM few-shot prompting \parencite{brown2020language}. Accepts a style guide (from the Analyser), an endpoint map (from the Mapper), or both. Constructs a detailed system prompt instructing the LLM to generate insightful tests across eight categories, and includes golden examples as few-shot context.
+
+    \item[Executor Agent] Writes generated tests to disk alongside an auto-generated \texttt{conftest.py} with common fixtures (\texttt{base\_url}, \texttt{created\_user}, \texttt{sample\_user}). Runs pytest as a subprocess and parses the output to collect per-test pass/fail results.
+
+    \item[Validator Agent] Assesses the quality of generated tests along four dimensions: assertion count and type distribution, coverage breadth (number of distinct endpoints targeted), readability (test length, docstring presence), and execution results (pass rate). Produces a \texttt{ValidationResult} with per-test quality scores and an overall summary.
+\end{description}
+
+\subsection{Agent Communication}
+\label{sec:agent_communication}
+
+Agents communicate through typed data models rather than free-text messages. Each agent defines an \texttt{Input} and \texttt{Output} model (Pydantic \texttt{BaseModel}), and the orchestration layer is responsible for routing outputs to inputs. This approach provides type safety, as invalid data is rejected at agent boundaries, and testability, since each agent can be tested in isolation with mock inputs. It also supports extensibility, allowing new agents to be added simply by defining their input/output contracts, and ensures transparency, as the data flowing between agents is fully inspectable and serialisable.
+
+\subsection{Base Agent Design}
+\label{sec:base_agent}
+
+All agents inherit from \texttt{BaseAgent[InputT, OutputT]}, a generic abstract class that provides a unique agent name and dedicated logger, an abstract \texttt{run(input\_data: InputT) -> OutputT} method that each agent implements, and an \texttt{execute()} wrapper that handles validation, error catching, and result packaging into an \texttt{AgentResult} with success/error/warning status.
+
+%----------------------------------------------------------------------------------------
+
+\section{Golden Examples Pipeline Design}
+\label{sec:golden_pipeline}
+
+The Golden Examples pipeline follows a four-stage sequence. In the first stage, the Analyser Agent parses golden test files and produces a \texttt{TestStyleGuide}. The Generator Agent then receives the style guide and golden examples as few-shot context and produces new test code via LLM completion. Optionally, the Executor Agent writes the tests to disk, generates a \texttt{conftest.py}, and runs pytest against the target application. Finally, the Validator Agent scores the generated tests based on assertion quality, coverage, readability, and execution results.
+
+Figure~\ref{fig:golden_pipeline} illustrates the data flow through the Golden Examples pipeline.
+
+\begin{figure}[htbp]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tikzpicture}[
+        node distance=0.15cm and 0.35cm,
+        agent/.style={rectangle, draw, rounded corners=3pt, minimum width=1.6cm, minimum height=0.65cm, text centered, font=\footnotesize\bfseries},
+        artifact/.style={rectangle, draw, rounded corners=6pt, minimum width=1.2cm, minimum height=0.45cm, text centered, font=\scriptsize, fill=white},
+        arrow/.style={->, thick, >=stealth},
+    ]
+        % Input artifact
+        \node[artifact, fill=blue!8] (input) {Golden Test Files};
+
+        % Analyser Agent
+        \node[agent, fill=blue!25, right=0.6cm of input] (analyser) {Analyser};
+
+        % Style guide artifact
+        \node[artifact, fill=blue!8, right=0.6cm of analyser] (styleguide) {TestStyleGuide};
+
+        % Generator Agent
+        \node[agent, fill=orange!25, right=0.6cm of styleguide] (generator) {Generator};
+
+        % Test code artifact
+        \node[artifact, fill=orange!8, right=0.6cm of generator] (testcode) {Test Code};
+
+        % Executor Agent
+        \node[agent, fill=red!20, right=0.6cm of testcode] (executor) {Executor};
+
+        % Test result artifact
+        \node[artifact, fill=red!8, right=0.6cm of executor] (testresult) {TestResult};
+
+        % Validator Agent
+        \node[agent, fill=purple!20, right=0.6cm of testresult] (validator) {Validator};
+
+        % Validation result artifact
+        \node[artifact, fill=purple!8, right=0.6cm of validator] (valresult) {\makecell{Validation\\[-1pt]Result}};
+
+        % Arrows
+        \draw[arrow] (input) -- (analyser);
+        \draw[arrow] (analyser) -- (styleguide);
+        \draw[arrow] (styleguide) -- (generator);
+        \draw[arrow] (generator) -- (testcode);
+        \draw[arrow] (testcode) -- (executor);
+        \draw[arrow] (executor) -- (testresult);
+        \draw[arrow] (testresult) -- (validator);
+        \draw[arrow] (validator) -- (valresult);
+    \end{tikzpicture}}
+    \caption{Data flow through the Golden Examples pipeline. Blue-tinted nodes represent stages specific to this pipeline; orange, red, and purple nodes represent shared stages.}
+    \label{fig:golden_pipeline}
+\end{figure}
+
+\subsection{Few-Shot Prompting Strategy}
+\label{sec:few_shot_prompting}
+
+The Generator Agent constructs a multi-part LLM prompt. The system prompt defines the agent's role as a ``senior QA engineer and security tester'' and lists eight categories of insightful tests to generate: state integrity, boundary probing, business logic, error quality, concurrency hints, authorisation boundaries, data leakage, and regression traps. The style context includes the \texttt{TestStyleGuide} summary, covering framework, HTTP client, naming conventions, common imports and fixtures, so that generated tests match existing project conventions. The prompt also includes the full source code of golden test files as few-shot examples, enabling the LLM to replicate the style and assertion patterns. When available, application context from the \texttt{AppContext} provides information about previously tested endpoints, untested endpoints, and coverage gaps to direct generation toward new areas. Finally, the generation instruction specifies the target number of tests and any endpoint-specific requirements.
+
+%----------------------------------------------------------------------------------------
+
+\section{Black-Box Observer Pipeline Design}
+\label{sec:observer_pipeline}
+
+The Observer pipeline follows a five-stage sequence. The Observer Agent first collects HTTP exchanges from the configured data source. The Mapper Agent then transforms these exchanges into an \texttt{EndpointMap} with normalised paths, inferred schemas, and detected dependencies. The Generator Agent receives the endpoint map (and optionally a style guide if golden examples are also available) and produces test code. The Execute and Validate stages follow the same process as the Golden Examples pipeline.
+
+When no golden examples are available, the Generator Agent constructs a minimal style guide (pytest + requests) from defaults, ensuring that tests are always generated with proper framework conventions.
+
+Figure~\ref{fig:observer_pipeline} illustrates the data flow through the Observer pipeline.
+
+\begin{figure}[htbp]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tikzpicture}[
+        node distance=0.15cm and 0.3cm,
+        agent/.style={rectangle, draw, rounded corners=3pt, minimum width=1.4cm, minimum height=0.65cm, text centered, font=\footnotesize\bfseries},
+        artifact/.style={rectangle, draw, rounded corners=6pt, minimum width=1.1cm, minimum height=0.45cm, text centered, font=\scriptsize, fill=white},
+        arrow/.style={->, thick, >=stealth},
+    ]
+        % Input artifact
+        \node[artifact, fill=green!8] (input) {HTTP Traffic};
+
+        % Observer Agent
+        \node[agent, fill=green!25, right=0.5cm of input] (observer) {Observer};
+
+        % HTTPExchange artifact
+        \node[artifact, fill=green!8, right=0.5cm of observer] (exchanges) {\makecell{HTTP\\[-1pt]Exchange[]}};
+
+        % Mapper Agent
+        \node[agent, fill=green!25, right=0.5cm of exchanges] (mapper) {Mapper};
+
+        % EndpointMap artifact
+        \node[artifact, fill=green!8, right=0.5cm of mapper] (endpointmap) {EndpointMap};
+
+        % Generator Agent
+        \node[agent, fill=orange!25, right=0.5cm of endpointmap] (generator) {Generator};
+
+        % Test code artifact
+        \node[artifact, fill=orange!8, right=0.5cm of generator] (testcode) {Test Code};
+
+        % Executor Agent
+        \node[agent, fill=red!20, right=0.5cm of testcode] (executor) {Executor};
+
+        % Test result artifact
+        \node[artifact, fill=red!8, right=0.5cm of executor] (testresult) {TestResult};
+
+        % Validator Agent
+        \node[agent, fill=purple!20, right=0.5cm of testresult] (validator) {Validator};
+
+        % Validation result artifact
+        \node[artifact, fill=purple!8, right=0.5cm of validator] (valresult) {\makecell{Validation\\[-1pt]Result}};
+
+        % Arrows
+        \draw[arrow] (input) -- (observer);
+        \draw[arrow] (observer) -- (exchanges);
+        \draw[arrow] (exchanges) -- (mapper);
+        \draw[arrow] (mapper) -- (endpointmap);
+        \draw[arrow] (endpointmap) -- (generator);
+        \draw[arrow] (generator) -- (testcode);
+        \draw[arrow] (testcode) -- (executor);
+        \draw[arrow] (executor) -- (testresult);
+        \draw[arrow] (testresult) -- (validator);
+        \draw[arrow] (validator) -- (valresult);
+    \end{tikzpicture}}
+    \caption{Data flow through the Black-Box Observer pipeline. Green-tinted nodes represent stages specific to this pipeline; orange, red, and purple nodes represent shared stages.}
+    \label{fig:observer_pipeline}
+\end{figure}
+
+%----------------------------------------------------------------------------------------
+
+\section{Persistent Memory via Letta}
+\label{sec:letta_integration}
+
+A key differentiator of TestForge is its integration with Letta (formerly MemGPT) \parencite{packer2023memgpt}, an agent framework that provides persistent memory across sessions. This enables the platform to progressively learn about target applications rather than treating each generation run as independent.
+
+\subsection{Memory Architecture}
+
+The Letta agent maintains three types of memory:
+
+\begin{description}
+    \item[Core Memory] Editable memory blocks that the agent can update during conversation. TestForge uses three blocks:
+    \begin{itemize}
+        \item \textbf{Persona}: The agent's identity and capabilities.
+        \item \textbf{Human}: Information about the user and their preferences.
+        \item \textbf{App Context}: Discovered information about the target application (endpoints, coverage, patterns).
+    \end{itemize}
+
+    \item[Archival Memory] Long-term storage for knowledge that may be relevant across many sessions. Seeded with testing best practices and pattern knowledge.
+
+    \item[Recall Memory] Conversation history, enabling the agent to reference previous interactions.
+\end{description}
+
+\subsection{Custom Tools}
+
+The Letta agent is equipped with seven custom tools that bridge conversational interaction with the TestForge pipelines:
+
+\begin{enumerate}
+    \item \texttt{analyze\_golden\_tests}: Invokes the AST analyser on specified test files.
+    \item \texttt{generate\_tests\_from\_golden}: Runs the full Golden Examples pipeline.
+    \item \texttt{generate\_tests\_from\_endpoints}: Runs the Observer pipeline from endpoint definitions.
+    \item \texttt{run\_tests}: Executes a test file with pytest and returns results.
+    \item \texttt{save\_test\_file}: Writes generated test code to a specified path.
+    \item \texttt{list\_files}: Lists files matching a glob pattern in a directory.
+    \item \texttt{read\_file}: Reads the contents of a file.
+\end{enumerate}
+
+This design allows users to interact with TestForge conversationally, describing their application, providing golden examples, requesting test generation, and reviewing results, while the agent maintains context across the entire session and beyond.
+
+\subsection{Local Execution}
+
+Both the Letta server and the LLM inference run locally. Letta is deployed via Docker with bundled PostgreSQL for memory persistence, while the LLM runs through Ollama using \texttt{llama3.1:8b} for text generation and \texttt{mxbai-embed-large} for embeddings. This ensures that no application code or test data leaves the local environment, addressing the privacy concerns discussed in Chapter~\ref{chap:data_protection}.
+
+%----------------------------------------------------------------------------------------
+
+\section{Orchestration Engine}
+\label{sec:orchestration}
+
+The orchestration layer provides a unified interface for invoking either pipeline or a combined mode:
+
+\begin{description}
+    \item[Golden mode] Accepts golden test file paths (or source code strings) and runs the Analyser $\rightarrow$ Generator $\rightarrow$ Executor $\rightarrow$ Validator sequence.
+
+    \item[Observer mode] Accepts captured HTTP exchanges (or a HAR file path) and runs the Observer $\rightarrow$ Mapper $\rightarrow$ Generator $\rightarrow$ Executor $\rightarrow$ Validator sequence.
+
+    \item[Combined mode] Uses golden examples for the style guide and observer data for the endpoint map, then runs the shared Generator $\rightarrow$ Executor $\rightarrow$ Validator sequence. This mode produces tests that follow the project's conventions (from golden examples) while covering the full API surface (from observer data).
+\end{description}
+
+The orchestration engine is exposed through three interfaces: a FastAPI REST API with endpoints such as \texttt{/api/pipeline/run}, \texttt{/api/golden/upload}, and \texttt{/api/observer/import-har}; a CLI offering commands like \texttt{testforge generate} and \texttt{testforge chat}; and a Streamlit web interface with tabs for each mode.
+
+%----------------------------------------------------------------------------------------
+
+\section{Development Stack and Deployment Environment}
+\label{sec:dev_stack}
+
+Table~\ref{tab:tech_stack} summarises the technology stack.
+
+\begin{table}[htbp]
 \centering
-\small
-\begin{tabular}{l l l}
+\caption{Technology stack of the TestForge platform.}
+\label{tab:tech_stack}
+\begin{tabular}{@{}lll@{}}
 \toprule
-\tabhead{Package} & \tabhead{Version} & \tabhead{Purpose} \\
+\textbf{Component} & \textbf{Technology} & \textbf{Rationale} \\
 \midrule
-langchain & 0.1.x & LLM abstraction and chains \\
-openai & 1.x & OpenAI API client \\
-anthropic & 0.x & Anthropic API client \\
-ollama & 0.1.x & Local model integration \\
-docker & 7.x & Container management \\
-pytest & 8.x & Test execution framework \\
-coverage & 7.x & Coverage measurement \\
-mutmut & 2.x & Mutation testing \\
-pydantic & 2.x & Data validation and settings \\
-structlog & 24.x & Structured logging \\
-aiohttp & 3.x & Async HTTP client \\
-gitpython & 3.x & Git repository operations \\
-tree-sitter & 0.21.x & Code parsing \\
-presidio-analyzer & 2.x & PII detection \\
+Language & Python 3.11+ & LLM ecosystem, async support, testing tools \\
+Backend API & FastAPI & Async, typed, auto-generated OpenAPI docs \\
+Web UI & Streamlit & Rapid prototyping for data-oriented interfaces \\
+HTTP Proxy & mitmproxy & Mature, scriptable, handles TLS \\
+Code Parsing & Tree-sitter & Multi-language AST, handles partial code \\
+LLM Gateway & LiteLLM & Unified API for OpenAI/Anthropic/Ollama \\
+Agent Memory & Letta (Docker) & Persistent memory with archival/recall \\
+Local LLM & Ollama & Local inference for privacy \\
+Data Models & Pydantic v2 & Runtime validation, serialisation \\
+Test Runner & pytest & Industry standard, rich plugin ecosystem \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{LLM Provider Integration}
+The backend uses FastAPI \parencite{fastapi2018} for its async capabilities and automatic OpenAPI documentation generation, while Streamlit \parencite{streamlit2019} provides rapid prototyping for the web interface.
 
-The implementation supports multiple LLM providers through a unified interface:
+\subsection{LLM Configuration}
+\label{sec:llm_config}
 
-\subsubsection{OpenAI Integration}
-
-OpenAI's GPT-4 and GPT-3.5 models provide high-capability cloud-based inference. The implementation uses the official Python client with support for:
-\begin{itemize}
-    \item Chat completions with function calling
-    \item Structured JSON output mode
-    \item Streaming responses for long generations
-    \item Automatic retry with exponential backoff
-\end{itemize}
-
-\subsubsection{Anthropic Integration}
-
-Claude models offer an alternative cloud provider with strong code understanding capabilities. Integration supports:
-\begin{itemize}
-    \item Messages API with tool use
-    \item Extended context windows (up to 200K tokens)
-    \item XML-structured prompting patterns
-\end{itemize}
-
-\subsubsection{Local Model Integration}
-
-Ollama enables local deployment of open-weight models for privacy-sensitive operations:
-\begin{itemize}
-    \item Code Llama (7B, 13B, 34B variants)
-    \item Mistral and Mixtral models
-    \item DeepSeek Coder
-    \item Custom fine-tuned models
-\end{itemize}
-
-\subsection{Containerization}
-
-Docker provides isolated execution environments with the following base configuration:
-
-\begin{verbatim}
-# Base sandbox image
-FROM python:3.11-slim
-
-# Security hardening
-RUN useradd -m -s /bin/bash sandbox && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-        git && \
-    rm -rf /var/lib/apt/lists/*
-
-# Non-root execution
-USER sandbox
-WORKDIR /workspace
-
-# Resource limits applied at runtime
-# CPU: 2 cores, Memory: 2GB, Time: 300s
-\end{verbatim}
-
-%----------------------------------------------------------------------------------------
-
-\section{Core Components Implementation}
-\label{sec:core_implementation}
-
-\subsection{Agent Base Class}
-
-All agents inherit from a common base class that provides shared functionality:
-
-\begin{verbatim}
-from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
-from pydantic import BaseModel
-import structlog
-
-class AgentConfig(BaseModel):
-    """Configuration for agent instances."""
-    agent_id: str
-    role: str
-    llm_provider: str = "openai"
-    model: str = "gpt-4-turbo"
-    temperature: float = 0.2
-    max_tokens: int = 4096
-    tools: List[str] = []
-    permissions: Dict[str, Any] = {}
-
-class AgentMessage(BaseModel):
-    """Message exchanged between agents."""
-    sender: str
-    recipient: str
-    message_type: str
-    content: Dict[str, Any]
-    metadata: Dict[str, Any] = {}
-
-class BaseAgent(ABC):
-    """Base class for all agents in the system."""
-
-    def __init__(self, config: AgentConfig,
-                 llm_gateway: "LLMGateway",
-                 security_context: "SecurityContext"):
-        self.config = config
-        self.llm = llm_gateway
-        self.security = security_context
-        self.logger = structlog.get_logger().bind(
-            agent_id=config.agent_id,
-            role=config.role
-        )
-        self._tools = self._register_tools()
-        self._memory: List[Dict] = []
-
-    @abstractmethod
-    def _register_tools(self) -> Dict[str, callable]:
-        """Register tools available to this agent."""
-        pass
-
-    @abstractmethod
-    async def process(self, message: AgentMessage) -> AgentMessage:
-        """Process incoming message and produce response."""
-        pass
-
-    async def invoke_llm(self, prompt: str,
-                         system: Optional[str] = None,
-                         tools: Optional[List] = None) -> str:
-        """Invoke LLM with security controls."""
-        # Scrub PII from prompt
-        scrubbed_prompt = self.security.scrub_pii(prompt)
-
-        # Log the interaction
-        self.security.audit_log(
-            event="llm_invocation",
-            agent=self.config.agent_id,
-            prompt_length=len(scrubbed_prompt)
-        )
-
-        # Make LLM call
-        response = await self.llm.complete(
-            prompt=scrubbed_prompt,
-            system=system,
-            model=self.config.model,
-            temperature=self.config.temperature,
-            max_tokens=self.config.max_tokens,
-            tools=tools
-        )
-
-        return response
-
-    async def execute_tool(self, tool_name: str,
-                           **kwargs) -> Any:
-        """Execute a tool with permission checking."""
-        # Verify permission
-        if not self.security.check_permission(
-            self.config.agent_id,
-            tool_name,
-            kwargs
-        ):
-            raise PermissionError(
-                f"Agent {self.config.agent_id} denied "
-                f"permission for {tool_name}"
-            )
-
-        # Execute tool
-        tool = self._tools.get(tool_name)
-        if not tool:
-            raise ValueError(f"Unknown tool: {tool_name}")
-
-        result = await tool(**kwargs)
-
-        # Audit log
-        self.security.audit_log(
-            event="tool_execution",
-            agent=self.config.agent_id,
-            tool=tool_name,
-            success=True
-        )
-
-        return result
-\end{verbatim}
-
-\subsection{Planning Agent Implementation}
-
-The Planning Agent analyzes testing requirements and creates structured task plans:
-
-\begin{verbatim}
-class TestPlan(BaseModel):
-    """Structured test plan output."""
-    project_summary: str
-    testing_objectives: List[str]
-    tasks: List[TestTask]
-    priority_order: List[str]
-    estimated_coverage_targets: Dict[str, float]
-
-class TestTask(BaseModel):
-    """Individual testing task."""
-    task_id: str
-    description: str
-    target_files: List[str]
-    test_type: str  # unit, integration, property
-    assigned_agent: str
-    dependencies: List[str] = []
-    context_requirements: List[str] = []
-
-class PlanningAgent(BaseAgent):
-    """Agent responsible for test planning."""
-
-    SYSTEM_PROMPT = """You are a test planning specialist.
-    Analyze the provided codebase information and create
-    a comprehensive test plan.
-
-    For each testing task, specify:
-    - Clear description of what to test
-    - Target files and functions
-    - Type of tests needed
-    - Dependencies on other tasks
-    - Required context from codebase
-
-    Prioritize tasks by:
-    1. Critical business logic
-    2. Complex code paths
-    3. Recently changed code
-    4. Low current coverage areas
-    """
-
-    def _register_tools(self) -> Dict[str, callable]:
-        return {
-            "list_files": self._list_files,
-            "read_file_summary": self._read_file_summary,
-            "get_coverage_report": self._get_coverage_report,
-            "get_git_history": self._get_git_history,
-        }
-
-    async def process(self, message: AgentMessage) -> AgentMessage:
-        """Create test plan from requirements."""
-        requirements = message.content.get("requirements", "")
-        project_path = message.content.get("project_path")
-
-        # Gather project context
-        context = await self._gather_context(project_path)
-
-        # Generate plan using LLM
-        prompt = self._build_planning_prompt(requirements, context)
-
-        response = await self.invoke_llm(
-            prompt=prompt,
-            system=self.SYSTEM_PROMPT
-        )
-
-        # Parse structured output
-        plan = self._parse_plan(response)
-
-        return AgentMessage(
-            sender=self.config.agent_id,
-            recipient="orchestrator",
-            message_type="test_plan",
-            content=plan.model_dump()
-        )
-
-    async def _gather_context(self, project_path: str) -> Dict:
-        """Gather project context for planning."""
-        files = await self.execute_tool(
-            "list_files",
-            path=project_path,
-            pattern="**/*.py"
-        )
-
-        coverage = await self.execute_tool(
-            "get_coverage_report",
-            path=project_path
-        )
-
-        history = await self.execute_tool(
-            "get_git_history",
-            path=project_path,
-            days=30
-        )
-
-        return {
-            "files": files,
-            "coverage": coverage,
-            "recent_changes": history
-        }
-\end{verbatim}
-
-\subsection{Code Analysis Agent Implementation}
-
-The Code Analysis Agent examines source code to extract context for test generation:
-
-\begin{verbatim}
-class CodeAnalysis(BaseModel):
-    """Result of code analysis."""
-    file_path: str
-    module_summary: str
-    classes: List[ClassInfo]
-    functions: List[FunctionInfo]
-    dependencies: List[str]
-    complexity_metrics: Dict[str, float]
-    suggested_test_cases: List[str]
-
-class FunctionInfo(BaseModel):
-    """Information about a function."""
-    name: str
-    signature: str
-    docstring: Optional[str]
-    line_start: int
-    line_end: int
-    complexity: int
-    parameters: List[ParameterInfo]
-    return_type: Optional[str]
-    raises: List[str]
-    calls: List[str]
-
-class CodeAnalysisAgent(BaseAgent):
-    """Agent for analyzing source code."""
-
-    def _register_tools(self) -> Dict[str, callable]:
-        return {
-            "read_file": self._read_file,
-            "parse_ast": self._parse_ast,
-            "get_dependencies": self._get_dependencies,
-            "calculate_complexity": self._calculate_complexity,
-        }
-
-    async def process(self, message: AgentMessage) -> AgentMessage:
-        """Analyze code files for test generation."""
-        files = message.content.get("target_files", [])
-        context_hints = message.content.get("context", {})
-
-        analyses = []
-        for file_path in files:
-            analysis = await self._analyze_file(
-                file_path,
-                context_hints
-            )
-            analyses.append(analysis)
-
-        return AgentMessage(
-            sender=self.config.agent_id,
-            recipient=message.content.get("reply_to", "orchestrator"),
-            message_type="code_analysis",
-            content={"analyses": [a.model_dump() for a in analyses]}
-        )
-
-    async def _analyze_file(self, file_path: str,
-                            hints: Dict) -> CodeAnalysis:
-        """Perform detailed analysis of a single file."""
-        # Read and parse the file
-        content = await self.execute_tool("read_file", path=file_path)
-        ast_info = await self.execute_tool("parse_ast", code=content)
-
-        # Extract structural information
-        classes = self._extract_classes(ast_info)
-        functions = self._extract_functions(ast_info)
-
-        # Calculate metrics
-        complexity = await self.execute_tool(
-            "calculate_complexity",
-            code=content
-        )
-
-        # Use LLM for semantic understanding
-        summary_prompt = f"""Analyze this Python code and provide:
-        1. A brief summary of the module's purpose
-        2. Key functionality and business logic
-        3. Edge cases and error conditions to test
-        4. Suggested test scenarios
-
-        Code:
-        ```python
-        {content[:8000]}  # Truncate for context limits
-        ```
-        """
-
-        llm_analysis = await self.invoke_llm(summary_prompt)
-
-        return CodeAnalysis(
-            file_path=file_path,
-            module_summary=self._extract_summary(llm_analysis),
-            classes=classes,
-            functions=functions,
-            dependencies=ast_info.get("imports", []),
-            complexity_metrics=complexity,
-            suggested_test_cases=self._extract_suggestions(llm_analysis)
-        )
-\end{verbatim}
-
-\subsection{Test Generation Agent Implementation}
-
-The Test Generation Agent produces executable test code:
-
-\begin{verbatim}
-class GeneratedTest(BaseModel):
-    """A generated test case."""
-    test_name: str
-    test_code: str
-    target_function: str
-    test_type: str
-    rationale: str
-    assertions: List[str]
-    fixtures_needed: List[str]
-
-class TestGenerationAgent(BaseAgent):
-    """Agent for generating test code."""
-
-    SYSTEM_PROMPT = """You are an expert test engineer.
-    Generate high-quality pytest test cases that:
-
-    1. Test one behavior per test function
-    2. Use descriptive test names (test_<function>_<scenario>)
-    3. Include meaningful assertions
-    4. Handle edge cases and error conditions
-    5. Use appropriate fixtures and mocking
-    6. Follow the Arrange-Act-Assert pattern
-
-    Output valid, executable Python code using pytest.
-    Include necessary imports and fixtures.
-    """
-
-    def _register_tools(self) -> Dict[str, callable]:
-        return {
-            "read_file": self._read_file,
-            "validate_syntax": self._validate_syntax,
-            "check_imports": self._check_imports,
-        }
-
-    async def process(self, message: AgentMessage) -> AgentMessage:
-        """Generate tests based on analysis."""
-        analysis = message.content.get("analysis")
-        task = message.content.get("task")
-
-        generated_tests = []
-
-        for function in analysis.get("functions", []):
-            tests = await self._generate_tests_for_function(
-                function,
-                analysis,
-                task
-            )
-            generated_tests.extend(tests)
-
-        # Validate all generated tests
-        validated = await self._validate_tests(generated_tests)
-
-        return AgentMessage(
-            sender=self.config.agent_id,
-            recipient="orchestrator",
-            message_type="generated_tests",
-            content={
-                "tests": [t.model_dump() for t in validated],
-                "task_id": task.get("task_id")
-            }
-        )
-
-    async def _generate_tests_for_function(
-        self,
-        function: Dict,
-        analysis: Dict,
-        task: Dict
-    ) -> List[GeneratedTest]:
-        """Generate tests for a single function."""
-
-        prompt = f"""Generate pytest tests for this function:
-
-Function: {function['name']}
-Signature: {function['signature']}
-Docstring: {function.get('docstring', 'None')}
-
-Module context:
-{analysis.get('module_summary', '')}
-
-Suggested test scenarios:
-{analysis.get('suggested_test_cases', [])}
-
-Generate tests covering:
-1. Normal/happy path behavior
-2. Edge cases (empty inputs, boundaries)
-3. Error handling (invalid inputs, exceptions)
-4. Any specific scenarios from the docstring
-
-Return as JSON array with structure:
-[{{"test_name": "...", "test_code": "...",
-   "rationale": "...", "assertions": [...]}}]
-"""
-
-        response = await self.invoke_llm(
-            prompt=prompt,
-            system=self.SYSTEM_PROMPT
-        )
-
-        tests = self._parse_generated_tests(response, function['name'])
-        return tests
-
-    async def _validate_tests(
-        self,
-        tests: List[GeneratedTest]
-    ) -> List[GeneratedTest]:
-        """Validate generated tests for syntax and imports."""
-        validated = []
-
-        for test in tests:
-            # Check syntax
-            syntax_ok = await self.execute_tool(
-                "validate_syntax",
-                code=test.test_code
-            )
-
-            if not syntax_ok:
-                self.logger.warning(
-                    "Invalid syntax in generated test",
-                    test_name=test.test_name
-                )
-                continue
-
-            # Check imports are resolvable
-            imports_ok = await self.execute_tool(
-                "check_imports",
-                code=test.test_code
-            )
-
-            if imports_ok:
-                validated.append(test)
-            else:
-                self.logger.warning(
-                    "Unresolvable imports in test",
-                    test_name=test.test_name
-                )
-
-        return validated
-\end{verbatim}
-
-\subsection{Execution Agent Implementation}
-
-The Execution Agent runs tests in sandboxed environments:
-
-\begin{verbatim}
-class ExecutionResult(BaseModel):
-    """Result of test execution."""
-    test_name: str
-    status: str  # passed, failed, error, skipped
-    duration_ms: float
-    output: str
-    error_message: Optional[str] = None
-    coverage: Optional[Dict[str, float]] = None
-
-class ExecutionAgent(BaseAgent):
-    """Agent for executing tests in sandboxes."""
-
-    def __init__(self, config: AgentConfig,
-                 llm_gateway: "LLMGateway",
-                 security_context: "SecurityContext",
-                 sandbox_manager: "SandboxManager"):
-        super().__init__(config, llm_gateway, security_context)
-        self.sandbox = sandbox_manager
-
-    def _register_tools(self) -> Dict[str, callable]:
-        return {
-            "create_sandbox": self._create_sandbox,
-            "run_in_sandbox": self._run_in_sandbox,
-            "collect_results": self._collect_results,
-            "cleanup_sandbox": self._cleanup_sandbox,
-        }
-
-    async def process(self, message: AgentMessage) -> AgentMessage:
-        """Execute tests and collect results."""
-        tests = message.content.get("tests", [])
-        project_path = message.content.get("project_path")
-
-        # Create isolated sandbox
-        sandbox_id = await self.execute_tool(
-            "create_sandbox",
-            base_image="python-test-runner:3.11",
-            project_path=project_path,
-            resource_limits={
-                "cpu": 2,
-                "memory": "2g",
-                "timeout": 300
-            }
-        )
-
-        try:
-            # Write tests to sandbox
-            test_file = self._create_test_file(tests)
-
-            # Execute tests with coverage
-            raw_results = await self.execute_tool(
-                "run_in_sandbox",
-                sandbox_id=sandbox_id,
-                command=[
-                    "pytest",
-                    test_file,
-                    "--tb=short",
-                    "-v",
-                    "--cov=.",
-                    "--cov-report=json"
-                ]
-            )
-
-            # Collect and parse results
-            results = await self.execute_tool(
-                "collect_results",
-                sandbox_id=sandbox_id,
-                output=raw_results
-            )
-
-        finally:
-            # Always cleanup
-            await self.execute_tool(
-                "cleanup_sandbox",
-                sandbox_id=sandbox_id
-            )
-
-        return AgentMessage(
-            sender=self.config.agent_id,
-            recipient="orchestrator",
-            message_type="execution_results",
-            content={
-                "results": [r.model_dump() for r in results],
-                "summary": self._summarize_results(results)
-            }
-        )
-
-    def _create_test_file(self, tests: List[Dict]) -> str:
-        """Create a test file from generated tests."""
-        imports = set()
-        test_code = []
-
-        for test in tests:
-            code = test.get("test_code", "")
-            # Extract imports
-            for line in code.split("\n"):
-                if line.startswith("import ") or \
-                   line.startswith("from "):
-                    imports.add(line)
-                else:
-                    test_code.append(line)
-
-        full_code = "\n".join(sorted(imports)) + "\n\n"
-        full_code += "\n\n".join(test_code)
-
-        return full_code
-\end{verbatim}
-
-\subsection{Validation Agent Implementation}
-
-The Validation Agent assesses test quality:
-
-\begin{verbatim}
-class ValidationResult(BaseModel):
-    """Test validation result."""
-    test_name: str
-    quality_score: float  # 0-1
-    issues: List[ValidationIssue]
-    recommendations: List[str]
-    mutation_score: Optional[float] = None
-
-class ValidationIssue(BaseModel):
-    """A quality issue found in a test."""
-    severity: str  # error, warning, info
-    category: str  # assertion, coverage, style, flaky
-    description: str
-    line_number: Optional[int] = None
-
-class ValidationAgent(BaseAgent):
-    """Agent for validating test quality."""
-
-    def _register_tools(self) -> Dict[str, callable]:
-        return {
-            "analyze_assertions": self._analyze_assertions,
-            "check_coverage": self._check_coverage,
-            "run_mutation_testing": self._run_mutation_testing,
-            "detect_flakiness": self._detect_flakiness,
-        }
-
-    async def process(self, message: AgentMessage) -> AgentMessage:
-        """Validate test quality."""
-        tests = message.content.get("tests", [])
-        execution_results = message.content.get("results", [])
-
-        validations = []
-
-        for test in tests:
-            result = await self._validate_test(
-                test,
-                execution_results
-            )
-            validations.append(result)
-
-        # Overall quality assessment
-        overall = self._calculate_overall_quality(validations)
-
-        return AgentMessage(
-            sender=self.config.agent_id,
-            recipient="orchestrator",
-            message_type="validation_results",
-            content={
-                "validations": [v.model_dump() for v in validations],
-                "overall_quality": overall,
-                "recommendations": self._aggregate_recommendations(
-                    validations
-                )
-            }
-        )
-
-    async def _validate_test(
-        self,
-        test: Dict,
-        results: List[Dict]
-    ) -> ValidationResult:
-        """Validate a single test."""
-        issues = []
-
-        # Check assertion quality
-        assertion_issues = await self.execute_tool(
-            "analyze_assertions",
-            test_code=test.get("test_code", "")
-        )
-        issues.extend(assertion_issues)
-
-        # Check for trivial assertions
-        if self._has_trivial_assertions(test.get("test_code", "")):
-            issues.append(ValidationIssue(
-                severity="warning",
-                category="assertion",
-                description="Test contains trivial assertions "
-                           "(assert True, assert x == x)"
-            ))
-
-        # Check test isolation
-        if self._has_isolation_issues(test.get("test_code", "")):
-            issues.append(ValidationIssue(
-                severity="warning",
-                category="style",
-                description="Test may have isolation issues "
-                           "(shared state, external dependencies)"
-            ))
-
-        # Calculate quality score
-        score = self._calculate_quality_score(issues)
-
-        # Generate recommendations using LLM
-        recommendations = await self._generate_recommendations(
-            test, issues
-        )
-
-        return ValidationResult(
-            test_name=test.get("test_name", "unknown"),
-            quality_score=score,
-            issues=issues,
-            recommendations=recommendations
-        )
-\end{verbatim}
-
-\subsection{Security Agent Implementation}
-
-The Security Agent provides security oversight:
-
-\begin{verbatim}
-class SecurityScanResult(BaseModel):
-    """Result of security scanning."""
-    scan_type: str
-    passed: bool
-    findings: List[SecurityFinding]
-    risk_level: str  # low, medium, high, critical
-
-class SecurityFinding(BaseModel):
-    """A security issue found."""
-    severity: str
-    category: str
-    description: str
-    location: Optional[str] = None
-    recommendation: str
-
-class SecurityAgent(BaseAgent):
-    """Agent for security scanning and oversight."""
-
-    DANGEROUS_PATTERNS = [
-        (r"eval\s*\(", "Use of eval() is dangerous"),
-        (r"exec\s*\(", "Use of exec() is dangerous"),
-        (r"__import__\s*\(", "Dynamic import may be dangerous"),
-        (r"subprocess\.(call|run|Popen)",
-         "Subprocess execution requires review"),
-        (r"os\.system\s*\(", "os.system() is dangerous"),
-        (r"pickle\.loads?\s*\(", "Pickle deserialization is unsafe"),
-        (r"yaml\.load\s*\([^)]*Loader\s*=\s*None",
-         "Unsafe YAML loading"),
-    ]
-
-    def _register_tools(self) -> Dict[str, callable]:
-        return {
-            "scan_code": self._scan_code,
-            "check_dependencies": self._check_dependencies,
-            "scan_secrets": self._scan_secrets,
-            "verify_sandbox_config": self._verify_sandbox_config,
-        }
-
-    async def process(self, message: AgentMessage) -> AgentMessage:
-        """Perform security analysis."""
-        scan_type = message.content.get("scan_type", "full")
-        target = message.content.get("target")
-
-        results = []
-
-        if scan_type in ["full", "code"]:
-            code_scan = await self._scan_code_security(target)
-            results.append(code_scan)
-
-        if scan_type in ["full", "dependencies"]:
-            dep_scan = await self._scan_dependencies(target)
-            results.append(dep_scan)
-
-        if scan_type in ["full", "secrets"]:
-            secret_scan = await self._scan_for_secrets(target)
-            results.append(secret_scan)
-
-        # Determine overall risk
-        overall_risk = self._calculate_overall_risk(results)
-
-        # Block if high-risk issues found
-        should_block = overall_risk in ["high", "critical"]
-
-        return AgentMessage(
-            sender=self.config.agent_id,
-            recipient="orchestrator",
-            message_type="security_scan",
-            content={
-                "results": [r.model_dump() for r in results],
-                "overall_risk": overall_risk,
-                "should_block": should_block,
-                "requires_review": overall_risk != "low"
-            }
-        )
-
-    async def _scan_code_security(
-        self,
-        code: str
-    ) -> SecurityScanResult:
-        """Scan code for security issues."""
-        findings = []
-
-        # Pattern-based detection
-        for pattern, description in self.DANGEROUS_PATTERNS:
-            import re
-            matches = re.finditer(pattern, code)
-            for match in matches:
-                findings.append(SecurityFinding(
-                    severity="high",
-                    category="dangerous_function",
-                    description=description,
-                    location=f"character {match.start()}",
-                    recommendation="Review and remove or sandbox"
-                ))
-
-        # LLM-based analysis for subtle issues
-        llm_findings = await self._llm_security_analysis(code)
-        findings.extend(llm_findings)
-
-        return SecurityScanResult(
-            scan_type="code",
-            passed=len([f for f in findings
-                       if f.severity in ["high", "critical"]]) == 0,
-            findings=findings,
-            risk_level=self._determine_risk_level(findings)
-        )
-\end{verbatim}
-
-%----------------------------------------------------------------------------------------
-
-\section{Security Controls Implementation}
-\label{sec:security_impl}
-
-\subsection{Sandbox Manager}
-
-The Sandbox Manager provisions and manages isolated execution environments:
-
-\begin{verbatim}
-class SandboxConfig(BaseModel):
-    """Configuration for sandbox environment."""
-    base_image: str
-    cpu_limit: int = 2
-    memory_limit: str = "2g"
-    timeout_seconds: int = 300
-    network_mode: str = "none"  # none, allowlist
-    allowed_hosts: List[str] = []
-    read_only_paths: List[str] = []
-    writable_paths: List[str] = []
-
-class SandboxManager:
-    """Manages sandboxed execution environments."""
-
-    def __init__(self, docker_client: docker.DockerClient):
-        self.docker = docker_client
-        self.active_sandboxes: Dict[str, Container] = {}
-
-    async def create_sandbox(
-        self,
-        config: SandboxConfig,
-        project_path: str
-    ) -> str:
-        """Create a new sandbox container."""
-        sandbox_id = str(uuid.uuid4())[:8]
-
-        # Security configuration
-        security_opt = [
-            "no-new-privileges:true",
-            "seccomp=default.json"
-        ]
-
-        # Resource limits
-        host_config = self.docker.api.create_host_config(
-            mem_limit=config.memory_limit,
-            cpu_period=100000,
-            cpu_quota=config.cpu_limit * 100000,
-            network_mode=config.network_mode,
-            security_opt=security_opt,
-            read_only=True,
-            tmpfs={"/tmp": "size=100m,mode=1777"},
-            cap_drop=["ALL"],
-            cap_add=["CHOWN", "SETUID", "SETGID"],
-        )
-
-        # Create container
-        container = self.docker.containers.create(
-            config.base_image,
-            name=f"sandbox-{sandbox_id}",
-            user="sandbox",
-            working_dir="/workspace",
-            volumes={
-                project_path: {
-                    "bind": "/workspace",
-                    "mode": "ro"  # Read-only by default
-                }
-            },
-            host_config=host_config,
-            detach=True
-        )
-
-        self.active_sandboxes[sandbox_id] = container
-        container.start()
-
-        return sandbox_id
-
-    async def execute_in_sandbox(
-        self,
-        sandbox_id: str,
-        command: List[str],
-        timeout: int = 300
-    ) -> Tuple[int, str, str]:
-        """Execute command in sandbox with timeout."""
-        container = self.active_sandboxes.get(sandbox_id)
-        if not container:
-            raise ValueError(f"Sandbox {sandbox_id} not found")
-
-        try:
-            exec_result = container.exec_run(
-                command,
-                user="sandbox",
-                workdir="/workspace",
-                demux=True
-            )
-
-            return (
-                exec_result.exit_code,
-                exec_result.output[0].decode() if exec_result.output[0] else "",
-                exec_result.output[1].decode() if exec_result.output[1] else ""
-            )
-
-        except Exception as e:
-            return (-1, "", str(e))
-
-    async def cleanup_sandbox(self, sandbox_id: str):
-        """Remove sandbox container."""
-        container = self.active_sandboxes.pop(sandbox_id, None)
-        if container:
-            try:
-                container.stop(timeout=5)
-                container.remove(force=True)
-            except Exception:
-                pass  # Best effort cleanup
-\end{verbatim}
-
-\subsection{PII Scrubbing Pipeline}
-
-The PII scrubber removes sensitive information before LLM transmission:
-
-\begin{verbatim}
-from presidio_analyzer import AnalyzerEngine
-from presidio_anonymizer import AnonymizerEngine
-import re
-
-class PIIScrubber:
-    """Scrubs PII from text before LLM transmission."""
-
-    # Patterns for code-specific secrets
-    SECRET_PATTERNS = [
-        (r'(?i)(api[_-]?key|apikey)\s*[=:]\s*["\']?[\w-]+',
-         '<API_KEY_REDACTED>'),
-        (r'(?i)(password|passwd|pwd)\s*[=:]\s*["\']?[^\s"\']+',
-         '<PASSWORD_REDACTED>'),
-        (r'(?i)(secret|token)\s*[=:]\s*["\']?[\w-]+',
-         '<SECRET_REDACTED>'),
-        (r'(?i)(aws_access_key_id)\s*[=:]\s*["\']?[A-Z0-9]+',
-         '<AWS_KEY_REDACTED>'),
-        (r'ghp_[a-zA-Z0-9]{36}', '<GITHUB_TOKEN_REDACTED>'),
-        (r'sk-[a-zA-Z0-9]{48}', '<OPENAI_KEY_REDACTED>'),
-    ]
-
-    def __init__(self):
-        self.analyzer = AnalyzerEngine()
-        self.anonymizer = AnonymizerEngine()
-
-    def scrub(self, text: str) -> Tuple[str, List[Dict]]:
-        """Scrub PII from text, returning cleaned text and log."""
-        scrub_log = []
-
-        # First pass: regex-based secret detection
-        cleaned = text
-        for pattern, replacement in self.SECRET_PATTERNS:
-            matches = re.findall(pattern, cleaned)
-            if matches:
-                cleaned = re.sub(pattern, replacement, cleaned)
-                scrub_log.append({
-                    "type": "secret",
-                    "count": len(matches),
-                    "replacement": replacement
-                })
-
-        # Second pass: Presidio NER-based PII detection
-        results = self.analyzer.analyze(
-            cleaned,
-            entities=[
-                "PERSON", "EMAIL_ADDRESS", "PHONE_NUMBER",
-                "CREDIT_CARD", "IP_ADDRESS", "LOCATION"
-            ],
-            language="en"
-        )
-
-        if results:
-            anonymized = self.anonymizer.anonymize(
-                cleaned,
-                results
-            )
-            cleaned = anonymized.text
-
-            for result in results:
-                scrub_log.append({
-                    "type": result.entity_type,
-                    "score": result.score,
-                    "start": result.start,
-                    "end": result.end
-                })
-
-        return cleaned, scrub_log
-\end{verbatim}
-
-\subsection{Permission Enforcement}
-
-The permission system enforces least-privilege access:
-
-\begin{verbatim}
-class PermissionPolicy(BaseModel):
-    """Permission policy for an agent."""
-    agent_id: str
-    file_read: List[str] = []    # Glob patterns
-    file_write: List[str] = []   # Glob patterns
-    network: List[str] = []      # URL patterns
-    execute: List[str] = []      # Command allowlist
-
-class PermissionEnforcer:
-    """Enforces permission policies for agent actions."""
-
-    def __init__(self, policies: Dict[str, PermissionPolicy]):
-        self.policies = policies
-        self.audit_logger = AuditLogger()
-
-    def check_permission(
-        self,
-        agent_id: str,
-        action: str,
-        resource: str
-    ) -> bool:
-        """Check if agent has permission for action."""
-        policy = self.policies.get(agent_id)
-        if not policy:
-            self._log_denial(agent_id, action, resource,
-                           "no policy found")
-            return False
-
-        allowed = False
-
-        if action == "file_read":
-            allowed = self._check_glob_match(
-                resource, policy.file_read
-            )
-        elif action == "file_write":
-            allowed = self._check_glob_match(
-                resource, policy.file_write
-            )
-        elif action == "network":
-            allowed = self._check_url_match(
-                resource, policy.network
-            )
-        elif action == "execute":
-            allowed = self._check_command_allowed(
-                resource, policy.execute
-            )
-
-        if not allowed:
-            self._log_denial(agent_id, action, resource,
-                           "policy denied")
-        else:
-            self._log_allowed(agent_id, action, resource)
-
-        return allowed
-
-    def _check_glob_match(
-        self,
-        path: str,
-        patterns: List[str]
-    ) -> bool:
-        """Check if path matches any allowed pattern."""
-        from fnmatch import fnmatch
-        return any(fnmatch(path, p) for p in patterns)
-
-    def _log_denial(self, agent_id: str, action: str,
-                    resource: str, reason: str):
-        """Log permission denial."""
-        self.audit_logger.log(
-            event="permission_denied",
-            agent_id=agent_id,
-            action=action,
-            resource=resource,
-            reason=reason
-        )
-\end{verbatim}
-
-\subsection{Audit Logging}
-
-Comprehensive audit logging supports security monitoring and compliance:
-
-\begin{verbatim}
-class AuditLogger:
-    """Structured audit logging for security events."""
-
-    def __init__(self, log_path: str = "audit.log"):
-        self.logger = structlog.get_logger("audit")
-        self.log_path = log_path
-
-    def log(self, event: str, **kwargs):
-        """Log an audit event with structured data."""
-        entry = AuditEntry(
-            timestamp=datetime.utcnow().isoformat(),
-            event=event,
-            **kwargs
-        )
-
-        # Write to structured log
-        self.logger.info(
-            event,
-            **entry.model_dump()
-        )
-
-        # Append to audit file (append-only)
-        with open(self.log_path, "a") as f:
-            f.write(entry.model_dump_json() + "\n")
-
-    def log_llm_interaction(
-        self,
-        agent_id: str,
-        prompt_hash: str,
-        prompt_length: int,
-        response_length: int,
-        model: str,
-        tokens_used: int
-    ):
-        """Log LLM API interaction."""
-        self.log(
-            event="llm_interaction",
-            agent_id=agent_id,
-            prompt_hash=prompt_hash,
-            prompt_length=prompt_length,
-            response_length=response_length,
-            model=model,
-            tokens_used=tokens_used
-        )
-
-    def log_tool_execution(
-        self,
-        agent_id: str,
-        tool: str,
-        parameters_hash: str,
-        success: bool,
-        error: Optional[str] = None
-    ):
-        """Log tool execution."""
-        self.log(
-            event="tool_execution",
-            agent_id=agent_id,
-            tool=tool,
-            parameters_hash=parameters_hash,
-            success=success,
-            error=error
-        )
-\end{verbatim}
-
-%----------------------------------------------------------------------------------------
-
-\section{Workflow Implementation}
-\label{sec:workflow_impl}
-
-\subsection{Workflow Engine}
-
-The workflow engine orchestrates agent interactions:
-
-\begin{verbatim}
-class WorkflowState(Enum):
-    """Possible workflow states."""
-    PENDING = "pending"
-    PLANNING = "planning"
-    ANALYZING = "analyzing"
-    GENERATING = "generating"
-    EXECUTING = "executing"
-    VALIDATING = "validating"
-    REVIEWING = "reviewing"
-    COMPLETED = "completed"
-    FAILED = "failed"
-
-class TestingWorkflow:
-    """Orchestrates the test generation workflow."""
-
-    def __init__(
-        self,
-        agents: Dict[str, BaseAgent],
-        state_manager: StateManager
-    ):
-        self.agents = agents
-        self.state = state_manager
-
-    async def run(
-        self,
-        project_path: str,
-        requirements: str
-    ) -> WorkflowResult:
-        """Execute the full testing workflow."""
-        workflow_id = str(uuid.uuid4())
-
-        try:
-            # Phase 1: Planning
-            await self.state.transition(
-                workflow_id, WorkflowState.PLANNING
-            )
-            plan = await self._run_planning(
-                project_path, requirements
-            )
-
-            # Phase 2: Analysis
-            await self.state.transition(
-                workflow_id, WorkflowState.ANALYZING
-            )
-            analyses = await self._run_analysis(plan)
-
-            # Phase 3: Generation
-            await self.state.transition(
-                workflow_id, WorkflowState.GENERATING
-            )
-            tests = await self._run_generation(plan, analyses)
-
-            # Phase 4: Security Scan
-            security_results = await self._run_security_scan(tests)
-            if security_results.should_block:
-                return WorkflowResult(
-                    status="blocked",
-                    reason="Security scan failed",
-                    security_findings=security_results.findings
-                )
-
-            # Phase 5: Execution
-            await self.state.transition(
-                workflow_id, WorkflowState.EXECUTING
-            )
-            execution_results = await self._run_execution(tests)
-
-            # Phase 6: Validation
-            await self.state.transition(
-                workflow_id, WorkflowState.VALIDATING
-            )
-            validation = await self._run_validation(
-                tests, execution_results
-            )
-
-            # Phase 7: Human Review (if configured)
-            if self._requires_review(validation):
-                await self.state.transition(
-                    workflow_id, WorkflowState.REVIEWING
-                )
-                review_result = await self._await_human_review(
-                    tests, validation
-                )
-                if not review_result.approved:
-                    return WorkflowResult(
-                        status="rejected",
-                        reason=review_result.feedback
-                    )
-
-            # Complete
-            await self.state.transition(
-                workflow_id, WorkflowState.COMPLETED
-            )
-
-            return WorkflowResult(
-                status="completed",
-                tests=tests,
-                execution_results=execution_results,
-                validation=validation
-            )
-
-        except Exception as e:
-            await self.state.transition(
-                workflow_id, WorkflowState.FAILED
-            )
-            raise
-\end{verbatim}
-
-%----------------------------------------------------------------------------------------
-
-\section{Integration with Development Environment}
-\label{sec:dev_integration}
-
-\subsection{Command-Line Interface}
-
-The CLI provides the primary user interface:
-
-\begin{verbatim}
-import click
-
-@click.group()
-def cli():
-    """MAS Testing - Multi-Agent Software Testing System"""
-    pass
-
-@cli.command()
-@click.argument('project_path')
-@click.option('--requirements', '-r',
-              help='Testing requirements')
-@click.option('--output', '-o', default='tests/generated',
-              help='Output directory for generated tests')
-@click.option('--model', default='gpt-4-turbo',
-              help='LLM model to use')
-@click.option('--local', is_flag=True,
-              help='Use local LLM instead of API')
-def generate(project_path, requirements, output, model, local):
-    """Generate tests for a project."""
-    config = load_config()
-
-    if local:
-        config.llm_provider = "ollama"
-        config.model = "codellama:34b"
-    else:
-        config.model = model
-
-    workflow = TestingWorkflow.from_config(config)
-
-    with click.progressbar(length=100) as bar:
-        result = asyncio.run(
-            workflow.run(project_path, requirements)
-        )
-
-    if result.status == "completed":
-        write_tests(result.tests, output)
-        click.echo(f"Generated {len(result.tests)} tests")
-    else:
-        click.echo(f"Workflow failed: {result.reason}", err=True)
-
-@cli.command()
-@click.argument('project_path')
-def analyze(project_path):
-    """Analyze a project without generating tests."""
-    # Implementation
-    pass
-
-if __name__ == '__main__':
-    cli()
-\end{verbatim}
-
-\subsection{CI/CD Integration}
-
-GitHub Actions workflow for automated test generation:
-
-\begin{verbatim}
-# .github/workflows/mas-testing.yml
-name: MAS Test Generation
-
-on:
-  pull_request:
-    types: [opened, synchronize]
-    paths:
-      - 'src/**/*.py'
-
-jobs:
-  generate-tests:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install MAS Testing
-        run: pip install mas-testing
-
-      - name: Generate Tests
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: |
-          mas-testing generate . \
-            --requirements "Generate tests for changed files" \
-            --output tests/generated \
-            --model gpt-4-turbo
-
-      - name: Run Generated Tests
-        run: pytest tests/generated -v
-
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-report
-          path: test-report.xml
-\end{verbatim}
-
-%----------------------------------------------------------------------------------------
-
-\section{Summary}
-\label{sec:impl_summary}
-
-This chapter has presented the implementation details of the secure multi-agent testing prototype. Key implementation highlights include:
-
-\begin{itemize}
-    \item \textbf{Modular Agent Architecture}: Six specialized agents with clear responsibilities and a common base class providing shared functionality.
-
-    \item \textbf{Security Controls}: Defense-in-depth implementation with sandboxed execution, PII scrubbing, permission enforcement, and comprehensive audit logging.
-
-    \item \textbf{Flexible LLM Integration}: Support for multiple providers (OpenAI, Anthropic, local models) through a unified interface.
-
-    \item \textbf{Practical Integration}: Command-line interface and CI/CD integration enabling real-world deployment.
-\end{itemize}
-
-The implementation totals approximately 5,000 lines of Python code across the core components, with an additional 2,000 lines of configuration, tests, and tooling. The modular design enables extension and customization for specific organizational requirements.
-
-The following chapter presents the experimental evaluation of this implementation, assessing its effectiveness, security properties, and performance characteristics.
+The LLM gateway (LiteLLM) \parencite{litellm} supports multiple providers through a unified interface. For the prototype evaluation, the model used was \texttt{ollama/llama3.1:8b} (8 billion parameters, running locally via Ollama \parencite{ollama2023}) with a temperature of 0.7 to balance creativity with consistency and a maximum token limit of 4096, sufficient for generating 8--12 test functions. The embedding model was \texttt{ollama/mxbai-embed-large}, used for Letta archival memory search. The architecture is model-agnostic: switching to a different LLM (e.g., GPT-4, Claude, Code Llama) requires only changing the model identifier in the configuration, with no code changes.

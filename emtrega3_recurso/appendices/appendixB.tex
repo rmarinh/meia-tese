@@ -3,7 +3,7 @@
 \chapter{Extended Code Listings}
 \label{AppendixB}
 
-This appendix provides extended code listings for key components of the prototype implementation described in Chapter~\ref{chap:implementation}.
+This appendix provides extended code listings for key components of the TestForge platform described in Chapter~\ref{chap:implementation}. Listings~\ref{lst:config_schema}--\ref{lst:prompts} reflect the implemented prototype, while Listings~\ref{lst:scrubber_full}--\ref{lst:cli_full} present design-level specifications for security and deployment components planned for future iterations.
 
 %----------------------------------------------------------------------------------------
 
@@ -293,10 +293,12 @@ Return a JSON object with:
 
 %----------------------------------------------------------------------------------------
 
-\section{Security Components}
+\section{Security Components (Design Specification)}
 \label{sec:security_components}
 
-\begin{lstlisting}[language=Python, caption={Complete PII Scrubber implementation (security/scrubber.py)}, label={lst:scrubber_full}]
+The following listing presents the designed PII scrubber module, which combines regex-based secret detection with NER-based PII identification via Presidio. This component is planned for integration in a future iteration of the platform.
+
+\begin{lstlisting}[language=Python, caption={PII Scrubber design specification (security/scrubber.py)}, label={lst:scrubber_full}]
 import re
 from typing import Dict, List, Tuple
 from presidio_analyzer import AnalyzerEngine, PatternRecognizer, Pattern
@@ -426,8 +428,10 @@ class PIIScrubber:
 
 %----------------------------------------------------------------------------------------
 
-\section{Docker Sandbox Configuration}
+\section{Docker Sandbox Configuration (Design Specification)}
 \label{sec:docker_config}
+
+The following listings present the designed Docker sandbox configuration for secure test execution. The current prototype uses subprocess-based isolation; container-based sandboxing is planned for a future iteration.
 
 \begin{lstlisting}[caption={Dockerfile for secure sandbox environment (docker/Dockerfile.sandbox)}, label={lst:dockerfile}]
 # Secure Python sandbox for test execution
@@ -498,10 +502,12 @@ CMD ["python", "--version"]
 
 %----------------------------------------------------------------------------------------
 
-\section{CLI Implementation}
+\section{CLI Implementation (Design Specification)}
 \label{sec:cli_impl}
 
-\begin{lstlisting}[language=Python, caption={Command-line interface (integration/cli.py)}, label={lst:cli_full}]
+The following listing presents a designed command-line interface using Click and Rich. The current prototype exposes its CLI through a simpler interface; this specification targets a future release.
+
+\begin{lstlisting}[language=Python, caption={Command-line interface design specification (integration/cli.py)}, label={lst:cli_full}]
 import click
 import asyncio
 from pathlib import Path
